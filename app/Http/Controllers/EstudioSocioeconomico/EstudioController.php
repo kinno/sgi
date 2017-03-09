@@ -19,13 +19,13 @@ class EstudioController extends Controller
     public function index()
     {
         $ejercicios = Cat_Ejercicio::orderBy('Ejercicio','DESC')->get();
-        $accionesFederales = Cat_Acuerdo::where('IdTipAcu','=',4)->get();
-        $accionesEstatales = Cat_Acuerdo::where('IdTipAcu','=',1)
-            ->orWhere('IdTipAcu','=',2)
+        $accionesFederales = Cat_Acuerdo::where('id_tipo_acuerdo','=',4)->get();
+        $accionesEstatales = Cat_Acuerdo::where('id_tipo_acuerdo','=',1)
+            ->orWhere('id_tipo_acuerdo','=',2)
             ->get();
         $grupoSocial = Cat_Grupo_Social::All();
-        $coberturas = Cat_Cobertura::where('IdCob','>',0)->get();
-        $localidades = Cat_Tipo_Localidad::where('idTipLoc','>',0)->get();
+        $coberturas = Cat_Cobertura::where('id','>',0)->get();
+        $localidades = Cat_Tipo_Localidad::where('id','>',0)->get();
         $metas = Cat_Meta::where('id','>',0)->get();
         $beneficiarios = Cat_Beneficiario::where('id','>',0)->get();
         $fuentesFederal = Cat_Fuente::where('tipo','=','F')->get();
