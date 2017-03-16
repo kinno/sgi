@@ -15,8 +15,8 @@ class CreatePPresupuestoObra extends Migration
     {
          Schema::create('p_presupuesto_obra', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_solicitud');
-            $table->string('clave_objeto_gasto');
+            $table->unsignedInteger('id_expediente_tecnico');
+            $table->string('clave_objeto_gasto')->nullable();
             $table->text('concepto');
             $table->text('unidad_medida');
             $table->decimal('cantidad',15,2);
@@ -24,7 +24,8 @@ class CreatePPresupuestoObra extends Migration
             $table->decimal('importe',15,2);
             $table->decimal('iva',15,2);
             $table->decimal('total',15,2);
-            $table->integer('id_contrato');
+            $table->integer('id_contrato')->nullable();
+            $table->timestamps();
         });
     }
 

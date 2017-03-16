@@ -15,7 +15,7 @@ class CreatePContrato extends Migration
     {
         Schema::create('p_contrato', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_solicitud');
+            $table->unsignedInteger('id_expediente_tecnico');
             $table->string('numero_contrato');
             $table->dateTime('fecha_celebracion');
             $table->text('descripcion');
@@ -43,8 +43,9 @@ class CreatePContrato extends Migration
             $table->decimal('importe_garantia_cumplimiento',17,2);
             $table->dateTime('fecha_inicio_garantia_cumplimiento');
             $table->dateTime('fecha_fin_garantia_cumplimiento');
-            $table->integer('id_contrato_padre');
+            $table->unsignedInteger('id_contrato_padre')->nullable();
             $table->tinyInteger('estatus');
+            $table->timestamps();
             //
         });
     }
@@ -56,6 +57,8 @@ class CreatePContrato extends Migration
      */
     public function down()
     {
+         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::drop('p_contrato');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

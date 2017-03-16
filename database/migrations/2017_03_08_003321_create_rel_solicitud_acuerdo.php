@@ -13,9 +13,11 @@ class CreateRelSolicitudAcuerdo extends Migration
      */
     public function up()
     {
-        Schema::create('rel_solicitud_acuerdo', function (Blueprint $table) {
-            $table->integer('id_solicitud');
+        Schema::create('rel_expediente_acuerdo', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('id_expediente_tecnico');
             $table->integer('id_acuerdo');
+            $table->timestamps();
             //
         });
     }
@@ -27,6 +29,6 @@ class CreateRelSolicitudAcuerdo extends Migration
      */
     public function down()
     {
-        Schema::drop('rel_solicitud_acuerdo');
+        Schema::drop('rel_expediente_acuerdo');
     }
 }

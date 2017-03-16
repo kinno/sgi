@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRelSolicitudRegion extends Migration
+class AlterRelEstudioFuente extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateRelSolicitudRegion extends Migration
      */
     public function up()
     {
-        Schema::create('rel_expediente_region', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('id_expediente_tecnico');
-            $table->unsignedInteger('id_region');
-            //
+        Schema::table('rel_estudio_fuente', function($table) {
+            $table->char('tipo_fuente',1);
         });
     }
 
@@ -28,6 +25,6 @@ class CreateRelSolicitudRegion extends Migration
      */
     public function down()
     {
-        Schema::drop('rel_expediente_region');
+         $table->dropColumn('rel_estudio_fuente');
     }
 }

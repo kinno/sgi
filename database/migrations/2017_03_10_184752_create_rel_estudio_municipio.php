@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RenamePsolicitudPexpediente extends Migration
+class CreateRelEstudioMunicipio extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,12 @@ class RenamePsolicitudPexpediente extends Migration
      */
     public function up()
     {
-        Schema::rename('p_solicitud', 'p_expediente_tecnico');
+        Schema::create('rel_estudio_municipio', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('id_estudio_socioeconomico');
+            $table->integer('id_municipio');
+            //
+        });
     }
 
     /**
@@ -23,6 +28,6 @@ class RenamePsolicitudPexpediente extends Migration
      */
     public function down()
     {
-        Schema::rename('p_expediente_tecnico', 'p_solicitud');
+        Schema::drop('rel_estudio_municipio');
     }
 }

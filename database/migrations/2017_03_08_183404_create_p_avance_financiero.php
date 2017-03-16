@@ -15,7 +15,7 @@ class CreatePAvanceFinanciero extends Migration
     {
         Schema::create('p_avance_financiero', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_solicitud');
+            $table->unsignedInteger('id_expediente_tecnico');
             $table->decimal('enero',5,3);
             $table->decimal('febrero',5,3);
             $table->decimal('marzo',5,3);
@@ -28,6 +28,7 @@ class CreatePAvanceFinanciero extends Migration
             $table->decimal('octubre',5,3);
             $table->decimal('noviembre',5,3);
             $table->decimal('diciembre',5,3);
+            $table->timestamps();
             //
         });
     }
@@ -39,6 +40,8 @@ class CreatePAvanceFinanciero extends Migration
      */
     public function down()
     {
+         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::drop('p_avance_financiero');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

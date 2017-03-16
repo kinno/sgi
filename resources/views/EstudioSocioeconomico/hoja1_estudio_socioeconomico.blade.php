@@ -1,25 +1,20 @@
 
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form" id="form_anexo_uno">
+{{ csrf_field() }}
     <div class="panel panel-default">
         <div class="panel-heading">
             <h1 class="panel-title"><strong> HOJA 1</strong></h1>
+            <input id="id_hoja_uno" name="id_hoja_uno" type="hidden">
         </div>
         <div class="panel-body">
             <div class="row form-group" id="nes">
                 <label class="col-md-3 col-md-offset-1 control-label" for="nbp">No. Banco de Proyectos:</label>
                 <div class="col-md-2">
-                    <input id="nbp" name="nbp" type="text" class="form-control input-md" disabled="disabled">
+                    <input id="estudio_socioeconomico" name="estudio_socioeconomico" type="text" class="form-control input-md" readonly="readonly">
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Folio del Banco de Proyectos."></span>
             </div>
 
-            <div class="row form-group" hidden="true">
-                <label class="col-md-3 control-label" for="idsol">No. Solicitud:</label>
-                <div class="col-md-2">
-                    <input id="idsol" name="idsol" type="text"  value="" placeholder="" class="form-control input-md" readonly>
-                </div>
-                <span class="glyphicon glyphicon-question-sign ayuda" title="Folio del Expediente T&eacute;cnico."></span>
-            </div>
 
             <div class="row form-group">
                 <label class="col-md-3 col-md-offset-1 control-label" for="ejercicio"><font color="red" size="2">*</font>Ejercicio:</label>
@@ -33,17 +28,17 @@
             </div>
 
             <div class="row form-group">
-                <label class="col-md-3 col-md-offset-1 control-label" for="vidaPry">Vida &uacute;til del proyecto:</label>
+                <label class="col-md-3 col-md-offset-1 control-label" for="vida_proyecto">Vida &uacute;til del proyecto:</label>
                 <label class="col-md-1 control-label">A&ntilde;os</label>
                 <div class="col-md-1">
-                    <input id="vidaPry" name="vidaPry" type="text" onkeypress="return justNumbers(event);" class="form-control input-sm" maxlength="2">
+                    <input id="vida_proyecto" name="vida_proyecto" type="text" onkeypress="return justNumbers(event);" class="form-control input-sm" maxlength="2">
                 </div>
             </div>
 
             <div class="row form-group">
-                <label class="col-md-3 col-md-offset-1 control-label" for="nomobra"><font color="red" size="2">* </font>Nombre de la obra:</label>
+                <label class="col-md-3 col-md-offset-1 control-label" for="nombre_obra"><font color="red" size="2">* </font>Nombre de la obra:</label>
                 <div class="col-md-7">
-                    <textarea class="form-control obligatorio" id="nomobra" name="nomobra" rows="2"></textarea>
+                    <textarea class="form-control obligatorio" id="nombre_obra" name="nombre_obra" rows="2"></textarea>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Anotar la denominaci&oacute;n de la obra oacci&oacute;n, de tal manera que permita identificar con claridad los trabajos a realizar y suubicaci&oacute;n."></span>
             </div>
@@ -53,7 +48,7 @@
                 <div class="row form-group">
                     <label class="col-md-3 col-md-offset-1 control-label" for="ue">Unidad Ejecutora:</label>
                     <div class="col-md-7" id="ue0">
-                    <input type="text" name="unidad_ejecutora" val="unidad_ejecutora" class="form-control">
+                    <input type="text" name="unidad_ejecutora" id="unidad_ejecutora" val="unidad_ejecutora" class="form-control">
                     </div>
                     <span class="glyphicon glyphicon-question-sign ayuda" title="Unidad Administrativa de acuerdo al
                       Cat&aacute;logo de Centros de Costo, a nivel jer&aacute;rquico de una Direcci&oacute;n General
@@ -66,7 +61,7 @@
                 <div class="row form-group">
                     <label class="col-md-3 col-md-offset-1 control-label" for="ur">Sector:</label>
                     <div class="col-lg-7" id="ur0">
-                    <input type="text" name="sector" val="sector" class="form-control">
+                    <input type="text" name="sector" id="sector" val="sector" class="form-control">
                     </div>
                     <span class="glyphicon glyphicon-question-sign ayuda" title="Secretar&iacute;a de acuerdo a su
                       denominaci&oacute;n en la Ley Org&aacute;nica de la Administraci&oacute;n P&uacute;blica, de la
@@ -146,9 +141,9 @@
                 <div id="mult">
                     <div class="panel-body">
                         <div class="col-sm-12" id="aF">
-                            <select name="origen2[]" id="origen2" class="form-control input-md" multiple="multiple">
+                            <select name="accion_federal[]" id="accion_federal" class="form-control input-md" multiple="multiple">
                                 @foreach($accionesFederales as $accionFederal)
-                                    <option value="{{$accionFederal->IdAcu}}">{{$accionFederal->CveAcu}} {{$accionFederal->NomAcu}}</option>
+                                    <option value="{{$accionFederal->id}}">{{$accionFederal->clave_acuerdo}} {{$accionFederal->nombre_acuerdo}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -166,9 +161,9 @@
             <div id="mult">
                 <div class="panel-body">
                     <div class="col-sm-12" id="aE">
-                        <select name="origen[]" id="origen" class="form-control input-md" multiple="multiple">
+                        <select name="accion_estatal[]" id="accion_estatal" class="form-control input-md" multiple="multiple">
                             @foreach($accionesEstatales as $accionEstatal)
-                                <option value="{{$accionEstatal->IdAcu}}">{{$accionEstatal->CveAcu}} {{$accionEstatal->NomAcu}}</option>
+                                <option value="{{$accionEstatal->id}}">{{$accionEstatal->clave_acuerdo}} {{$accionEstatal->nombre_acuerdo}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -176,14 +171,14 @@
             </div>
 
             <div class="row form-group">
-                <label for="jusobr" class="col-md-3 col-md-offset-1 control-label"><font color="red" size="2">* </font>Justificaci&oacute;n de la obra:</label>
-                <div class="col-md-7"><textarea class="form-control obligatorio" name="jusobr" rows="2" id="jusobr"></textarea></div>
+                <label for="justificacion_obra" class="col-md-3 col-md-offset-1 control-label"><font color="red" size="2">* </font>Justificaci&oacute;n de la obra:</label>
+                <div class="col-md-7"><textarea class="form-control obligatorio" name="justificacion_obra" rows="2" id="justificacion_obra"></textarea></div>
             </div>
 
             <div class="row form-group">
                 <label class="col-md-3 col-md-offset-1 control-label" for="modalidad"><font color="red" size="2">* </font>Modalidad de ejecuci&oacute;n:</label>
                 <div class="col-md-2">
-                    <select id="modalidad" name="modalidad" class="form-control obligatorio">
+                    <select id="id_modalidad_ejecucion" name="id_modalidad_ejecucion" class="form-control obligatorio">
                         <option value="">Seleccione...</option>
                         <option value="1">Contrato</option>
                         <option value="2">Administración</option>
@@ -201,9 +196,9 @@
             </div>
 
             <div class="row form-group">
-                <label class="col-md-3 col-md-offset-1 control-label" for="tipobr"><font color="red" size="2">* </font>Tipo de obra:</label>
+                <label class="col-md-3 col-md-offset-1 control-label" for="id_tipo_obra"><font color="red" size="2">* </font>Tipo de obra:</label>
                 <div class="col-md-2">
-                    <select id="tipobr" name="tipobr" class="form-control obligatorio">
+                    <select id="id_tipo_obra" name="id_tipo_obra" class="form-control obligatorio">
                         <option value="">Seleccione...</option>
                         <option value="1">Nueva</option>
                         <option value="2">En proceso</option>
@@ -218,9 +213,9 @@
 
             <div id="todo">
                 <div class="form-group">
-                    <label for="ejemplo_password_3" class="col-lg-3 control-label"><font color="red" size="2">* </font>Monto de la Inversi&oacuten: </label>
+                    <label for="monto" class="col-lg-3 control-label"><font color="red" size="2">* </font>Monto de la Inversi&oacuten: </label>
                     <div class="col-lg-3" id="tres">
-                        <input type="text" class="form-control text-right obligatorio" id="montin" name="montoInversion" value="0.00" readonly/>
+                        <input type="text" class="form-control text-right obligatorio" id="monto" name="monto" readonly/>
                     </div>
                     <span class="glyphicon glyphicon-question-sign ayuda" title="Seleccionar la Fuente de financiamiento para
                         llevar a cabo la obra o acci&oacute;n. En caso de ser m&aacute;s de una fuente, deber&aacute;
@@ -231,13 +226,13 @@
                 <div class="form-group ftefederal">
                     <label class="col-lg-3 control-label" id="labelfed">Federal: </label>
                     <div class="col-lg-3">
-                        <input type="text" class="form-control monfed text-right" name="federal[]" value="" />
+                        <input type="text" class="form-control monfed text-right" name="monto_fuente_federal[]" value="" />
                     </div>
 
                     <!--<div id="catffed">-->
                     <label class="col-lg-1 control-label">Fuente:</label>
                     <div class="col-lg-4">
-                        <select name="ffed[]" class="form-control numftef" >
+                        <select name="fuente_federal[]" class="form-control numftef" >
                          <option value="">Seleccione...</option>
                         @foreach($fuentesFederal as $fuenteF)
                         <option value="{{$fuenteF->id}}">{{$fuenteF->descripcion}}</option>
@@ -252,13 +247,13 @@
                 <div class="form-group fteestatal">
                     <label class="col-lg-3 control-label" id="labeles">Recursos Fiscales (Estatal): </label>
                     <div class="col-lg-3">
-                        <input type="text" class="form-control monest text-right" name="estatal[]" value="" />
+                        <input type="text" class="form-control monest text-right" name="monto_fuente_estatal[]" value="" />
                     </div>
 
             {{--<!--<div id="catfest">-->--}}
                     <label class="col-lg-1 control-label">Fuente:</label>
                     <div class="col-lg-4">
-                        <select name="fest[]" class="form-control numftee" >
+                        <select name="fuente_estatal[]" class="form-control numftee" >
                         <option value="">Seleccione...</option>
                         @foreach($fuentesEstatal as $fuenteE)
                         <option value="{{$fuenteE->id}}">{{$fuenteE->descripcion}}</option>
@@ -272,13 +267,13 @@
                     <div class="form-group">
                         <label for="ejemplo_password_3" class="col-lg-3 control-label" id="labelmu">Municipal: </label>
                         <div class="col-lg-3">
-                            <input type="text" class="form-control monmun text-right" id="mu" name="municipal" value=""/>
+                            <input type="text" class="form-control monmun text-right" id="monto_fuente_municipal" name="monto_fuente_municipal" value=""/>
                         </div>
 
                         <div id="catfmun">
                             <label class="col-lg-1 control-label">Fuente:</label>
                             <div class="col-lg-4">
-                                <input type="text" class="form-control numftem" id="fmun" name="fmun" maxlength="30">
+                                <input type="text" class="form-control numftem" id="fuente_municipal" name="fuente_municipal" maxlength="30">
                             </div>
                         </div>
 
@@ -286,9 +281,9 @@
             </div>
 
             <div class="row form-group">
-                <label class="col-md-3 control-label" for="caract"><font color="red" size="2">* </font>Principales caracter&iacute;sticas:</label>
+                <label class="col-md-3 control-label" for="principales_caracteristicas"><font color="red" size="2">* </font>Principales caracter&iacute;sticas:</label>
                 <div class="col-md-7">
-                    <textarea class="form-control obligatorio" id="caract" name="caract" rows="2"></textarea>
+                    <textarea class="form-control obligatorio" id="principales_caracteristicas" name="principales_caracteristicas" rows="2"></textarea>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Describir las principales caracter&iacute;sticas
                     de la obra o acci&oacute;n.">
@@ -298,7 +293,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label">Grupo Social:</label>
                 <div class="col-lg-4">
-                    <select id="gsoc" class="form-control" name="grupoSocial">
+                    <select id="id_grupo_social" class="form-control" name="id_grupo_social">
                         <option value="">Seleccione...</option>
                         @foreach($grupoSocial as $grupo)
                         <option value="{{$grupo->IdGpo}}">{{$grupo->NomGpo}}</option>
@@ -317,7 +312,7 @@
                 <label class="col-lg-3 control-label"><font color="red" size="2">* </font>U. Medida:</label>
                 <div class="col-lg-3">
 
-                    <select class="form-control obligatorio" id="metas" name="metas">
+                    <select class="form-control obligatorio" id="id_meta" name="id_meta">
                     <option value="">Seleccione...</option>
                     @foreach($metas as $meta)
                     <option value="{{$meta->id}}">{{$meta->nombre}}</option>
@@ -330,7 +325,7 @@
                     <label class="col-lg-2 control-label">Cantidad:</label>
                 </div>
                 <div class="col-lg-2">
-                    <input type="text" class="form-control text-right number-oneDec" name="textmetas" id="mecant" placeholder="0">
+                    <input type="text" class="form-control text-right number-oneDec" name="cantidad_meta" id="cantidad_meta" placeholder="0">
                 </div>
             </div>
             <div class="form-group">
@@ -344,7 +339,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label">U. Medida:</label>
                 <div class="col-lg-3">
-                    <select class="form-control"  id="beneficiario" name="beneficiario">
+                    <select class="form-control"  id="id_beneficiario" name="id_beneficiario">
                     <option value="">Seleccione...</option>
                     @foreach($beneficiarios as $beneficiario)
                     <option value="{{$beneficiario->id}}">{{$beneficiario->nombre}}</option>
@@ -357,7 +352,7 @@
                 </div>
 
                 <div class="col-lg-2">
-                    <input type="text" name="textbeneficiario" class="form-control number-int text-right" id="becant" placeholder="0">
+                    <input type="text" name="cantidad_beneficiario" class="form-control number-int text-right" id="cantidad_beneficiario" placeholder="0">
 
                 </div>
             </div>
@@ -365,10 +360,10 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label">Duraci&oacute;n de la Obra:</label>
                 <label class="col-lg-1 control-label"><font color="red" size="2">* </font>A&ntilde;os:</label>
-                <div class="col-lg-1"><input type="text" id="anios" name="anios" class="form-control tiempo text-right" onkeypress="return justNumbers(event);" placeholder="0" maxlength="2"></div>
+                <div class="col-lg-1"><input type="text" id="duracion_anios" name="duracion_anios" class="form-control tiempo text-right" onkeypress="return justNumbers(event);" placeholder="0" maxlength="2"></div>
                 <label class="col-lg-1 control-label"><font color="red" size="2">* </font>Meses:</label>
                 <div class="col-md-1">
-                    <select id="meses" name="meses" class="form-control">
+                    <select id="duracion_meses" name="duracion_meses" class="form-control">
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>

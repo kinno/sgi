@@ -15,19 +15,20 @@ class CreatePAvanceFinancieroContrato extends Migration
     {
         Schema::create('p_avance_financiero_contrato', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_contrato');
-            $table->decimal('enero',5,3);
-            $table->decimal('febrero',5,3);
-            $table->decimal('marzo',5,3);
-            $table->decimal('abril',5,3);
-            $table->decimal('mayo',5,3);
-            $table->decimal('junio',5,3);
-            $table->decimal('julio',5,3);
-            $table->decimal('agosto',5,3);
-            $table->decimal('septiembre',5,3);
-            $table->decimal('octubre',5,3);
-            $table->decimal('noviembre',5,3);
-            $table->decimal('diciembre',5,3);
+            $table->unsignedInteger('id_contrato');
+            $table->decimal('enero',5,3)->nullable();
+            $table->decimal('febrero',5,3)->nullable();
+            $table->decimal('marzo',5,3)->nullable();
+            $table->decimal('abril',5,3)->nullable();
+            $table->decimal('mayo',5,3)->nullable();
+            $table->decimal('junio',5,3)->nullable();
+            $table->decimal('julio',5,3)->nullable();
+            $table->decimal('agosto',5,3)->nullable();
+            $table->decimal('septiembre',5,3)->nullable();
+            $table->decimal('octubre',5,3)->nullable();
+            $table->decimal('noviembre',5,3)->nullable();
+            $table->decimal('diciembre',5,3)->nullable();
+            $table->timestamps();
             //
         });
     }

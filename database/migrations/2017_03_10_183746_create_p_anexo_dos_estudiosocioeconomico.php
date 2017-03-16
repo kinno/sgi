@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePAnexoDos extends Migration
+class CreatePAnexoDosEstudiosocioeconomico extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePAnexoDos extends Migration
      */
     public function up()
     {
-        Schema::create('p_anexo_dos', function (Blueprint $table) {
+         Schema::create('p_anexo_dos_estudiosocioeconomico', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('id_cobertura');
             $table->text('nombre_localidad');
@@ -37,8 +37,6 @@ class CreatePAnexoDos extends Migration
      */
     public function down()
     {
-         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::drop('p_anexo_dos');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::drop('p_anexo_dos_estudiosocioeconomico');
     }
 }

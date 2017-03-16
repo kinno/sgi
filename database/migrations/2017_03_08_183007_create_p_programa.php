@@ -15,7 +15,7 @@ class CreatePPrograma extends Migration
     {
         Schema::create('p_programa', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_solicitud');
+            $table->unsignedInteger('id_expediente_tecnico');
             $table->text('concepto');
             $table->decimal('procentaje_enero',5,2);
             $table->decimal('procentaje_febrero',5,2);
@@ -30,7 +30,8 @@ class CreatePPrograma extends Migration
             $table->decimal('procentaje_noviembre',5,2);
             $table->decimal('procentaje_diciembre',5,2);
             $table->decimal('procentaje_total',5,2);
-            $table->integer('id_contrato');
+            $table->integer('id_contrato')->nullable();
+            $table->timestamps();
             //
         });
     }
