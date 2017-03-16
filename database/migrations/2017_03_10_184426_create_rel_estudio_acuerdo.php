@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterPExpedienteTecnico extends Migration
+class CreateRelEstudioAcuerdo extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class AlterPExpedienteTecnico extends Migration
      */
     public function up()
     {
-        Schema::table('p_expediente_tecnico', function($table) {
-            $table->dropColumn('id_estudio_socioeconomico');
-           
+        Schema::create('rel_estudio_acuerdo', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('id_estudio_socioeconomico');
+            $table->unsignedInteger('id_acuerdo');
+            //
         });
     }
 
@@ -26,9 +28,6 @@ class AlterPExpedienteTecnico extends Migration
      */
     public function down()
     {
-        Schema::table('p_expediente_tecnico', function($table) {
-            $table->unsignedInteger('id_estudio_socioeconomico');
-           
-        });
+        Schema::drop('rel_estudio_acuerdo');
     }
 }

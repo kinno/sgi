@@ -15,8 +15,18 @@ class CreatePObra extends Migration
     {
         Schema::create('p_obra', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('id_expediente_tecnico');
-            $table->unsignedInteger('id_estudio_socioeconomico');
+            $table->text('nombre_obra')->nullable();
+            $table->unsignedInteger('id_proyecto_ep')->nullable();
+            $table->unsignedInteger('id_clasificacion_proyecto')->nullable();
+            $table->decimal('monto_asignado',15,12)->nullable();
+            $table->decimal('monto_autorizado',15,12)->nullable();
+            $table->decimal('monto_ejercido',15,12)->nullable();
+            $table->decimal('monto_disponible',15,12)->nullable();
+            $table->decimal('suma_anticipo',15,12)->nullable();
+            $table->decimal('retenciones',15,12)->nullable();
+            $table->decimal('comprobado',15,12)->nullable();
+            $table->decimal('pagado',15,12)->nullable();
+            
             //
         });
     }

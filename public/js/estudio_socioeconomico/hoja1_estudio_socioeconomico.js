@@ -1,7 +1,9 @@
 $(document).ready(function() {
-    $("#origen,#origen2").select2();
+    $("#accion_estatal,#accion_federal").select2({
+        placeholder: "Seleccione una acción"
+    });
     //Funciones para la suma de montos
-    $('.monfed, .monest, .monmun, .numftef, .numftee, .numftem').unbind("change").on("change", function () {
+    $('.monfed, .monest, .monmun, .numftef, .numftee, .numftem').unbind("change").on("change", function() {
         suma();
     });
     $(".bt_ftefed").unbind("click").on("click", function() {
@@ -22,7 +24,7 @@ $(document).ready(function() {
         mDec: 2,
         vMin: '0.00'
     });
-    $('#montin').autoNumeric({
+    $('#monto').autoNumeric({
         aSep: ',',
         mDec: 2,
         vMin: '0.00'
@@ -53,10 +55,13 @@ function addfed(elem, callback) {
     $('.monfed, .monest, .monmun, .numftef, .numftee, .numftem').unbind("change").on("change", function() {
         suma();
     });
-    $("select[name='ffed[]']").unbind("change").on("change", function() {
-        // fuenteFMHTML = this;
-        // verificaFM(this);
-    });
+    // $("select[name='ffed[]']").unbind("change").on("change", function() {
+    //     // fuenteFMHTML = this;
+    //     // verificaFM(this);
+    // });
+    if (typeof(callback) === "function") {
+        callback();
+    }
 }
 
 function addest(elem, callback) {
@@ -99,6 +104,41 @@ function suma() {
     });
     montomun = $.trim($('.monmun').val()) !== "" ? (parseFloat(($('.monmun').val()).replace(/,/g, "")) * 1) : 0;
     var total = parseFloat(montofed) + parseFloat(montoest) + parseFloat(montomun);
-    $("#montin").val(total);
-    $("#montin").focusin().focusout();
+    $("#monto").val(total);
+    $("#monto").focusin().focusout();
+}
+
+function guardarHoja1() {
+    var valoresh1 = $("#form_anexo_uno").serialize();
+    $.ajax({
+        data: valoresh1,
+        url: '/EstudioSocioeconomico/guardar_hoja_1',
+        type: 'post',
+        beforeSend: function() {
+            $("#divLoading").show();
+        },
+        complete: function() {
+            $("#divLoading").hide();
+        },
+        success: function(response) {
+            var data = response;
+            if (!data.error_validacion) {
+                if (!data.error) {
+                    $.notify("Datos guardados correctamente.", "success");
+                    $("#estudio_socioeconomico").val(data.id_estudio_socioeconomico);
+                    $("#id_hoja_uno").val(data.id_anexo_uno_estudio);
+                } else {
+                    $.notify(data.error, "error");
+                    if (data.error_validacion) {}
+                }
+            } else {
+                for (property in data.error_validacion) {
+                    $("#" + property).notify("Campo requerido", "error");
+                }
+            }
+        },
+        error: function(response) {
+            console.log("Errores::", response);
+        }
+    });
 }

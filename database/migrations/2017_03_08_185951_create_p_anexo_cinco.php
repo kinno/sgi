@@ -15,8 +15,8 @@ class CreatePAnexoCinco extends Migration
     {
         Schema::create('p_anexo_cinco', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_solicitud');
-            $table->text('observaciones_unidad_ejecutora');
+            $table->text('observaciones_unidad_ejecutora')->nullable();
+            $table->timestamps();
             //
         });
     }
@@ -28,7 +28,9 @@ class CreatePAnexoCinco extends Migration
      */
     public function down()
     {
-        //
+        
+         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::drop('p_anexo_cinco');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

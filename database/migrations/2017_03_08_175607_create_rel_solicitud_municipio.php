@@ -13,9 +13,10 @@ class CreateRelSolicitudMunicipio extends Migration
      */
     public function up()
     {
-         Schema::create('rel_solicitud_municipio', function (Blueprint $table) {
-            $table->integer('id_solicitud');
-            $table->integer('id_municipio');
+         Schema::create('rel_expediente_municipio', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('id_expediente_tecnico');
+            $table->unsignedInteger('id_municipio');
             //
         });
     }
@@ -27,6 +28,6 @@ class CreateRelSolicitudMunicipio extends Migration
      */
     public function down()
     {
-        Schema::drop('rel_solicitud_municipio');
+        Schema::drop('rel_expediente_municipio');
     }
 }

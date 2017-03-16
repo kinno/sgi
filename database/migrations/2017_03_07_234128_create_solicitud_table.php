@@ -13,7 +13,7 @@ class CreateSolicitudTable extends Migration
      */
     public function up()
     {
-        Schema::create('p_solicitud', function (Blueprint $table) {
+        Schema::create('p_expediente_tecnico', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_estudio_socioeconomico');
             $table->integer('id_obra');
@@ -42,6 +42,6 @@ class CreateSolicitudTable extends Migration
      */
     public function down()
     {
-        Schema::drop('p_solicitud');
+        Schema::drop('p_expediente_tecnico');
     }
 }

@@ -15,8 +15,7 @@ class CreatePIndicadoresRentabilidad extends Migration
     {
         Schema::create('p_indicadores_rentabilidad', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_solicitud');
-            $table->integer('id_estudio_socioeconomico');
+            $table->unsignedInteger('id_estudio_socioeconomico');
             $table->integer('id_evaluacion');
             $table->dateTime('fecha');
             $table->decimal('tasa_social_descuento',5,2);
