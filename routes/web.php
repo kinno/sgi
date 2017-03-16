@@ -22,3 +22,13 @@ Route::get('/EstudioSocioeconomico/crear_estudio','EstudioSocioeconomico\Estudio
 Route::get('/Banco/','Banco\BancoController@index');
 Route::post('/Banco/obtener_tipo_evaluacion','Banco\BancoController@obtener_tipo_evaluacion');
 
+// Rutas Catalogo - Sector
+Route::group(['prefix' => 'Catalogo'], function() {
+	Route::resource ('Sector', 'Catalogo\Sector\SectorController');
+});
+
+
+Route::get('Catalogo/dropdown', [
+	'uses'	=> 'Catalogo\Sector\SectorController@dropdown',
+	'as'	=> 'Sector.dropdown'
+]);
