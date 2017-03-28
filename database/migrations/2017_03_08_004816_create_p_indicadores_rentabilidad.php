@@ -17,6 +17,7 @@ class CreatePIndicadoresRentabilidad extends Migration
             $table->increments('id');
             $table->unsignedInteger('id_estudio_socioeconomico');
             $table->integer('id_evaluacion');
+            $table->unsignedInteger('id_tipo_ppi')->nullable();
             $table->dateTime('fecha');
             $table->decimal('tasa_social_descuento',5,2);
             $table->decimal('van',15,2);
@@ -26,7 +27,7 @@ class CreatePIndicadoresRentabilidad extends Migration
             $table->decimal('caepta',15,2);
             $table->decimal('vacalt',15,2);
             $table->decimal('caealt',15,2);
-            $table->text('observaciones');
+            $table->text('observaciones')->nullable();
             $table->timestamps();
             //
         });

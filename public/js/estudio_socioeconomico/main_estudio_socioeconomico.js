@@ -191,6 +191,7 @@ function buscarEstudio() {
                                     });
                                     $("#id_region").val(arrRegiones).trigger('change');
                                 })
+                                $("#comloc").show();
                             }
                             if (municipios.length > 0) {
                                 $("#divMunicipios").show(0, function() {
@@ -206,6 +207,7 @@ function buscarEstudio() {
                                     });
                                     $("#id_municipio").val(arrMunicipios).trigger('change');
                                 });
+                                $("#comloc").show();
                             }
                             $("#form_anexo_dos #nombre_localidad").val(hoja2.nombre_localidad);
                             $("#form_anexo_dos #id_tipo_localidad").val(hoja2.id_tipo_localidad);
@@ -216,7 +218,6 @@ function buscarEstudio() {
                             $("#form_anexo_dos #latitud_final").val(hoja2.latitud_final);
                             $("#form_anexo_dos #longitud_final").val(hoja2.longitud_final);
                             if (hoja2.microlocalizacion) {
-
                                 $("#form_anexo_dos #vista_previa").attr('src', data.rutaReal + "/" + hoja2.microlocalizacion);
                             }
                         }
@@ -273,9 +274,13 @@ function confirm_dictaminar() {
             $("#divLoading").hide();
         },
         success: function(response) {
-            $.notify("El Estudio Socioeconómico se ha invido correctamente.", "success");
-            imprime_ficha_tecnica($("#id_estudio_socioeconomico").val());
-
+            var data = response;
+            if (!data.error) {
+                $.notify("El Estudio Socioeconómico se ha invido correctamente.", "success");
+                imprime_ficha_tecnica($("#id_estudio_socioeconomico").val());
+            } else {
+                $("#id_estudio_socioeconomico").notify("Error: " + data.error, "warn");
+            }
         },
         error: function(response) {
             console.log("Errores::", response);
@@ -283,6 +288,10 @@ function confirm_dictaminar() {
     });
 }
 
-function imprime_ficha_tecnica(id_estudio_socioeconomico){
-    window.open('/EstudioSocioeconomico/ficha_tecnica/'+id_estudio_socioeconomico+'','_blank');
+function imprime_ficha_tecnica(id_estudio_socioeconomico) {
+    if (id_estudio_socioeconomico) {
+        window.open('/EstudioSocioeconomico/ficha_tecnica/' + id_estudio_socioeconomico + '', '_blank');
+    } else {
+        $("#id_estudio_socioeconomico").notify("No se ha ingresado ningún Estudio Socioeconómico", "warn");
+    }
 }

@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\P_Anexo_Dos_Estudiosocioeconomico;
 use App\P_Anexo_Uno_Estudiosocioeconomico;
 use App\P_Estudio_Socioeconomico;
+use App\P_Movimiento_Banco;
 use App\Rel_Estudio_Acuerdo;
 use App\Rel_Estudio_Fuente;
 use App\Rel_Estudio_Municipio;
@@ -52,7 +53,8 @@ class EstudioController extends Controller
 
             $estudio = P_Estudio_Socioeconomico::with(['hoja1', 'hoja2', 'acuerdos', 'fuentes_monto', 'regiones', 'municipios'])->findOrFail($request->id_estudio_socioeconomico);
 
-            if ($estudio->id_estatus == 1) {
+            if ($estudio->id_estatus == 1||$estudio->id_estatus == 5) {
+                //*CREACIÓN/EDICION    DEVOLUCIÓN A DEPENDENCIA
                 $estudio['rutaReal'] = asset('/uploads/');
                 return $estudio;
             } else {
@@ -162,6 +164,7 @@ class EstudioController extends Controller
             if ($bNuevo) {
                 //Guardamos la relacion del Anexo 1 a la tabla estudio socioeconomuico
                 $estudio_socioeconomico                       = new P_Estudio_Socioeconomico;
+                $estudio_socioeconomico->ejercicio = $request->ejercicio;
                 $estudio_socioeconomico->id_anexo_uno_estudio = $hoja1->id;
                 $estudio_socioeconomico->id_estatus           = 1;
                 $estudio_socioeconomico->fecha_registro       = date('Y-m-d H:i:s');
@@ -370,20 +373,52 @@ class EstudioController extends Controller
 
     public function enviar_dictaminar(Request $request)
     {
+        DB::beginTransaction();
 
-        $estudio_socioeconomico             = P_Estudio_Socioeconomico::find($request->id_estudio_socioeconomico);
-        $estudio_socioeconomico->id_estatus = 2;
-        $estudio_socioeconomico->touch();
-        $estudio_socioeconomico->save();
+        try {
+            $estudio_socioeconomico             = P_Estudio_Socioeconomico::find($request->id_estudio_socioeconomico);
+            $estudio_socioeconomico->id_estatus = 2;
+            $estudio_socioeconomico->touch();
+            $estudio_socioeconomico->save();
 
-        return "Datos Guardados";
+            $id_mov_banco = $this->genera_movimiento($estudio_socioeconomico->id);
+            DB::commit();
+            return ($id_mov_banco);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $estudio            = array();
+            $estudio['message'] = $e->getMessage();
+            $estudio['error']   = "Aviso: Ocurrió un error al enviar a dictaminar.";
+            return ($estudio);
+        }
+    }
+
+    public function genera_movimiento($id_estudio_socioeconomico)
+    {
+
+        $movimiento_banco                            = new P_Movimiento_Banco;
+        $movimiento_banco->id_estudio_socioeconomico = $id_estudio_socioeconomico;
+        $movimiento_banco->fecha_movimiento          = date('Y-m-d H:i:s');
+        $movimiento_banco->id_tipo_movimiento        = 2;
+        $movimiento_banco->status = 'bloqueado';
+        $movimiento_banco->save();
+        return $movimiento_banco->id;
     }
 
     public function ficha_tecnica($id_estudio_socioeconomico)
     {
-        $estudio = P_Estudio_Socioeconomico::with(['hoja1', 'hoja2', 'acuerdos', 'fuentes_monto', 'regiones', 'municipios'])->findOrFail($id_estudio_socioeconomico);
+        $estudio       = P_Estudio_Socioeconomico::with(['hoja1', 'hoja2', 'acuerdos', 'fuentes_monto.detalle_fuentes', 'regiones.detalle_regiones', 'municipios.detalle_municipios'])->findOrFail($id_estudio_socioeconomico);
+        $arrayAcuerdos = array();
+        foreach ($estudio->acuerdos as $key => $value) {
+            array_push($arrayAcuerdos, $value->id_acuerdo);
+        }
+        // dd($arrayAcuerdos);
+        $acuerdos_federales = Cat_Acuerdo::whereIn('id', $arrayAcuerdos)->where('id_tipo_acuerdo', '=', 4)->get();
+        $acuerdos_estatales = Cat_Acuerdo::whereIn('id', $arrayAcuerdos)->whereIn('id_tipo_acuerdo', array(1, 2))->get();
+        // dd($acuerdos_estatales);
 
-        $pdf     = \PDF::loadView('PDF/ficha_tecnica',compact('estudio'));
-        return $pdf->stream('ficha_tecnica.pdf');
+        $pdf = \PDF::loadView('PDF/ficha_tecnica', compact('estudio', 'acuerdos_federales', 'acuerdos_estatales'));
+        return $pdf->stream('ficha_tecnica_' . $id_estudio_socioeconomico . '.pdf');
     }
+
 }

@@ -31,7 +31,7 @@
                 <label class="col-md-3 col-md-offset-1 control-label" for="vida_proyecto">Vida &uacute;til del proyecto:</label>
                 <label class="col-md-1 control-label">A&ntilde;os</label>
                 <div class="col-md-1">
-                    <input id="vida_proyecto" name="vida_proyecto" type="text" onkeypress="return justNumbers(event);" class="form-control input-sm" maxlength="2">
+                    <input id="vida_proyecto" name="vida_proyecto" type="text" class="form-control input-sm" maxlength="2">
                 </div>
             </div>
 
@@ -360,7 +360,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label">Duraci&oacute;n de la Obra:</label>
                 <label class="col-lg-1 control-label"><font color="red" size="2">* </font>A&ntilde;os:</label>
-                <div class="col-lg-1"><input type="text" id="duracion_anios" name="duracion_anios" class="form-control tiempo text-right" onkeypress="return justNumbers(event);" placeholder="0" maxlength="2"></div>
+                <div class="col-lg-1"><input type="text" id="duracion_anios" name="duracion_anios" class="form-control tiempo text-right" placeholder="0" maxlength="2"></div>
                 <label class="col-lg-1 control-label"><font color="red" size="2">* </font>Meses:</label>
                 <div class="col-md-1">
                     <select id="duracion_meses" name="duracion_meses" class="form-control">

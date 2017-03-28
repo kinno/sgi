@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class AlterRelEstudioFuente extends Migration
+class AlterPMovimientoBancoII extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,9 @@ class AlterRelEstudioFuente extends Migration
      */
     public function up()
     {
-        Schema::table('rel_estudio_fuente', function ($table) {
-            $table->char('tipo_fuente', 1);
+        Schema::table('p_movimiento_banco', function ($table) {
+            $table->unsignedInteger('id_estudio_socioeconomico')->change();
+            $table->text('observaciones')->nullable()->change();
         });
     }
 
@@ -24,8 +25,6 @@ class AlterRelEstudioFuente extends Migration
      */
     public function down()
     {
-        Schema::table('rel_estudio_fuente', function ($table) {
-            $table->dropColumn('tipo_fuente');
-        });
+        //
     }
 }

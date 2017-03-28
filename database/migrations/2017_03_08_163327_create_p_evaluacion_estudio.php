@@ -17,8 +17,8 @@ class CreatePEvaluacionEstudio extends Migration
             $table->increments('id');
             $table->integer('id_sub_indice');
             $table->boolean('brespuesta');
-            $table->text('observaciones');
-            $table->string('pagina');
+            $table->text('observaciones')->nullable();
+            $table->string('pagina')->nullable();
             $table->timestamps();
 
             //

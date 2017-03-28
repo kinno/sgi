@@ -25,8 +25,11 @@ Route::get('/EstudioSocioeconomico/ficha_tecnica/{id_estudio_socioeconomico}', '
 
 // Rutas Banco
 
-Route::get('/Banco/','Banco\BancoController@index');
+Route::get('/Banco/dictaminacion','Banco\BancoController@index');
 Route::post('/Banco/obtener_tipo_evaluacion','Banco\BancoController@obtener_tipo_evaluacion');
+Route::post('/Banco/buscar_estudio','Banco\BancoController@buscar_estudio');
+Route::post('/Banco/guardar_evaluacion','Banco\BancoController@guardar_evaluacion');
+Route::get('/Banco/imprime_dictamen/{id_estudio_socioeconomico}','Banco\BancoController@imprime_dictamen');
 
 
 // Rutas Catalogo - Sector

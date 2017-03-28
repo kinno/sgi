@@ -11,7 +11,7 @@
                         <a href="/EstudioSocioeconomico/crear_estudio">Creación/Modificación</a>
                     </li>
                     <li>
-                        <a href="/Banco/">Dictaminación</a>
+                        <a href="/Banco/dictaminacion">Dictaminación</a>
                     </li>
                     <li>
                         <a href="">Consulta de Comentarios</a>

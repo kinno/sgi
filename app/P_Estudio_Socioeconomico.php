@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class P_Estudio_Socioeconomico extends Model
 {
-    protected $table = "p_estudio_socioeconomico";
-    public $primarykey = "id";
+    protected $table   = "p_estudio_socioeconomico";
 
     public function hoja1()
     {
@@ -38,4 +37,13 @@ class P_Estudio_Socioeconomico extends Model
     {
         return $this->hasMany('App\Rel_Estudio_Municipio', 'id_estudio_socioeconomico', 'id');
     }
+
+    public function movimientos(){
+        return $this->hasMany('App\P_Movimiento_Banco','id_estudio_socioeconomico','id');
+    }
+
+    public function indicadores(){
+        return $this->hasMany('App\P_Indicadores_Rentabilidad','id_estudio_socioeconomico','id');
+    }
+    
 }
