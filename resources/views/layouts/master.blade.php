@@ -32,6 +32,8 @@
                     </link>
                 </link>
             </link>
+            <link rel="stylesheet" href="/css/bootstrap-dialog.css">
+            <script src="/js/bootstrap-dialog.js"></script>
         </head>
         <body>
             <div id="wrapper">

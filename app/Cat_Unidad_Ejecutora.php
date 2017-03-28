@@ -8,6 +8,9 @@ class Cat_Unidad_Ejecutora extends Model
 {
 	protected $table = "cat_unidad_ejecutora";
 	public $timestamps = false;
+    protected $fillable = [
+        'clave', 'nombre', 'bactivo', 'id_titular', 'id_sector'
+    ];
 
     public function titular()
     {
@@ -19,8 +22,18 @@ class Cat_Unidad_Ejecutora extends Model
 		return $this->belongsTo('App\Cat_Sector', 'id_sector');
     }
 
-    public function claves()
+    public function setBactivoAttribute ($valor)
     {
-		return $this->hasMany('App\d_Unidad_Ejecutora', 'id_unidad_ejecutora');
+        $this->attributes['bactivo'] = (boolean)($valor);
+    }
+
+    public function getBactivoAttribute ($valor)
+    {
+        return ($valor == 1 ? 'si' : 'no');
+    }
+
+    public function scopeSearch($query, $nombre)
+    {
+        return $query->where('nombre', 'LIKE', "%$nombre%");
     }
 }

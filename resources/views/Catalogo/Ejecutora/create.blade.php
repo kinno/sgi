@@ -3,36 +3,36 @@
 <br/>
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title text-center"><strong>Agregar Sector</strong></h3>
+		<h3 class="panel-title text-center"><strong>Agregar Unidad Ejecutora</strong></h3>
 	</div>
 	<div class="panel-body">
     	<br/>
-    	<form enctype="”multipart/form-data”" class="form-horizontal" role="form" id="Sector">
+    	<form enctype="”multipart/form-data”" class="form-horizontal" role="form" id="Ejecutora">
     		{{ csrf_field() }}
-    		<div class="form-group">
-            	<label for="id_area" class="col-md-2 control-label input-sm">Area</label>
+    		<div class="form-group" id="div_id_sector">
+            	<label for="id_sector" class="col-md-2 control-label input-sm">Sector: <span class="obligatorio"> *</span></label>
               	<div class="col-md-6">
-                	<select name="id_area" id="id_area" class="form-control input-sm">
-                    	{!! $opciones_area !!}
+                	<select name="id_sector" id="id_sector" class="form-control input-sm">
+                    	{!! $opciones_sector !!}
                  	</select>
+                    <span id="err_id_sector" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               	</div>
 			</div>
-			<div class="form-group" id="div_id_departamento">
-            	<label for="id_departamento" class="col-md-2 control-label input-sm">Departamento<span class="obligatorio"> *</span></label>
-              	<div class="col-md-6">
-                	<select name="id_departamento" id="id_departamento" class="form-control input-sm">
-                    	<option value="0">- Selecciona </option>
-                 	</select>
-                    <span id="err_id_departamento" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-              	</div>
-			</div>
+            <div class="form-group" id="div_clave">
+                <label for="clave" class="col-md-2 control-label input-sm">Clave:<span class="obligatorio"> *</span></label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control input-sm" name="clave" id="clave" maxlength="10">
+                    <span id="err_clave" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                </div>
+            </div>
     		<div class="form-group" id="div_nombre">
-            	<label for="nombre" class="col-md-2 control-label input-sm">Sector:<span class="obligatorio"> *</span></label>
-            	<div class="col-md-4">
-                	<input type="text" class="form-control input-sm" name="nombre" id="nombre" maxlength="40">
+            	<label for="nombre" class="col-md-2 control-label input-sm">Ejecutora:<span class="obligatorio"> *</span></label>
+            	<div class="col-md-10">
+                	<input type="text" class="form-control input-sm" name="nombre" id="nombre" maxlength="150">
                     <span id="err_nombre" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               	</div>
            	</div>
+            <div id="div_grupo_titular">
            	<div class="form-group" id="div_titulo">
             	<label for="titulo" class="col-md-2 control-label input-sm">Titulo:<span class="obligatorio"> *</span></label>
             	<div class="col-md-6">
@@ -61,6 +61,7 @@
                     <span id="err_cargo" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               	</div>
            	</div>
+            </div>
            	<div class="form-group">
     			<div class="col-md-offset-2 col-m2-3">
       				<div class="checkbox">
@@ -71,18 +72,17 @@
     			</div>
   			</div>
            <br/>
-           	
 		</form>
         <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
                 <button class="btn btn-success btn-sm" id="btnGuardar">Registrar</button>
             </div>
             <div class="col-md-2">
-                <a href="{{ route('Sector.index') }}"class="btn btn-success btn-sm">Regresar</a>
+                <a href="{{ route('Ejecutora.index') }}"class="btn btn-success btn-sm">Regresar</a>
             </div>
         </div>
 		
   	</div>
 </div>
-<script src="{{ asset('js/Catalogo/Sector/sector-guardar.js') }}"></script>
+<script src="{{ asset('js/Catalogo/Ejecutora/ejecutora-guardar.js') }}"></script>
 @endsection

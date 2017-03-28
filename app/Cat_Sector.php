@@ -8,7 +8,6 @@ class Cat_Sector extends Model
 {
     protected $table = "cat_sector";
 	public $timestamps = false;
-
 	protected $fillable = [
         'nombre', 'bactivo', 'id_titular', 'id_departamento'
     ];
@@ -17,11 +16,6 @@ class Cat_Sector extends Model
     /*protected $hidden = [
         'id',
     ];*/
-
-    /*public function titular()
-    {
-		return $this->hasOne('App\Cat_Titular');
-    }*/
 
     public function titular()
     {
@@ -38,11 +32,18 @@ class Cat_Sector extends Model
 		return $this->belongsTo('App\Cat_Departamento', 'id_departamento');
     }
 
-    public function getBactivoAttribute ($valor) {
+    public function setBactivoAttribute ($valor)
+    {
+        $this->attributes['bactivo'] = (boolean)($valor);
+    }
+
+    public function getBactivoAttribute ($valor)
+    {
         return ($valor == 1 ? 'si' : 'no');
     }
 
-    public function setBactivoAttribute ($valor) {
-        $this->attributes['bactivo'] = (boolean)($valor);
+    public function scopeSearch($query, $nombre)
+    {
+        return $query->where('nombre', 'LIKE', "%$nombre%");
     }
 }

@@ -35,10 +35,22 @@ Route::group(['prefix' => 'Catalogo'], function() {
 });
 
 
-Route::get('Catalogo/dropdown', [
+Route::post('/Catalogo/Sector/dropdown', [
 	'uses'	=> 'Catalogo\Sector\SectorController@dropdown',
 	'as'	=> 'Sector.dropdown'
 ]);
 
+Route::post('Catalogo/Sector/{id}/destroy', [
+	'uses'	=> 'Catalogo\Sector\SectorController@destroy',
+	'as'	=> 'Sector.destroy'
+]);
 
+// Rutas Catalogo - Unidad Ejecutora
+Route::group(['prefix' => 'Catalogo'], function() {
+	Route::resource ('Ejecutora', 'Catalogo\Ejecutora\EjecutoraController');
+});
 
+Route::post('Catalogo/Ejecutora/{id}/destroy', [
+	'uses'	=> 'Catalogo\Ejecutora\EjecutoraController@destroy',
+	'as'	=> 'Ejecutora.destroy'
+]);
