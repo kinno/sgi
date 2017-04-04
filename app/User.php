@@ -15,7 +15,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'username', 'id_tipo_usuario', 'id_unidad_ejecutora', 'id_departamento',
+        'iniciales', 'bactivo'
     ];
 
     /**
@@ -26,4 +27,45 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function tipo_usuario()
+    {
+        return $this->belongsTo('App\Cat_Tipo_Usuario', 'id_tipo_usuario');
+    }
+
+    public function unidad_ejecutora()
+    {
+        return $this->belongsTo('App\Cat_Unidad_Ejecutora', 'id_unidad_ejecutora');
+    }
+
+    public function sectores()
+    {
+        return $this->belongsToMany('App\Cat_Sector', 'rel_usuario_sector', 'id_usuario', 'id_sector')->withTimestamps();
+    }
+
+    public function menus()
+    {
+        return $this->belongsToMany('App\P_Menu', 'rel_usuario_menu', 'id_usuario', 'id_menu')->withTimestamps();
+    }
+
+    public function setBactivoAttribute ($valor)
+    {
+        $this->attributes['bactivo'] = (boolean)($valor);
+    }
+
+    public function getBactivoAttribute ($valor)
+    {
+        return ($valor == 1 ? 'si' : 'no');
+    }
+
+    public function setPasswordAttribute ($valor)
+    {
+        $this->attributes['password'] = bcrypt($valor);
+    }
+
+    public function scopeSearch($query, $name)
+    {
+        return $query->where('name', 'LIKE', "%$name%");
+    }
+    
 }

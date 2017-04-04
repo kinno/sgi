@@ -32,6 +32,11 @@ class Cat_Sector extends Model
 		return $this->belongsTo('App\Cat_Departamento', 'id_departamento');
     }
 
+    public function usuarios()
+    {
+        return $this->belongsToMany('App\User2', 'rel_usuario_sector', 'id_sector', 'id_usuario')->withTimestamps();;
+    }
+
     public function setBactivoAttribute ($valor)
     {
         $this->attributes['bactivo'] = (boolean)($valor);

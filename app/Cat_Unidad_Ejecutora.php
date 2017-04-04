@@ -22,6 +22,11 @@ class Cat_Unidad_Ejecutora extends Model
 		return $this->belongsTo('App\Cat_Sector', 'id_sector');
     }
 
+    public function users()
+    {
+        return $this->hasMany('App\User', 'id_unidad_ejecutora');
+    }
+
     public function setBactivoAttribute ($valor)
     {
         $this->attributes['bactivo'] = (boolean)($valor);

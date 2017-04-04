@@ -57,3 +57,24 @@ Route::post('Catalogo/Ejecutora/{id}/destroy', [
 	'uses'	=> 'Catalogo\Ejecutora\EjecutoraController@destroy',
 	'as'	=> 'Ejecutora.destroy'
 ]);
+
+// Rutas Administracion
+Route::group(['prefix' => 'Administracion'], function() {
+	Route::resource ('Usuario', 'Administracion\Usuario\UsuarioController');
+	//Route::get('Usuario/index','RegisterController@index');
+});
+
+Route::post('/Administracion/Usuario/dropdown', [
+	'uses'	=> 'Administracion\Usuario\UsuarioController@dropdown',
+	'as'	=> 'Usuario.dropdown'
+]);
+
+Route::post('Administracion/Usuario/{id}/destroy', [
+	'uses'	=> 'Administracion\Usuario\usuarioController@destroy',
+	'as'	=> 'Usuario.destroy'
+]);
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
