@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Administracion\Usuario;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones;
 use App\User;
 use App\Cat_Tipo_Usuario;
 use App\Cat_Sector;
@@ -16,10 +17,10 @@ use Illuminate\Validation\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-//use Illuminate\Database\Eloquent\Relations\Relation;
-
 class UsuarioController extends Controller
 {
+    use Funciones;
+
     public $rules0 = [
             'id_tipo_usuario' => 'not_in:0',
             'username' => 'required|min:6|unique:users',
@@ -277,7 +278,7 @@ class UsuarioController extends Controller
         return ($data);
     }
 
-
+    /*
     public function dropdown (Request $request)
     {
         //return array('uno' => 'si');
@@ -311,4 +312,5 @@ class UsuarioController extends Controller
             $salida = $vacio1.$opciones;
         return $salida;
     }
+    */
 }

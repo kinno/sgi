@@ -36,7 +36,7 @@
   				</tr>
   			</thead>
   			<tbody>
-  				@foreach ($ejecutoras as $ejecutora)
+  				@forelse ($ejecutoras as $ejecutora)
 	  				<tr>
 	  					<td>{{ $ejecutora->id }}</td>
 	  					<td>{{ $ejecutora->clave }}</td>
@@ -53,7 +53,11 @@
 	  						<button id='btnEliminar' data-id="{{ $ejecutora->id }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
 	  					</td>
 	  				</tr>
-  				@endforeach
+	  			@empty
+	  				<tr>
+	  					<td colspan="7" class="text-center">NO EXISTEN EJECUTORAS</td>
+	  				</tr>
+  				@endforelse
   			</tbody>
 		</table>
 		{{ $ejecutoras->links() }}

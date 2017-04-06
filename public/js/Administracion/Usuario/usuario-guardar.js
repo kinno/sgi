@@ -59,7 +59,7 @@ function Triggers () {
                 data: {
                     id: id
                 },
-                url: '/Administracion/Usuario/dropdown',
+                url: '/Administracion/Usuario/dropdownSector',
                 type: 'POST',
                 success: function (data) {
                     //console.log(data);
@@ -88,7 +88,7 @@ function Triggers () {
 	            data: {
 	                id: id
 	            },
-	            url: '/Catalogo/Sector/dropdown',
+	            url: '/Administracion/Usuario/dropdownArea',
 	            type: 'POST',
 	            success: function (data) {
 	            	//console.log(data);

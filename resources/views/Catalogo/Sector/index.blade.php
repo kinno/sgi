@@ -34,7 +34,7 @@
   				</tr>
   			</thead>
   			<tbody>
-  				@foreach ($sectores as $sector)
+  				@forelse ($sectores as $sector)
 	  				<tr>
 	  					<td>{{ $sector->id }}</td>
 	  					<td>{{ $sector->nombre }}</td>
@@ -49,7 +49,11 @@
 	  						<button id='btnEliminar' data-id="{{ $sector->id }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
 	  					</td>
 	  				</tr>
-  				@endforeach
+	  			@empty
+	  				<tr>
+	  					<td colspan="5" class="text-center">NO EXISTEN SECTORES</td>
+	  				</tr>
+  				@endforelse
   				
   			</tbody>
 		</table>

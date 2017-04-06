@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Catalogo\Sector;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones;
 use App\Cat_Sector;
 use App\Cat_titular;
 use App\Cat_Area;
@@ -14,7 +15,9 @@ use Illuminate\Validation\Rule;
 
 class SectorController extends Controller
 {
-   public $rules = [
+    use Funciones;
+
+    public $rules = [
             'id_departamento' => 'not_in:0',
             'nombre' => 'required|unique:Cat_Sector',
             'titulo' => 'required',
@@ -31,6 +34,12 @@ class SectorController extends Controller
             'apellido.required'         => 'Introduzca apellidos del titular',
             'cargo.required'            => 'Introduzca cargo del titular'
         ];
+
+    public function __construct()
+    {
+
+    }
+
 
     public function index(Request $request)
     {
@@ -214,40 +223,6 @@ class SectorController extends Controller
             $data['error'] = 3;
         }
         return ($data);
-    }
-
-    public function dropdown (Request $request)
-    {
-        //return array('uno' => 'si');
-        $area = Cat_Area::find($request->id);
-        $departamentos = $area->departamentos->toArray();
-        $opciones = $this->llena_combo($departamentos);
-        return $opciones;
-    }
-
-    public function llena_combo ($arreglo, $valor = 0, $name = 'nombre', $id = 'id')
-    {
-        $n = count($arreglo);
-        $vacio = '<option value="0" selected="selected">- Selecciona</option>';
-        $vacio1 = '<option value="0">- Selecciona</option>';
-        $i = 0;
-        $salida = "";
-        $opciones = "";
-        foreach ($arreglo as $key => $rows) {
-            if ($valor == $rows[$id])
-                $opciones .= '<option value="'.$rows[$id].'" selected="selected">'.$rows[$name].'</option>';
-            else
-                $opciones .= '<option value="'.$rows[$id].'">'.$rows[$name].'</option>';
-            if ($i == 0)
-                $tmp = '<option value="'.$rows[$id].'" selected="selected">'.$rows[$name].'</option>';
-        }
-        if ($n == 0)
-            $salida = $vacio;
-        else if ($n == 1)
-            $salida = $tmp;
-        else
-            $salida = $vacio1.$opciones;
-        return $salida;
     }
 
 }

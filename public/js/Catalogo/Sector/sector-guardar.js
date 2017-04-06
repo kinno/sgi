@@ -21,7 +21,6 @@ function LimpiaSector () {
 
 function Triggers () {
 	var vacio ='<option value="0">- Selecciona</option>';
-	var str = "";
 	
 	// evento Area
 	$('#id_area').unbind("change").on('change', function (){
@@ -33,14 +32,17 @@ function Triggers () {
 	            data: {
 	                id: id
 	            },
-	            url: '/Catalogo/Sector/dropdown',
+	            url: '/Catalogo/Sector/dropdownArea',
 	            type: 'POST',
 	            success: function (data) {
-	            	//console.log(data);
+	            	console.log(data);
 	            	$('#div_id_departamento').removeClass('has-error has-feedback');
 	            	$('#err_id_departamento').hide();
 	            	$('#id_departamento').html(data);
-            	}
+            	},
+                error: function(data) {
+                    console.log("Errores::", data);
+                }
             });
 		}
    });

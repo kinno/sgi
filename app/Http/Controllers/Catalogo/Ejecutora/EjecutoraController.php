@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Catalogo\Ejecutora;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones;
 use App\Cat_Sector;
 use App\Cat_Unidad_Ejecutora;
 use App\Cat_titular;
-//use APp\P_Anexo_Uno_Estudiosocioeconomico;
 use Illuminate\Support\Facades\DB;
-//use Illuminate\Validation\Validator;
 
 class EjecutoraController extends Controller
 {
+    use Funciones;
+
     public $rules = [
             'id_sector' => 'not_in:0',
             'clave' => 'required|size:10',
@@ -223,6 +224,7 @@ class EjecutoraController extends Controller
     }
 
 
+    /*
     public function llena_combo ($arreglo, $valor = 0, $name = 'nombre', $id = 'id')
     {
         $n = count($arreglo);
@@ -247,4 +249,5 @@ class EjecutoraController extends Controller
             $salida = $vacio1.$opciones;
         return $salida;
     }
+    */
 }

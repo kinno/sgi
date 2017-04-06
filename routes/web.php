@@ -36,45 +36,28 @@ Route::get('/Banco/imprime_dictamen/{id_estudio_socioeconomico}','Banco\BancoCon
 Route::group(['prefix' => 'Catalogo'], function() {
 	Route::resource ('Sector', 'Catalogo\Sector\SectorController');
 });
+Route::post('Catalogo/Sector/dropdownArea','Catalogo\Sector\SectorController@dropdownArea');
+Route::post('Catalogo/Sector/{id}/destroy','Catalogo\Sector\SectorController@destroy');
 
-
-Route::post('/Catalogo/Sector/dropdown', [
-	'uses'	=> 'Catalogo\Sector\SectorController@dropdown',
-	'as'	=> 'Sector.dropdown'
-]);
-
-Route::post('Catalogo/Sector/{id}/destroy', [
-	'uses'	=> 'Catalogo\Sector\SectorController@destroy',
-	'as'	=> 'Sector.destroy'
-]);
 
 // Rutas Catalogo - Unidad Ejecutora
 Route::group(['prefix' => 'Catalogo'], function() {
 	Route::resource ('Ejecutora', 'Catalogo\Ejecutora\EjecutoraController');
 });
+Route::post('Catalogo/Ejecutora/{id}/destroy','Catalogo\Ejecutora\EjecutoraController@destroy');
 
-Route::post('Catalogo/Ejecutora/{id}/destroy', [
-	'uses'	=> 'Catalogo\Ejecutora\EjecutoraController@destroy',
-	'as'	=> 'Ejecutora.destroy'
-]);
 
 // Rutas Administracion
 Route::group(['prefix' => 'Administracion'], function() {
 	Route::resource ('Usuario', 'Administracion\Usuario\UsuarioController');
-	//Route::get('Usuario/index','RegisterController@index');
 });
-
-Route::post('/Administracion/Usuario/dropdown', [
-	'uses'	=> 'Administracion\Usuario\UsuarioController@dropdown',
-	'as'	=> 'Usuario.dropdown'
-]);
-
-Route::post('Administracion/Usuario/{id}/destroy', [
-	'uses'	=> 'Administracion\Usuario\usuarioController@destroy',
-	'as'	=> 'Usuario.destroy'
-]);
-
+Route::post('Administracion/Usuario/dropdownSector','Administracion\Usuario\UsuarioController@dropdownSector');
+Route::post('Administracion/Usuario/dropdownArea','Administracion\Usuario\UsuarioController@dropdownArea');
+Route::post('Administracion/Usuario/{id}/destroy','Administracion\Usuario\usuarioController@destroy');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+//Route::get('/home', 'HomeController@index');
+
+Route::get('Administracion/Modulo/permisos', 'Administracion\Modulo\ModuloController@permisos');
+Route::post('Administracion/Modulo/guarda_permisos', 'Administracion\Modulo\ModuloController@guarda_permisos');
