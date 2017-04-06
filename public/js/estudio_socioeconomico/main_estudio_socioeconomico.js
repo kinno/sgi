@@ -75,8 +75,10 @@ function buscarEstudio() {
                             $("#ejercicio").val(hoja1.ejercicio);
                             $("#vida_proyecto").val(hoja1.vida_proyecto);
                             $("#nombre_obra").val(hoja1.nombre_obra);
-                            $("#unidad_ejecutora").val(hoja1.id_unidad_ejecutora);
-                            $("#sector").val(hoja1.id_sector);
+                            $("#unidad_ejecutora").val(hoja1.unidad_ejecutora.nombre);
+                            $("#id_unidad_ejecutora").val(hoja1.unidad_ejecutora.id);
+                            $("#id_sector").val(hoja1.sector.id);
+                            $("#sector").val(hoja1.sector.nombre);
                             arrAcuerdos = [];
                             for (var i = 0; i < acuerdos.length; i++) {
                                 arrAcuerdos.push(acuerdos[i].id_acuerdo);

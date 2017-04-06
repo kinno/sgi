@@ -1,8 +1,42 @@
-
 <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
-        <li>
+    @php
+        $user = Auth::user()->load('menus');
+        $menus = $user->menus;
+        $menuLateral = "";
+        $auxMenu=0;
+        $countMenu = count($menus);
+        foreach ($menus as $menu) {
+            if($menu->blink==0 && !$menu->id_menu_padre){
+                if($auxMenu>0){
+                    $menuLateral .='</ul></li>';
+                }
+                $menuLateral .= '
+                <li>
+                    <a data-target="#'.$menu->id.'" data-toggle="collapse" href="javascript:;">
+                        <i class="fa fa-circle-o">
+                        </i>
+                        '.$menu->nombre.'
+                        <i class="fa fa-fw fa-caret-down">
+                        </i>
+                    </a>
+                <ul class="collapse" id="'.$menu->id.'">
+                ';
+            }elseif ($menu->blink!=0 && $menu->id_menu_padre) {
+                $menuLateral .= '
+                <li>
+                    <a href="/'.$menu->ruta.'">
+                        '.$menu->nombre.'
+                    </a>
+                </li>
+                ';
+            }
+        }
+        echo $menuLateral;
+    @endphp
+    
+        {{-- <li>
             <a data-target="#estudio" data-toggle="collapse" href="javascript:;">
                 <i class="fa fa-child">
                 </i>
@@ -53,8 +87,9 @@
                     </a>
                 </li>
             </ul>
-        </li>
-        {{-- <li class="active">
+        </li> --}}
+        {{--
+        <li class="active">
             <a href="index.html">
                 <i class="fa fa-fw fa-dashboard">
                 </i>
@@ -130,7 +165,8 @@
                 </i>
                 RTL Dashboard
             </a>
-        </li> --}}
+        </li>
+        --}}
     </ul>
 </div>
 <!-- /.navbar-collapse -->

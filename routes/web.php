@@ -12,7 +12,13 @@
  */
 
 Route::get('/', function () {
-    return view('layouts.master');
+	if(\Auth::check()){
+		// dd(\Auth::user()->load('menus'));
+		return view('layouts.master');
+	}else{
+		return view('auth.login');
+	}
+    
 });
 
 Route::get('/EstudioSocioeconomico/crear_estudio', 'EstudioSocioeconomico\EstudioController@index');
@@ -56,7 +62,6 @@ Route::post('Administracion/Usuario/dropdownArea','Administracion\Usuario\Usuari
 Route::post('Administracion/Usuario/{id}/destroy','Administracion\Usuario\usuarioController@destroy');
 
 Auth::routes();
-
 //Route::get('/home', 'HomeController@index');
 
 Route::get('Administracion/Modulo/permisos', 'Administracion\Modulo\ModuloController@permisos');

@@ -16,6 +16,12 @@ use Illuminate\Http\Request;
 
 class BancoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+
     public function index()
     {
         $tipoEvaluacion = Cat_Tipo_Evaluacion::where('bactivo', '=', 1)

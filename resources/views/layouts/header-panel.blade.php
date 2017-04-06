@@ -10,7 +10,7 @@
         <span class="icon-bar">
         </span>
     </button>
-    <a class="navbar-brand" href="index.html">
+    <a class="navbar-brand" href="/">
         Sistema de Gasto de Inversión {2017}
     </a>
 </div>
@@ -34,7 +34,7 @@
                         <div class="media-body">
                             <h5 class="media-heading">
                                 <strong>
-                                    John Smith
+                                    {{Auth::user()->username}}
                                 </strong>
                             </h5>
                             <p class="small text-muted">
@@ -175,7 +175,7 @@
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             <i class="fa fa-user">
             </i>
-            John Smith
+            {{Auth::user()->name}}
             <b class="caret">
             </b>
         </a>
