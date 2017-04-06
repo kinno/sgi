@@ -29,7 +29,7 @@ class AlterUsers extends Migration
             $table->boolean('blink');
             $table->unsignedTinyInteger('orden');
             $table->string('descripcion', 255)->nullable();
-            $table->unsignedInteger('id_menu_padre');
+            $table->unsignedInteger('id_menu_padre')->nullable();
             $table->timestamps();
         });
 

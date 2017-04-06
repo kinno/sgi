@@ -26,8 +26,14 @@ use Illuminate\Http\Request;
 
 class EstudioController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
+        $user = \Auth::user()->load('unidad_ejecutora')->load('sectores');
         $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
         $accionesFederales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 4)->get();
         $accionesEstatales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 1)
@@ -42,16 +48,18 @@ class EstudioController extends Controller
         $beneficiarios  = Cat_Beneficiario::where('id', '>', 0)->get();
         $fuentesFederal = Cat_Fuente::where('tipo', '=', 'F')->get();
         $fuentesEstatal = Cat_Fuente::where('tipo', '=', 'E')->get();
+        $ue = array('id' => $user->unidad_ejecutora->id,'nombre'=>$user->unidad_ejecutora->nombre);
+        $sector = array('id' => $user->sectores[0]->id,'nombre'=>$user->sectores[0]->nombre);
 
         // dump($accionesFederales);
-        return view('EstudioSocioeconomico.index', compact('ejercicios', 'accionesFederales', 'accionesEstatales', 'grupoSocial', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal'));
+        return view('EstudioSocioeconomico.index', compact('ejercicios', 'accionesFederales', 'accionesEstatales', 'grupoSocial', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal','ue','sector'));
     }
 
     public function buscar_estudio(Request $request)
     {
         try {
 
-            $estudio = P_Estudio_Socioeconomico::with(['hoja1', 'hoja2', 'acuerdos', 'fuentes_monto', 'regiones', 'municipios'])->findOrFail($request->id_estudio_socioeconomico);
+            $estudio = P_Estudio_Socioeconomico::with(['hoja1.sector','hoja1.unidad_ejecutora', 'hoja2', 'acuerdos', 'fuentes_monto', 'regiones', 'municipios'])->findOrFail($request->id_estudio_socioeconomico);
 
             if ($estudio->id_estatus == 1||$estudio->id_estatus == 5) {
                 //*CREACIÓN/EDICION    DEVOLUCIÓN A DEPENDENCIA
@@ -66,6 +74,7 @@ class EstudioController extends Controller
         } catch (\Exception $e) {
             $estudio            = array();
             $estudio['message'] = $e->getMessage();
+            $estudio['trace'] = $e->getTrace();
             $estudio['error']   = "No existe ese número de Estudio Socioeconomico";
             return ($estudio);
         }
@@ -136,8 +145,8 @@ class EstudioController extends Controller
                 $hoja1 = P_Anexo_Uno_Estudiosocioeconomico::find($request->id_hoja_uno);
             }
 
-            $hoja1->id_sector                   = $request->sector;
-            $hoja1->id_unidad_ejecutora         = $request->unidad_ejecutora;
+            $hoja1->id_sector                   = $request->id_sector;
+            $hoja1->id_unidad_ejecutora         = $request->id_unidad_ejecutora;
             $hoja1->ejercicio                   = $request->ejercicio;
             $hoja1->id_tipo_obra                = $request->id_tipo_obra;
             $hoja1->id_modalidad_ejecucion      = $request->id_modalidad_ejecucion;
@@ -232,6 +241,7 @@ class EstudioController extends Controller
             DB::rollback();
             $estudio            = array();
             $estudio['message'] = $e->getMessage();
+            $estudio['trace'] = $e->getTrace();
             $estudio['error']   = "Aviso: Ocurrió un error al guardar.";
             return ($estudio);
         }
@@ -357,6 +367,7 @@ class EstudioController extends Controller
             DB::rollback();
             $estudio            = array();
             $estudio['message'] = $e->getMessage();
+            $estudio['trace'] = $e->getTrace();
             $estudio['error']   = "Aviso: Ocurrió un error al guardar.";
             return ($estudio);
         }
@@ -388,6 +399,7 @@ class EstudioController extends Controller
             DB::rollback();
             $estudio            = array();
             $estudio['message'] = $e->getMessage();
+            $estudio['trace'] = $e->getTrace();
             $estudio['error']   = "Aviso: Ocurrió un error al enviar a dictaminar.";
             return ($estudio);
         }

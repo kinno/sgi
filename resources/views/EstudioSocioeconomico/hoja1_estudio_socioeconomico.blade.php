@@ -48,7 +48,8 @@
                 <div class="row form-group">
                     <label class="col-md-3 col-md-offset-1 control-label" for="ue">Unidad Ejecutora:</label>
                     <div class="col-md-7" id="ue0">
-                    <input type="text" name="unidad_ejecutora" id="unidad_ejecutora" val="unidad_ejecutora" class="form-control">
+                    <input type="text" name="unidad_ejecutora" id="unidad_ejecutora" value="{{$ue['nombre']}}" class="form-control">
+                    <input type="hidden" name="id_unidad_ejecutora" id="id_unidad_ejecutora" value="{{$ue['id']}}" class="form-control">
                     </div>
                     <span class="glyphicon glyphicon-question-sign ayuda" title="Unidad Administrativa de acuerdo al
                       Cat&aacute;logo de Centros de Costo, a nivel jer&aacute;rquico de una Direcci&oacute;n General
@@ -61,7 +62,8 @@
                 <div class="row form-group">
                     <label class="col-md-3 col-md-offset-1 control-label" for="ur">Sector:</label>
                     <div class="col-lg-7" id="ur0">
-                    <input type="text" name="sector" id="sector" val="sector" class="form-control">
+                    <input type="text" name="sector" id="sector" value="{{$sector['nombre']}}" class="form-control">
+                    <input type="hidden" name="id_sector" id="id_sector" value="{{$sector['id']}}" class="form-control">
                     </div>
                     <span class="glyphicon glyphicon-question-sign ayuda" title="Secretar&iacute;a de acuerdo a su
                       denominaci&oacute;n en la Ley Org&aacute;nica de la Administraci&oacute;n P&uacute;blica, de la
@@ -72,7 +74,7 @@
                 </div>
             </div>
 
-            <div id="usuariouni" hidden="true">
+            {{-- <div id="usuariouni" hidden="true">
                 <div class="form-group">
                     <label class="col-md-3 control-label" for="ue2">Unidad Ejecutora:</label>
                     <div class="col-md-8">
@@ -128,7 +130,7 @@
                       responsabilidad de coordinar y evaluar su desempe&ntilde;o en el ejercicio del presupuesto asignado.">
                 </span>
                 </div>
-            </div>
+            </div> --}}
 
             <div id="accfed">
                 <div class="row form-group">
