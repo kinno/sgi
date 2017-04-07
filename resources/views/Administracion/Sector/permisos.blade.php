@@ -3,7 +3,7 @@
 <br/>
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title text-center"><strong>Actualizar Módulos asignados a Usuarios</strong></h3>
+		<h3 class="panel-title text-center"><strong>Actualizar Sectores asignados a Usuarios</strong></h3>
 	</div>
 	<div class="panel-body">
     	<br/>
@@ -19,10 +19,10 @@
               	</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-2 control-label input-sm">Módulos:</label>
+				<label class="col-md-2 control-label input-sm">Sectores:</label>
 				<div class="col-md-6" style="display: block; overflow: auto; height: 300px">
-					<table class="table table-hover table-condensed" id="opciones_menu">
-						<tbody id="opciones_menu1">
+					<table class="table table-hover table-condensed" id="opciones_sector">
+						<tbody>
 							{!! $filas !!}
 						</tbody>
 					</table>
@@ -38,5 +38,5 @@
 		
   	</div>
 </div>
-<script src="{{ asset('js/Administracion/Modulo/permisos.js') }}"></script>
+<script src="{{ asset('js/Administracion/Sector/permisos.js') }}"></script>
 @endsection

@@ -68,3 +68,7 @@ Auth::routes();
 Route::get('Administracion/Modulo/permisos', 'Administracion\Modulo\ModuloController@permisos');
 Route::post('Administracion/Modulo/dropdownUsuario', 'Administracion\Modulo\ModuloController@dropdownUsuario');
 Route::post('Administracion/Modulo/guarda_permisos', 'Administracion\Modulo\ModuloController@guarda_permisos');
+
+Route::get('Administracion/Sector/permisos', 'Administracion\Sector\SectorController@permisos');
+Route::post('Administracion/Sector/dropdownUsuario', 'Administracion\Sector\SectorController@dropdownUsuario');
+Route::post('Administracion/Sector/guarda_permisos', 'Administracion\Sector\SectorController@guarda_permisos');

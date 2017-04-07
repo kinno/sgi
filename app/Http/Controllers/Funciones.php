@@ -21,7 +21,6 @@ trait Funciones
 
 	public function dropdownSector (Request $request)
     {
-        //return array('uno' => 'si');
         $sector = Cat_Sector::find($request->id);
         $ejecutoras = $sector->unidad_ejecutoras->toArray();
         $opciones = $this->llena_combo($ejecutoras);

@@ -12,7 +12,7 @@ function LimpiaPermisos () {
     var vacio ='<option value="0">- Selecciona</option>';
     if ($('#id_usuario').children().length > 1) {
         $('#id_usuario').val('0');
-        $('input[name=Menu0]').prop('checked', false).change();
+        $('input[name=Sector0]').prop('checked', false).change();
     }
     $("#btnGuardar").removeAttr("disabled");
     $("[id^='err_']" ).hide();
@@ -27,17 +27,17 @@ function Triggers () {
         $('#err_' + $(this).attr('id')).hide();
         var id = $(this).val();
         if (id == '0')
-            $('input[name=Menu0]').prop('checked', false).change();
+            $('input[name=Sector0]').prop('checked', false).change();
         else {
             $.ajax({
                 data: {
                     id: id
                 },
-                url: '/Administracion/Modulo/dropdownUsuario',
+                url: '/Administracion/Sector/dropdownUsuario',
                 type: 'POST',
                 success: function (data) {
                     //console.log(data);
-                    $('#opciones_menu').children().html(data);
+                    $('#opciones_sector').children().html(data);
                 },
                 error: function(data) {
                     console.log("Errores::", data);
@@ -49,7 +49,7 @@ function Triggers () {
     });
 
     // chkboxs de ejercicio
-    $('body').on('change','#chkMenu', function () {
+    $('body').on('change','#chkSector', function () {
         var x = $(this).attr('data-x');
         var y = $(this).attr('data-y');
         var checked = $(this).prop("checked");
@@ -57,30 +57,30 @@ function Triggers () {
         var name = $(this).attr('name');
         // Todo
         if (x == 0) {
-            $('#opciones_menu input').prop('checked', checked);
+            $('#opciones_sector input').prop('checked', checked);
         }
         // Menu
         else if (y == 0) {
-            $('#opciones_menu [data-x = ' + x + ']').prop('checked', checked);
+            $('#opciones_sector [data-x = ' + x + ']').prop('checked', checked);
         }
         // Submenu
         else {
-            n = $('#opciones_menu [name=' + name + ']').length;
+            n = $('#opciones_sector [name=' + name + ']').length;
             n2 = $('input[name=' + name + ']' + ':checked').length;
             // Menu
             if (!checked) {
-                $('#opciones_menu [name=' + name + ']').eq(0).prop('checked', false);
+                $('#opciones_sector [name=' + name + ']').eq(0).prop('checked', false);
             }
             else if (n == n2 + 1)
-                $('#opciones_menu [name=' + name + ']').eq(0).prop('checked', true);
+                $('#opciones_sector [name=' + name + ']').eq(0).prop('checked', true);
         }
         // Todo
-        n =$('#opciones_menu input').length;
+        n =$('#opciones_sector input').length;
         n2 = $('input:checked').length;
         if (!checked)
-            $('input[name=Menu0]').prop('checked', false);
+            $('input[name=Sector0]').prop('checked', false);
         else if (n == n2 + 1)
-            $('input[name=Menu0]').prop('checked', true);
+            $('input[name=Sector0]').prop('checked', true);
     });
 
     // evento guardar
@@ -95,7 +95,7 @@ function guardaPermisos () {
         BootstrapDialog.mensaje (null,'Seleccione usuario', 3);
         return;
     }
-    ids = getAllValues($('#opciones_menu input:checked'));
+    ids = getAllValues($('#opciones_sector input:checked'));
     //return;
     $("#btnGuardar").attr("disabled","disabled");
     $.ajax({
@@ -103,7 +103,7 @@ function guardaPermisos () {
             id_usuario: id_usuario,
             ids: ids
         },
-        url: '/Administracion/Modulo/guarda_permisos',
+        url: '/Administracion/Sector/guarda_permisos',
         type: 'POST',
         beforeSend:function(){
             $("#divLoading h3").text('Guardando . . .');

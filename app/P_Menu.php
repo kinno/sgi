@@ -12,11 +12,9 @@ class P_Menu extends Model
         'nombre', 'ruta', 'blink', 'orden', 'descripcion', 'id_menu_padre'
     ];
    
-
-    
     public function submenus()
     {
-        return $this->hasMany('App\Sub_Menu', 'id_menu_padre');
+        return $this->hasMany('App\P_Menu', 'id_menu_padre')->orderBy('orden', 'ASC');
     }
 
     public function usuarios()
@@ -28,5 +26,4 @@ class P_Menu extends Model
     	return $this->hasOne('App\P_Menu','id','id_menu_padre');
     }
 
-    
 }

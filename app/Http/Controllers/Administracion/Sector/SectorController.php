@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Administracion\Modulo;
+namespace App\Http\Controllers\Administracion\Sector;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones;
 use App\User;
-use App\P_Menu;
+use App\Cat_Departamento;
+use App\Cat_Sector;
 use Illuminate\Support\Facades\DB;
 //use Illuminate\Validation\Validator;
 
-class ModuloController extends Controller
+class SectorController extends Controller
 {
     use Funciones;
 
@@ -36,7 +37,7 @@ class ModuloController extends Controller
     	$opciones_usuario = $this->llena_combo($usuarios, 0, 'name');
 		$filas = $this->tabla($ids);
     	//dd($filas);
-    	return view('Administracion.Modulo.permisos')
+    	return view('Administracion.Sector.permisos')
             ->with('opciones_usuario', $opciones_usuario)
             ->with('filas', $filas);
     }
@@ -60,9 +61,9 @@ class ModuloController extends Controller
         	$usuario = User::find($request->id_usuario);
         	DB::transaction(function () use ($usuario, $request) {
     			if (count($request->ids) == 0)
-    				$usuario->menus()->detach();
+    				$usuario->sectores()->detach();
     			else
-    				$usuario->menus()->sync($request->ids);
+    				$usuario->sectores()->sync($request->ids);
             });
             $data['mensaje'] = "Datos guardados correctamente: ".$usuario->name;
             $data['error'] = 1;
@@ -78,27 +79,27 @@ class ModuloController extends Controller
     public function getIds ($id)
     {
     	$usuario = User::find($id);
-    	$menus = $usuario->menus->toArray();
+    	$sectores = $usuario->sectores->toArray();
     	$arreglo_ids = [];
-    	foreach ($menus as $menu)
-    		array_push($arreglo_ids, $menu['id']);
+    	foreach ($sectores as $sector)
+    		array_push($arreglo_ids, $sector['id']);
     	return $arreglo_ids;
     }
 
     public function tabla ($ids = [])
     {
-    	$menus = P_Menu::where('id_menu_padre', 0)->orderBy('orden', 'ASC')->get();
+    	$departamentos = Cat_Departamento::get();
     	$x = 1;
     	$todo = true;
     	$salida = '';
-    	foreach ($menus as $menu) {
+    	foreach ($departamentos as $departamento) {
     		$y = 0;
-    		$submenus = $menu->submenus;
+    		$sectores = $departamento->sectores;
     		//if ($x == 2) dd($menu);
     		$padre = true;
     		$opciones = '';
-    		foreach ($submenus as $submenu) {
-    			if (in_array($submenu->id, $ids))
+    		foreach ($sectores as $sector) {
+    			if (in_array($sector->id, $ids))
     				$checked = ' checked="checked"';
     			else {
     				$checked = '';
@@ -107,26 +108,29 @@ class ModuloController extends Controller
     			}
     			$y++;
     			$opciones .= '<tr>
-								<td><input type="checkbox" name="Menu'.$x.'" id="chkMenu" data-id="'.$submenu->id.'" data-x="'.$x.'" data-y="'.$y.'"'.$checked.'></td>
-								<td>'.$submenu->nombre.'</td>
+								<td><input type="checkbox" name="Sector'.$x.'" id="chkSector" data-id="'.$sector->id.'" data-x="'.$x.'" data-y="'.$y.'"'.$checked.'></td>
+								<td>'.$sector->nombre.'</td>
 							</tr>';
     		}
+            if (count($sectores) == 0) $padre = false;
     		if ($padre)
     			$checked = ' checked="checked"';
     		else
     			$checked = '';
-    		$salida .= '<tr class="menu_padre">
-							<td><input type="checkbox" name="Menu'.$x.'" id="chkMenu" data-x="'.$x.'" data-y="0"'.$checked.'></td>
-							<td>'.$menu->nombre.'</td>
-						</tr>'.$opciones;
-    		$x++;
+            if (count($sectores) > 0) {
+        		$salida .= '<tr class="menu_padre">
+    							<td><input type="checkbox" name="Sector'.$x.'" id="chkSector" data-x="'.$x.'" data-y="0"'.$checked.'></td>
+    							<td>'.$departamento->nombre.'</td>
+    						</tr>'.$opciones;
+        		$x++;
+            }
     	}
     	if ($todo)
 			$checked = ' checked="checked"';
 		else
 			$checked = '';
     	$salida = '<tr class="menu_padre">
-						<td width="3%" ><input type="checkbox" name="Menu0" id="chkMenu" data-x="0" data-y="0"'.$checked.'></td>
+						<td width="3%" ><input type="checkbox" name="Sector0" id="chkSector" data-x="0" data-y="0"'.$checked.'></td>
 						<td width="97%">Todo</td>
 					</tr>'.$salida;
         return $salida;
