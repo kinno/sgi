@@ -13,7 +13,8 @@
 
 Route::get('/', function () {
 	if(\Auth::check()){
-		// dd(\Auth::user()->load('menus'));
+		// $user=\Auth::user()->load('menus');
+		// dd(\Auth::user()->menus()->with('menuPadre')->get());
 		return view('layouts.master');
 	}else{
 		return view('auth.login');

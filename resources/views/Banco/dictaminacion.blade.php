@@ -8,8 +8,8 @@
     margin-bottom: 5px;
 }
 </style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/js/lightslider.min.js">
+<link href="/css/lightslider.css" rel="stylesheet"/>
+<script src="/js/lightslider.js">
 </script>
 <div class="panel">
     <div class="row">

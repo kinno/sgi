@@ -2,38 +2,46 @@
 <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
     @php
-        $user = Auth::user()->load('menus');
-        $menus = $user->menus;
-        $menuLateral = "";
+
+        $menus = \Auth::user()->menus()->with('menuPadre')->get();
+        // dd($menus);
+        // $menus = $user->menus;
+        $menuItems = "";
+        $menuHead = "";
         $auxMenu=0;
         $countMenu = count($menus);
+        $idMenuPadre=0;
         foreach ($menus as $menu) {
-            if($menu->blink==0 && !$menu->id_menu_padre){
-                if($auxMenu>0){
-                    $menuLateral .='</ul></li>';
+            if($menu->id_menu_padre){
+                if($idMenuPadre!==$menu->id_menu_padre){
+                    if($auxMenu>0){
+                        $menuItems .='</ul></li>';
+                    }
+                    $menuItems .= '
+                                    <li>
+                                        <a data-target="#'.$idMenuPadre.'" data-toggle="collapse" href="javascript:;">
+                                            <i class="fa fa-circle-o">
+                                            </i>
+                                            '.$menu->menuPadre->nombre.'
+                                            <i class="fa fa-fw fa-caret-down">
+                                            </i>
+                                        </a>
+                                    <ul class="collapse" id="'.$idMenuPadre.'">
+                                    ';
                 }
-                $menuLateral .= '
-                <li>
-                    <a data-target="#'.$menu->id.'" data-toggle="collapse" href="javascript:;">
-                        <i class="fa fa-circle-o">
-                        </i>
-                        '.$menu->nombre.'
-                        <i class="fa fa-fw fa-caret-down">
-                        </i>
-                    </a>
-                <ul class="collapse" id="'.$menu->id.'">
-                ';
-            }elseif ($menu->blink!=0 && $menu->id_menu_padre) {
-                $menuLateral .= '
+                
+                $menuItems .= '
                 <li>
                     <a href="/'.$menu->ruta.'">
                         '.$menu->nombre.'
                     </a>
                 </li>
                 ';
-            }
+                $idMenuPadre = $menu->id_menu_padre;
+            }else{}
+            $auxMenu++;
         }
-        echo $menuLateral;
+        echo $menuItems;
     @endphp
     
         {{-- <li>
