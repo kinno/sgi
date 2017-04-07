@@ -1,0 +1,32 @@
+.fecha {
+   cursor: pointer !important;
+}
+
+.numero, .numerodec, .numerocontrol, .numeroobra {
+	text-align:right !important;
+}
+
+.vamiddle {
+	vertical-align: middle !important;
+}
+
+.obligatorio {
+	color:#FF0000;
+	padding-left: 1px;
+	/*font-size: 1em;*/
+}
+
+.menu_padre {
+    /*background-color: #BBBBBB;*/
+    /*background-color: #0A2E3A;*/
+    background-color: #0F403E;
+    color: #79B837;
+}
+
+.menu_padre:hover {
+    background-color: #0A2E3A !important;
+    /*background-color: #555555 !important;
+    color: #DDDDDD;*/
+    /*background-color: #0A2E3A;*/
+    color: #ffffff;
+}

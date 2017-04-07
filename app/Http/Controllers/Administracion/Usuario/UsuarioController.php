@@ -126,8 +126,6 @@ class UsuarioController extends Controller
             });
             $data['mensaje'] = "Datos guardados correctamente: ".$usuario->name;
             $data['error'] = 1;
-            //$data['usuario'] = $usuario->toArray();
-            //$data['request'] = $request->toArray();
         }
         catch (\Exception $e) {
             $data['message'] = $e->getMessage();
@@ -234,7 +232,6 @@ class UsuarioController extends Controller
 
             $data['mensaje'] = "Datos guardados correctamente: ".$usuario->nombre;
             $data['error'] = 1;
-            $data['request'] = $request->toArray();
         }
         catch (\Exception $e) {
             $data['message'] = $e->getMessage();

@@ -66,4 +66,5 @@ Auth::routes();
 //Route::get('/home', 'HomeController@index');
 
 Route::get('Administracion/Modulo/permisos', 'Administracion\Modulo\ModuloController@permisos');
+Route::post('Administracion/Modulo/dropdownUsuario', 'Administracion\Modulo\ModuloController@dropdownUsuario');
 Route::post('Administracion/Modulo/guarda_permisos', 'Administracion\Modulo\ModuloController@guarda_permisos');

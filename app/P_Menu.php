@@ -13,9 +13,15 @@ class P_Menu extends Model
     ];
    
 
+    
+    public function submenus()
+    {
+        return $this->hasMany('App\Sub_Menu', 'id_menu_padre');
+    }
+
     public function usuarios()
     {
-        $this->belongsToMany('App\User', 'rel_usuario_menu', 'id_usuario', 'id_menu');
+        return $this->belongsToMany('App\User', 'rel_usuario_menu', 'id_usuario', 'id_menu');
     }
 
     public function menuPadre(){

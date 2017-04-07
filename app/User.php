@@ -46,8 +46,6 @@ class User extends Authenticatable
     public function menus()
     {
         return $this->belongsToMany('App\P_Menu', 'rel_usuario_menu', 'id_usuario', 'id_menu')->withTimestamps();
-         // return $this->hasManyThrough('App\P_Menu','App\Rel_Usuario_Menu','id_usuario','id','id');
-        // return $this->hasMany('App\Rel_Usuario_Menu','id_usuario','id');
     }
 
     public function setBactivoAttribute ($valor)

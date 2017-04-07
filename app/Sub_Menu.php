@@ -11,4 +11,9 @@ class Sub_Menu extends Model
 	protected $fillable = [
         'nombre', 'ruta', 'blink', 'orden', 'descripcion', 'id_menu_padre'
     ];
+
+    public function menu()
+    {
+        return $this->belongsTo('App\P_Menu', 'id_menu_padre');
+    }
 }

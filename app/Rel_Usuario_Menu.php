@@ -11,4 +11,5 @@ class Rel_Usuario_Menu extends Model
 	protected $fillable = [
         'id_usuario', 'id_menu'
     ];
+
 }

@@ -34,6 +34,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/js/lightslider.js">
             </script>
             --}}
+            <link href="/css/generales.css" rel="stylesheet">
         </head>
     </meta>
 </html>
