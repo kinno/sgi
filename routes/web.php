@@ -54,6 +54,13 @@ Route::group(['prefix' => 'Catalogo'], function() {
 Route::post('Catalogo/Ejecutora/{id}/destroy','Catalogo\Ejecutora\EjecutoraController@destroy');
 
 
+// Rutas Catalogo - Menues
+Route::group(['prefix' => 'Catalogo'], function() {
+	Route::resource ('Menu', 'Catalogo\Menu\MenuController');
+});
+Route::post('Catalogo/Menu/{id}/destroy','Catalogo\Menu\MenuController@destroy');
+
+
 // Rutas Administracion
 Route::group(['prefix' => 'Administracion'], function() {
 	Route::resource ('Usuario', 'Administracion\Usuario\UsuarioController');

@@ -34,7 +34,7 @@ class Cat_Sector extends Model
 
     public function usuarios()
     {
-        return $this->belongsToMany('App\User2', 'rel_usuario_sector', 'id_sector', 'id_usuario')->withTimestamps();;
+        return $this->belongsToMany('App\User', 'rel_usuario_sector', 'id_sector', 'id_usuario')->withTimestamps();;
     }
 
     public function setBactivoAttribute ($valor)

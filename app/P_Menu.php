@@ -19,11 +19,16 @@ class P_Menu extends Model
 
     public function usuarios()
     {
-        return $this->belongsToMany('App\User', 'rel_usuario_menu', 'id_usuario', 'id_menu');
+        return $this->belongsToMany('App\User', 'rel_usuario_menu', 'id_menu', 'id_usuario');
     }
 
     public function menuPadre(){
     	return $this->hasOne('App\P_Menu','id','id_menu_padre');
+    }
+
+    public function scopeSearch($query, $nombre)
+    {
+        return $query->where('P_Menu.nombre', 'LIKE', "%$nombre%");
     }
 
 }
