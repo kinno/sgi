@@ -3,7 +3,7 @@
 {{ csrf_field() }}
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h1 class="panel-title"><strong> HOJA 1</strong></h1>
+            <h1 class="panel-title"><strong> ANEXO 1</strong></h1>
             <input id="id_hoja_uno" name="id_hoja_uno" type="hidden">
         </div>
         <div class="panel-body">
@@ -362,7 +362,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label">Duraci&oacute;n de la Obra:</label>
                 <label class="col-lg-1 control-label"><font color="red" size="2">* </font>A&ntilde;os:</label>
-                <div class="col-lg-1"><input type="text" id="duracion_anios" name="duracion_anios" class="form-control tiempo text-right" placeholder="0" maxlength="2"></div>
+                <div class="col-lg-1"><input type="text" id="duracion_anios" name="duracion_anios" class="form-control tiempo text-right" value="0" maxlength="2"></div>
                 <label class="col-lg-1 control-label"><font color="red" size="2">* </font>Meses:</label>
                 <div class="col-md-1">
                     <select id="duracion_meses" name="duracion_meses" class="form-control">

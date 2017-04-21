@@ -91,7 +91,7 @@ class BancoController extends Controller
         try {
 
             // $estudio_socioeconomico = P_Estudio_Socioeconomico::with(['hoja1', 'hoja2', 'fuentes_monto.detalle_fuentes', 'indicadores.evaluaciones', 'movimientos'])->findOrFail($request->id_estudio_socioeconomico);
-            $estudio_socioeconomico = P_Estudio_Socioeconomico::with(['hoja1', 'hoja2', 'fuentes_monto.detalle_fuentes', 'movimientos'])
+            $estudio_socioeconomico = P_Estudio_Socioeconomico::with(['hoja1.sector', 'hoja1.unidad_ejecutora', 'hoja2', 'fuentes_monto', 'movimientos'])
                 ->with('indicadores.evaluaciones')
                 ->with(array('indicadores' => function ($query) {
                     $query->orderBy('id', 'desc');
@@ -377,9 +377,10 @@ class BancoController extends Controller
         return $clave;
     }
 
-    public function imprime_dictamen($id_estudio_socioeconomico)
+    public function imprime_dictamen($id_estudio_socioeconomico,$dictamen)
     {
-        $estudio = P_Estudio_Socioeconomico::with(['hoja1', 'hoja2', 'fuentes_monto.detalle_fuentes'])
+        if($id_estudio_socioeconomico!=='0'){
+        $estudio = P_Estudio_Socioeconomico::with(['hoja1.sector', 'hoja1.unidad_ejecutora','hoja2', 'fuentes_monto'])
             ->with(['indicadores.evaluaciones','indicadores.tipo_ppi'])
             ->with(array('indicadores' => function ($query) {
                 $query->orderBy('id', 'desc');
@@ -388,6 +389,21 @@ class BancoController extends Controller
                 $query->orderBy('id', 'desc');
             }))
             ->findOrFail($id_estudio_socioeconomico);
+            // dd($estudio);
+        }else{
+            $estudioCollection = P_Estudio_Socioeconomico::where('dictamen','=',$dictamen)
+            ->with(['hoja1.sector', 'hoja1.unidad_ejecutora','hoja2', 'fuentes_monto'])
+            ->with(['indicadores.evaluaciones','indicadores.tipo_ppi'])
+            ->with(array('indicadores' => function ($query) {
+                $query->orderBy('id', 'desc');
+            }))
+            ->with(array('movimientos' => function ($query) {
+                $query->orderBy('id', 'desc');
+            }))->get()
+            ;
+            $estudio = $estudioCollection->first();
+            // dd($estudio);
+        }
          $puntos = Cat_Punto::where('id_tipo_evaluacion', '=', $estudio->id_tipo_evaluacion)
             ->where('activo', '=', '1')
             ->with('inciso.subinciso')
@@ -395,4 +411,5 @@ class BancoController extends Controller
         $pdf = \PDF::loadView('PDF/dictamen', compact('estudio','puntos'));
         return $pdf->stream('Dictamen_' . $estudio->dictamen . '.pdf');
     }
+
 }

@@ -37,7 +37,8 @@ class CreateTablesAnexo1 extends Migration
             $table->decimal('monto_municipal',10,2);
             $table->text('fuente_municipal');
             $table->unsignedInteger('id_meta');
-            $table->integer('cantidad_meta');
+            $table->unsignedInteger('id_beneficiaro')->nullable();
+            $table->integer('cantidad_meta')->nullable();
             $table->decimal('cantidad_beneficiario',10,2);
             $table->dateTime('fecha_captura');
             $table->timestamps();

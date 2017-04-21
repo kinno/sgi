@@ -1,3 +1,4 @@
+{{-- <pre>{{dd($estudio)}}</pre> --}}
 <style>
     .tablaFicha{
         width: 100%;
@@ -53,7 +54,7 @@
             SECTOR:
         </td>
         <td class="celdaTablaFicha" colspan="6">
-            {{$estudio->hoja1->id_sector}}
+            {{$estudio->hoja1->sector->nombre}}
         </td>
     </tr>
     <tr>
@@ -61,7 +62,7 @@
             UNIDAD EJECUTORA:
         </td>
         <td class="celdaTablaFicha" colspan="6">
-            {{$estudio->hoja1->id_unidad_ejecutora}}
+            {{$estudio->hoja1->unidad_ejecutora->nombre}}
         </td>
     </tr>
     <tr>
@@ -91,7 +92,20 @@
             COBERTURA:
         </td>
         <td class="celdaTablaFicha">
-            {{$estudio->hoja2->id_cobertura}}
+        @php
+            switch ($estudio->hoja2->id_cobertura) {
+                case 1:
+                    echo "ESTATAL";
+                    break; 
+                case 2:
+                    echo "REGIONAL";
+                    break;
+                case 3:
+                    echo "MUNICIPAL";
+                    break;
+            }
+        @endphp
+            {{-- {{$estudio->hoja2->id_cobertura}} --}}
         </td>
         @if ($estudio->hoja2->id_cobertura==2)
         <td class="celdaTablaFicha encabezado">
@@ -99,9 +113,9 @@
         </td>
         <td class="celdaTablaFicha" colspan="4">
             @foreach ($estudio->regiones as $region)
-            @foreach ($region->detalle_regiones as $value)
-                {{$value->clave_region}} {{$value->nombre_region}},
-            @endforeach
+            {{-- @foreach ($region->Cat_Region as $value) --}}
+                {{$region->clave_region}} {{$region->nombre_region}},
+            {{-- @endforeach --}}
         @endforeach
         </td>
         @elseif ($estudio->hoja2->id_cobertura==3)
@@ -110,9 +124,9 @@
         </td>
         <td class="celdaTablaFicha" colspan="4">
             @foreach ($estudio->municipios as $municipio)
-             @foreach ($municipio->detalle_municipios as $value)
-                {{$value->nombre_municipio}}, 
-            @endforeach
+             {{-- @foreach ($municipio->Cat_Municipio as $value) --}}
+                {{$municipio->nombre_municipio}}, 
+            {{-- @endforeach --}}
         @endforeach
         </td>
         @else
@@ -247,7 +261,7 @@
             UNIDAD DE MEDIDA:
         </td>
         <td class="celdaTablaFicha" colspan="2">
-            -----
+            {{$estudio->hoja1->id_beneficiario}}
         </td>
         <td class="celdaTablaFicha encabezado">
             CANTIDAD:
@@ -289,58 +303,109 @@
                     $numRowsEst = $numRowsEst + 1;
                 }
             }
-         for ($i = 0; $i < count($estudio->fuentes_monto); $i++) {
-                if ($estudio->fuentes_monto[$i]['tipo_fuente'] === "F" && $bndFederal) {
+        foreach ($estudio->fuentes_monto as $value) {
+            if ($value->pivot->tipo_fuente === "F" && $bndFederal) {
                     $tabla = "<tr >
                                 <td class=\"celdaTablaFicha encabezado\" rowspan=\"" . $numRowsFed . "\">FUENTES FEDERALES:</td>  
                                 <td class=\"celdaTablaFicha encabezado\">NOMBRE:</td>
-                                <td class=\"celdaTablaFicha\">" . $estudio->fuentes_monto[$i]['detalle_fuentes'][0]['descripcion']. "</td>        
+                                <td class=\"celdaTablaFicha\">" .$value->descripcion. "</td>        
                                 <td class=\"celdaTablaFicha encabezado\">MONTO:</td>
-                                <td class=\"celdaTablaFicha\">$" . number_format($estudio->fuentes_monto[$i]['monto'], 2) . "</td>        
+                                <td class=\"celdaTablaFicha\">$" . number_format($value->pivot->monto, 2) . "</td>        
                                 <td class=\"celdaTablaFicha encabezado\">PORCENTAJE:</td>
                                 <td class=\"celdaTablaFicha\">%</td>        
                             </tr>";
                             $bndFederal = false;
-                }else if ($estudio->fuentes_monto[$i]['tipo_fuente'] === "F" && !$bndFederal) {
+                }else if ($value->pivot->tipo_fuente === "F" && !$bndFederal) {
                     $tabla.="<tr nobr=\"true\">          
                                 <td class=\"celdaTablaFicha encabezado\">NOMBRE:</td>
-                                <td class=\"celdaTablaFicha\">" . $estudio->fuentes_monto[$i]['detalle_fuentes'][0]['descripcion'] . "</td>        
+                                <td class=\"celdaTablaFicha\">" . $value->descripcion . "</td>        
                                 <td class=\"celdaTablaFicha encabezado\">MONTO:</td>
-                                <td class=\"celdaTablaFicha\">$" . number_format($estudio->fuentes_monto[$i]['monto'], 2) . "</td>        
+                                <td class=\"celdaTablaFicha\">$" . number_format($value->pivot->monto, 2) . "</td>        
                                 <td class=\"celdaTablaFicha encabezado\">PORCENTAJE:</td>
                                 <td class=\"celdaTablaFicha\">%</td>       
                             </tr>";
                   $contadorFederal++;          
                 }
                 $tabla = str_replace("numRowsFed", $contadorFederal, $tabla);
-                if ($estudio->fuentes_monto[$i]['tipo_fuente'] === "E" && $bndEstatal) {
+                if ($value->pivot->tipo_fuente === "E" && $bndEstatal) {
                     $tabla .="<tr nobr=\"true\">
                                 <td class=\"celdaTablaFicha encabezado\" rowspan=\"" . $numRowsFed . "\">FUENTES ESTATALES:</td>  
                                 <td class=\"celdaTablaFicha encabezado\">NOMBRE:</td>
-                                <td class=\"celdaTablaFicha\">" . $estudio->fuentes_monto[$i]['detalle_fuentes'][0]['descripcion']. "</td>        
+                                <td class=\"celdaTablaFicha\">" . $value->descripcion. "</td>        
                                 <td class=\"celdaTablaFicha encabezado\">MONTO:</td>
-                                <td class=\"celdaTablaFicha\">$" . number_format($estudio->fuentes_monto[$i]['monto'], 2) . "</td>        
+                                <td class=\"celdaTablaFicha\">$" . number_format($value->pivot->monto, 2) . "</td>        
                                 <td class=\"celdaTablaFicha encabezado\">PORCENTAJE:</td>
                                 <td class=\"celdaTablaFicha\">%</td>        
                             </tr>";
                             $bndEstatal = false;
-                }else if ($estudio->fuentes_monto[$i]['tipo_fuente'] === "E" && !$bndEstatal) {
+                }else if ($value->pivot->tipo_fuente  === "E" && !$bndEstatal) {
                     $tabla.="<tr nobr=\"true\">          
                                 <td class=\"celdaTablaFicha encabezado\">NOMBRE:</td>
-                                <td class=\"celdaTablaFicha\">" . $estudio->fuentes_monto[$i]['detalle_fuentes'][0]['descripcion'] . "</td>        
+                                <td class=\"celdaTablaFicha\">" . $value->descripcion . "</td>        
                                 <td class=\"celdaTablaFicha encabezado\">MONTO:</td>
-                                <td class=\"celdaTablaFicha\">$" . number_format($estudio->fuentes_monto[$i]['monto'], 2) . "</td>        
+                                <td class=\"celdaTablaFicha\">$" . number_format($value->pivot->monto, 2) . "</td>        
                                 <td class=\"celdaTablaFicha encabezado\">PORCENTAJE:</td>
                                 <td class=\"celdaTablaFicha\">%</td>       
                             </tr>";
                   $contadorEstatal++;          
                 }
                 $tabla = str_replace("numRowsEst", $contadorEstatal, $tabla);
-                // if ($estudio->fuentes_monto[$i]['tipo_fuente'] === "E" ) {
-                //     $numRowsEst = $numRowsEst + 1;
-                // }
-            }
-            echo $tabla;    
+        }
+        echo $tabla;
+
+
+         // for ($i = 0; $i < count($estudio->fuentes_monto); $i++) {
+         //        if ($estudio->fuentes_monto[$i]['tipo_fuente'] === "F" && $bndFederal) {
+         //            $tabla = "<tr >
+         //                        <td class=\"celdaTablaFicha encabezado\" rowspan=\"" . $numRowsFed . "\">FUENTES FEDERALES:</td>  
+         //                        <td class=\"celdaTablaFicha encabezado\">NOMBRE:</td>
+         //                        <td class=\"celdaTablaFicha\">" . $estudio->fuentes_monto[$i]['detalle_fuentes'][0]['descripcion']. "</td>        
+         //                        <td class=\"celdaTablaFicha encabezado\">MONTO:</td>
+         //                        <td class=\"celdaTablaFicha\">$" . number_format($estudio->fuentes_monto[$i]['monto'], 2) . "</td>        
+         //                        <td class=\"celdaTablaFicha encabezado\">PORCENTAJE:</td>
+         //                        <td class=\"celdaTablaFicha\">%</td>        
+         //                    </tr>";
+         //                    $bndFederal = false;
+         //        }else if ($estudio->fuentes_monto[$i]['tipo_fuente'] === "F" && !$bndFederal) {
+         //            $tabla.="<tr nobr=\"true\">          
+         //                        <td class=\"celdaTablaFicha encabezado\">NOMBRE:</td>
+         //                        <td class=\"celdaTablaFicha\">" . $estudio->fuentes_monto[$i]['detalle_fuentes'][0]['descripcion'] . "</td>        
+         //                        <td class=\"celdaTablaFicha encabezado\">MONTO:</td>
+         //                        <td class=\"celdaTablaFicha\">$" . number_format($estudio->fuentes_monto[$i]['monto'], 2) . "</td>        
+         //                        <td class=\"celdaTablaFicha encabezado\">PORCENTAJE:</td>
+         //                        <td class=\"celdaTablaFicha\">%</td>       
+         //                    </tr>";
+         //          $contadorFederal++;          
+         //        }
+         //        $tabla = str_replace("numRowsFed", $contadorFederal, $tabla);
+         //        if ($estudio->fuentes_monto[$i]['tipo_fuente'] === "E" && $bndEstatal) {
+         //            $tabla .="<tr nobr=\"true\">
+         //                        <td class=\"celdaTablaFicha encabezado\" rowspan=\"" . $numRowsFed . "\">FUENTES ESTATALES:</td>  
+         //                        <td class=\"celdaTablaFicha encabezado\">NOMBRE:</td>
+         //                        <td class=\"celdaTablaFicha\">" . $estudio->fuentes_monto[$i]['detalle_fuentes'][0]['descripcion']. "</td>        
+         //                        <td class=\"celdaTablaFicha encabezado\">MONTO:</td>
+         //                        <td class=\"celdaTablaFicha\">$" . number_format($estudio->fuentes_monto[$i]['monto'], 2) . "</td>        
+         //                        <td class=\"celdaTablaFicha encabezado\">PORCENTAJE:</td>
+         //                        <td class=\"celdaTablaFicha\">%</td>        
+         //                    </tr>";
+         //                    $bndEstatal = false;
+         //        }else if ($estudio->fuentes_monto[$i]['tipo_fuente'] === "E" && !$bndEstatal) {
+         //            $tabla.="<tr nobr=\"true\">          
+         //                        <td class=\"celdaTablaFicha encabezado\">NOMBRE:</td>
+         //                        <td class=\"celdaTablaFicha\">" . $estudio->fuentes_monto[$i]['detalle_fuentes'][0]['descripcion'] . "</td>        
+         //                        <td class=\"celdaTablaFicha encabezado\">MONTO:</td>
+         //                        <td class=\"celdaTablaFicha\">$" . number_format($estudio->fuentes_monto[$i]['monto'], 2) . "</td>        
+         //                        <td class=\"celdaTablaFicha encabezado\">PORCENTAJE:</td>
+         //                        <td class=\"celdaTablaFicha\">%</td>       
+         //                    </tr>";
+         //          $contadorEstatal++;          
+         //        }
+         //        $tabla = str_replace("numRowsEst", $contadorEstatal, $tabla);
+         //        // if ($estudio->fuentes_monto[$i]['tipo_fuente'] === "E" ) {
+         //        //     $numRowsEst = $numRowsEst + 1;
+         //        // }
+         //    }
+         //    echo $tabla;    
     @endphp
     @if ($estudio->hoja1->fuente_municipal)
         <tr>
@@ -524,4 +589,3 @@ if ($varFT > 0) {
     echo $tabla;
     @endphp
 </table>
-{{-- <pre>{{dd($estudio)}}</pre> --}}

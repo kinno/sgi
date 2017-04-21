@@ -28,10 +28,11 @@ class CreatePAnexoUnoEstudiosocioeconomico extends Migration
             $table->text('fuente_municipal')->nullable();
             $table->unsignedInteger('id_meta');
             $table->integer('cantidad_meta');
-            $table->decimal('cantidad_beneficiario',10,2);
+            $table->unsignedInteger('id_beneficiario')->nullable();
+            $table->decimal('cantidad_beneficiario',10,2)->nullable();
             $table->dateTime('fecha_captura');
             $table->tinyInteger('vida_proyecto');
-            $table->unsignedInteger('id_grupo_social');
+            $table->unsignedInteger('id_grupo_social')->nullable();
             $table->tinyInteger('duracion_anios');
             $table->tinyInteger('duracion_meses');
             $table->text('jfactibilidad_legal');

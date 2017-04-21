@@ -124,11 +124,13 @@ function guardarHoja1() {
             var data = response;
             if (!data.error_validacion) {
                 if (!data.error) {
-                    $.notify("Datos guardados correctamente.", "success");
+                    BootstrapDialog.mensaje (null, "Datos guardados correctamente.<br>Folio de Estudio Socioeconómico: "+data.id_estudio_socioeconomico, 1);
+                    // $.notify("Datos guardados correctamente.", "success");
                     $("#estudio_socioeconomico").val(data.id_estudio_socioeconomico);
                     $("#id_hoja_uno").val(data.id_anexo_uno_estudio);
                 } else {
-                    $.notify(data.error, "error");
+                     BootstrapDialog.mensaje (null,data.error, 3);
+                    // $.notify(data.error, "error");
                     if (data.error_validacion) {}
                 }
             } else {

@@ -88,6 +88,7 @@ class ModuloController extends Controller
     public function tabla ($ids = [])
     {
     	$menus = P_Menu::where('id_menu_padre', 0)->orderBy('orden', 'ASC')->get();
+        // dd($menus);
     	$x = 1;
     	$todo = true;
     	$salida = '';

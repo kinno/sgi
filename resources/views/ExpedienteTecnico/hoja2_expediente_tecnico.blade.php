@@ -25,11 +25,11 @@
                         <option value="">
                             Seleccione...
                         </option>
-                        @foreach($coberturas as $cobertura)
+                        {{-- @foreach($coberturas as $cobertura)
                         <option value="{{$cobertura->id}}">
                             {{$cobertura->nombre}}
                         </option>
-                        @endforeach
+                        @endforeach --}}
                     </select>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Seleccionar la cobertura y el nombre del
@@ -39,22 +39,22 @@
             <div class="panel-body" id="divRegiones" style="display:none;">
                 <div class="col-sm-12">
                     <select class="form-control input-md" id="id_region" multiple="multiple" name="id_region[]">
-                        @foreach($regiones as $region)
+                        {{-- @foreach($regiones as $region)
                         <option value="{{$region->id}}">
                             {{$region->clave_region}} {{$region->nombre_region}}
                         </option>
-                        @endforeach
+                        @endforeach --}}
                     </select>
                 </div>
             </div>
             <div class="panel-body" id="divMunicipios" style="display:none;">
                 <div class="col-sm-12">
                     <select class="form-control input-md" id="id_municipio" multiple="multiple" name="id_municipio[]">
-                        @foreach($municipios as $municipio)
+                       {{--  @foreach($municipios as $municipio)
                         <option value="{{$municipio->id}}">
                             {{$municipio->nombre_municipio}}
                         </option>
-                        @endforeach
+                        @endforeach --}}
                     </select>
                 </div>
             </div>
@@ -84,11 +84,11 @@
                         <option value="">
                             Seleccione...
                         </option>
-                        @foreach($localidades as $localidad)
+                       {{--  @foreach($localidades as $localidad)
                         <option value="{{$localidad->id}}">
                             {{$localidad->nombre_tipo_localidad}}
                         </option>
-                        @endforeach
+                        @endforeach --}}
                     </select>
                 </div>
             </div>
@@ -229,55 +229,6 @@
                     <span class="btn btn-danger fa fa-trash" title="Eliminar imagen" id="borrar_imagen"></span>
                 </div> 
             </div>
-            <div class="form-group col-md-10">
-                <label class="col-md-4 control-label" for="nomobra">
-                    Nombre del Responsable:
-                </label>
-                <div class="col-md-7">
-                    <input class="form-control input-md" id="nomresp" name="nomresp" type="text">
-                    </input>
-                </div>
-            </div>
-            <div class="form-group col-md-10">
-                <label class="col-md-4 control-label" for="nomobra">
-                    Cargo del Responsable:
-                </label>
-                <div class="col-md-7">
-                    <input class="form-control input-md" id="cargo" name="cargo" type="text">
-                    </input>
-                </div>
-            </div>
-            <div class="form-group col-md-10">
-                <label class="col-md-4 control-label" for="nomobra">
-                    Teléfono del Responsable:
-                </label>
-                <div class="col-md-7">
-                    <input class="form-control input-md" id="telresp" name="telresp" onkeypress="return justNumbers(event);" type="text">
-                    </input>
-                </div>
-            </div>
-            <div class="form-group col-md-10">
-                <label class="col-md-4 control-label" for="nomobra">
-                    Correo electrónico del Responsable:
-                </label>
-                <div class="col-md-7">
-                    <input class="form-control input-md" id="emailresp" name="emailresp" type="text">
-                    </input>
-                </div>
-            </div>
-            <div class="form-group col-md-10">
-                <div class="form-group col-md-1">
-                </div>
-                <label class="col-lg-6 control-label">
-                </label>
-                <h6>
-                    <font color="red" size="2">
-                        *
-                    </font>
-                    Campos obligatorios.
-                </h6>
-            </div>
-            <input hidden="true" id="listcob" name="listcob"/>
         </div>
     </div>
 </form>

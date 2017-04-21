@@ -81,7 +81,7 @@ function buscarEstudio() {
                             $("#sector").val(hoja1.sector.nombre);
                             arrAcuerdos = [];
                             for (var i = 0; i < acuerdos.length; i++) {
-                                arrAcuerdos.push(acuerdos[i].id_acuerdo);
+                                arrAcuerdos.push(acuerdos[i].id);
                             }
                             $("#accion_federal,#accion_estatal").val(arrAcuerdos).trigger('change');
                             $("#justificacion_obra").val(hoja1.justificacion_obra);
@@ -92,30 +92,30 @@ function buscarEstudio() {
                             $("#id_grupo_social").val(hoja1.id_grupo_social);
                             $("#id_meta").val(hoja1.id_meta);
                             $("#cantidad_meta").val(hoja1.cantidad_meta).autoNumeric('update');;
-                            // $("#id_beneficiario").val(hoja1.id_beneficiario);
+                            $("#id_beneficiario").val(hoja1.id_beneficiario);
                             $("#cantidad_beneficiario").val(hoja1.cantidad_beneficiario).autoNumeric('update');;
                             $("#duracion_anios").val(hoja1.duracion_anios);
                             $("#duracion_meses").val(hoja1.duracion_meses);
+                             j = 0;
                             for (var i = 0; i < fuentes.length; i++) {
-                                if (fuentes[i].tipo_fuente == 'F') {
+                                if (fuentes[i].pivot.tipo_fuente == 'F') {
                                     if (i === 0) {
-                                        $(".monfed:first").val(fuentes[i].monto).autoNumeric('update');
-                                        $('select[name="fuente_federal[]"]:eq(0) option[value=' + fuentes[i].id_fuente + ']').prop('selected', 'selected');
+                                        $(".monfed:first").val(fuentes[i].pivot.monto).autoNumeric('update');
+                                        $('select[name="fuente_federal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
                                     } else {
                                         addfed($(".monfed:first"), function() {
-                                            $(".monfed:eq(" + i + ")").val(fuentes[i].monto).autoNumeric('update');
-                                            $('select[name="fuente_federal[]"]:eq(' + i + ') option[value=' + fuentes[i].id_fuente + ']').prop('selected', 'selected');
+                                            $(".monfed:eq(" + i + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
+                                            $('select[name="fuente_federal[]"]:eq(' + i + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
                                         });
                                     }
                                 } else {
-                                    j = 0;
                                     if (j === 0) {
-                                        $(".monest:first").val(fuentes[i].monto).autoNumeric('update');
-                                        $('select[name="fuente_estatal[]"]:eq(0) option[value=' + fuentes[i].id_fuente + ']').prop('selected', 'selected');
+                                        $(".monest:first").val(fuentes[i].pivot.monto).autoNumeric('update');
+                                        $('select[name="fuente_estatal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
                                     } else {
                                         addest($(".monest:first"), function() {
-                                            $(".monest:eq(" + j + ")").val(fuentes[i].monto).autoNumeric('update');
-                                            $('select[name="fuente_estatal[]"]:eq(' + j + ') option[value=' + fuentes[i].id_fuente + ']').prop('selected', 'selected');
+                                            $(".monest:eq(" + j + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
+                                            $('select[name="fuente_estatal[]"]:eq(' + j + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
                                         });
                                     }
                                     j++;
@@ -183,7 +183,8 @@ function buscarEstudio() {
                                 $("#divRegiones").show(0, function() {
                                     arrRegiones = [];
                                     for (var i = 0; i < regiones.length; i++) {
-                                        arrRegiones.push(regiones[i].id_region);
+                                        // arrRegiones.push(regiones[i].id_region);
+                                        arrRegiones.push(regiones[i].id);
                                     }
                                     $("#id_region").select2({
                                         placeholder: "Seleccione la(s) región(es)"
@@ -199,7 +200,7 @@ function buscarEstudio() {
                                 $("#divMunicipios").show(0, function() {
                                     arrMunicipios = [];
                                     for (var i = 0; i < municipios.length; i++) {
-                                        arrMunicipios.push(municipios[i].id_municipio);
+                                        arrMunicipios.push(municipios[i].id);
                                     }
                                     $("#id_municipio").select2({
                                         placeholder: "Seleccione la(s) región(es)"

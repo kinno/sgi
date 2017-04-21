@@ -17,10 +17,7 @@ use App\P_Anexo_Dos_Estudiosocioeconomico;
 use App\P_Anexo_Uno_Estudiosocioeconomico;
 use App\P_Estudio_Socioeconomico;
 use App\P_Movimiento_Banco;
-use App\Rel_Estudio_Acuerdo;
 use App\Rel_Estudio_Fuente;
-use App\Rel_Estudio_Municipio;
-use App\Rel_Estudio_Region;
 use DB;
 use Illuminate\Http\Request;
 
@@ -34,6 +31,7 @@ class EstudioController extends Controller
     public function index()
     {
         $user = \Auth::user()->load('unidad_ejecutora')->load('sectores');
+        // dd($user);
         $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
         $accionesFederales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 4)->get();
         $accionesEstatales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 1)
@@ -48,20 +46,20 @@ class EstudioController extends Controller
         $beneficiarios  = Cat_Beneficiario::where('id', '>', 0)->get();
         $fuentesFederal = Cat_Fuente::where('tipo', '=', 'F')->get();
         $fuentesEstatal = Cat_Fuente::where('tipo', '=', 'E')->get();
-        $ue = array('id' => $user->unidad_ejecutora->id,'nombre'=>$user->unidad_ejecutora->nombre);
-        $sector = array('id' => $user->sectores[0]->id,'nombre'=>$user->sectores[0]->nombre);
+        $ue             = array('id' => $user->unidad_ejecutora->id, 'nombre' => $user->unidad_ejecutora->nombre);
+        $sector         = array('id' => $user->sectores[0]->id, 'nombre' => $user->sectores[0]->nombre);
 
         // dump($accionesFederales);
-        return view('EstudioSocioeconomico.index', compact('ejercicios', 'accionesFederales', 'accionesEstatales', 'grupoSocial', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal','ue','sector'));
+        return view('EstudioSocioeconomico.index', compact('ejercicios', 'accionesFederales', 'accionesEstatales', 'grupoSocial', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector'));
     }
 
     public function buscar_estudio(Request $request)
     {
         try {
 
-            $estudio = P_Estudio_Socioeconomico::with(['hoja1.sector','hoja1.unidad_ejecutora', 'hoja2', 'acuerdos', 'fuentes_monto', 'regiones', 'municipios'])->findOrFail($request->id_estudio_socioeconomico);
+            $estudio = P_Estudio_Socioeconomico::with(['hoja1.sector', 'hoja1.unidad_ejecutora', 'hoja2', 'acuerdos', 'fuentes_monto', 'regiones', 'municipios'])->findOrFail($request->id_estudio_socioeconomico);
 
-            if ($estudio->id_estatus == 1||$estudio->id_estatus == 5) {
+            if ($estudio->id_estatus == 1 || $estudio->id_estatus == 5) {
                 //*CREACIÓN/EDICION    DEVOLUCIÓN A DEPENDENCIA
                 $estudio['rutaReal'] = asset('/uploads/');
                 return $estudio;
@@ -74,7 +72,7 @@ class EstudioController extends Controller
         } catch (\Exception $e) {
             $estudio            = array();
             $estudio['message'] = $e->getMessage();
-            $estudio['trace'] = $e->getTrace();
+            $estudio['trace']   = $e->getTrace();
             $estudio['error']   = "No existe ese número de Estudio Socioeconomico";
             return ($estudio);
         }
@@ -157,6 +155,7 @@ class EstudioController extends Controller
             $hoja1->monto_municipal             = ($request->monto_fuente_municipal == "") ? null : str_replace(",", "", $request->monto_fuente_municipal);
             $hoja1->fuente_municipal            = $request->fuente_municipal;
             $hoja1->id_meta                     = $request->id_meta;
+            $hoja1->id_beneficiario             = $request->id_beneficiario;
             $hoja1->cantidad_meta               = str_replace(",", "", $request->cantidad_meta);
             $hoja1->cantidad_beneficiario       = ($request->cantidad_beneficiario == "") ? null : str_replace(",", "", $request->cantidad_beneficiario);
             $hoja1->fecha_captura               = date('Y-m-d H:i:s');
@@ -167,81 +166,93 @@ class EstudioController extends Controller
             $hoja1->jfactibilidad_legal         = $factibilidad_legal;
             $hoja1->jfactibilidad_ambiental     = $factibilidad_ambiental;
             $hoja1->jfactibilidad_tecnica       = $factibilidad_tecnica;
+            $hoja1->id_usuario                  = \Auth::user()->id;
 
             $hoja1->save();
 
             if ($bNuevo) {
                 //Guardamos la relacion del Anexo 1 a la tabla estudio socioeconomuico
                 $estudio_socioeconomico                       = new P_Estudio_Socioeconomico;
-                $estudio_socioeconomico->ejercicio = $request->ejercicio;
+                $estudio_socioeconomico->ejercicio            = $request->ejercicio;
                 $estudio_socioeconomico->id_anexo_uno_estudio = $hoja1->id;
                 $estudio_socioeconomico->id_estatus           = 1;
                 $estudio_socioeconomico->fecha_registro       = date('Y-m-d H:i:s');
+                $estudio_socioeconomico->id_usuario           = \Auth::user()->id;
                 $estudio_socioeconomico->save();
 
                 $id_estudio_socioeconomico = $estudio_socioeconomico->id;
             } else {
                 //obtener el id del estudio que se quiere actualizar
-                $id_estudio_socioeconomico = $request->estudio_socioeconomico;
-
-                $delRelEstFte = Rel_Estudio_Fuente::where('id_estudio_socioeconomico', '=', $id_estudio_socioeconomico)->delete();
-
-                $delRelEstAcu = Rel_Estudio_Acuerdo::where('id_estudio_socioeconomico', '=', $id_estudio_socioeconomico)->delete();
+                $estudio_socioeconomico             = P_Estudio_Socioeconomico::find($request->estudio_socioeconomico);
+                $estudio_socioeconomico->save();
+                $estudio_socioeconomico->id_usuario = \Auth::user()->id;
+                // $delRelEstFte                       = Rel_Estudio_Fuente::where('id_estudio_socioeconomico', '=', $estudio_socioeconomico->id)->delete();
 
             }
             // dd($id_estudio_socioeconomico);
             // Guardado de la relacion de fuentes con el estudio
+            $syncArray = array();
             if (isset($request->fuente_federal[0])) {
                 foreach ($request->fuente_federal as $key => $value) {
-                    $relEstFte                            = new Rel_Estudio_Fuente;
-                    $relEstFte->id_estudio_socioeconomico = $id_estudio_socioeconomico;
-                    $relEstFte->id_fuente                 = $value;
-                    $relEstFte->monto                     = str_replace(",", "", $request->monto_fuente_federal[$key]);
-                    $relEstFte->tipo_fuente               = 'F';
-                    $relEstFte->save();
+                   $syncArray[$value]=array('id_estudio_socioeconomico'=>$estudio_socioeconomico->id,
+                        'monto'=>str_replace(",", "", $request->monto_fuente_federal[$key]),
+                        'tipo_fuente'=>'F');
+                    // $relEstFte                            = new Rel_Estudio_Fuente;
+                    // $relEstFte->id_estudio_socioeconomico = $estudio_socioeconomico->id;
+                    // $relEstFte->id_fuente                 = $value;
+                    // $relEstFte->monto                     = str_replace(",", "", $request->monto_fuente_federal[$key]);
+                    // $relEstFte->tipo_fuente               = 'F';
+                    // $relEstFte->save();
                 }
             }
 
             if (isset($request->fuente_estatal[0])) {
                 foreach ($request->fuente_estatal as $key => $value) {
-                    $relEstFte                            = new Rel_Estudio_Fuente;
-                    $relEstFte->id_estudio_socioeconomico = $id_estudio_socioeconomico;
-                    $relEstFte->id_fuente                 = $value;
-                    $relEstFte->monto                     = str_replace(",", "", $request->monto_fuente_estatal[$key]);
-                    $relEstFte->tipo_fuente               = 'E';
-                    $relEstFte->save();
+                    // array_push($syncArray, array($value=>array('id_estudio_socioeconomico'=>$estudio_socioeconomico->id,
+                        // 'monto'=>str_replace(",", "", $request->monto_fuente_estatal[$key]),
+                        // 'tipo_fuente'=>'E')));
+                        $syncArray[$value]=array('id_estudio_socioeconomico'=>$estudio_socioeconomico->id,
+                        'monto'=>str_replace(",", "", $request->monto_fuente_estatal[$key]),
+                        'tipo_fuente'=>'E');
+                    // $relEstFte                            = new Rel_Estudio_Fuente;
+                    // $relEstFte->id_estudio_socioeconomico = $estudio_socioeconomico->id;
+                    // $relEstFte->id_fuente                 = $value;
+                    // $relEstFte->monto                     = str_replace(",", "", $request->monto_fuente_estatal[$key]);
+                    // $relEstFte->tipo_fuente               = 'E';
+                    // $relEstFte->save();
                 }
             }
+            // dd($syncArray);
+                        
+            $estudio_socioeconomico->fuentes_monto()->sync($syncArray);
 
             //Guardado de la relacion de acuerdos con el estudio
-            if (isset($request->accion_federal[0])) {
-                foreach ($request->accion_federal as $value) {
-                    $relEstAcu                            = new Rel_Estudio_Acuerdo;
-                    $relEstAcu->id_estudio_socioeconomico = $id_estudio_socioeconomico;
-                    $relEstAcu->id_acuerdo                = $value;
-                    $relEstAcu->save();
-
-                }
+            if (isset($request->accion_federal) && isset($request->accion_estatal)) {
+                $acciones = array_merge($request->accion_federal, $request->accion_estatal);
+            } elseif (isset($request->accion_federal) && !isset($request->accion_estatal)) {
+                $acciones = array_merge($request->accion_federal);
+            } elseif (!isset($request->accion_federal) && isset($request->accion_estatal)) {
+                $acciones = array_merge($request->accion_estatal);
+            } else {
+                $acciones = null;
             }
 
-            if (isset($request->accion_estatal[0])) {
-                foreach ($request->accion_estatal as $value) {
-                    $relEstAcu                            = new Rel_Estudio_Acuerdo;
-                    $relEstAcu->id_estudio_socioeconomico = $id_estudio_socioeconomico;
-                    $relEstAcu->id_acuerdo                = $value;
-                    $relEstAcu->save();
-                }
+            if (isset($acciones)) {
+                $estudio_socioeconomico->acuerdos()->sync($acciones);
+            } else {
+                $estudio_socioeconomico->acuerdos()->detach();
             }
+
             DB::commit();
 
             $estudio['id_anexo_uno_estudio']      = $hoja1->id;
-            $estudio['id_estudio_socioeconomico'] = $id_estudio_socioeconomico;
+            $estudio['id_estudio_socioeconomico'] = $estudio_socioeconomico->id;
             return $estudio;
         } catch (\Exception $e) {
             DB::rollback();
             $estudio            = array();
             $estudio['message'] = $e->getMessage();
-            $estudio['trace'] = $e->getTrace();
+            $estudio['trace']   = $e->getTrace();
             $estudio['error']   = "Aviso: Ocurrió un error al guardar.";
             return ($estudio);
         }
@@ -256,7 +267,8 @@ class EstudioController extends Controller
 
         $validator = \Validator::make($request->all(), [
             'id_cobertura'              => 'required',
-            'id_region'                 => 'required',
+            'id_region'                 => 'required_without:id_municipio',
+            'id_municipio'              => 'required_without:id_region',
             'id_tipo_localidad'         => 'required',
             'bcoordenadas'              => 'required',
             'observaciones_coordenadas' => 'required_if:bcoordenadas,2',
@@ -313,41 +325,25 @@ class EstudioController extends Controller
             }
 
             $hoja2->save();
+            $estudio_socioeconomico = P_Estudio_Socioeconomico::find($request->id_estudio_socioeconomico);
+
+            if (isset($request->id_region)) {
+                $estudio_socioeconomico->regiones()->sync($request->id_region);
+            } else {
+                $estudio_socioeconomico->regiones()->detach();
+            }
+
+            if (isset($request->id_municipio)) {
+                $estudio_socioeconomico->municipios()->sync($request->id_municipio);
+            } else {
+                $estudio_socioeconomico->municipios()->detach();
+            }
 
             //Guardamos la relacion del Anexo 2 a la tabla estudio socioeconomuico
             if ($bNuevo) {
-                $estudio_socioeconomico                       = P_Estudio_Socioeconomico::find($request->id_estudio_socioeconomico);
                 $estudio_socioeconomico->id_anexo_dos_estudio = $hoja2->id;
+                $estudio_socioeconomico->id_usuario= \Auth::user()->id;
                 $estudio_socioeconomico->save();
-                $id_estudio_socioeconomico = $estudio_socioeconomico->id;
-            } else {
-                //obtener el id del estudio que se quiere actualizar
-                $id_estudio_socioeconomico = $request->id_estudio_socioeconomico;
-
-                $delRelEstMun = Rel_Estudio_Municipio::where('id_estudio_socioeconomico', '=', $id_estudio_socioeconomico)->delete();
-
-                $delRelEstReg = Rel_Estudio_Region::where('id_estudio_socioeconomico', '=', $id_estudio_socioeconomico)->delete();
-
-            }
-            // dd($request->all());
-            // Guardado de la relacion de regiones con el estudio
-            if (isset($request->id_region)) {
-                foreach ($request->id_region as $key => $value) {
-                    $relEstReg                            = new Rel_Estudio_Region;
-                    $relEstReg->id_estudio_socioeconomico = $id_estudio_socioeconomico;
-                    $relEstReg->id_region                 = $value;
-                    $relEstReg->save();
-                }
-            }
-
-            // Guardado de la relacion de municipios con el estudio
-            if (isset($request->id_municipio)) {
-                foreach ($request->id_municipio as $key => $value) {
-                    $relEstMun                            = new Rel_Estudio_Municipio;
-                    $relEstMun->id_estudio_socioeconomico = $id_estudio_socioeconomico;
-                    $relEstMun->id_municipio              = $value;
-                    $relEstMun->save();
-                }
             }
 
             if (isset($imagen_anterior)) {
@@ -359,7 +355,7 @@ class EstudioController extends Controller
             DB::commit();
 
             $estudio['id_anexo_dos_estudio']      = $hoja2->id;
-            $estudio['id_estudio_socioeconomico'] = $id_estudio_socioeconomico;
+            $estudio['id_estudio_socioeconomico'] = $estudio_socioeconomico->id;
 
             return $estudio;
 
@@ -367,7 +363,7 @@ class EstudioController extends Controller
             DB::rollback();
             $estudio            = array();
             $estudio['message'] = $e->getMessage();
-            $estudio['trace'] = $e->getTrace();
+            $estudio['trace']   = $e->getTrace();
             $estudio['error']   = "Aviso: Ocurrió un error al guardar.";
             return ($estudio);
         }
@@ -399,7 +395,7 @@ class EstudioController extends Controller
             DB::rollback();
             $estudio            = array();
             $estudio['message'] = $e->getMessage();
-            $estudio['trace'] = $e->getTrace();
+            $estudio['trace']   = $e->getTrace();
             $estudio['error']   = "Aviso: Ocurrió un error al enviar a dictaminar.";
             return ($estudio);
         }
@@ -412,14 +408,14 @@ class EstudioController extends Controller
         $movimiento_banco->id_estudio_socioeconomico = $id_estudio_socioeconomico;
         $movimiento_banco->fecha_movimiento          = date('Y-m-d H:i:s');
         $movimiento_banco->id_tipo_movimiento        = 2;
-        $movimiento_banco->status = 'bloqueado';
+        $movimiento_banco->status                    = 'bloqueado';
         $movimiento_banco->save();
         return $movimiento_banco->id;
     }
 
     public function ficha_tecnica($id_estudio_socioeconomico)
     {
-        $estudio       = P_Estudio_Socioeconomico::with(['hoja1', 'hoja2', 'acuerdos', 'fuentes_monto.detalle_fuentes', 'regiones.detalle_regiones', 'municipios.detalle_municipios'])->findOrFail($id_estudio_socioeconomico);
+        $estudio       = P_Estudio_Socioeconomico::with(['hoja1.sector', 'hoja1.unidad_ejecutora','hoja2','acuerdos', 'fuentes_monto', 'regiones', 'municipios'])->findOrFail($id_estudio_socioeconomico);
         $arrayAcuerdos = array();
         foreach ($estudio->acuerdos as $key => $value) {
             array_push($arrayAcuerdos, $value->id_acuerdo);

@@ -1,0 +1,302 @@
+<div class="panel panel-default" id="clictotal">
+    <div class="panel-heading">
+        <h1 class="panel-title">
+            <strong>
+                ANEXO 4
+            </strong>
+        </h1>
+    </div>
+    <div class="panel-body">
+        <div class="form-group panel-body">
+            <div class="row">
+                <p class="panel-title col-md-12 panel-body">
+                    <strong>
+                        PROGRAMA DE OBRA O ACCIÓN
+                        <span class="glyphicon glyphicon-question-sign ayuda" title="Muestra la programación 
+                      mensual y los principales conceptos de trabajo del gasto total de la obra o 
+                      acción. Objetivo: Integrar el calendario de las principales actividades para 
+                      llevar a cabo la obra o acción.">
+                        </span>
+                    </strong>
+                </p>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12" id="divTabContratosAdmin" role="tabpanel">
+                    <ul class="nav nav-tabs" id="tabHoja4Admin" role="tablist">
+                        <li class="active" role="presentation">
+                            <a data-toggle="tab" href="#tabFisicoAdmin" role="tab">
+                                Avance físico
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a data-toggle="tab" href="#tabFinancieroAdmin" role="tab">
+                                Avance financiero
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabFisicoAdmin" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-12 panel-body">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <b>
+                                                Programa de Avance Físico (%)
+                                            </b>
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>
+                                                Para el programa en general
+                                            </p>
+                                            <table class="table table-bordered" id="tabla1Admin">
+                                                <thead>
+                                                    <tr style="font-size: 12px;">
+                                                        <th style="display: none;">
+                                                        </th>
+                                                        <th style=" text-align:center; vertical-align: middle;">
+                                                            Concepto de Trabajo
+                                                        </th>
+                                                        <th>
+                                                            ENE
+                                                        </th>
+                                                        <th>
+                                                            FEB
+                                                        </th>
+                                                        <th>
+                                                            MAR
+                                                        </th>
+                                                        <th>
+                                                            ABRL
+                                                        </th>
+                                                        <th>
+                                                            MAY
+                                                        </th>
+                                                        <th>
+                                                            JUN
+                                                        </th>
+                                                        <th>
+                                                            JUL
+                                                        </th>
+                                                        <th>
+                                                            AGO
+                                                        </th>
+                                                        <th>
+                                                            SEP
+                                                        </th>
+                                                        <th>
+                                                            OCT
+                                                        </th>
+                                                        <th>
+                                                            NOV
+                                                        </th>
+                                                        <th>
+                                                            DIC
+                                                        </th>
+                                                        <th>
+                                                            TOTAL
+                                                        </th>
+                                                        <th>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <span class="btn btn-default" id="btnAddModal1Admin">
+                                                Agregar
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabFinancieroAdmin" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-12 panel-body">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <b>
+                                                Calendario de administración de recursos
+                                            </b>
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>
+                                                Para el programa en general
+                                            </p>
+                                            <table border="1" class="table table-hover" id="tabla2Admin">
+                                                <thead>
+                                                    <tr>
+                                                        <td class="success">
+                                                            Mes
+                                                        </td>
+                                                        <td class="success">
+                                                            Monto
+                                                        </td>
+                                                        <td class="success">
+                                                            Acumulado
+                                                        </td>
+                                                        <td class="success">
+                                                            %
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            ENERO
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="meseneAdmin" name="meseneAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            FEBRERO
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesfebAdmin" name="mesfebAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            MARZO
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesmarAdmin" name="mesmarAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            ABRIL
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesabrAdmin" name="mesabrAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            MAYO
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesmayAdmin" name="mesmayAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            JUNIO
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesjunAdmin" name="mesjunAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            JULIO
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesjulAdmin" name="mesjulAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            AGOSTO
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesagoAdmin" name="mesagoAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            SEPTIEMBRE
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="messepAdmin" name="messepAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            OCTUBRE
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesoctAdmin" name="mesoctAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            NOVIEMBRE
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesnovAdmin" name="mesnovAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            DICIEMBRE
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesdicAdmin" name="mesdicAdmin" type="text" value=""/>
+                                                        </td>
+                                                        <td class="acumesfinaAdmin">
+                                                        </td>
+                                                        <td class="pjeAcuFinaAdmin">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

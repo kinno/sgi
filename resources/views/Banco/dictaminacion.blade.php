@@ -36,7 +36,7 @@
                         </span>
                         <span class="btn btn-success fa fa-check-square-o" id="dictaminar" title="Dictaminar">
                         </span>
-                        <span class="btn btn-success fa fa-file-pdf-o" id="evaluacion_pdf" title="Imprimir ficha técnica" >
+                        <span class="btn btn-success fa fa-file-pdf-o" id="evaluacion_pdf" title="Imprimir dictámen" >
                         </span>
                     </form>
                 </div>

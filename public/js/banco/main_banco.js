@@ -293,8 +293,8 @@ function buscar_info_estudio_banco() {
                 $("#tMonto").autoNumeric();
                 $("#tFecCap").html(data.fecha_registro);
                 $("#tNomSol").html(data.hoja1.nombre_obra);
-                $("#tSector").html(data.hoja1.id_sector);
-                $("#tUE").html(data.hoja1.id_unidad_ejecutora);
+                $("#tSector").html(data.hoja1.sector.nombre);
+                $("#tUE").html(data.hoja1.unidad_ejecutora.nombre);
                 $("#tEjercicio").html(data.hoja1.ejercicio);
                 $("#tPriCar").html(data.hoja1.principales_caracteristicas);
                 $("#tDurAnio").html(data.hoja1.duracion_anios);
@@ -305,9 +305,9 @@ function buscar_info_estudio_banco() {
                 var fuentesEstatales = "";
                 for (var i = 0; i < data.fuentes_monto.length; i++) {
                     if (data.fuentes_monto[i].tipo_fuente == "F") {
-                        fuentesFederales = fuentesFederales + "<span class='number' style='font-weight:bold;'>" + data.fuentes_monto[i].monto + "</span> (" + data.fuentes_monto[i].detalle_fuentes[0].descripcion + ")<br>";
+                        fuentesFederales = fuentesFederales + "<span class='number' style='font-weight:bold;'>" + data.fuentes_monto[i].pivot.monto + "</span> (" + data.fuentes_monto[i].pivot.descripcion + ")<br>";
                     } else {
-                        fuentesEstatales = fuentesEstatales + "<span class='number' style='font-weight:bold;'>" + data.fuentes_monto[i].monto + "</span> (" + data.fuentes_monto[i].detalle_fuentes[0].descripcion + ")<br>";
+                        fuentesEstatales = fuentesEstatales + "<span class='number' style='font-weight:bold;'>" + data.fuentes_monto[i].pivot.monto + "</span> (" + data.fuentes_monto[i].descripcion + ")<br>";
                     }
                 }
                 if (fuentesFederales === "") {
@@ -525,15 +525,19 @@ function guardarEvaluacion(callback) {
             success: function(response) {
                 if (!response.error) {
                     if (!response.dictamen) {
-                        $.notify("Datos guardados", "success");
+                        BootstrapDialog.mensaje (null,"Evaluación guardada correctamente", 1);
+                        // $.notify("Datos guardados", "success");
                     } else {
-                        $.notify("Se generó el dictamen: " + response.dictamen, "success");
+                        // $.notify("Se generó el dictamen: " + response.dictamen, "success");
+                         BootstrapDialog.mensaje (null,"Se generó el dictamen: " + response.dictamen, 1);
                         $("#btnEvaluacionPdf").css('display', 'block');
                         $("#guardar,#enviar_observaciones,#dictaminar").hide();
                         imprime_dictamen(response.id_estudio_socioeconomico);
                     }
                 } else {
-                    $.notify("Error: Ocurrió un error al guardar", "error");
+                    BootstrapDialog.mensaje (null,response.error, 3);
+
+                    // $.notify("Error: Ocurrió un error al guardar", "error");
                 }
                 // var info = jQuery.parseJSON(response);
                 // console.log(info);
@@ -719,7 +723,7 @@ function ingresarEstFisico() {
 
 function imprime_dictamen(id_estudio_socioeconomico) {
     if (id_estudio_socioeconomico) {
-        window.open('/Banco/imprime_dictamen/' + id_estudio_socioeconomico + '', '_blank');
+        window.open('/Banco/imprime_dictamen/' + id_estudio_socioeconomico + '/0', '_blank');
     } else {
         $("#id_estudio_socioeconomico").notify("No se ha ingresado ningún Estudio Socioeconómico", "warn");
     }

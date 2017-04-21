@@ -20,9 +20,9 @@ Route::get('/', function () {
 		return view('auth.login');
 	}
     
-});
+})->name('inicio');
 
-Route::get('/EstudioSocioeconomico/crear_estudio', 'EstudioSocioeconomico\EstudioController@index');
+Route::get('/EstudioSocioeconomico/crear_estudio', 'EstudioSocioeconomico\EstudioController@index')->name('creacion');
 Route::post('/EstudioSocioeconomico/buscar_estudio', 'EstudioSocioeconomico\EstudioController@buscar_estudio');
 Route::post('/EstudioSocioeconomico/guardar_hoja_1', 'EstudioSocioeconomico\EstudioController@guardar_hoja_1');
 Route::post('/EstudioSocioeconomico/guardar_hoja_2', 'EstudioSocioeconomico\EstudioController@guardar_hoja_2');
@@ -31,13 +31,18 @@ Route::post('/EstudioSocioeconomico/enviar_dictaminar', 'EstudioSocioeconomico\E
 Route::get('/EstudioSocioeconomico/ficha_tecnica/{id_estudio_socioeconomico}', 'EstudioSocioeconomico\EstudioController@ficha_tecnica');
 
 // Rutas Banco
-
-Route::get('/Banco/dictaminacion','Banco\BancoController@index');
+Route::get('/Banco/dictaminacion','Banco\BancoController@index')->name('dictaminacion');
 Route::post('/Banco/obtener_tipo_evaluacion','Banco\BancoController@obtener_tipo_evaluacion');
 Route::post('/Banco/buscar_estudio','Banco\BancoController@buscar_estudio');
 Route::post('/Banco/guardar_evaluacion','Banco\BancoController@guardar_evaluacion');
-Route::get('/Banco/imprime_dictamen/{id_estudio_socioeconomico}','Banco\BancoController@imprime_dictamen');
+Route::get('/Banco/imprime_dictamen/{id_estudio_socioeconomico}/{dictamen}','Banco\BancoController@imprime_dictamen');
+Route::get('/Banco/consultas_banco','Banco\ConsultasBancoController@index')->name('consulta_banco');
+Route::get('/Banco/get_datos_consulta','Banco\ConsultasBancoController@getData');
+Route::get('/Banco/get_datos_movimientos/{id_estudio_socioeconomico}','Banco\ConsultasBancoController@getDetailsData');
+Route::get('/Banco/get_datos_comentarios/{id_evaluacion}','Banco\ConsultasBancoController@getComentariosDetail');
 
+// Rutas Expediente Técnico
+Route::get('/ExpedienteTecnico/crear_expediente','ExpedienteTecnico\ExpedienteTecnico@index')->name('creacionExpediente');
 
 // Rutas Catalogo - Sector
 Route::group(['prefix' => 'Catalogo'], function() {

@@ -10,14 +10,24 @@
         <span class="icon-bar">
         </span>
     </button>
-    <a class="navbar-brand" href="/">
+    <div class="logoHeader">
+      <img src="/images/gem.png" >  
+    </div>
+    <div class="titleHeader">
+        Sistema de Gasto de Inversión
+    </div>
+        {{-- {!! Breadcrumbs::renderIfExists() !!} --}}
+
+   
+    {{-- <span class="navbar-brand">
         Sistema de Gasto de Inversión {2017}
-    </a>
+    </span> --}}
 </div>
+
 <!-- Top Menu Items -->
 <ul class="nav navbar-right top-nav">
     <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        {{-- <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             <i class="fa fa-envelope">
             </i>
             <b class="caret">
@@ -170,7 +180,7 @@
                 </a>
             </li>
         </ul>
-    </li>
+    </li> --}}
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             <i class="fa fa-user">
@@ -215,3 +225,4 @@
         </ul>
     </li>
 </ul>
+{{-- {{!!Breadcrumbs::render()!!}} --}}

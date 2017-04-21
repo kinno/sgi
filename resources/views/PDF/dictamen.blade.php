@@ -1,4 +1,4 @@
-
+{{-- {{dd($estudio)}} --}}
 <style>
 .tablaFicha{
         width: 100%;
@@ -101,7 +101,9 @@
 	</tr>
 	<tr>
 		<th>Sector:</th>
-		<td class="contenido"></td>
+		<td class="contenido">
+			{{$estudio->hoja1->sector->nombre}}
+		</td>
 	</tr>
 	<tr>
 		<th>Tipo de PPI:</th>
@@ -111,23 +113,25 @@
 	@php
 		foreach ($estudio->fuentes_monto as $value) {
 			if($value->tipo_fuente=="F"){
-				echo '<th>Fuente de Financiamiento Federal</th><td class="contenido">'.number_format($value->monto,2).' '.$value->detalle_fuentes[0]->descripcion.'</td>';	
+				echo '<th>Fuente de Financiamiento Federal</th><td class="contenido">'.number_format($value->pivot->monto,2).' '.$value->descripcion.'</td>';	
 			}else{
-				echo '<th>Fuente de Financiamiento Estatal</th><td class="contenido">'.number_format($value->monto,2).' '.$value->detalle_fuentes[0]->descripcion.'</td>';
+				echo '<th>Fuente de Financiamiento Estatal</th><td class="contenido">'.number_format($value->pivot->monto,2).' '.$value->descripcion.'</td>';
 			}
 		}
 	@endphp
 	</tr>
 	<tr>
 		<th>Unidad Responsable:</th>
-		<td class="contenido"></td>
+		<td class="contenido">
+			{{$estudio->hoja1->unidad_ejecutora->nombre}}
+		</td>
 	</tr>
 	<tr>
 		<th>Observaciones generales:</th>
 		<td class="contenido">{{$estudio->indicadores[0]->observaciones}}</td>
 	</tr>
 </table>
-c<br>
+<br>
 <h5 align="center">RESULTADO DEL DICTAMEN</h5>
 <table class="general">
 <tr>
@@ -264,4 +268,4 @@ c<br>
 
 </table>
 {{-- {{dd($puntos)}} --}}
-{{-- {{dd($estudio)}} --}}
+
