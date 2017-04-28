@@ -15,20 +15,21 @@ class CreateSolicitudTable extends Migration
     {
         Schema::create('p_expediente_tecnico', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_estudio_socioeconomico');
-            $table->integer('id_obra');
-            $table->integer('id_estatus');
-            $table->integer('id_usuario');
+            $table->unsignedInteger('id_estudio_socioeconomico')->nullable();
+            $table->unsignedInteger('id_obra')->nullable();
+            $table->unsignedInteger('id_tipo_solicitud')->nullable();
+            $table->unsignedInteger('id_estatus');
+            $table->unsignedInteger('id_usuario');
             $table->smallInteger('ejercicio');
-            $table->integer('id_anexo_uno');
-            $table->integer('id_anexo_dos');
-            $table->integer('id_anexo_cinco');
-            $table->integer('id_anexo_seis');
+            $table->unsignedInteger('id_anexo_uno')->nullable();
+            $table->unsignedInteger('id_anexo_dos')->nullable();
+            $table->unsignedInteger('id_anexo_cinco')->nullable();
+            $table->unsignedInteger('id_anexo_seis')->nullable();
             $table->dateTime('fecha_creacion');
-            $table->dateTime('fecha_envio');
-            $table->dateTime('fecha_ingreso');
-            $table->dateTime('fecha_evaluacion');
-            $table->dateTime('fecha_modificacion');
+            $table->dateTime('fecha_envio')->nullable();
+            $table->dateTime('fecha_ingreso')->nullable();
+            $table->dateTime('fecha_evaluacion')->nullable();
+            $table->dateTime('fecha_modificacion')->nullable();
             $table->timestamps();
 
 

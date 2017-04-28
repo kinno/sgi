@@ -1,0 +1,53 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class P_Expediente_Tecnico extends Model
+{
+    protected $table = "p_expediente_tecnico";
+
+    public function tipoSolicitud(){
+    	return $this->hasOne('App\Cat_Solicitud_Presupuesto','id','id_tipo_solicitud');
+    }
+
+     public function hoja1()
+    {
+        return $this->hasOne('App\P_Anexo_Uno', 'id', 'id_anexo_uno');
+    }
+
+    public function hoja2()
+    {
+        return $this->hasOne('App\P_Anexo_Dos', 'id', 'id_anexo_dos');
+    }
+    
+
+     public function acuerdos()
+    {
+        return $this->belongsToMany('App\Cat_Acuerdo','rel_expediente_acuerdo','id_expediente_tecnico','id_acuerdo');
+        // return $this->hasMany('App\Rel_Estudio_Acuerdo', 'id_estudio_socioeconomico', 'id');
+    }
+
+    public function fuentes_monto()
+    {
+        return $this->belongsToMany('App\Cat_Fuente','rel_expediente_fuente','id_expediente_tecnico', 'id_fuente')->withPivot('monto', 'tipo_fuente')->withTimestamps();
+        // return $this->hasMany('App\Rel_Estudio_Fuente', 'id_estudio_socioeconomico', 'id');
+    }
+
+    public function regiones()
+    {
+        return $this->belongsToMany('App\Cat_Region', 'rel_expediente_region', 'id_expediente_tecnico', 'id_region');
+        // return $this->hasMany('App\Rel_Estudio_Region', 'id_estudio_socioeconomico', 'id');
+    }
+
+    public function municipios()
+    {   
+        return $this->belongsToMany('App\Cat_Municipio', 'rel_expediente_municipio', 'id_expediente_tecnico', 'id_municipio');
+        // return $this->hasMany('App\Rel_Estudio_Municipio', 'id_estudio_socioeconomico', 'id');
+    }
+
+    public function conceptos(){
+        return $this->hasMany('App\P_Presupuesto_Obra','id_expediente_tecnico','id');
+    }
+}

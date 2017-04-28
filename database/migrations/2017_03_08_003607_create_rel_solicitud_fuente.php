@@ -18,6 +18,8 @@ class CreateRelSolicitudFuente extends Migration
            $table->unsignedInteger('id_expediente_tecnico');
            $table->integer('id_fuente');
            $table->decimal('monto',10,2);
+           
+           $table->char('tipo_fuente', 1);
            //
        });
     }

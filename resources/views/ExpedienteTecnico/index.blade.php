@@ -1,6 +1,9 @@
 @extends('layouts.master')
 @section('content')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.css"/>
+<script type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js">
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-filestyle/1.2.1/bootstrap-filestyle.js">
@@ -48,7 +51,7 @@
                     </p>
                     <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
-                            <input class="form-control text-right num" id="id_expediente_tecnico" name="id_expediente_tecnico" placeholder="Buscar" type="text" value="">
+                            <input class="form-control text-right num" id="id_expediente_tecnico_search" name="id_expediente_tecnico_search" placeholder="Buscar" type="text" value="">
                             </input>
                         </div>
                         <span class="btn btn-default fa fa-search" id="buscar" title="Buscar Solicitud">
@@ -133,4 +136,12 @@
         </input>
     </div>
 </div>
+<script src="{{ asset('js/Expediente_Tecnico/main_expediente_tecnico.js') }}">
+</script>
+<script src="{{ asset('js/Expediente_Tecnico/hoja1_expediente_tecnico.js') }}">
+</script>
+<script src="{{ asset('js/Expediente_Tecnico/hoja2_expediente_tecnico.js') }}">
+</script>
+<script src="{{ asset('js/Expediente_Tecnico/hoja3_expediente_tecnico.js') }}">
+</script>
 @endsection

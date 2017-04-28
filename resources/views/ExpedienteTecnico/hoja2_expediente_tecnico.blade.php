@@ -6,7 +6,7 @@
                 <strong>
                     ANEXO 2
                     <input id="id_hoja_dos" name="id_hoja_dos" type="hidden">
-                        <input id="id_estudio_socioeconomico" name="id_estudio_socioeconomico" type="hidden">
+                        <input id="id_expediente_tecnico" name="id_expediente_tecnico" type="hidden">
                         </input>
                     </input>
                 </strong>
@@ -25,11 +25,11 @@
                         <option value="">
                             Seleccione...
                         </option>
-                        {{-- @foreach($coberturas as $cobertura)
+                        @foreach($coberturas as $cobertura)
                         <option value="{{$cobertura->id}}">
                             {{$cobertura->nombre}}
                         </option>
-                        @endforeach --}}
+                        @endforeach
                     </select>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Seleccionar la cobertura y el nombre del
@@ -39,22 +39,22 @@
             <div class="panel-body" id="divRegiones" style="display:none;">
                 <div class="col-sm-12">
                     <select class="form-control input-md" id="id_region" multiple="multiple" name="id_region[]">
-                        {{-- @foreach($regiones as $region)
+                        @foreach($regiones as $region)
                         <option value="{{$region->id}}">
                             {{$region->clave_region}} {{$region->nombre_region}}
                         </option>
-                        @endforeach --}}
+                        @endforeach
                     </select>
                 </div>
             </div>
             <div class="panel-body" id="divMunicipios" style="display:none;">
                 <div class="col-sm-12">
                     <select class="form-control input-md" id="id_municipio" multiple="multiple" name="id_municipio[]">
-                       {{--  @foreach($municipios as $municipio)
+                        @foreach($municipios as $municipio)
                         <option value="{{$municipio->id}}">
                             {{$municipio->nombre_municipio}}
                         </option>
-                        @endforeach --}}
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -84,11 +84,11 @@
                         <option value="">
                             Seleccione...
                         </option>
-                       {{--  @foreach($localidades as $localidad)
+                        @foreach($localidades as $localidad)
                         <option value="{{$localidad->id}}">
                             {{$localidad->nombre_tipo_localidad}}
                         </option>
-                        @endforeach --}}
+                        @endforeach
                     </select>
                 </div>
             </div>

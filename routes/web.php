@@ -42,7 +42,15 @@ Route::get('/Banco/get_datos_movimientos/{id_estudio_socioeconomico}','Banco\Con
 Route::get('/Banco/get_datos_comentarios/{id_evaluacion}','Banco\ConsultasBancoController@getComentariosDetail');
 
 // Rutas Expediente Técnico
-Route::get('/ExpedienteTecnico/crear_expediente','ExpedienteTecnico\ExpedienteTecnico@index')->name('creacionExpediente');
+Route::get('/ExpedienteTecnico/crear_expediente','ExpedienteTecnico\ExpedienteController@index')->name('creacionExpediente');
+Route::post('/ExpedienteTecnico/buscar_expediente', 'ExpedienteTecnico\ExpedienteController@buscar_expediente');
+Route::post('/ExpedienteTecnico/guardar_hoja_1', 'ExpedienteTecnico\ExpedienteController@guardar_hoja_1');
+Route::post('/ExpedienteTecnico/guardar_hoja_2', 'ExpedienteTecnico\ExpedienteController@guardar_hoja_2');
+Route::post('/ExpedienteTecnico/eliminar_imagen', 'ExpedienteTecnico\ExpedienteController@eliminar_imagen');
+Route::get('/ExpedienteTecnico/get_data_conceptos/{id_expediente_tecnico}', 'ExpedienteTecnico\ExpedienteController@get_data_conceptos');
+Route::post('/ExpedienteTecnico/guardar_hoja_3', 'ExpedienteTecnico\ExpedienteController@guardar_hoja_3');
+
+
 
 // Rutas Catalogo - Sector
 Route::group(['prefix' => 'Catalogo'], function() {

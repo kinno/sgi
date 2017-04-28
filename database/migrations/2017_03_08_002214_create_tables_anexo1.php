@@ -32,15 +32,16 @@ class CreateTablesAnexo1 extends Migration
             $table->boolean('bobra');
             $table->boolean('baccion');
             $table->boolean('botro');
-            $table->text('descripcion_botro');
+            $table->text('descripcion_botro')->nullable();
             $table->decimal('monto',10,2);
-            $table->decimal('monto_municipal',10,2);
-            $table->text('fuente_municipal');
-            $table->unsignedInteger('id_meta');
+            $table->decimal('monto_municipal',10,2)->nullable();
+            $table->text('fuente_municipal')->nullable();
+            $table->unsignedInteger('id_meta')->nullable();
             $table->unsignedInteger('id_beneficiaro')->nullable();
             $table->integer('cantidad_meta')->nullable();
-            $table->decimal('cantidad_beneficiario',10,2);
+            $table->decimal('cantidad_beneficiario',10,2)->nullable();
             $table->dateTime('fecha_captura');
+            $table->unsignedInteger('id_usuario');
             $table->timestamps();
         });
 
