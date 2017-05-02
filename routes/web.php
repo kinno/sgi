@@ -92,3 +92,13 @@ Route::post('Administracion/Modulo/guarda_permisos', 'Administracion\Modulo\Modu
 Route::get('Administracion/Sector/permisos', 'Administracion\Sector\SectorController@permisos');
 Route::post('Administracion/Sector/dropdownUsuario', 'Administracion\Sector\SectorController@dropdownUsuario');
 Route::post('Administracion/Sector/guarda_permisos', 'Administracion\Sector\SectorController@guarda_permisos');
+
+// Rutas Obra
+Route::get('Obra/crear', 'Obra\ObraController@index');
+Route::post('Obra/buscar_expediente', 'Obra\ObraController@buscar_expediente');
+Route::post('Obra/buscar_obra', 'Obra\ObraController@buscar_obra');
+Route::post('Obra/guardar', 'Obra\ObraController@guardar');
+Route::post('Obra/dropdownEjercicio', 'Obra\ObraController@dropdownEjercicio');
+Route::post('Obra/dropdownSector', 'Obra\ObraController@dropdownSector');
+Route::post('Obra/dropdownPrograma', 'Obra\ObraController@dropdownPrograma');
+

@@ -2,7 +2,7 @@
    cursor: pointer !important;
 }
 
-.numero, .numerodec, .numerocontrol, .numeroobra {
+.numero, .numeroEntero, .numeroDecimal {
 	text-align:right !important;
 }
 
@@ -12,8 +12,9 @@
 
 .obligatorio {
 	color:#FF0000;
-	padding-left: 1px;
-	/*font-size: 1em;*/
+  /*color: #a94442;*/
+	padding-right: 4px;
+	/*font-size: 10px;*/
 }
 
 .menu_padre {
@@ -29,4 +30,42 @@
     color: #DDDDDD;*/
     /*background-color: #0A2E3A;*/
     color: #ffffff;
+}
+
+/*
+.form-control-feedback1 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  display: block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.form-horizontal .has-feedback .form-control-feedback1 {
+  right: 22px;
+}
+
+.has-error .form-control-feedback1 {
+  color: #a94442;
+}
+
+.has-feedback .form-control {
+  padding-right: 35px !important;
+}
+*/
+
+
+input {
+background-image:url(../images/Fnd_2.png);
+border: 1px solid #666666;
+text-align: left;
+height:14pt;
+font-size: 9pt;
+font-family: Arial, serif;
+font-weight: normal;
 }
