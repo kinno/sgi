@@ -1,3 +1,4 @@
+var error=false;
 jQuery(document).ready(function($) {
     $.ajaxSetup({
         headers: {
@@ -103,6 +104,7 @@ function buscarExpediente(){
                     hoja2 = data.expediente.hoja2;
                     regiones = data.expediente.regiones;
                     municipios = data.expediente.municipios;
+                    avance_financiero = data.expediente.avance_financiero;
                     if (data.expediente.id) {
                         if (hoja1) {
                              llenarHoja1(data.expediente.id,hoja1,acuerdos,fuentes,'expediente',data.id_estudio_socioeconomico);
@@ -113,6 +115,13 @@ function buscarExpediente(){
                         }
                         //Buscar y crear la tabla de conceptos
                         initDataConceptos(data.expediente.id);
+                        initDataPrograma(data.expediente.id);
+
+                        if(avance_financiero){
+                            llenarAvanceFinanciero(avance_financiero);
+                        }
+                        
+
                     }
                 } else {
                     $("#id_expediente_tecnico_search").notify("Error: " + data.error, "warn");
@@ -170,5 +179,27 @@ function buscarBanco() {
             console.log("Errores::", response);
         }
     });
+}
+
+function colocaNotificacion(elem, aviso, clase, posicion) {
+    if (!elem) {
+        $.notify(aviso, {
+            autoHide: false,
+            clickToHide: false,
+            className: clase,
+            position: posicion
+        });
+    } else {
+        $(elem).notify(aviso, {
+            autoHide: false,
+            clickToHide: false,
+            className: clase,
+            position: posicion
+        });
+    }
+}
+
+function eliminaNotificacion() {
+    $('.notifyjs-wrapper').trigger('notify-hide');
 }
 

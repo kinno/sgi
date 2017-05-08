@@ -12,10 +12,8 @@
                 <p class="panel-title col-md-12 panel-body">
                     <strong>
                         PROGRAMA DE OBRA O ACCIÓN
-                        <span class="glyphicon glyphicon-question-sign ayuda" title="Muestra la programación 
-                      mensual y los principales conceptos de trabajo del gasto total de la obra o 
-                      acción. Objetivo: Integrar el calendario de las principales actividades para 
-                      llevar a cabo la obra o acción.">
+                        <span class="glyphicon glyphicon-question-sign ayuda" title="Muestra la programación mensual y los principales conceptos de trabajo del gasto total de la obra o 
+                      acción. Objetivo: Integrar el calendario de las principales actividades para llevar a cabo la obra o acción.">
                         </span>
                     </strong>
                 </p>
@@ -48,11 +46,11 @@
                                             <p>
                                                 Para el programa en general
                                             </p>
-                                            <table class="table table-bordered" id="tabla1Admin">
+                                            <table class="table table-bordered" id="tablaPrograma" style="font-size: 12px; width: 100%;">
                                                 <thead>
                                                     <tr style="font-size: 12px;">
                                                         <th style="display: none;">
-                                                        </th>
+                                                        </th> 
                                                         <th style=" text-align:center; vertical-align: middle;">
                                                             Concepto de Trabajo
                                                         </th>
@@ -97,6 +95,8 @@
                                                         </th>
                                                         <th>
                                                         </th>
+                                                        <th>
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -104,7 +104,7 @@
                                             </table>
                                         </div>
                                         <div class="panel-footer">
-                                            <span class="btn btn-default" id="btnAddModal1Admin">
+                                            <span class="btn btn-default" id="btnAddModal">
                                                 Agregar
                                             </span>
                                         </div>
@@ -125,7 +125,7 @@
                                             <p>
                                                 Para el programa en general
                                             </p>
-                                            <table border="1" class="table table-hover" id="tabla2Admin">
+                                            <table border="1" class="table table-hover" id="tablaFinanciero">
                                                 <thead>
                                                     <tr>
                                                         <td class="success">
@@ -296,6 +296,117 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Principales Conceptos de Trabajo
+                <span class="glyphicon glyphicon-question-sign ayuda" title="Anotar los principales conceptos o 
+                      acciones en el desarrollo de la obra o acci&oacute;n.">
+                </span>
+                </h4>
+            </div>        
+            <div class="modal-body">
+                <!--                <form class="form-horizontal" method="POST" id="formdemodal1">-->
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-xs-18 col-md-12">
+                            <div class="col-xs-2 col-md-4">Concepto de Trabajo:</div>
+                            <div class="col-xs-16 col-md-8">
+                                <input type="text" class="form-control " placeholder="Ingresa" id="contrato" name="contrato" value=""/>
+                                <input type="hidden" id="isEdit" name="isEdit" value="0"/>
+                                <input type="hidden" id="indexTable" name="indexTable" value="0"/>
+                                <input type="hidden" id="valIndex0" name="valIndex0" value="0"/>
+                                <input type="hidden" id="isAdmin" name="isAdmin" value="0"/>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-18 col-md-12">
+                            <div class="col-xs-2 col-md-1">ENE:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="ene" name="ene"  maxlength="40"/>
+                            </div>
+                            <div class="col-xs-2 col-md-1">FEB:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="feb" name="feb"  maxlength="40"/>
+                            </div>
+                            <div class="col-xs-2 col-md-1">MAR:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="mar" name="mar" value="" maxlength="40"/>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-18 col-md-12">
+                            <div class="col-xs-2 col-md-1">ABR:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="abr" name="abr" value="" maxlength="40"/>
+                            </div>
+                            <div class="col-xs-2 col-md-1">MAY:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="may" name="may" value="" maxlength="40"/>
+                            </div>
+                            <div class="col-xs-2 col-md-1">JUN:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="jun" name="jun" value="" maxlength="40"/>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-18 col-md-12">
+                            <div class="col-xs-2 col-md-1">JUL:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="jul" name="jul" value="" maxlength="40"/>
+                            </div>
+                            <div class="col-xs-2 col-md-1">AGO:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="ago" name="ago" value="" maxlength="40"/>
+                            </div>
+                            <div class="col-xs-2 col-md-1">SEP:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="sep" name="sep" value="" maxlength="40"/>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-18 col-md-12">
+                            <div class="col-xs-2 col-md-1">OCT:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="oct" name="oct" value="" maxlength="40"/>
+                            </div>
+                            <div class="col-xs-2 col-md-1">NOV:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="nov" name="nov" value="" maxlength="40"/>
+                            </div>
+                            <div class="col-xs-2 col-md-1">DIC:</div>
+                            <div class="col-xs-4 col-md-3">
+                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="dic" name="dic" value="" maxlength="40"/>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <div class="col-xs-18 col-md-12">
+                            <div class="col-xs-2 col-md-2"><label class="col-lg-3 control-label">TOTAL:</label></div>
+                            <div class="col-xs-4 col-md-3">
+                                <label class="col-lg-3 control-label" id="totaldecontra">0%</label>                                    
+                            </div>
+                            <div class="col-xs-4 col-md-7">
+                                <span id="agregamodal1" name="agregamodal1" class="btn btn-primary ">Agregar</span>                                    
+                                <span   id="cancelarmodal1" name="cancelarmodal1" data-dismiss="modal" class="btn btn-primary ">Cancelar</span>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                <!--                </form>-->
             </div>
         </div>
     </div>
