@@ -42,4 +42,9 @@ class D_Obra extends Model
     {   
         return $this->belongsToMany('App\Cat_Municipio', 'rel_obra_municipio', 'id_det_obra', 'id_municipio');
     }
+
+    public function relacion()
+    {
+        return $this->hasOne('App\Rel_Estudio_Expediente_Obra', 'id_det_obra', 'id');
+    }
 }

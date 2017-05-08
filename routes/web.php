@@ -98,6 +98,7 @@ Route::get('Obra/crear', 'Obra\ObraController@index');
 Route::post('Obra/buscar_expediente', 'Obra\ObraController@buscar_expediente');
 Route::post('Obra/buscar_obra', 'Obra\ObraController@buscar_obra');
 Route::post('Obra/guardar', 'Obra\ObraController@guardar');
+Route::post('Obra/update', 'Obra\ObraController@update');
 Route::post('Obra/dropdownEjercicio', 'Obra\ObraController@dropdownEjercicio');
 Route::post('Obra/dropdownSector', 'Obra\ObraController@dropdownSector');
 Route::post('Obra/dropdownPrograma', 'Obra\ObraController@dropdownPrograma');

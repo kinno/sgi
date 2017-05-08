@@ -50,4 +50,9 @@ class P_Expediente_Tecnico extends Model
     public function conceptos(){
         return $this->hasMany('App\P_Presupuesto_Obra','id_expediente_tecnico','id');
     }
+
+    public function relacion()
+    {
+        return $this->hasOne('App\Rel_Estudio_Expediente_Obra', 'id_expediente_tecnico', 'id');
+    }
 }

@@ -12,6 +12,8 @@
 		
     	<form enctype="”multipart/form-data”" class="form-horizontal" role="form" id="Obra">
     		{{ csrf_field() }}
+    		<input type="hidden" id="id_exp_tec" name="id_exp_tec"/>
+    		<input type="hidden" id="id_det_obra" name="id_det_obra"/>
     		<div class="form-group">
 	            <div class="col-md-5 col-md-offset-1">
 	                <div class="input-group">
@@ -282,7 +284,7 @@
                 <button class="btn btn-success btn-sm" id="btnGuardar">Guardar</button>
             </div>
             <div class="col-md-2">
-                <a class="btn btn-success btn-sm" id="btnLimpiar">Limpiar</a>
+                <button class="btn btn-success btn-sm" id="btnLimpiar">Limpiar</button>
             </div>
         </div>
   	</div>
