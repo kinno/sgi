@@ -49,6 +49,13 @@ Route::post('/ExpedienteTecnico/guardar_hoja_2', 'ExpedienteTecnico\ExpedienteCo
 Route::post('/ExpedienteTecnico/eliminar_imagen', 'ExpedienteTecnico\ExpedienteController@eliminar_imagen');
 Route::get('/ExpedienteTecnico/get_data_conceptos/{id_expediente_tecnico}', 'ExpedienteTecnico\ExpedienteController@get_data_conceptos');
 Route::post('/ExpedienteTecnico/guardar_hoja_3', 'ExpedienteTecnico\ExpedienteController@guardar_hoja_3');
+Route::get('/ExpedienteTecnico/descargar_plantilla', function() {
+    return response()->download(public_path().'\docs/plantillaConceptos.xls');
+});
+Route::post('/ExpedienteTecnico/carga_externa', 'ExpedienteTecnico\ExpedienteController@carga_externa');
+Route::get('/ExpedienteTecnico/get_data_programa/{id_expediente_tecnico}', 'ExpedienteTecnico\ExpedienteController@get_data_programa');
+Route::post('/ExpedienteTecnico/guardar_hoja_4', 'ExpedienteTecnico\ExpedienteController@guardar_hoja_4');
+
 
 
 

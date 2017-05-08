@@ -15,9 +15,11 @@ use App\Cat_Tipo_Localidad;
 use App\Http\Controllers\Controller;
 use App\P_Anexo_Dos;
 use App\P_Anexo_Uno;
+use App\P_Avance_Financiero;
 use App\P_Estudio_Socioeconomico;
 use App\P_Expediente_Tecnico;
 use App\P_Presupuesto_Obra;
+use App\P_Programa;
 use App\Rel_Estudio_Expediente_obra;
 use App\Rel_Estudio_Municipio;
 use App\Rel_Estudio_Region;
@@ -25,6 +27,7 @@ use App\Rel_Expediente_Municipio;
 use App\Rel_Expediente_Region;
 use DB;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExpedienteController extends Controller
 {
@@ -63,7 +66,7 @@ class ExpedienteController extends Controller
             //     with(['hoja1.sector', 'hoja1.unidad_ejecutora', 'hoja2', 'acuerdos', 'fuentes_monto', 'regiones', 'municipios'])
             //     ->findOrFail($request->id_expediente_tecnico);
 
-            $expediente_tecnico = Rel_Estudio_Expediente_Obra::with(['expediente.hoja1.sector', 'expediente.hoja1.unidad_ejecutora', 'expediente.hoja2', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios'])
+            $expediente_tecnico = Rel_Estudio_Expediente_Obra::with(['expediente.hoja1.sector', 'expediente.hoja1.unidad_ejecutora', 'expediente.hoja2', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios','expediente.avance_financiero'])
                 ->where('id_expediente_tecnico', '=', $request->id_expediente_tecnico)
                 ->first();
 
@@ -401,7 +404,7 @@ class ExpedienteController extends Controller
             $rel_expediente_region->save();
         }
 
-        $expediente_tecnicoTEMP               = P_expediente_tecnico::find($id_expediente   );
+        $expediente_tecnicoTEMP               = P_expediente_tecnico::find($id_expediente);
         $expediente_tecnicoTEMP->id_anexo_dos = $hoja2->id;
         $expediente_tecnicoTEMP->id_usuario   = \Auth::user()->id;
         $expediente_tecnicoTEMP->save();
@@ -418,34 +421,169 @@ class ExpedienteController extends Controller
         }
     }
 
-    public function get_data_conceptos($id_expediente_tecnico){
+    public function get_data_conceptos($id_expediente_tecnico)
+    {
 
-         $conceptos = P_Presupuesto_Obra::
-             orderBy('id','DESC')
-            ->where('id_expediente_tecnico','=',$id_expediente_tecnico);
-           ;
-        
+        $conceptos = P_Presupuesto_Obra::
+            where('id_expediente_tecnico', '=', $id_expediente_tecnico);
+
         return \Datatables::of($conceptos)
-            // ->addColumn('url_movimientos', function ($estudio) {
-            //     return url('/Banco/get_datos_movimientos/' . $estudio->id);
-            // })
-            // ->editColumn('id', '{{$id}}')
             ->make(true);
     }
 
-    public function guardar_hoja_3(Request $request){
-        foreach ($request->conceptosPresupuesto as $value) {
-            $conceptos = new P_Presupuesto_Obra;
-            $conceptos->id_expediente_tecnico = $request->id_expediente_tecnico;
-            $conceptos->clave_objeto_gasto = $value[1];
-            $conceptos->concepto = $value[2];
-            $conceptos->unidad_medida = $value[3];
-            $conceptos->cantidad = $value[4];
-            $conceptos->precio_unitario = $value[5];
-            $conceptos->importe = $value[6];
-            $conceptos->iva = $value[7];
-            $conceptos->total = $value[8];
-            $conceptos->save();
+    public function guardar_hoja_3(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $arrayIds = array();
+            foreach ($request->conceptosPresupuesto as $value) {
+                if ($value['id']) {
+                    //ID
+                    $conceptos = P_Presupuesto_Obra::find($value['id']);
+                } else {
+                    $conceptos = new P_Presupuesto_Obra;
+                }
+                $conceptos->id_expediente_tecnico = $request->id_expediente_tecnico;
+                $conceptos->clave_objeto_gasto    = $value['clave_objeto_gasto'];
+                $conceptos->concepto              = $value['concepto'];
+                $conceptos->unidad_medida         = $value['unidad_medida'];
+                $conceptos->cantidad              = $value['cantidad'];
+                $conceptos->precio_unitario       = $value['precio_unitario'];
+                $conceptos->importe               = $value['importe'];
+                $conceptos->iva                   = $value['iva'];
+                $conceptos->total                 = $value['total'];
+                $conceptos->save();
+                array_push($arrayIds, $conceptos->id);
+            }
+
+            if (isset($request->conceptosEliminados)) {
+                P_Presupuesto_Obra::destroy($request->conceptosEliminados);
+            }
+            DB::commit();
+            return $arrayIds;
+        } catch (\Exception $e) {
+            DB::rollback();
+            $conceptos            = array();
+            $conceptos['message'] = $e->getMessage();
+            $conceptos['trace']   = $e->getTrace();
+            $conceptos['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($conceptos);
         }
+    }
+
+    public function carga_externa(Request $request)
+    {
+        // dd($request->all());
+        $validator = \Validator::make($request->all(), [
+            'archivoExcel' => 'mimes:xls,xlsx',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            return array('error_validacion' => $errors);
+
+        }
+
+        if ($file = $request->file('archivoExcel')) {
+            // //obtenemos el nombre del archivo
+            $nombre = $file->getClientOriginalName();
+            \Storage::disk('uploads')->put($nombre, \File::get($file));
+
+            $result = Excel::selectSheetsByIndex(0)->load('uploads/' . $nombre, function ($reader) {
+            })->get()->toArray();
+
+            \Storage::disk('uploads')->delete($nombre);
+        }
+        return json_encode($result);
+
+    }
+
+    public function get_data_programa($id_expediente_tecnico)
+    {
+
+        $conceptos = P_Programa::
+            where('id_expediente_tecnico', '=', $id_expediente_tecnico);
+
+        return \Datatables::of($conceptos)
+            ->make(true);
+    }
+
+    public function guardar_hoja_4(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $hoja4['programas'] = $this->guardar_programas($request->calendarizadoPrograma, $request->id_expediente_tecnico, $request->programasEliminados);
+            $this->guardar_avance_financiero($request->avanceFinanciero, $request->id_expediente_tecnico);
+            DB::commit();
+            return $hoja4;
+        } catch (\Exception $e) {
+            DB::rollback();
+            $hoja4            = array();
+            $hoja4['message'] = $e->getMessage();
+            $hoja4['trace']   = $e->getTrace();
+            $hoja4['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($hoja4);
+        }
+    }
+
+    public function guardar_programas($programas, $id_expediente_tecnico, $programasEliminados)
+    {
+        $arrayIds = array();
+        foreach ($programas as $value) {
+            if ($value['id']) {
+                //ID
+                $programa = P_Programa::find($value['id']);
+            } else {
+                $programa = new P_Programa;
+            }
+            $programa->id_expediente_tecnico = $id_expediente_tecnico;
+            $programa->concepto              = $value['concepto'];
+            $programa->porcentaje_enero      = $value['porcentaje_enero'];
+            $programa->porcentaje_febrero    = $value['porcentaje_febrero'];
+            $programa->porcentaje_marzo      = $value['porcentaje_marzo'];
+            $programa->porcentaje_abril      = $value['porcentaje_abril'];
+            $programa->porcentaje_mayo       = $value['porcentaje_mayo'];
+            $programa->porcentaje_junio      = $value['porcentaje_junio'];
+            $programa->porcentaje_julio      = $value['porcentaje_julio'];
+            $programa->porcentaje_agosto     = $value['porcentaje_agosto'];
+            $programa->porcentaje_septiembre = $value['porcentaje_septiembre'];
+            $programa->porcentaje_octubre    = $value['porcentaje_octubre'];
+            $programa->porcentaje_noviembre  = $value['porcentaje_noviembre'];
+            $programa->porcentaje_diciembre  = $value['porcentaje_diciembre'];
+            $programa->porcentaje_total      = $value['porcentaje_total'];
+
+            $programa->save();
+            array_push($arrayIds, $programa->id);
+        }
+
+        if (isset($programasEliminados)) {
+            P_Programa::destroy($programasEliminados);
+        }
+        return $arrayIds;
+    }
+
+    public function guardar_avance_financiero($avance_financiero, $id_expediente_tecnico)
+    {
+        $p_avance = P_Avance_Financiero::where('id_expediente_tecnico', '=', $id_expediente_tecnico)
+            ->first();
+         // dd($p_avance->count());   
+        if ($p_avance->count() === 0) {
+            $p_avance = new P_Avance_Financiero;
+        }
+        $p_avance->id_expediente_tecnico = $id_expediente_tecnico;
+        $p_avance->enero                 = $avance_financiero['enero'];
+        $p_avance->febrero               = $avance_financiero['febrero'];
+        $p_avance->marzo                 = $avance_financiero['marzo'];
+        $p_avance->abril                 = $avance_financiero['abril'];
+        $p_avance->mayo                  = $avance_financiero['mayo'];
+        $p_avance->junio                 = $avance_financiero['junio'];
+        $p_avance->julio                 = $avance_financiero['julio'];
+        $p_avance->agosto                = $avance_financiero['agosto'];
+        $p_avance->septiembre            = $avance_financiero['septiembre'];
+        $p_avance->octubre               = $avance_financiero['octubre'];
+        $p_avance->noviembre             = $avance_financiero['noviembre'];
+        $p_avance->diciembre             = $avance_financiero['diciembre'];
+        $p_avance->save();
     }
 }

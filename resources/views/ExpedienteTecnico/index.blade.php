@@ -1,12 +1,17 @@
 @extends('layouts.master')
 @section('content')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
-<link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.css"/>
-<script type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="/js/dataTables.bootstrap.min.js"></script>
+<link href="/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
+<link href="/css/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css"/>
+<script src="/js/jquery.dataTables.min.js" type="text/javascript">
+</script>
+<script src="/js/dataTables.bootstrap.min.js" type="text/javascript">
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js">
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-filestyle/1.2.1/bootstrap-filestyle.js">
+</script>
+<script src="/js/jquery.bootstrap-touchspin.js">
 </script>
 <style type="text/css">
     .notifyjs-foo-base {
@@ -143,5 +148,7 @@
 <script src="{{ asset('js/Expediente_Tecnico/hoja2_expediente_tecnico.js') }}">
 </script>
 <script src="{{ asset('js/Expediente_Tecnico/hoja3_expediente_tecnico.js') }}">
+</script>
+<script src="{{ asset('js/Expediente_Tecnico/hoja4_expediente_tecnico.js') }}">
 </script>
 @endsection

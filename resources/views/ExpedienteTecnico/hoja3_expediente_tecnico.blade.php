@@ -111,24 +111,18 @@
     <div id="cargaExterna">
         <div class="container-fluid">
             <div class="col-md-1">
-                <a class="btn btn-default glyphicon glyphicon-save" href="contenido_SGI/uploads/plantillaConceptos.xls" id="descargarTemplate" target="_blank" title="Descargar plantilla de conceptos">
+                <a class="btn btn-default glyphicon glyphicon-save" href="descargar_plantilla" id="descargarTemplate" target="_blank" title="Descargar plantilla de conceptos">
                 </a>
             </div>
             <div class="col-md-6">
-                <span id="cargaCatalogoConceptos">
-                    Cargar Conceptos
-                </span>
+                <form id="formCargaExterna" role="form" enctype='multipart/form-data'>
+                    <input id="archivoExcel" name="archivoExcel" type="file">
+                    </input>
+                </form>        
             </div>
-        </div>
-    </div>
-    <div class="panel-body alert-danger col-md-6 col-xs-offset-3" id="errorRelPreFte" style="display:none;">
-        <div>
-            <p class="panel-title">
-                <strong>
-                    Atención:
-                </strong>
-                Se deben relacionar los conceptos con las fuentes
-            </p>
+            <div class="col-md-1">
+                <span id="subirCatalogo" title="Cargar archivo" class="btn btn-default fa fa-upload" style="display: none;"></span>
+            </div>
         </div>
     </div>
     <div class="panel-body alert-warning col-md-9 col-xs-offset-1" id="error25Ampliacion" style="display:none;">
@@ -263,14 +257,7 @@
                           acuerdo a las disposiciones fiscales.">
                     </span>
                 </div>
-                <div id="divFtes">
-                    <!--                    <div class="col-lg-9">
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon7">Fuente:</span>
-                                <select id="ftes" class="form-control" aria-describedby="sizing-addon7"></select>
-                            </div>            
-                    </div>-->
-                </div>
+              
                 <div class="modal-footer">
                     <div class="form-group">
                         <div class="col-xs-18 col-md-12">
@@ -290,22 +277,22 @@
                                 </label>
                             </div>
                             <div class="col-xs-4 col-md-6">
-                                <span class="btn btn-primary " id="agregaConcepto" name="agregaConcepto">
+                                <span class="btn btn-success " id="agregaConcepto" name="agregaConcepto">
                                     Agregar
                                 </span>
-                                <span class="btn btn-primary" id="actualizarConcepto" name="actualizarConcepto" style="display:none;">
+                                <span class="btn btn-success" id="actualizarConcepto" name="actualizarConcepto" style="display:none;">
                                     Actualizar
                                 </span>
                                 <input id="idContrato" type="hidden"/>
                                 <input id="idFte" type="hidden"/>
-                                <span class="btn btn-primary " id="cancelarConcepto" name="cancelarConcepto">
+                                <span class="btn btn-warning " id="cancelarConcepto" name="cancelarConcepto">
                                     Cancelar
                                 </span>
                             </div>
                         </div>
                         <div class="col-xs-20 col-md-12">
                             <div class="col-xs-2 col-md-2">
-                                <span class="glyphicon glyphicon-pencil" name="m" onclick="ajustardec();" style="cursor:hand; alignment-adjust: after-edge;">
+                                <span class="glyphicon glyphicon-pencil" name="m" title="Ajustar decimales" onclick="ajustardec();" style="cursor:pointer;alignment-adjust: after-edge;">
                                 </span>
                             </div>
                             <div class="col-xs-2 col-md-6">
@@ -314,8 +301,8 @@
                                         <input id="decScroll" type="text">
                                         </input>
                                     </div>
-                                    <div class="col-md-2">
-                                        <span class="btn btn-primary glyphicon glyphicon-ok btn-xs" onclick="ajustaDec();">
+                                    <div class="col-md-1">
+                                        <span class="btn fa fa-reply" title="Aceptar" style="cursor: pointer" onclick="ajustaDec();">
                                         </span>
                                     </div>
                                 </div>

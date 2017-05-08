@@ -9,7 +9,7 @@ var ftesActualizadas = [];
 var pariPassu = true;
 var montosFuentes = [];
 var IdEdoSol = 1;
-var totalGeneral = 0;
+var totalGeneral = 0.00;
 var error = false;
 var guardado = false;
 var primeraVez = true;
@@ -46,8 +46,18 @@ $(document).ready(function() {
         $("#ivaCheck").attr('checked', false);
         $("#modalConcepto").modal("hide");
     });
-    //verificarTipoSolicitud();
-    //verificarEstadoSolicitud();
+    $("#archivoExcel").filestyle({
+        buttonText: " Cargar catálogo de conceptos",
+        buttonName: "btn-success",
+        buttonBefore: true,
+        iconName: "fa fa-file-excel-o"
+    });
+    $("#archivoExcel").on('change', function() {
+        $("#subirCatalogo").show();
+    });
+    $("#subirCatalogo").on('click', function() {
+        cargaExterna();
+    });
 });
 
 function initDataConceptos(id_expediente_tecnico) {
@@ -99,6 +109,7 @@ function initDataConceptos(id_expediente_tecnico) {
             for (var i = 4; i <= 8; i++) {
                 var cell = tablaConceptos.cell(nRow, i).node();
                 $(cell).addClass('number');
+                actualizaTotales();
             }
         },
         "drawCallback": function(settings) {
@@ -116,27 +127,28 @@ function initDataConceptos(id_expediente_tecnico) {
             });
         });
     });
+
 }
 
 function agregarConcepto() {
     var sum = 0.00;
     var totalConcepto = $("#totalConcepto").text().replace(/,/g, "");
     var objConcepto = {
-        id:null,
-        clave_objeto_gasto:$("#clave").val(),
-        concepto:$("#concepto").val(),
-        unidad_medida:$("#unidadm").val(),
-        cantidad:$("#cantidad").val(),
-        precio_unitario:$("#preciou").val(),
-        importe:$("#impsiniva").val(),
-        iva:$("#iva").val(),
-        total:$("#totalConcepto").text()
+        id: null,
+        clave_objeto_gasto: $("#clave").val(),
+        concepto: $("#concepto").val(),
+        unidad_medida: $("#unidadm").val(),
+        cantidad: $("#cantidad").val(),
+        precio_unitario: $("#preciou").val(),
+        importe: $("#impsiniva").val(),
+        iva: $("#iva").val(),
+        total: $("#totalConcepto").text()
     }
     // tablaConceptos.row.add([null, $("#clave").val(), $("#concepto").val(), $("#unidadm").val(), $("#cantidad").val(), $("#preciou").val(), $("#impsiniva").val(), $("#iva").val(), $("#totalConcepto").text(), '<span  class="btn btn-success fa fa-pencil-square-o" title="Editar concepto" style="cursor:hand;" onClick="editar(this);"></span>', '<span  class="btn btn-danger fa fa-trash" title="Eliminar concepto" style="cursor:hand;" onClick="eliminar(this);"></span>']).draw('false');
     tablaConceptos.row.add(objConcepto).draw('false');
     actualizaTotales();
     $("#totalConcepto").text("0.00");
-    $("#ivaCheck").attr('checked', false);
+     $("#ivaCheck").prop('checked',false);
     limpiar("modalConcepto");
     $("#modalConcepto").modal("hide");
 }
@@ -153,22 +165,22 @@ function modificarConcepto() {
         id = ("");
     }
     var objConcepto = {
-        id:id,
-        clave_objeto_gasto:$("#clave").val(),
-        concepto:$("#concepto").val(),
-        unidad_medida:$("#unidadm").val(),
-        cantidad:$("#cantidad").val(),
-        precio_unitario:$("#preciou").val(),
-        importe:$("#impsiniva").val(),
-        iva:$("#iva").val(),
-        total:$("#totalConcepto").text().replace(/,/g, "")
+        id: id,
+        clave_objeto_gasto: $("#clave").val(),
+        concepto: $("#concepto").val(),
+        unidad_medida: $("#unidadm").val(),
+        cantidad: $("#cantidad").val(),
+        precio_unitario: $("#preciou").val(),
+        importe: $("#impsiniva").val(),
+        iva: $("#iva").val(),
+        total: $("#totalConcepto").text().replace(/,/g, "")
     }
     tablaConceptos.row(indiceEditar).data(objConcepto).draw();
     // tablaConceptos.row(indiceEditar).data([id, $("#clave").val(), $("#concepto").val(), $("#unidadm").val(), $("#cantidad").val(), $("#preciou").val(), $("#impsiniva").val(), $("#iva").val(), $("#totalConcepto").text().replace(/,/g, ""), '<span  class="btn btn-success fa fa-pencil-square-o" title="Editar concepto" style="cursor:hand;" onClick="editar(this);"></span>', '<span  class="btn btn-danger fa fa-trash" title="Eliminar concepto" style="cursor:hand;" onClick="eliminar(this);"></span>']).draw();
     tablaConceptos.column(0).visible(false); //ID CONCEPTO
     actualizaTotales();
     $("#totalConcepto").text("0.00");
-    $("#ivaCheck").attr('checked', false);
+    $("#ivaCheck").prop('checked',false);
     limpiar("modalConcepto");
     $("#modalConcepto").modal("hide");
     guardado = false; //OBLIGAMOS AL USUARIO A GUARDAR LA HOJA
@@ -203,22 +215,26 @@ function actualizaTotales() {
     var arraySinIva = tablaConceptos.column(6).data();
     var arrayIva = tablaConceptos.column(7).data();
     var arrayTotal = tablaConceptos.column(8).data();
-    //// console.log(arrayTotal);
+    totalGeneral = $("#form_anexo_uno #monto").val().replace(/,/g, "");
+    totalGeneralFormat = $("#form_anexo_uno #monto").val();
+    // console.log(arraySinIva);
     for (var i = 0; i < arrayTotal.length; i++) {
-        totalSinIva = parseFloat(totalSinIva) + parseFloat(arraySinIva[i].replace(/,/g, ""));
-        totalIva = parseFloat(totalIva) + parseFloat(arrayIva[i].replace(/,/g, ""));
-        total = parseFloat(total) + parseFloat(arrayTotal[i].replace(/,/g, ""));
+        totalSinIva = parseFloat(totalSinIva) + parseFloat(arraySinIva[i].toString().replace(/,/g, ""));
+        totalIva = parseFloat(totalIva) + parseFloat(arrayIva[i].toString().replace(/,/g, ""));
+        total = parseFloat(total) + parseFloat(arrayTotal[i].toString().replace(/,/g, ""));
     }
     $("#totalSinIva").text(totalSinIva);
     $("#totalIva").text(totalIva);
     $("#total").text(total);
     $("#totalSinIva,#totalIva,#total").autoNumeric("update");
-    // if (total > totalGeneral) {
-    //     colocaMensajePop($("#btnGuardarParcialMP"), "Atenci\u00f3n", "El monto ha superado el monto inicial\nMonto inicial: $<span class='n'>" + totalGeneral + "</span>");
-    //     error = true;
-    // } else {
-    //     eliminaMensajePop($("#btnGuardarParcialMP"));
-    //     error = false;
+    if (total > totalGeneral) {
+        // console.log(total + "::" + totalGeneral);
+        colocaNotificacion('','Atenci\u00f3n! El monto ha superado el monto inicial, Monto inicial: $'+ totalGeneralFormat,'error','right bottom');
+        error = true;
+    } else {
+        eliminaNotificacion();
+        error = false;
+    }
 }
 
 function editar(elem) {
@@ -231,8 +247,11 @@ function editar(elem) {
     $("#preciou").val(datosFila['precio_unitario']).focusin().focusout();
     $("#impsiniva").val(datosFila['importe']).focusin().focusout();
     $("#iva").val(datosFila['iva']);
-    if (datosFila[7] > 0) {
-        $("#ivaCheck").click();
+    if (datosFila['iva'] > 0) {
+        // $("#ivaCheck").click();
+        $("#ivaCheck").prop('checked',true);
+    }else{
+        $("#ivaCheck").prop('checked',false);
     }
     $("#totalConcepto").text(datosFila['total']);
     $("#totalConcepto").autoNumeric("update");
@@ -248,8 +267,8 @@ function eliminar(elem) {
         var indiceEliminar = tablaConceptos.row($(elem).parent().parent()).index();
         var montosCancel = tablaConceptos.cell(indiceEliminar, 8).data();
         var datosFila = tablaConceptos.row(indiceEliminar).data();
-        if (datosFila[0] > 0) {
-            arrayEliminados.push(datosFila[0]);
+        if (datosFila['id'] !== "") {
+            arrayEliminados.push(datosFila['id']);
         }
         tablaConceptos.row(indiceEliminar).remove().draw();
         actualizaTotales();
@@ -262,166 +281,9 @@ function limpiar(limformularios) {
         $(this).val('');
     });
 }
-// function cargarConceptos(callback) {
-//     //    $("#divFtes").empty();
-//     var asig = false;
-//     //    console.log("datosGlobalesSolicitud");
-//     //    console.log(datosGlobalesSolicitud);
-//     tablaConceptos.clear().draw();
-//     idSol = datosGlobalesSolicitud.idsolicitud;
-//     //   if (datosGlobalesSolicitud.psolicitud !== "") {
-//     totalGeneral = 0;
-//     colocaWaitGeneral();
-//     $.ajax({
-//         data: {
-//             idSol: idSol,
-//             accion: "getHoja3"
-//         },
-//         url: 'contenido_SGI/controller/expedienteTecnico/expedienteTecnicoController.php',
-//         type: 'post',
-//         success: function(response) {
-//             console.log(response);
-//             var dataConceptos = $.parseJSON(response);
-//             //            // console.log(dataConceptos);
-//             //CARGA DE MONTOS Y PROCENTAJES DE LAS FUENTES
-//             fuentes = datosGlobalesSolicitud.fuentes; //[[21, 150000, 17.95332], [22, 250000, 29.92220], [23, 320000, 38.30042], [24, 75500, 9.03651], [25, 40000, 4.78755]];
-//             // console.log(fuentes);
-//             for (var k = 0; k < datosGlobalesSolicitud.fuentes.length; k++) {
-//                 totalGeneral = totalGeneral + parseFloat(datosGlobalesSolicitud.fuentes[k][1]);
-//             }
-//             //             console.log("TOTAL DE INVERSION:" + totalGeneral);
-//             if (dataConceptos['conceptos'].length != 0) {
-//                 console.log(dataConceptos.preftes);
-//                 if (dataConceptos.preftes.length > 0) { //Si no hay registros es porque se realiza la primera autorizacion
-//                     primeraVez = false;
-//                     //                    montosFuentes = [];
-//                     //                    for (var j = 0; j < dataConceptos.preftes.length; j++) {
-//                     //                        montosFuentes.push(dataConceptos.preftes[j]); // Se llenan los montos de fuentes por concepto
-//                     //                        for (var l = 0; l < dataConceptos.preftes[j].length; l++) {
-//                     //                            for (var k = 0; k < fuentes.length; k++) {
-//                     //                                if (fuentes[k][0] == dataConceptos.preftes[j][l][0]) {
-//                     //                                    fuentes[k][2] = fuentes[k][2] - dataConceptos.preftes[j][l][2]; //Se actualizan los montos originales disponibles por fuente
-//                     //                                }
-//                     //                            }
-//                     //                        }
-//                     //                    }
-//                 }
-//                 if (dataConceptos.conceptos.length > 0) {
-//                     for (var i = 0; i < dataConceptos.conceptos.length; i++) {
-//                         var editar = '<span  class="glyphicon glyphicon glyphicon-pencil" style="cursor:hand;" onClick="editar(this);"></span>';
-//                         var eliminar = '<span  class="glyphicon glyphicon-remove" style="cursor:hand;" onClick="eliminar(this);"></span>';
-//                         if (!primeraVez) { //YA HAY CONCEPTOS RELACIONADOS A FUENTES EN AUTORIZACION
-//                             var arrayObjFuente = [];
-//                             for (var k = 0; k < dataConceptos.preftes[i].length; k++) {
-//                                 var objFuente = {
-//                                     idFte: dataConceptos.preftes[i][k][0],
-//                                     montofte: dataConceptos.preftes[i][k][2]
-//                                 }
-//                                 arrayObjFuente.push(objFuente);
-//                             }
-//                             //                            $("#errorRelPreFte").hide(); 
-//                             eliminaMensajePop($("#btnGuardarParcialMP"));
-//                             error = false;
-//                             console.log(arrayObjFuente);
-//                         } else { // ENVIAR MENSAJE AL USUARIO QUE DEBE RELACIONAR FUENTES CON CONCEPTOS EN AUTORIZACION
-//                             error = true;
-//                             if (modulo == "3") {
-//                                 setTimeout(function() {
-//                                     colocaMensajePop($("#btnGuardarParcialMP"), "Atenci\u00f3n", "Se deben relacionar los conceptos con las fuentes");
-//                                 }, 500);
-//                                 var arrayObjFuente = [];
-//                                 for (var k = 0; k < fuentes.length; k++) {
-//                                     var objFuente = {
-//                                         idFte: fuentes[k][0],
-//                                         montofte: "0.00"
-//                                     }
-//                                     arrayObjFuente.push(objFuente);
-//                                 }
-//                                 //$("#errorRelPreFte").show();
-//                             } else {
-//                                 tablaConceptos.column(9).visible(false);
-//                                 arrayObjFuente = "";
-//                                 asig = true;
-//                             }
-//                         }
-//                         if (dataConceptos.conceptos[i].idContrato != "0") {
-//                             editar = "";
-//                             eliminar = "";
-//                             montoAutorizado = montoAutorizado + parseFloat(dataConceptos.conceptos[i].total);
-//                         }
-//                         tablaConceptos.row.add([dataConceptos.conceptos[i].idPresu, dataConceptos.conceptos[i].claveObj, dataConceptos.conceptos[i].concept, dataConceptos.conceptos[i].uniMedi, dataConceptos.conceptos[i].cantidad, dataConceptos.conceptos[i].precioUni, dataConceptos.conceptos[i].importe, dataConceptos.conceptos[i].iva, dataConceptos.conceptos[i].total, arrayObjFuente, dataConceptos.conceptos[i].idContrato, editar, eliminar]).draw();
-//                     }
-//                     tablaConceptos.column(0).visible(false);
-//                     tablaConceptos.column(10).visible(false);
-//                     monto25 = (25 * montoAutorizado) / 100;
-//                     //                    if (!pariPassu && (modulo != "1" || (datosGlobalesSolicitud.tiposolicitud == "10" || datosGlobalesSolicitud.tiposolicitud == "11" || datosGlobalesSolicitud.tiposolicitud == "13"))) {
-//                     //                        $("#pariPassu").click();
-//                     //                    }
-//                     datosGlobalesSolicitud.totalConceptos = montoAutorizado;
-//                     console.log(fuentes.length);
-//                     var renglonFuente = "";
-//                     if (modulo == "1" && datosGlobalesSolicitud.psolicitud.IdSolPre != "10") {
-//                         tablaConceptos.column(9).visible(false);
-//                     } else {
-//                         var renglonFuente = "";
-//                         for (var k = 0; k < fuentes.length; k++) {
-//                             renglonFuente += "<div class='row form-group'><div class='col-lg-9'>" + "<div class='input-group'>" + "<span class='input-group-addon' id='sizing-addon" + k + "'>" + fuentes[k][4] + "</span>" + "<input id='fte" + fuentes[k][0] + "' type='text' value='0.00' class='form-control number fteVar' aria-describedby='sizing-addon" + k + "' />" + "</div>" + "</div></div>";
-//                         }
-//                         $("#divFtes").append(renglonFuente);
-//                         $(".number").autoNumeric();
-//                     }
-//                 }
-//                 //
-//                 //            // console.log("DISPONIBLE INICIAL PARA FUENTES:");
-//                 //            // console.log(fuentes);
-//                 //            // console.log("MONTO POR CONCEPTO FUENTES:");
-//                 //            // console.log(montosFuentes);
-//                 if (ro) { //SI ES PROCESO DE REVISION
-//                     tablaConceptos.column(0).visible(false);
-//                     tablaConceptos.column(10).visible(false);
-//                     tablaConceptos.column(11).visible(false);
-//                     tablaConceptos.column(12).visible(false);
-//                     $("#pariPassu").attr("disabled", "disabled");
-//                 }
-//                 //                // console.log(tablaConceptos.data());
-//                 eliminaWaitGeneral();
-//                 actualizaTotales();
-//                 guardado = true;
-//             } else {
-//                 if (modulo == "1" && datosGlobalesSolicitud.psolicitud.IdSolPre != "10") {
-//                     tablaConceptos.column(9).visible(false);
-//                 } else {
-//                     var renglonFuente = "";
-//                     for (var k = 0; k < fuentes.length; k++) {
-//                         renglonFuente += "<div class='row form-group'><div class='col-lg-9'>" + "<div class='input-group'>" + "<span class='input-group-addon' id='sizing-addon" + k + "'>" + fuentes[k][4] + "</span>" + "<input id='fte" + fuentes[k][0] + "' type='text' value='0.00' class='form-control number fteVar' aria-describedby='sizing-addon" + k + "' />" + "</div>" + "</div></div>";
-//                     }
-//                     $("#divFtes").append(renglonFuente);
-//                     $(".number").autoNumeric();
-//                 }
-//                 eliminaWaitGeneral();
-//                 actualizaTotales();
-//             }
-//             if (datosGlobalesSolicitud.tiposolicitud == "1" || datosGlobalesSolicitud.tiposolicitud == "3") {
-//                 $("#pp").hide();
-//             }
-//             if (typeof(callback) != "undefined") {
-//                 callback();
-//             }
-//             if (typeof(datosGlobalesSolicitud.psolicitud) === "object" && (datosGlobalesSolicitud.psolicitud.IdEdoSol === "3" || datosGlobalesSolicitud.psolicitud.IdEdoSol === "4")) {
-//                 $("#pariPassu").attr("disabled", "disabled");
-//             }
-//             // console.log("fuentes");
-//             // console.log(fuentes);
-//             // console.log("montosFuentes");
-//             // console.log(montosFuentes);
-//         },
-//         error: function(response) {
-//             // console.log("Errores::", response);
-//         }
-//     });
-//     //    }
-// }
+
 function guardarHoja3() {
+    var exp = $("#form_anexo_uno #id_expediente_tecnico").val();
     if (!error) {
         var conceptosPresupuesto = [];
         var conceptos = tablaConceptos.rows().data();
@@ -432,7 +294,8 @@ function guardarHoja3() {
         $.ajax({
             data: {
                 'conceptosPresupuesto': conceptosPresupuesto,
-                'id_expediente_tecnico': $("#form_anexo_uno id_expediente_tecnico").val()
+                'conceptosEliminados': arrayEliminados,
+                'id_expediente_tecnico': exp,
             },
             url: '/ExpedienteTecnico/guardar_hoja_3',
             type: 'post',
@@ -443,125 +306,111 @@ function guardarHoja3() {
                 $("#divLoading").hide();
             },
             success: function(response) {
-                //                // console.log(response);
-                var id = $.parseJSON(response);
-                if (id) {
-                    for (var i = 0; i < id.length; i++) {
-                        tablaConceptos.cell(parseInt(id[i][1]), 0).data(parseInt(id[i][0])).draw();
-                        guardado = true;
+                // console.log(response);
+                if (!response.error) {
+                    var id = (response);
+                    if (id) {
+                        for (var i = 0; i < id.length; i++) {
+                            tablaConceptos.cell(i, 0).data(parseInt(id)).draw();
+                            guardado = true;
+                        }
+                        tablaConceptos.column(0).visible(false);
+                        // eliminaWaitGeneral();
+                        BootstrapDialog.mensaje(null, "Datos del Anexo 3 guardados correctamente.<br>Folio de Expediente Técnico: " + exp, 1);
                     }
-                    tablaConceptos.column(0).visible(false);
-                    // eliminaWaitGeneral();
-                    BootstrapDialog.mensaje(null, "Datos del Anexo 1 guardados correctamente.<br>Folio de Expediente Técnico: " + data.id_expediente_tecnico, 1);
+                    guardado = true;
+                    //// console.log(tablaConceptos.data());
+                } else {
+                    BootstrapDialog.mensaje(null, response.error, 3);
                 }
-                guardado = true;
-                //// console.log(tablaConceptos.data());
             },
             error: function(response) {
                 console.log("Errores::", response);
             }
         });
     } else {
-        eliminaWaitGeneral();
         BootstrapDialog.mensaje(null, "Existe error en los conceptos de trabajo. ", 2);
         actualizaTotales();
     }
 }
-// function cargaExterna(fileName) {
-//     //    alert(fileName);
-//     colocaWaitGeneral();
-//     $.ajax({
-//         type: "POST",
-//         url: "contenido_SGI/libs/parser.php",
-//         data: {
-//             fileName: fileName
-//         },
-//         success: function(response) {
-//             var dataConceptos = $.parseJSON(response);
-//             //// console.log(dataConceptos);
-//             var editar = '<span  class="glyphicon glyphicon glyphicon-pencil" style="cursor:hand;" onClick="editar(this);"></span>';
-//             var eliminar = '<span  class="glyphicon glyphicon-remove" style="cursor:hand;" onClick="eliminar(this);"></span>';
-//             var element_count = 0;
-//             for (e in dataConceptos) {
-//                 element_count++;
-//             }
-//             //// console.log(element_count);
-//             for (var i = 1; i <= element_count; i++) {
-//                 tablaConceptos.row.add(["", dataConceptos[i][1], dataConceptos[i][2], dataConceptos[i][3], dataConceptos[i][4], dataConceptos[i][5], dataConceptos[i][6], dataConceptos[i][7], dataConceptos[i][8], "", "0", editar, eliminar]).draw();
-//             }
-//             eliminaWaitGeneral();
-//             actualizaTotales();
-//             //          e             
-//         },
-//         error: function(response) {
-//             // console.log("Errores::", response);
-//         }
-//     });
-// }
-// function prorrateo() {
-//     colocaWaitGeneral();
-//     bootbox.confirm("Se realizar\u00e1 el prorrateo sobre las fuentes, Desea continuar?", function(result) {
-//         if (result) {
-//             var totalConceptos = $('#tablaConceptos tbody tr').length;
-//             for (var a = 0; a < totalConceptos; a++) {
-//                 var datosFila = tablaConceptos.row(a).data();
-//                 console.log(datosFila);
-//                 if (datosFila[10] == 0 || datosFila[10] == "") {
-//                     console.log(datosFila);
-//                     var totalConcepto = datosFila[8].replace(/,/g, "");
-//                     var arrayObjFuente = [];
-//                     for (var i = 0; i < fuentes.length; i++) {
-//                         var idfte = fuentes[i][0];
-//                         var pje = fuentes[i][3];
-//                         var montoFte = (totalConcepto * pje) / 100; //Se realiza el prorrateo para cada fuente
-//                         console.log("idFte: " + idfte);
-//                         console.log("pje: " + pje);
-//                         console.log("montoFte: " + montoFte);
-//                         var objFuente = {
-//                             idFte: fuentes[i][0],
-//                             montofte: montoFte
-//                         };
-//                         arrayObjFuente.push(objFuente);
-//                     }
-//                     tablaConceptos.cell(a, 9).data(arrayObjFuente).draw();
-//                 }
-//             }
-//             eliminaMensajePop($("#btnGuardarParcialMP"));
-//             error = false;
-//             console.log(arrayObjFuente);
-//         }
-//     });
-//     eliminaWaitGeneral();
-// }
-// function replaceAll(text, busca, reemplaza) {
-//     while (text.toString().indexOf(busca) != -1) text = text.toString().replace(busca, reemplaza);
-//     return text;
-// }
-// function ajustardec() {
-//     var totalC = 0.00;
-//     totalC = parseFloat(replaceAll($('#totalConcepto').html(), ",", ""));
-//     $("#decScroll").val(totalC);
-//     $("#contEd").attr("hidden", false);
-//     $("#decScroll").TouchSpin({
-//         min: totalC - 1,
-//         max: totalC + 1,
-//         step: 0.01,
-//         decimals: 2
-//     });
-// }
-// function ajustaDec() {
-//     $("#totalConcepto").text($("#decScroll").val());
-//     $("#totalConcepto").autoNumeric("update");
-//     $("#contEd").attr("hidden", true);
-//     var impSIVA = parseFloat(replaceAll($('#impsiniva').val(), ",", ""));
-//     var totAct = parseFloat(replaceAll($('#decScroll').val(), ",", ""));
-//     var nvoIVA = 0.00;
-//     if ($("#iva").val() > "0.00") {
-//         nvoIVA = totAct - impSIVA;
-//         $("#iva").val(nvoIVA);
-//         $("#iva").autoNumeric("update");
-//     } else {
-//         $("#iva").val(0.00);
-//         $("#iva").autoNumeric("update");
-//     }
-// }
+
+function replaceAll(text, busca, reemplaza) {
+    while (text.toString().indexOf(busca) != -1) text = text.toString().replace(busca, reemplaza);
+    return text;
+}
+
+function ajustardec() {
+    var totalC = 0.00;
+    totalC = parseFloat(replaceAll($('#totalConcepto').html(), ",", ""));
+    $("#decScroll").val(totalC);
+    $("#contEd").attr("hidden", false);
+    $("#decScroll").TouchSpin({
+        min: totalC - 1,
+        max: totalC + 1,
+        step: 0.01,
+        decimals: 2
+    });
+}
+
+function ajustaDec() {
+    $("#totalConcepto").text($("#decScroll").val());
+    $("#totalConcepto").autoNumeric("update");
+    $("#contEd").attr("hidden", true);
+    var impSIVA = parseFloat(replaceAll($('#impsiniva').val(), ",", ""));
+    var totAct = parseFloat(replaceAll($('#decScroll').val(), ",", ""));
+    var nvoIVA = 0.00;
+    if ($("#iva").val() > "0.00") {
+        nvoIVA = totAct - impSIVA;
+        $("#iva").val(nvoIVA);
+        $("#iva").autoNumeric("update");
+    } else {
+        $("#iva").val(0.00);
+        $("#iva").autoNumeric("update");
+    }
+}
+
+function cargaExterna() {
+    var formdata = new FormData($("#formCargaExterna")[0]);
+    $.ajax({
+        data: new FormData($("#formCargaExterna")[0]),
+        url: '/ExpedienteTecnico/carga_externa',
+        type: 'post',
+        processData: false,
+        contentType: false,
+        beforeSend: function() {
+            $("#divLoading").show();
+        },
+        complete: function() {
+            $("#divLoading").hide();
+        },
+        success: function(response) {
+                // console.log(response);
+            var data = $.parseJSON(response);
+            if (!data.error_validacion) {
+                $.each(data, function(index, val) {
+                    // console.log(data[index]);
+                    var objConcepto = {
+                        id: null,
+                        clave_objeto_gasto: data[index].clave_objeto_gasto,
+                        concepto: data[index].concepto,
+                        unidad_medida: data[index].unidad_medida,
+                        cantidad: data[index].cantidad,
+                        precio_unitario: data[index].precio_unitario,
+                        importe: data[index].importe,
+                        iva: data[index].iva,
+                        total: data[index].total
+                    }
+                    tablaConceptos.row.add(objConcepto).draw('true');
+                });
+                actualizaTotales();
+            } else {
+                for (property in data.error_validacion) {
+                    $("#archivoExcel").notify("Extensión no válida, se requiere .XLS", "error");
+                }
+            }
+        },
+        error: function(response) {
+            console.log("Errores::", response);
+        }
+    });
+}
