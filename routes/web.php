@@ -55,6 +55,15 @@ Route::get('/ExpedienteTecnico/descargar_plantilla', function() {
 Route::post('/ExpedienteTecnico/carga_externa', 'ExpedienteTecnico\ExpedienteController@carga_externa');
 Route::get('/ExpedienteTecnico/get_data_programa/{id_expediente_tecnico}', 'ExpedienteTecnico\ExpedienteController@get_data_programa');
 Route::post('/ExpedienteTecnico/guardar_hoja_4', 'ExpedienteTecnico\ExpedienteController@guardar_hoja_4');
+Route::post('/ExpedienteTecnico/guardar_hoja_5', 'ExpedienteTecnico\ExpedienteController@guardar_hoja_5');
+Route::post('/ExpedienteTecnico/guardar_hoja_6', 'ExpedienteTecnico\ExpedienteController@guardar_hoja_6');
+Route::post('/ExpedienteTecnico/enviar_revision', 'ExpedienteTecnico\ExpedienteController@cambiar_estatus');
+Route::get('/ExpedienteTecnico/revision_expediente_tecnico', 'ExpedienteTecnico\RevisionExpedienteController@index')->name('revision_expediente');
+Route::get('/ExpedienteTecnico/get_datos_revision','ExpedienteTecnico\RevisionExpedienteController@get_data_revision');
+Route::post('/ExpedienteTecnico/aceptar_expediente', 'ExpedienteTecnico\ExpedienteController@cambiar_estatus');
+Route::post('/ExpedienteTecnico/regresar_observaciones', 'ExpedienteTecnico\RevisionExpedienteController@regresar_observaciones');
+Route::get('/ExpedienteTecnico/impresion_expediente/{id_expediente_tecnio}','ExpedienteTecnico\ExpedienteController@imprime_expediente');
+
 
 
 

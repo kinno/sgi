@@ -157,10 +157,12 @@ function guardarHoja1() {
                 if (!data.error) {
                     BootstrapDialog.mensaje(null, "Datos del Anexo 1 guardados correctamente.<br>Folio de Expediente Técnico: " + data.id_expediente_tecnico, 1);
                     // $.notify("Datos guardados correctamente.", "success");
+                    desactivaNavegacion(false);
                     $("#id_expediente_tecnico").val(data.id_expediente_tecnico);
                     $("#id_hoja_uno").val(data.id_anexo_uno);
                     if(data.id_anexo_dos){
                         $("#form_anexo_dos #id_hoja_dos").val(data.id_anexo_dos);
+
                     }
                     
                 } else {
@@ -171,6 +173,7 @@ function guardarHoja1() {
             } else {
                 for (property in data.error_validacion) {
                     $("#" + property).notify("Campo requerido", "error");
+                    desactivaNavegacion(true);
                 }
             }
         },

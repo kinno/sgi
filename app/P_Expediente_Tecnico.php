@@ -3,10 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class P_Expediente_Tecnico extends Model
 {
     protected $table = "p_expediente_tecnico";
+
+    public function getFechaEnvioAttribute($value){
+        return Carbon::parse($value)->format('d-m-Y H:i:s');
+    }
 
     public function tipoSolicitud(){
     	return $this->hasOne('App\Cat_Solicitud_Presupuesto','id','id_tipo_solicitud');
@@ -54,6 +59,7 @@ class P_Expediente_Tecnico extends Model
     public function relacion()
     {
         return $this->hasOne('App\Rel_Estudio_Expediente_Obra', 'id_expediente_tecnico', 'id');
+    }
 
     public function programas(){
         return $this->hasMany('App\P_Programa','id_expediente_tecnico','id');
@@ -62,4 +68,13 @@ class P_Expediente_Tecnico extends Model
     public function avance_financiero(){
         return $this->hasOne('App\P_Avance_Financiero','id_expediente_tecnico','id');
     }
+
+    public function hoja5(){
+        return $this->hasOne('App\P_Anexo_Cinco','id','id_anexo_cinco');
+    }
+
+    public function hoja6(){
+        return $this->hasOne('App\P_Anexo_Seis','id','id_anexo_seis');
+    }
+
 }

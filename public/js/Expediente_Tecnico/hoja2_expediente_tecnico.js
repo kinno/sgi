@@ -112,12 +112,14 @@ function guardarHoja2() {
                         if (data.microlocalizacion) {
                             $("#vista_previa").attr('src', data.microlocalizacion);
                         }
+                        desactivaNavegacion(false);
                     } else {
                         BootstrapDialog.mensaje(null, data.error, 3);
                     }
                 } else {
                     for (property in data.error_validacion) {
                         $("#" + property).notify("Campo requerido", "error");
+                        desactivaNavegacion(true);
                     }
                 }
             },

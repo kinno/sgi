@@ -200,17 +200,20 @@ function agregaValores() {
                 tablaPrograma.column(0).visible(false); //ID 
             }
             eliminaNotificacion();
+             desactivaNavegacion(false);
             limpiar("modal1");
             // tablaPrograma.column(0).visible(false);
             $("#modal1").modal("hide");
         } else {
             // $("#totaldecontra").before('<div class="alert alert-danger col-md-12" role="alert" style="position: absolute; z-index:1;">El total debe de ser menor a 100%</div>');
             colocaNotificacion("", "El total debe de ser menor a 100%", "error", "right bottom");
+             desactivaNavegacion(true);
         }
     } else {
         if ((total <= 0 || total > 100)) {
             // $("#totaldecontra").before('<div class="alert alert-danger col-md-12" role="alert" style="position: absolute; z-index:1;">La suma debe ser mayor a 0% y menor a 100%</div>');
             colocaNotificacion("", "La suma debe ser mayor a 0% y menor a 100%", "error", "right bottom");
+             desactivaNavegacion(true);
         }
     }
     $("#totaldecontra").html("0");
@@ -266,7 +269,7 @@ function eliminarPrograma(elem) {
             arrayProgramasEliminados.push(datosFila['id']);
         }
         tablaPrograma.row(indiceEliminar).remove().draw();
-        actualizaTotales();
+        // actualizaTotales();
     }
     // });
 }
@@ -284,6 +287,7 @@ function sumaAcumulado() {
     for (var i = 0; i < 12; i++) {
         if (acumulados[i] > totalPresupuesto) {
             colocaNotificacion('', "Excediste el Total del Presupuesto ($" + totalPresupuestoFormat + ")", 'error', 'right bottom');
+             desactivaNavegacion(true);
             error = true;
             if (i > 0) {
                 $(".montoMesFina:gt( " + (i - 1) + " )").val("0");
@@ -298,6 +302,7 @@ function sumaAcumulado() {
         } else {
             eliminaNotificacion();
             error = false;
+             desactivaNavegacion(false);
         }
         $(".acumesfinaAdmin:eq( " + i + " )").html(acumulados[i]);
     }
@@ -409,6 +414,6 @@ function guardarHoja4() {
         });
     } else {
         BootstrapDialog.mensaje(null, "Existe error en los conceptos de trabajo. ", 2);
-        actualizaTotales();
+        
     }
 }

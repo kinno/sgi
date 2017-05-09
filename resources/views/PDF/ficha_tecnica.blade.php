@@ -15,7 +15,7 @@
         background-color: #EFEFEF;
     }
 </style>
-<table class="tablaFicha" style="margin-top: 0">
+<table class="tablaFicha" border="0" style="margin-top: 0">
     <tr>
         <td width="25%">
             <img src="{{URL::asset('/images/gem_hztl.jpg')}}" width="180" />

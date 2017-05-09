@@ -1,0 +1,14 @@
+ALTER TABLE `sgiweb_db`.`cat_estado_solicitud` 
+CHANGE COLUMN `IdEdoSol` `id` TINYINT(4) NOT NULL ,
+CHANGE COLUMN `NomEdo` `estatus` VARCHAR(100) CHARACTER SET 'utf8' NULL DEFAULT NULL ,
+ADD PRIMARY KEY (`id`), 
+COMMENT = 'catalogo de estados del expediente' , RENAME TO  `sgiweb_db`.`cat_estatus_expediente` ; 
+
+UPDATE `sgiweb_db`.`cat_estatus_expediente` SET `estatus`='Creación/Edición' WHERE `id`='1';
+UPDATE `sgiweb_db`.`cat_estatus_expediente` SET `estatus`='Envío a Dirección' WHERE `id`='2';
+UPDATE `sgiweb_db`.`cat_estatus_expediente` SET `estatus`='Ingreso Físico' WHERE `id`='3';
+UPDATE `sgiweb_db`.`cat_estatus_expediente` SET `estatus`='Revisión de Dirección' WHERE `id`='4';
+UPDATE `sgiweb_db`.`cat_estatus_expediente` SET `estatus`='Devolución a Dependencia' WHERE `id`='5';
+DELETE FROM `sgiweb_db`.`cat_estatus_expediente` WHERE `id`='8';
+DELETE FROM `sgiweb_db`.`cat_estatus_expediente` WHERE `id`='9';
+DELETE FROM `sgiweb_db`.`cat_estatus_expediente` WHERE `id`='10';

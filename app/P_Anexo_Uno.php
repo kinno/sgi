@@ -52,4 +52,8 @@ class P_Anexo_Uno extends Model
     {
         return $this->hasOne('App\Cat_Unidad_Ejecutora', 'id', 'id_unidad_ejecutora');
     }
+
+    public function beneficiario(){
+        return $this->hasOne('App\Cat_Beneficiario','id','id_beneficiario');
+    }
 }

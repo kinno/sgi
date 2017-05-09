@@ -787,23 +787,24 @@
      * @param {type} callback
      * @returns the created dialog instance
      */
-    BootstrapDialog.confirm = function(message, callback) {
+    BootstrapDialog.confirm = function(titulo,message, callback) {
         return new BootstrapDialog({
-            title: 'Confirmation',
+            title: titulo,
             message: message,
             closable: false,
+            type: BootstrapDialog.TYPE_WARNING,
             data: {
                 'callback': callback
             },
             buttons: [{
-                    label: 'Cancel',
+                    label: 'Cancelar',
                     action: function(dialog) {
                         typeof dialog.getData('callback') === 'function' && dialog.getData('callback')(false);
                         dialog.close();
                     }
                 }, {
                     label: 'OK',
-                    cssClass: 'btn-primary',
+                    cssClass: 'btn-success',
                     action: function(dialog) {
                         typeof dialog.getData('callback') === 'function' && dialog.getData('callback')(true);
                         dialog.close();

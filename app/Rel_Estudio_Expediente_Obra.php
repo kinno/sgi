@@ -15,4 +15,10 @@ class Rel_Estudio_Expediente_Obra extends Model
     public function expediente(){
     	return $this->hasOne('App\P_Expediente_Tecnico','id','id_expediente_tecnico');
     }
+    public function obra(){
+    	return $this->hasOne('App\D_Obra','id','id_det_obra');
+    }
+
+    
+    
 }

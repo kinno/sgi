@@ -1,3 +1,4 @@
+<form class="form-horizontal" id="form_anexo_seis" role="form">
 <div class="panel panel-default">
     <div class="panel-heading">
         <h1 class="panel-title">
@@ -5,38 +6,31 @@
                 ANEXO 6
             </strong>
         </h1>
+        <input id="id_hoja_deis" name="id_hoja_seis" type="hidden" value="">
+        </input>
+        <input id="id_expediente_tecnico" name="id_expediente_tecnico" type="hidden" value="">
+        </input>
     </div>
     <div class="panel-body">
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="criterios">
-                Criterios sociales:
+        <div class="form-group" id="sp">
+            <label class="col-md-3 col-md-offset-1 control-label" >
+                Citerios Sociales: 
             </label>
-            <div class="col-md-6">
-                <textarea class="form-control am-as" id="criterios" name="criterios" rows="1">
-                </textarea>
+            <div class="col-md-4">
+                <textarea class="form-control am-as" id="criterios_sociales" name="criterios_sociales" rows="10"></textarea>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-3 control-label" for="depnorm">
+            <label class="col-md-3 col-md-offset-1 control-label" >
                 Unidad Ejecutora Normativa:
             </label>
-            <div class="col-md-6">
-                <input class="form-control input-md am-as" id="depnorm" name="depnorm" placeholder="" type="text">
+            <div class="col-md-4">
+                <input class="form-control input-md am-as" id="unidad_ejecutora_normativa" name="unidad_ejecutora_normativa" placeholder="" type="text">
                 </input>
             </div>
-            <span class="glyphicon glyphicon-question-sign ayuda" title="Colocar la firma del titular de la Unidad Normativa que 
-          otorga el Visto Bueno al entregar el documento.">
+            <span class="glyphicon glyphicon-question-sign ayuda" title="Colocar la firma del titular de la Unidad Normativa que otorga el Visto Bueno al entregar el documento.">
             </span>
-        </div>
-        <div class="form-group">
-            <div class="col-md-12 col-md-offset-8">
-                <span class="btn btn-success" id="enviarET">
-                    Enviar
-                </span>
-                <span class="btn btn-success" id="imprimirET">
-                    Imprimir
-                </span>
-            </div>
         </div>
     </div>
 </div>
+</form>

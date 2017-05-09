@@ -65,9 +65,9 @@
                         </span>
                         <span class="btn btn-success fa fa-save" id="guardar" title="Guardar">
                         </span>
-                        <span class="btn btn-success fa fa-share-square" id="dictaminar" title="Enviar a la DGI para dictaminar">
+                        <span class="btn btn-success fa fa-share-square" id="enviar_revision" title="Enviar a la DGI para revisión">
                         </span>
-                        <span class="btn btn-success fa fa-file-pdf-o" id="ficha_tecnica" title="Imprimir ficha técnica">
+                        <span class="btn btn-success fa fa-file-pdf-o" id="imprimir_expediente" title="Imprimir Expediente Técnico">
                         </span>
                     </form>
                 </div>
@@ -150,5 +150,9 @@
 <script src="{{ asset('js/Expediente_Tecnico/hoja3_expediente_tecnico.js') }}">
 </script>
 <script src="{{ asset('js/Expediente_Tecnico/hoja4_expediente_tecnico.js') }}">
+</script>
+<script src="{{ asset('js/Expediente_Tecnico/hoja5_expediente_tecnico.js') }}">
+</script>
+<script src="{{ asset('js/Expediente_Tecnico/hoja6_expediente_tecnico.js') }}">
 </script>
 @endsection

@@ -21,6 +21,7 @@ $(document).ready(function() {
         vMax: '99999999999999999999999.00'
     });
     $("#abreModal").click(function() {
+         limpiar("modalConcepto");
         $("#actualizarConcepto").hide();
         $("#agregaConcepto").show();
         $(".number").each(function() {
@@ -109,8 +110,9 @@ function initDataConceptos(id_expediente_tecnico) {
             for (var i = 4; i <= 8; i++) {
                 var cell = tablaConceptos.cell(nRow, i).node();
                 $(cell).addClass('number');
-                actualizaTotales();
+                
             }
+            actualizaTotales();
         },
         "drawCallback": function(settings) {
             $(".number").autoNumeric();
@@ -231,9 +233,12 @@ function actualizaTotales() {
         // console.log(total + "::" + totalGeneral);
         colocaNotificacion('','Atenci\u00f3n! El monto ha superado el monto inicial, Monto inicial: $'+ totalGeneralFormat,'error','right bottom');
         error = true;
+        desactivaNavegacion(true);
+        return false;
     } else {
         eliminaNotificacion();
         error = false;
+        desactivaNavegacion(false);
     }
 }
 

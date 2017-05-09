@@ -13,14 +13,16 @@ use App\Cat_Region;
 use App\Cat_Solicitud_Presupuesto;
 use App\Cat_Tipo_Localidad;
 use App\Http\Controllers\Controller;
+use App\P_Anexo_Cinco;
 use App\P_Anexo_Dos;
+use App\P_Anexo_Seis;
 use App\P_Anexo_Uno;
 use App\P_Avance_Financiero;
 use App\P_Estudio_Socioeconomico;
 use App\P_Expediente_Tecnico;
 use App\P_Presupuesto_Obra;
 use App\P_Programa;
-use App\Rel_Estudio_Expediente_obra;
+use App\Rel_Estudio_Expediente_Obra;
 use App\Rel_Estudio_Municipio;
 use App\Rel_Estudio_Region;
 use App\Rel_Expediente_Municipio;
@@ -66,7 +68,7 @@ class ExpedienteController extends Controller
             //     with(['hoja1.sector', 'hoja1.unidad_ejecutora', 'hoja2', 'acuerdos', 'fuentes_monto', 'regiones', 'municipios'])
             //     ->findOrFail($request->id_expediente_tecnico);
 
-            $expediente_tecnico = Rel_Estudio_Expediente_Obra::with(['expediente.hoja1.sector', 'expediente.hoja1.unidad_ejecutora', 'expediente.hoja2', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios','expediente.avance_financiero'])
+            $expediente_tecnico = Rel_Estudio_Expediente_Obra::with(['expediente.hoja1.sector', 'expediente.hoja1.unidad_ejecutora', 'expediente.hoja2', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios', 'expediente.avance_financiero', 'expediente.hoja5', 'expediente.hoja6'])
                 ->where('id_expediente_tecnico', '=', $request->id_expediente_tecnico)
                 ->first();
 
@@ -567,7 +569,7 @@ class ExpedienteController extends Controller
     {
         $p_avance = P_Avance_Financiero::where('id_expediente_tecnico', '=', $id_expediente_tecnico)
             ->first();
-         // dd($p_avance->count());   
+        // dd($p_avance->count());
         if ($p_avance->count() === 0) {
             $p_avance = new P_Avance_Financiero;
         }
@@ -585,5 +587,139 @@ class ExpedienteController extends Controller
         $p_avance->noviembre             = $avance_financiero['noviembre'];
         $p_avance->diciembre             = $avance_financiero['diciembre'];
         $p_avance->save();
+    }
+
+    public function guardar_hoja_5(Request $request)
+    {
+        if ($request->id_hoja_cinco != "") {
+            $bNuevo = false;
+        } else {
+            $bNuevo = true;
+        }
+        DB::beginTransaction();
+        try {
+
+            if ($bNuevo) {
+                $hoja5 = new P_Anexo_Cinco;
+            } else {
+                $hoja5 = P_Anexo_Cinco::find($request->id_hoja_cinco);
+            }
+
+            $hoja5->observaciones_unidad_ejecutora = $request->observaciones_unidad_ejecutora;
+
+            $hoja5->save();
+            $expediente_tecnico = P_Expediente_Tecnico::find($request->id_expediente_tecnico);
+
+            //Guardamos la relacion del Anexo 5 a la tabla expediente técnico
+            if ($bNuevo) {
+                $expediente_tecnico->id_anexo_cinco = $hoja5->id;
+                $expediente_tecnico->id_usuario     = \Auth::user()->id;
+                $expediente_tecnico->save();
+            }
+
+            DB::commit();
+
+            $estudio['id_anexo_cinco']        = $hoja5->id;
+            $estudio['id_expediente_tecnico'] = $expediente_tecnico->id;
+
+            return $estudio;
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            $estudio            = array();
+            $estudio['message'] = $e->getMessage();
+            $estudio['trace']   = $e->getTrace();
+            $estudio['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($estudio);
+        }
+    }
+
+    public function guardar_hoja_6(Request $request)
+    {
+        if ($request->id_hoja_seis != "") {
+            $bNuevo = false;
+        } else {
+            $bNuevo = true;
+        }
+        DB::beginTransaction();
+        try {
+
+            if ($bNuevo) {
+                $hoja6 = new P_Anexo_Seis;
+            } else {
+                $hoja6 = P_Anexo_Seis::find($request->id_hoja_seis);
+            }
+
+            $hoja6->criterios_sociales         = $request->criterios_sociales;
+            $hoja6->unidad_ejecutora_normativa = $request->unidad_ejecutora_normativa;
+
+            $hoja6->save();
+            $expediente_tecnico = P_Expediente_Tecnico::find($request->id_expediente_tecnico);
+
+            //Guardamos la relacion del Anexo 5 a la tabla expediente técnico
+            if ($bNuevo) {
+                $expediente_tecnico->id_anexo_seis = $hoja6->id;
+                $expediente_tecnico->id_usuario    = \Auth::user()->id;
+                $expediente_tecnico->save();
+            }
+
+            DB::commit();
+
+            $expediente['id_anexo_seis']         = $hoja6->id;
+            $expediente['id_expediente_tecnico'] = $expediente_tecnico->id;
+
+            return $expediente;
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            $expediente            = array();
+            $expediente['message'] = $e->getMessage();
+            $expediente['trace']   = $e->getTrace();
+            $expediente['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($expediente);
+        }
+    }
+
+    public function cambiar_estatus(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $expediente_tecnico             = P_Expediente_Tecnico::find($request->id_expediente_tecnico);
+            $expediente_tecnico->id_estatus = $request->estatus;
+            if ($request->estatus == 2) {
+                $expediente_tecnico->fecha_envio = date('Y-m-d H:i:s');
+            } else if ($request->estatus == 3) {
+                $expediente_tecnico->fecha_ingreso = date('Y-m-d H:i:s');
+            } else if ($request->estatus == 5) {
+                $expediente_tecnico->fecha_evaluacion = date('Y-m-d H:i:s');
+            } else if ($request->estatus == 6) {
+                $expediente_tecnico->fecha_evaluacion = date('Y-m-d H:i:s');
+            }
+            $expediente_tecnico->save();
+            DB::commit();
+            $expediente['id_expediente_tecnico'] = $expediente_tecnico->id;
+            return ($expediente);
+
+        } catch (Exception $e) {
+            DB::rollback();
+            $expediente            = array();
+            $expediente['message'] = $e->getMessage();
+            $expediente['trace']   = $e->getTrace();
+            $expediente['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($expediente);
+        }
+
+    }
+
+    public function imprime_expediente($id_expediente_tecnico)
+    {
+
+        $relacion = Rel_Estudio_Expediente_Obra::with(['expediente.tipoSolicitud','expediente.hoja1.sector', 'expediente.hoja1.unidad_ejecutora', 'expediente.hoja1.beneficiario','expediente.hoja2.cobertura','expediente.hoja2.localidad', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios','expediente.conceptos', 'expediente.programas','expediente.avance_financiero', 'expediente.hoja5', 'expediente.hoja6','obra'])
+            ->where('id_expediente_tecnico', '=', $id_expediente_tecnico)
+            ->first();
+
+        // return view('PDF/expediente_tecnico', compact('relacion'));
+        $pdf = \PDF::loadView('PDF/expediente_tecnico', compact('relacion'));
+        return $pdf->stream('ExpedienteTecnico_' . $relacion->id_expediente_tecnico . '.pdf');
     }
 }
