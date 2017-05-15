@@ -13,6 +13,7 @@ use App\Cat_Region;
 use App\Cat_Solicitud_Presupuesto;
 use App\Cat_Tipo_Localidad;
 use App\Http\Controllers\Controller;
+use App\Jobs\CrearNotificacion;
 use App\P_Anexo_Cinco;
 use App\P_Anexo_Dos;
 use App\P_Anexo_Seis;
@@ -35,11 +36,12 @@ class ExpedienteController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verifica.notificaciones']);
     }
 
     public function index()
     {
+        // $this->dispatch(new VerificarNotificaciones());
         $user              = \Auth::user()->load('unidad_ejecutora')->load('sectores');
         $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
         $tipoSolicitud     = Cat_Solicitud_Presupuesto::whereIn('id', array(1, 9, 10))->get();
@@ -69,6 +71,11 @@ class ExpedienteController extends Controller
             //     ->findOrFail($request->id_expediente_tecnico);
 
             $expediente_tecnico = Rel_Estudio_Expediente_Obra::with(['expediente.hoja1.sector', 'expediente.hoja1.unidad_ejecutora', 'expediente.hoja2', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios', 'expediente.avance_financiero', 'expediente.hoja5', 'expediente.hoja6'])
+                ->with(array('expediente.observaciones' => function($query)
+                        {
+                            $query->orderBy('created_at', 'desc');
+
+                        }))
                 ->where('id_expediente_tecnico', '=', $request->id_expediente_tecnico)
                 ->first();
 
@@ -688,12 +695,22 @@ class ExpedienteController extends Controller
             $expediente_tecnico->id_estatus = $request->estatus;
             if ($request->estatus == 2) {
                 $expediente_tecnico->fecha_envio = date('Y-m-d H:i:s');
+
+                foreach (\Auth::user()->sectores()->get() as $value) {
+                    $sectorUser = $value->id;
+                };
+                $detalle = "La dependencia " . \Auth::user()->name . " ha enviado el Expediente Técnico: " . $expediente_tecnico->id . " para su revisión y aprobación.";
+                // dd($detalle);
+                dispatch(new CrearNotificacion(null, \Auth::user()->id, $sectorUser, $detalle));
+
             } else if ($request->estatus == 3) {
                 $expediente_tecnico->fecha_ingreso = date('Y-m-d H:i:s');
             } else if ($request->estatus == 5) {
                 $expediente_tecnico->fecha_evaluacion = date('Y-m-d H:i:s');
             } else if ($request->estatus == 6) {
                 $expediente_tecnico->fecha_evaluacion = date('Y-m-d H:i:s');
+                $detalle                              = "El Expediente Técnico: " . $expediente_tecnico->id . " ha sido aprobado por la Dirección General de Inversión.";
+                dispatch(new CrearNotificacion($expediente_tecnico->id_usuario, \Auth::user()->id, null, $detalle));
             }
             $expediente_tecnico->save();
             DB::commit();
@@ -714,7 +731,7 @@ class ExpedienteController extends Controller
     public function imprime_expediente($id_expediente_tecnico)
     {
 
-        $relacion = Rel_Estudio_Expediente_Obra::with(['expediente.tipoSolicitud','expediente.hoja1.sector', 'expediente.hoja1.unidad_ejecutora', 'expediente.hoja1.beneficiario','expediente.hoja2.cobertura','expediente.hoja2.localidad', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios','expediente.conceptos', 'expediente.programas','expediente.avance_financiero', 'expediente.hoja5', 'expediente.hoja6','obra'])
+        $relacion = Rel_Estudio_Expediente_Obra::with(['expediente.tipoSolicitud', 'expediente.hoja1.sector', 'expediente.hoja1.unidad_ejecutora', 'expediente.hoja1.beneficiario', 'expediente.hoja2.cobertura', 'expediente.hoja2.localidad', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios', 'expediente.conceptos', 'expediente.programas', 'expediente.avance_financiero', 'expediente.hoja5', 'expediente.hoja6', 'obra'])
             ->where('id_expediente_tecnico', '=', $id_expediente_tecnico)
             ->first();
 

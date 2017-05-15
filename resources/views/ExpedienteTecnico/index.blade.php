@@ -63,6 +63,8 @@
                         </span>
                         <span class="btn btn-warning fa fa-refresh" id="limpiar" title="Limpiar pantalla">
                         </span>
+                        <span class="btn btn-danger fa fa-exclamation-triangle" id="observaciones" title="Revisar observaciones" style="display:none;">
+                        </span>
                         <span class="btn btn-success fa fa-save" id="guardar" title="Guardar">
                         </span>
                         <span class="btn btn-success fa fa-share-square" id="enviar_revision" title="Enviar a la DGI para revisión">
@@ -139,6 +141,40 @@
                 </div>
             </div>
         </input>
+    </div>
+</div>
+<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modal_observaciones" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content panel-warning">
+            <div class="modal-header panel-heading">
+                <span class="close" data-dismiss="modal">
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                    <span class="sr-only">
+                        Close
+                    </span>
+                </span>
+                <h4 class="modal-title" id="myModalLabel">
+                    Listado de Observaciones
+                </h4>
+            </div>
+            <div class="modal-body">
+                    <table class="table table-bordered" id="tablaObservaciones" style="font-size: 12px; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 50%">
+                                Observaciones
+                            </th>
+                            <th style="width: 50%">
+                                Fecha
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                
+            </div>
+        </div>
     </div>
 </div>
 <script src="{{ asset('js/Expediente_Tecnico/main_expediente_tecnico.js') }}">

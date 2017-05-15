@@ -30,6 +30,7 @@
             </script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js">
             </script>
+           
             {{--
             <script src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/js/lightslider.js">
             </script>
@@ -46,7 +47,9 @@
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div id="hdr">
             @include('layouts.header-panel')
+        </div>
             @include('layouts.menu-izquierdo')
             <!-- /.navbar-collapse -->
         </nav>

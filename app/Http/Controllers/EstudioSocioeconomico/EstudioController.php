@@ -21,15 +21,18 @@ use App\Rel_Estudio_Expediente_Obra;
 use DB;
 use Illuminate\Http\Request;
 
+
 class EstudioController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','verifica.notificaciones']);
+
     }
 
     public function index()
     {
+        // $this->dispatch(new VerificarNotificaciones());
         $user = \Auth::user()->load('unidad_ejecutora')->load('sectores');
         // dd($user);
         $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();

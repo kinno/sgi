@@ -77,4 +77,8 @@ class P_Expediente_Tecnico extends Model
         return $this->hasOne('App\P_Anexo_Seis','id','id_anexo_seis');
     }
 
+    public function observaciones(){
+        return $this->hasMany('App\P_Evaluacion_Expediente','id_expediente_tecnico','id');
+    }
+
 }

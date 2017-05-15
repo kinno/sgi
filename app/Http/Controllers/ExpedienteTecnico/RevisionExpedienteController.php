@@ -9,16 +9,18 @@ use App\Rel_Estudio_Expediente_Obra;
 use DB;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
+use App\Jobs\CrearNotificacion;
 
 class RevisionExpedienteController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','verifica.notificaciones']);
     }
 
     public function index()
-    {
+    {   
+         // $this->dispatch(new VerificarNotificaciones());
         return View("ExpedienteTecnico.revision_expediente_tecnico");
     }
 
@@ -57,6 +59,9 @@ class RevisionExpedienteController extends Controller
             $expediente_tecnico->fecha_evaluacion = date('Y-m-d H:i:s');
             
             $expediente_tecnico->save();
+            $detalle = "La Dirección General de Inversión ha regresado el Expediente Técnico: ".$expediente_tecnico->id." con observaciones para su atención.";
+            dispatch(new CrearNotificacion($expediente_tecnico->id_usuario,\Auth::user()->id,null,$detalle));
+
             DB::commit();
             $expediente['id_expediente_tecnico'] = $expediente_tecnico->id;
             return ($expediente);

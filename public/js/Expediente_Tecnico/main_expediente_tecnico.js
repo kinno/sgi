@@ -1,4 +1,5 @@
 var error = false;
+var tablaObservaciones;
 jQuery(document).ready(function($) {
     $.ajaxSetup({
         headers: {
@@ -10,6 +11,9 @@ jQuery(document).ready(function($) {
     });
     $("#limpiar").on('click', function() {
         location.reload();
+    });
+    $("#observaciones").on('click',function(){
+        abrirObservaciones();
     });
     $("#guardar").on('click', function() {
         guardar();
@@ -85,6 +89,17 @@ jQuery(document).ready(function($) {
     $(".navbar-form").submit(function(e) {
         return false;
     });
+
+    tablaObservaciones = $('#tablaObservaciones').DataTable({
+        "ordering": false,
+        "searching": false,
+        "destroy": false,
+        columns: [{
+            name: 'observaciones',
+        }, {
+            name: 'fecha',
+        }]
+    });
 });
 
 function guardar() {
@@ -156,6 +171,13 @@ function buscarExpediente() {
                         }
                         if (hoja6) {
                             llenarHoja6(data.expediente.id, hoja6);
+                        }
+
+                        if(data.expediente.observaciones){
+                            $.each(data.expediente.observaciones,function(index,item){
+                             tablaObservaciones.row.add([item.observaciones,item.fecha_observacion]).draw();
+                            })
+                            $("#observaciones").show();
                         }
                     }
                 } else {
@@ -285,4 +307,10 @@ function desactivaNavegacion(errornav) {
     } else {
         $("ul.nav-tabs>li").removeClass('error');
     }
+}
+
+
+
+function abrirObservaciones(){
+    $("#modal_observaciones").modal("show");
 }

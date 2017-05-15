@@ -25,7 +25,7 @@ class SectorController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','verifica.notificaciones']);
     }
 
     public function permisos ()
