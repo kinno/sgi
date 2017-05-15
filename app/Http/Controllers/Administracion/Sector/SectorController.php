@@ -9,7 +9,7 @@ use App\User;
 use App\Cat_Departamento;
 use App\Cat_Sector;
 use Illuminate\Support\Facades\DB;
-//use Illuminate\Validation\Validator;
+
 
 class SectorController extends Controller
 {
@@ -33,7 +33,7 @@ class SectorController extends Controller
     	$usuarios = User::where('bactivo', 1)->orderBy('name', 'ASC')->get()->toArray();
     	$ids =[];
     	if (count($usuarios) == 1)
-    		$ids = $this->getIds($usuarios[0]['id']);
+            $ids = $this->getIdsSectores($usuarios[0]['id']);
     	$opciones_usuario = $this->llena_combo($usuarios, 0, 'name');
 		$filas = $this->tabla($ids);
     	//dd($filas);
@@ -44,7 +44,7 @@ class SectorController extends Controller
 
     public function dropdownUsuario (Request $request)
     {
-    	$ids = $this->getIds($request->id);
+    	$ids = $this->getIdsSectores($request->id);
 		$filas = $this->tabla($ids);
 		return $filas;
     }
@@ -74,16 +74,6 @@ class SectorController extends Controller
             $data['error'] = 3;
         }        
         return ($data);
-    }
-
-    public function getIds ($id)
-    {
-    	$usuario = User::find($id);
-    	$sectores = $usuario->sectores->toArray();
-    	$arreglo_ids = [];
-    	foreach ($sectores as $sector)
-    		array_push($arreglo_ids, $sector['id']);
-    	return $arreglo_ids;
     }
 
     public function tabla ($ids = [])

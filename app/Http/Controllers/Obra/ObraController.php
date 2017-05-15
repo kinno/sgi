@@ -62,7 +62,7 @@ class ObraController extends Controller
             'monto_federal.*.required_with'		=> 'Introduzac monto Federal',
             'fuente_federal.*.required_with'	=> 'Seleccione Fuente Federal',
             'cuenta_federal.*.required_with'	=> 'Introduzca No. de cuenta Federal',
-            'monto_estatal.*.required_with'		=> 'Introduzac monto Estatal',
+            'monto_estatal.*.required_with'		=> 'Introduzca monto Estatal',
             'fuente_estatal.*.required_with'	=> 'Seleccione Fuente Estatal',
             'cuenta_estatal.*.required_with'	=> 'Introduzca No. de cuenta Estatal',
         ];

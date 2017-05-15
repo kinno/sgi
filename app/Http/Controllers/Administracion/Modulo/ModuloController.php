@@ -50,7 +50,8 @@ class ModuloController extends Controller
 
     public function guarda_permisos (Request $request)
     {
-    	$validator = \Validator::make($request->all(), $this->rules, $this->messages);
+    	return ($request->all());
+        $validator = \Validator::make($request->all(), $this->rules, $this->messages);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
             return array('errores' => $errors);
@@ -78,10 +79,10 @@ class ModuloController extends Controller
     public function getIds ($id)
     {
     	$usuario = User::find($id);
-    	$menus = $usuario->menus->toArray();
+    	$menus = $usuario->menus;
     	$arreglo_ids = [];
     	foreach ($menus as $menu)
-    		array_push($arreglo_ids, $menu['id']);
+    		$arreglo_ids[] =  $menu->id;
     	return $arreglo_ids;
     }
 

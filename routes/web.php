@@ -119,3 +119,16 @@ Route::post('Obra/dropdownEjercicio', 'Obra\ObraController@dropdownEjercicio');
 Route::post('Obra/dropdownSector', 'Obra\ObraController@dropdownSector');
 Route::post('Obra/dropdownPrograma', 'Obra\ObraController@dropdownPrograma');
 
+// Rutas Techos Financieros
+Route::get('TechoFinanciero','TechoFinanciero\TechoController@index')->name('TechoFinanciero.index');
+Route::get('TechoFinanciero/create','TechoFinanciero\TechoController@create')->name('TechoFinanciero.create');
+Route::post('TechoFinanciero/create','TechoFinanciero\TechoController@store');
+Route::get('TechoFinanciero/{id}/agregar','TechoFinanciero\TechoController@agregar')->name('TechoFinanciero.agregar');
+Route::post('TechoFinanciero/guarda/{id}','TechoFinanciero\TechoController@guarda');
+Route::get('TechoFinanciero/{id}/edit','TechoFinanciero\TechoController@edit')->name('TechoFinanciero.edit');
+Route::put('TechoFinanciero/{id}','TechoFinanciero\TechoController@update')->name('TechoFinanciero.update');
+Route::post('TechoFinanciero/{id}/destroy','TechoFinanciero\TechoController@destroy')->name('TechoFinanciero.destroy');
+Route::post('TechoFinanciero/dropdownEjercicio', 'TechoFinanciero\TechoController@dropdownEjercicio');
+Route::post('TechoFinanciero/dropdownSector', 'TechoFinanciero\TechoController@dropdownSector');
+Route::post('TechoFinanciero/dropdownPrograma', 'TechoFinanciero\TechoController@dropdownPrograma');
+Route::post('TechoFinanciero/dropdownTipoFuente','TechoFinanciero\TechoController@dropdownTipoFuente');

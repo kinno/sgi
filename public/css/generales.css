@@ -32,40 +32,38 @@
     color: #ffffff;
 }
 
-/*
-.form-control-feedback1 {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 2;
-  display: block;
-  width: 34px;
-  height: 34px;
-  line-height: 34px;
-  text-align: center;
-  pointer-events: none;
+.grupo1 {
+    background-color: #FF5A5A !important;
+    /*font-size: 0.85em;*/
 }
 
-.form-horizontal .has-feedback .form-control-feedback1 {
-  right: 22px;
+.grupo2 {
+    background-color: #92D050 !important;
 }
 
-.has-error .form-control-feedback1 {
-  color: #a94442;
+.grupo3 {
+    background-color: #FFFF7A !important;
 }
 
-.has-feedback .form-control {
-  padding-right: 35px !important;
+.grupo4 {
+    background-color: #DDD9C3 !important;
 }
-*/
 
+.num_verde {
+    color: green;
+    /*text-align:right;*/
+}
+
+.num_rojo {
+    color: red;
+}
 
 input {
-background-image:url(../images/Fnd_2.png);
-border: 1px solid #666666;
-text-align: left;
-height:14pt;
-font-size: 9pt;
-font-family: Arial, serif;
-font-weight: normal;
+    background-image:url(../images/Fnd_2.png);
+    border: 1px solid #666666;
+    text-align: left;
+    height:14pt;
+    font-size: 9pt;
+    font-family: Arial, serif;
+    font-weight: normal;
 }
