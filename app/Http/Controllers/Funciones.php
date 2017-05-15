@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Cat_Sector;
 use App\Cat_Area;
 use App\Cat_Estructura_Programatica;
+use App\Cat_Tipo_Fuente;
+use App\Cat_Fuente;
+use App\User;
 
 trait Funciones
 {
@@ -40,6 +43,14 @@ trait Funciones
         $programa = Cat_Estructura_Programatica::find($request->id);
         $proyectos = Cat_Estructura_Programatica::where('ejercicio', $request->ejercicio)->where('clave', 'like', $programa->clave.'%')->where('tipo', 'PRY')->orderBy('clave','ASC')->get()->toArray();
         $opciones = $this->llena_combo($proyectos, 0, 'clave,nombre');
+        return $opciones;
+    }
+
+    public function dropdownTipoFuente (Request $request)
+    {
+        $tipo_fuente = Cat_Tipo_Fuente::find($request->id);
+        $fuentes = Cat_Fuente::where('tipo', $tipo_fuente->clave)->orderBy('descripcion', 'ASC')->get()->toArray();
+        $opciones = $this->llena_combo($fuentes, 0, 'descripcion');
         return $opciones;
     }
 
@@ -86,5 +97,18 @@ trait Funciones
         else
         	$salida = $vacio.chr(10).$opciones;
         return $salida;
+    }
+
+    public function getIdsSectores ($id_usuario = 0)
+    {
+        if ($id_usuario == 0)
+        	$usuario = \Auth::user();
+        else
+        	$usuario = User::find($id_usuario);
+    	$sectores = $usuario->sectores;
+        $arreglo_ids = [];
+        foreach ($sectores as $sector)
+            $arreglo_ids[] = $sector->id;
+        return $arreglo_ids;
     }
 }

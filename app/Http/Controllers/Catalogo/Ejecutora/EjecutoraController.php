@@ -75,12 +75,6 @@ class EjecutoraController extends Controller
             return array('errores' => $errors);
         }
         $data = array();
-        /*
-        $data['mensaje'] = "Error al guardar.<br/> Intente nuevamente";
-        $data['error'] = 3;
-        $data['ayu'] = $ayuntamiento;
-        return ($data);
-        */
         try {
         	$ejecutora  = new Cat_Unidad_Ejecutora($request->only(['clave', 'nombre', 'bactivo', 'id_sector']));
         	$titular  = new Cat_Titular($request->only(['titulo', 'apellido', 'cargo']));
@@ -138,10 +132,6 @@ class EjecutoraController extends Controller
             return array('errores' => $errors);
         }
         $data = array();
-        /*$data['mensaje'] = "Error al guardar.<br/> Intente nuevamente";
-        $data['error'] = 3;
-        $data['ayu'] = $ayuntamiento;
-        return ($data);*/
         try {
             $ejecutora = Cat_Unidad_Ejecutora::find($id);
             $ejecutora->nombre = $request->nombre;
@@ -180,7 +170,6 @@ class EjecutoraController extends Controller
             $data['error'] = 3;
         }
         return ($data);
-        //return redirect()->route('Sector.index');
     }
 
     public function destroy($id)
@@ -196,7 +185,6 @@ class EjecutoraController extends Controller
                 $ayuntamiento = false;
                 $titular = new Cat_Titular;
             }
-            
             //$estudio = $e->unidad_ejecutoras;
             //$estudio = ['si' => 'uno'];
             $estudio = array();
@@ -222,32 +210,4 @@ class EjecutoraController extends Controller
         }
         return ($data);
     }
-
-
-    /*
-    public function llena_combo ($arreglo, $valor = 0, $name = 'nombre', $id = 'id')
-    {
-        $n = count($arreglo);
-        $vacio = '<option value="0" selected="selected">- Selecciona</option>';
-        $vacio1 = '<option value="0">- Selecciona</option>';
-        $i = 0;
-        $salida = "";
-        $opciones = "";
-        foreach ($arreglo as $key => $rows) {
-            if ($valor == $rows[$id])
-                $opciones .= '<option value="'.$rows[$id].'" selected="selected">'.$rows[$name].'</option>';
-            else
-                $opciones .= '<option value="'.$rows[$id].'">'.$rows[$name].'</option>';
-            if ($i == 0)
-                $tmp = '<option value="'.$rows[$id].'" selected="selected">'.$rows[$name].'</option>';
-        }
-        if ($n == 0)
-            $salida = $vacio;
-        else if ($n == 1)
-            $salida = $tmp;
-        else
-            $salida = $vacio1.$opciones;
-        return $salida;
-    }
-    */
 }

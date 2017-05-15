@@ -51,4 +51,5 @@ class Cat_Sector extends Model
     {
         return $query->where('nombre', 'LIKE', "%$nombre%");
     }
+
 }
