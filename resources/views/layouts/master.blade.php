@@ -47,15 +47,24 @@
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div id="hdr">
-            @include('layouts.header-panel')
-        </div>
-            @include('layouts.menu-izquierdo')
-            <!-- /.navbar-collapse -->
+            <div id="hdr">
+                @include('layouts.header-panel')
+            </div>
+            
+                @include('layouts.menu-izquierdo')
         </nav>
+        {{-- <div style="position: absolute; padding-bottom: 20%;"> --}}
+            
+        {{-- </div> --}}
+
         <div id="page-wrapper">
             <div class="container-fluid">
-                @yield('content')
+                <div class="col-md-12">
+                    @include('layouts.header-menu')
+                </div>
+                <div style="padding-top: 3%;">
+                    @yield('content')
+                </div>                
             </div>
             <!-- /.container-fluid -->
         </div>

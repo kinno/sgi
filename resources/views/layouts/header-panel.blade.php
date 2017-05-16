@@ -72,9 +72,7 @@ $listaN="";
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             @if ($count>0)
-                <b style="color:#ff0000">
-                    {{$count}}
-                </b>
+                <span class="badge">{{$count}}</span>
             @endif
             <i class="fa fa-envelope">
             </i>

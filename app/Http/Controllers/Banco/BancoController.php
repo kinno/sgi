@@ -24,12 +24,44 @@ class BancoController extends Controller
 
     public function index()
     {
+        $menu = array('input'=>array('id'=>'id_estudio_socioeconomico','class'=>'text-right num','title'=>'No. de Banco de Proyectos:'),
+            'botones' => array([
+                'id'    => 'buscar',
+                'tipo'  => 'btn-default',
+                'icono' => 'fa fa-search',
+                'title' => 'Buscar Estudio',
+            ], [
+                'id'    => 'limpiar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-refresh',
+                'title' => 'Limpiar pantalla',
+            ], [
+                'id'    => 'guardar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-save',
+                'title' => 'Guardar Evaluación',
+            ],[
+                'id'    => 'enviar_observaciones',
+                'tipo'  => 'btn-danger',
+                'icono' => 'fa fa-share-square-o',
+                'title' => 'Enviar Observaciones a la Unidad Ejecutora',
+            ], [
+                'id'    => 'dictaminar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-check-square-o',
+                'title' => 'Dictaminar',
+            ], [
+                'id'    => 'evaluacion_pdf',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-file-pdf-o',
+                'title' => 'Imprimir dictámen',
+            ]));
         $tipoEvaluacion = Cat_Tipo_Evaluacion::where('bactivo', '=', 1)
             ->where('id', '>', 0)->get();
         $tipoPpi = Cat_Ppi::all();
 
         // dump($tipoPpi);
-        return View("Banco.dictaminacion", compact('tipoEvaluacion', 'tipoPpi'));
+        return View("Banco.dictaminacion", compact('tipoEvaluacion', 'tipoPpi','menu'));
     }
 
     public function obtener_tipo_evaluacion(Request $request)

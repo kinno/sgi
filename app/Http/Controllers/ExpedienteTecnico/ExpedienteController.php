@@ -41,7 +41,38 @@ class ExpedienteController extends Controller
 
     public function index()
     {
-        // $this->dispatch(new VerificarNotificaciones());
+        $menu = array('input'=>array('id'=>'id_expediente_tecnico_search','class'=>'text-right num','title'=>'No. Solcitud:'),
+            'botones' => array([
+                'id'    => 'buscar',
+                'tipo'  => 'btn-default',
+                'icono' => 'fa fa-search',
+                'title' => 'Buscar Solicitud',
+            ], [
+                'id'    => 'limpiar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-refresh',
+                'title' => 'Limpiar pantalla',
+            ], [
+                'id'    => 'observaciones',
+                'tipo'  => 'btn-danger',
+                'icono' => 'fa fa-exclamation-triangle',
+                'title' => 'Limpiar pantalla',
+            ], [
+                'id'    => 'guardar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-save',
+                'title' => 'Guardar',
+            ],[
+                'id'    => 'enviar_revision',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-share-square',
+                'title' => 'Enviar a la DGI para revisión',
+            ],[
+                'id'    => 'imprimir_expediente',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-file-pdf-o',
+                'title' => 'Imprimir Expediente Técnico',
+            ]));
         $user              = \Auth::user()->load('unidad_ejecutora')->load('sectores');
         $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
         $tipoSolicitud     = Cat_Solicitud_Presupuesto::whereIn('id', array(1, 9, 10))->get();
@@ -59,7 +90,7 @@ class ExpedienteController extends Controller
         $fuentesEstatal = Cat_Fuente::where('tipo', '=', 'E')->get();
         $ue             = array('id' => $user->unidad_ejecutora->id, 'nombre' => $user->unidad_ejecutora->nombre);
         $sector         = array('id' => $user->sectores[0]->id, 'nombre' => $user->sectores[0]->nombre);
-        return view('ExpedienteTecnico.index', compact('ejercicios', 'tipoSolicitud', 'accionesFederales', 'accionesEstatales', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector'));
+        return view('ExpedienteTecnico.index', compact('ejercicios', 'tipoSolicitud', 'accionesFederales', 'accionesEstatales', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector','menu'));
     }
 
     public function buscar_expediente(Request $request)

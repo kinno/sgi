@@ -21,20 +21,44 @@ use App\Rel_Estudio_Expediente_Obra;
 use DB;
 use Illuminate\Http\Request;
 
-
 class EstudioController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','verifica.notificaciones']);
+        $this->middleware(['auth', 'verifica.notificaciones']);
 
     }
 
     public function index()
     {
-        // $this->dispatch(new VerificarNotificaciones());
-        $user = \Auth::user()->load('unidad_ejecutora')->load('sectores');
-        // dd($user);
+        $menu = array('input'=>array('id'=>'id_estudio_socioeconomico','class'=>'text-right num','title'=>'No. de Banco de Proyectos:'),
+            'botones' => array([
+                'id'    => 'buscar',
+                'tipo'  => 'btn-default',
+                'icono' => 'fa fa-search',
+                'title' => 'Buscar Estudio',
+            ], [
+                'id'    => 'limpiar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-refresh',
+                'title' => 'Limpiar pantalla',
+            ], [
+                'id'    => 'guardar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-save',
+                'title' => 'Guardar',
+            ], [
+                'id'    => 'dictaminar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-share-square',
+                'title' => 'Enviar a la DGI para dictaminar',
+            ], [
+                'id'    => 'ficha_tecnica',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-file-pdf-o',
+                'title' => 'Imprimir ficha técnica',
+            ]));
+        $user              = \Auth::user()->load('unidad_ejecutora')->load('sectores');
         $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
         $accionesFederales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 4)->get();
         $accionesEstatales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 1)
@@ -53,7 +77,7 @@ class EstudioController extends Controller
         $sector         = array('id' => $user->sectores[0]->id, 'nombre' => $user->sectores[0]->nombre);
 
         // dump($accionesFederales);
-        return view('EstudioSocioeconomico.index', compact('ejercicios', 'accionesFederales', 'accionesEstatales', 'grupoSocial', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector'));
+        return view('EstudioSocioeconomico.index', compact('ejercicios', 'accionesFederales', 'accionesEstatales', 'grupoSocial', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector', 'menu'));
     }
 
     public function buscar_estudio(Request $request)
@@ -378,7 +402,7 @@ class EstudioController extends Controller
         $hoja1 = P_Anexo_Dos_Estudiosocioeconomico::find($request->id_hoja_dos);
         if ($hoja1->microlocalizacion) {
             \Storage::disk('uploads')->delete($hoja1->microlocalizacion);
-            $hoja1->microlocalizacion = null; 
+            $hoja1->microlocalizacion = null;
             $hoja1->save();
         }
     }

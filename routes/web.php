@@ -99,6 +99,11 @@ Route::group(['prefix' => 'ExpedienteTecnico'], function () {
     Route::get('impresion_expediente/{id_expediente_tecnio}', 'ExpedienteTecnico\ExpedienteController@imprime_expediente');
 });
 
+Route::group(['prefix' => 'Oficios'], function() {
+    Route::get('crear_oficios', 'Oficios\OficiosController@index')->name('creacionOficios');
+    Route::get('textos_oficios', 'Oficios\TextoOficiosController@index')->name('contolTextos');
+});
+
 // Rutas Catalogo - Sector
 Route::group(['prefix' => 'Catalogo'], function () {
     Route::resource('Sector', 'Catalogo\Sector\SectorController');

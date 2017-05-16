@@ -46,7 +46,7 @@
 </style>
 <div class="panel">
     <div class="row">
-        <nav class="navbar navbar-default" role="navigation">
+       {{--  <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
                 </div>
@@ -74,7 +74,7 @@
                     </form>
                 </div>
             </div>
-        </nav>
+        </nav> --}}
         <input id="hojaActual" name="hojaActual" type="hidden" value="1">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="active" id="panel1">
