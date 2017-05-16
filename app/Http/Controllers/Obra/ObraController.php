@@ -141,10 +141,9 @@ class ObraController extends Controller
         	}
         	if ($relacion->id_det_obra != 0) {
         		$expediente = array();
-        		$expediente['error'] = "La obra ya fué creada para este Expediente";
+        		$expediente['error'] = "Este expediente, ya tiene relacionada una obra";
         		return ($expediente);
         	}
-        	
             $ejecutoras = $expediente->hoja1->sector->unidad_ejecutoras->toArray();
 	        $opciones = $this->llena_combo($ejecutoras, $expediente->hoja1->id_unidad_ejecutora);
 	        $expediente['opciones_ue'] = $opciones;
@@ -204,6 +203,7 @@ class ObraController extends Controller
     {
         // para validar
         $valores = $request->all();
+        return $valores;
         foreach ($valores['monto_federal'] as $clave => $valor) {
         	if ($valor == 0)
         		$valores['monto_federal'][$clave] = null;
@@ -307,6 +307,7 @@ class ObraController extends Controller
     {
         // para validar
         $valores = $request->all();
+        return $valores;
         foreach ($valores['monto_federal'] as $clave => $valor) {
         	if ($valor == 0)
         		$valores['monto_federal'][$clave] = null;

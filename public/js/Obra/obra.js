@@ -53,8 +53,14 @@ function LimpiaObra () {
     $("[id^='err_']" ).hide();
 }
 
-function HabilitaCamposObra () {
-    $('#id_clasificacion_obra, #programa, #id_proyecto_ep, .numcta, #id_grupo_social').removeAttr('disabled');
+function HabilitaCamposObra (proyecto, cuenta_federal, cuenta_estatal) {
+    $('#id_clasificacion_obra, #id_grupo_social').removeAttr('disabled');
+    if (proyecto)
+        $('#programa, #id_proyecto_ep').removeAttr('disabled');
+    if (cuenta_federal)
+        $('.cuenta_federal .numcta').removeAttr('disabled');
+    if (cuenta_estatal)
+        $('.cuenta_estatal .numcta').removeAttr('disabled');
     $("#btnGuardar").removeAttr("disabled");
 }
 
@@ -352,9 +358,9 @@ function muestraExpediente () {
             $("#divLoading").hide();
         },
         success: function(data) {
-            LimpiaObra ();
             console.log(data);
             if (!data.error) {
+                LimpiaObra ();
                 acuerdos = data.acuerdos;
                 fuentes = data.fuentes_monto;
                 $('#id_exp_tec').val(data.relacion.id_expediente_tecnico);
@@ -427,7 +433,7 @@ function muestraExpediente () {
                     }
                 }
                 $(".monfed:first").change();
-                HabilitaCamposObra ();
+                HabilitaCamposObra (true, true, true);
             } 
             else 
                 BootstrapDialog.mensaje (null, data.error, 2);
@@ -455,9 +461,9 @@ function muestraObra () {
             $("#divLoading").hide();
         },
         success: function(data) {
-            LimpiaObra ();
             console.log(data);
             if (!data.error) {
+                LimpiaObra ();
                 acuerdos = data.acuerdos;
                 fuentes = data.fuentes;
                 $('#id_det_obra').val(data.id);
@@ -498,8 +504,12 @@ function muestraObra () {
                 $("#id_acuerdo_est, #id_acuerdo_fed").val(arrAcuerdos).trigger('change');
                 $("#id_grupo_social").val(data.id_grupo_social);
                 j = 0;
+                var proyecto = true, cuenta_estatal = false, cuenta_federal = false;
+                if (data.asignado * 1 > 0)
+                    proyecto = false;
                 for (var i = 0; i < fuentes.length; i++) {
                     if (fuentes[i].pivot.tipo_fuente == 'F') {
+                        cuenta_federal = true;
                         if (i === 0) {
                             $(".monfed:first").val(fuentes[i].pivot.monto).autoNumeric('update');
                             $('select[name="fuente_federal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
@@ -514,6 +524,7 @@ function muestraObra () {
                         }
                     }
                     else {
+                        cuenta_estatal = true;
                         if (j === 0) {
                             $(".monest:first").val(fuentes[i].pivot.monto).autoNumeric('update');
                             $('select[name="fuente_estatal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
@@ -532,7 +543,7 @@ function muestraObra () {
                 $(".monfed:first").change();
                 if (data.relacion.id_expediente_tecnico > 0) {
                     inHabilitaCampos ();
-                    HabilitaCamposObra ();
+                    HabilitaCamposObra (proyecto, cuenta_federal, cuenta_estatal);
                 }
                 else
                     HabilitaCampos ();
@@ -564,7 +575,7 @@ function guardaObra () {
         data.append("ejercicio", $('#ejercicio').val());
         data.append("id_sector", $('#id_sector').val());
         data.append("id_unidad_ejecutora", $('#id_unidad_ejecutora').val());
-        data.append("id_modalidad_ejecucion", $('#id_modalidad_ejecucion').val());
+        //data.append("id_modalidad_ejecucion", $('#id_modalidad_ejecucion').val());
         data.append("nombre", $('#nombre').val());
         data.append("justificacion", $('#justificacion').val());
         data.append("caracteristicas", $('#caracteristicas').val());
@@ -594,6 +605,7 @@ function guardaObra () {
         $('.numftee').each(function() {
             data.append("fuente_estatal[]", $(this).val());
         });
+        data.append("id_proyecto_ep", $('#id_proyecto_ep').val());
         var arr = $('#id_acuerdo_est').val();
         for (i = 0; i < arr.length; i++)
             data.append("id_acuerdo_est[]", arr[i]);
