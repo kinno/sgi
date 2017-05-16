@@ -1,23 +1,32 @@
 <style type="text/css">
     .menu-bar{
-    overflow: hidden;
+    overflow: visible;
     position: fixed; 
-    right: 5px;
+    left:0;
+    top:50px;
     z-index: 1;
-    height: 80px;
+    height: auto;
+    width: 100%;
+    background-color: #F1F1F1;
+    color: #2B2B2B;
+    border-bottom: 1px solid #C2C2C2;
+    }
+    .botones{
+            right: 10px;
+    top: 10px;
     }
 </style>
-@isset ($menu)
+@isset ($barraMenu)
 <div class="menu-bar">
-    <div aria-label="..." class="btn-group pull-right" role="group">
+    <div aria-label="..." class="btn-group pull-right botones" role="group">
         <div class="form-group form-inline">
-            @isset ($menu['input'])
+            @isset ($barraMenu['input'])
             <p class="navbar-text">
-                {{$menu['input']['title']}}
+                {{$barraMenu['input']['title']}}
             </p>
-            <input class="form-control {{$menu['input']['class']}}" id="{{$menu['input']['id']}}" name="{{$menu['input']['id']}}" placeholder="Buscar" type="text" value=""/>
+            <input class="form-control {{$barraMenu['input']['class']}}" id="{{$barraMenu['input']['id']}}" name="{{$barraMenu['input']['id']}}" placeholder="Buscar" type="text" value=""/>
             @endisset
-        @foreach ($menu['botones'] as $boton)
+        @foreach ($barraMenu['botones'] as $boton)
             <span class="btn {{$boton['tipo']}} {{$boton['icono']}}" id="{{$boton['id']}}" title="{{$boton['title']}}">
             </span>
             @endforeach

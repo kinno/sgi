@@ -31,7 +31,7 @@ class EstudioController extends Controller
 
     public function index()
     {
-        $menu = array('input'=>array('id'=>'id_estudio_socioeconomico','class'=>'text-right num','title'=>'No. de Banco de Proyectos:'),
+        $barraMenu = array('input'=>array('id'=>'id_estudio_socioeconomico','class'=>'text-right num','title'=>'No. de Banco de Proyectos:'),
             'botones' => array([
                 'id'    => 'buscar',
                 'tipo'  => 'btn-default',
@@ -77,7 +77,7 @@ class EstudioController extends Controller
         $sector         = array('id' => $user->sectores[0]->id, 'nombre' => $user->sectores[0]->nombre);
 
         // dump($accionesFederales);
-        return view('EstudioSocioeconomico.index', compact('ejercicios', 'accionesFederales', 'accionesEstatales', 'grupoSocial', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector', 'menu'));
+        return view('EstudioSocioeconomico.index', compact('ejercicios', 'accionesFederales', 'accionesEstatales', 'grupoSocial', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector', 'barraMenu'));
     }
 
     public function buscar_estudio(Request $request)

@@ -101,7 +101,9 @@ Route::group(['prefix' => 'ExpedienteTecnico'], function () {
 
 Route::group(['prefix' => 'Oficios'], function() {
     Route::get('crear_oficios', 'Oficios\OficiosController@index')->name('creacionOficios');
-    Route::get('textos_oficios', 'Oficios\TextoOficiosController@index')->name('contolTextos');
+    Route::get('textos_oficios', 'Oficios\TextoOficiosController@index')->name('controlTextos');
+    Route::post('guardar_texto', 'Oficios\TextoOficiosController@guardar_texto');
+    Route::post('buscar_texto', 'Oficios\TextoOficiosController@buscar_texto');
 });
 
 // Rutas Catalogo - Sector

@@ -41,7 +41,7 @@ class ExpedienteController extends Controller
 
     public function index()
     {
-        $menu = array('input'=>array('id'=>'id_expediente_tecnico_search','class'=>'text-right num','title'=>'No. Solcitud:'),
+        $barraMenu = array('input'=>array('id'=>'id_expediente_tecnico_search','class'=>'text-right num','title'=>'No. Solcitud:'),
             'botones' => array([
                 'id'    => 'buscar',
                 'tipo'  => 'btn-default',
@@ -90,7 +90,7 @@ class ExpedienteController extends Controller
         $fuentesEstatal = Cat_Fuente::where('tipo', '=', 'E')->get();
         $ue             = array('id' => $user->unidad_ejecutora->id, 'nombre' => $user->unidad_ejecutora->nombre);
         $sector         = array('id' => $user->sectores[0]->id, 'nombre' => $user->sectores[0]->nombre);
-        return view('ExpedienteTecnico.index', compact('ejercicios', 'tipoSolicitud', 'accionesFederales', 'accionesEstatales', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector','menu'));
+        return view('ExpedienteTecnico.index', compact('ejercicios', 'tipoSolicitud', 'accionesFederales', 'accionesEstatales', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector','barraMenu'));
     }
 
     public function buscar_expediente(Request $request)

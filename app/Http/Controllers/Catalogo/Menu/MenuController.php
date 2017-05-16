@@ -54,6 +54,7 @@ class MenuController extends Controller
     
     public function store(Request $request)
     {
+        // dd($request->all());
         if ($request->id_menu_padre == "0") {
             array_pop($this->rules);
             $blink = 0;

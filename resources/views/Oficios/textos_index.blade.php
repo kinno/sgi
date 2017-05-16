@@ -1,7 +1,9 @@
 @extends('layouts.master')
 @section('content')
 {{-- <div  class="container"> --}}
-<form class="form-horizontal" id="form_anexo_uno" role="form">
+<form class="form-horizontal" id="form_texto_oficios" role="form">
+{{ csrf_field() }}
+<input type="hidden" name="id" id="id" value="">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title"><strong>Control de Textos de Oficios</strong></h3>
@@ -11,7 +13,7 @@
                 <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon">Tipo: </span>
-                         <select class="form-control" name="id_tipo_solicitud" id="id_tipo_solicitud" aria-describedby="basic-addon1">
+                         <select class="form-control input-trigger" name="id_solicitud_presupuesto" id="id_solicitud_presupuesto" aria-describedby="basic-addon1">
                             @foreach ($tipoSolicitud as $element)
                                 <option value="{{$element->id}}">{{$element->nombre_solicitud}}</option>
                             @endforeach
@@ -21,7 +23,7 @@
                 <div class="col-sm-3">
                    <div class="input-group">
                         <span class="input-group-addon">Ejercicio: </span>               
-                        <select class="form-control input-sm" id="ejercicio" name="ejercicio">
+                        <select class="form-control input-sm input-trigger" id="ejercicio" name="ejercicio">
                             @foreach ($ejercicios as $element)
                                 <option value="{{$element->Ejercicio}}">{{$element->Ejercicio}}</option>
                             @endforeach              
@@ -31,7 +33,7 @@
                 <div class="col-md-5">
                  <div class="input-group">
                     <span class="input-group-addon">Fuente: </span>     
-                    <select class="form-control input-sm" id="fuente" name="fuente">
+                    <select class="form-control input-sm input-trigger" id="id_fuente" name="id_fuente">
                         <option>Seleccione...</option>
                          @foreach ($fuentes as $element)
                                 <option value="{{$element->id}}">{{$element->descripcion}}</option>
@@ -46,7 +48,7 @@
                 <div class="col-sm-12">
                    <div class="input-group">
                         <span class="input-group-addon">Asunto: </span>               
-                        <textarea class="form-control"></textarea>
+                        <textarea class="form-control" id="asunto" name="asunto"></textarea>
                     </div>  
                 </div>
             </div>                    
@@ -54,7 +56,7 @@
                 <div class="col-sm-12">
                    <div class="input-group">
                         <span class="input-group-addon">Prefijo: </span>               
-                        <textarea class="form-control"></textarea>
+                        <textarea class="form-control" id="prefijo" name="prefijo"></textarea>
                     </div>  
                 </div>
             </div>                                                                
@@ -62,7 +64,7 @@
                 <div class="col-sm-12">
                    <div class="input-group">
                         <span class="input-group-addon">Texto:</span>               
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" id="texto" name="texto" rows="10"></textarea>
                     </div>  
                 </div>
             </div>    
@@ -71,19 +73,11 @@
                 <div class="col-md-2">                    
                     <p><button type="button" class="btn btn-default" id="etiquetaTotal">Agregar Total</button></p>
                 </div>
-                <div class="col-md-4">                    
-                    &nbsp;
-                </div>    
-                <div class="col-md-2 text-right">                    
-                    <p><button type="button" class="btn btn-default" id="guardarC">Guardar</button></p>
-                </div>
-                <div class="col-md-2 text-right">  
-                    <p><button type="button" class="btn btn-default" id="salir">Salir</button></p>
-                </div>
             </div>    
             
         </div>    
     </div>
 </form>
-{{-- </div>  --}}
+<script src="{{ asset('js/Oficios/main_texto_oficios.js') }}">
+</script>
 @endsection
