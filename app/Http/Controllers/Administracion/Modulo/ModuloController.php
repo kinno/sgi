@@ -50,7 +50,7 @@ class ModuloController extends Controller
 
     public function guarda_permisos (Request $request)
     {
-    	return ($request->all());
+    	// return ($request->all());
         $validator = \Validator::make($request->all(), $this->rules, $this->messages);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();

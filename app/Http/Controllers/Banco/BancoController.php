@@ -24,7 +24,7 @@ class BancoController extends Controller
 
     public function index()
     {
-        $menu = array('input'=>array('id'=>'id_estudio_socioeconomico','class'=>'text-right num','title'=>'No. de Banco de Proyectos:'),
+        $barraMenu = array('input'=>array('id'=>'id_estudio_socioeconomico','class'=>'text-right num','title'=>'No. de Banco de Proyectos:'),
             'botones' => array([
                 'id'    => 'buscar',
                 'tipo'  => 'btn-default',
@@ -61,7 +61,7 @@ class BancoController extends Controller
         $tipoPpi = Cat_Ppi::all();
 
         // dump($tipoPpi);
-        return View("Banco.dictaminacion", compact('tipoEvaluacion', 'tipoPpi','menu'));
+        return View("Banco.dictaminacion", compact('tipoEvaluacion', 'tipoPpi','barraMenu'));
     }
 
     public function obtener_tipo_evaluacion(Request $request)
