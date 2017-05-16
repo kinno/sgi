@@ -1,0 +1,8 @@
+ALTER TABLE `sgiweb_db`.`cat_texto_oficio` 
+CHANGE COLUMN `idTxtOfi` `id` INT(11) NOT NULL AUTO_INCREMENT ,
+CHANGE COLUMN `idTipOfi` `id_solicitud_presupuesto` INT(10) UNSIGNED NOT NULL ,
+CHANGE COLUMN `Ejercicio` `ejercicio` SMALLINT(6) NOT NULL ,
+CHANGE COLUMN `idFte` `id_fuente` INT(10) UNSIGNED NOT NULL ,
+CHANGE COLUMN `AsuOFi` `asunto` VARCHAR(150) CHARACTER SET 'utf8' NOT NULL ,
+CHANGE COLUMN `PfjOfi` `prefijo` VARCHAR(20) CHARACTER SET 'utf8' NULL ,
+CHANGE COLUMN `fundamento` `texto` TEXT CHARACTER SET 'utf8' NULL DEFAULT NULL ;
