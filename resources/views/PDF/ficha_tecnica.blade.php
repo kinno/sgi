@@ -114,7 +114,7 @@
         <td class="celdaTablaFicha" colspan="4">
             @foreach ($estudio->regiones as $region)
             {{-- @foreach ($region->Cat_Region as $value) --}}
-                {{$region->clave_region}} {{$region->nombre_region}},
+                {{$region->clave}} {{$region->nombre}},
             {{-- @endforeach --}}
         @endforeach
         </td>
@@ -125,7 +125,7 @@
         <td class="celdaTablaFicha" colspan="4">
             @foreach ($estudio->municipios as $municipio)
              {{-- @foreach ($municipio->Cat_Municipio as $value) --}}
-                {{$municipio->nombre_municipio}}, 
+                {{$municipio->nombre}}, 
             {{-- @endforeach --}}
         @endforeach
         </td>
@@ -158,7 +158,7 @@
         <td class="celdaTablaFicha" colspan="5">
             @foreach ($acuerdos_federales as $element)
     
-    {{$element->clave_acuerdo}} {{$element->nombre_acuerdo}},
+    {{$element->clave}} {{$element->nombre}},
     
     @endforeach
         </td>
@@ -172,7 +172,7 @@
         <td class="celdaTablaFicha" colspan="5">
             @foreach ($acuerdos_estatales as $element)
     
-    {{$element->clave_acuerdo}} {{$element->nombre_acuerdo}},
+    {{$element->clave}} {{$element->nombre}},
     
     @endforeach
         </td>

@@ -12,4 +12,8 @@ class P_Evaluacion_Expediente extends Model
     public function getfechaObservacionAttribute($value){
     	return Carbon::parse($value)->format('d-m-Y H:i:s');
     }
+
+    public function getobservacionesAttribute($value){
+    	return nl2br($value);
+    }
 }

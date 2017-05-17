@@ -6,3 +6,35 @@ CHANGE COLUMN `idFte` `id_fuente` INT(10) UNSIGNED NOT NULL ,
 CHANGE COLUMN `AsuOFi` `asunto` VARCHAR(150) CHARACTER SET 'utf8' NOT NULL ,
 CHANGE COLUMN `PfjOfi` `prefijo` VARCHAR(20) CHARACTER SET 'utf8' NULL ,
 CHANGE COLUMN `fundamento` `texto` TEXT CHARACTER SET 'utf8' NULL DEFAULT NULL ;
+
+ALTER TABLE `sgiweb_db`.`cat_acuerdo` 
+CHANGE COLUMN `id_tipo_acuerdo` `id_tipo` TINYINT(2) NULL DEFAULT NULL ,
+CHANGE COLUMN `clave_acuerdo` `clave` VARCHAR(20) CHARACTER SET 'utf8' NULL DEFAULT NULL ,
+CHANGE COLUMN `nombre_acuerdo` `nombre` TEXT CHARACTER SET 'utf8' NULL DEFAULT NULL ;
+
+ALTER TABLE `sgiweb_db`.`cat_grupo_social` 
+CHANGE COLUMN `IdGpo` `id` TINYINT(2) UNSIGNED NOT NULL AUTO_INCREMENT ,
+CHANGE COLUMN `NomGpo` `nombre` VARCHAR(100) CHARACTER SET 'utf8' NULL ;
+
+ALTER TABLE `sgiweb_db`.`cat_inciso` 
+CHANGE COLUMN `nombre_inciso` `nombre` VARCHAR(60) NULL ;
+
+ALTER TABLE `sgiweb_db`.`cat_municipio` 
+CHANGE COLUMN `nombre_municipio` `nombre` VARCHAR(30) NULL DEFAULT NULL ;
+
+ALTER TABLE `sgiweb_db`.`cat_punto` 
+CHANGE COLUMN `nombre_punto` `nombre` VARCHAR(50) NULL DEFAULT NULL ;
+
+ALTER TABLE `sgiweb_db`.`cat_region` 
+CHANGE COLUMN `clave_region` `clave` CHAR(4) NULL DEFAULT NULL ,
+CHANGE COLUMN `nombre_region` `nombre` VARCHAR(20) NULL DEFAULT NULL ;
+
+ALTER TABLE `sgiweb_db`.`cat_solicitud_presupuesto` 
+CHANGE COLUMN `nombre_solicitud` `nombre` VARCHAR(50) CHARACTER SET 'utf8' NULL DEFAULT NULL ;
+
+ALTER TABLE `sgiweb_db`.`cat_subinciso` 
+CHANGE COLUMN `nombre_subinciso` `nombre` VARCHAR(100) NULL DEFAULT NULL ;
+
+ALTER TABLE `sgiweb_db`.`cat_tipo_localidad` 
+CHANGE COLUMN `nombre_tipo_localidad` `nombre` VARCHAR(20) NULL DEFAULT NULL ;
+

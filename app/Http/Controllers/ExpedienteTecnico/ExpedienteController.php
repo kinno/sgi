@@ -56,7 +56,8 @@ class ExpedienteController extends Controller
                 'id'    => 'observaciones',
                 'tipo'  => 'btn-danger',
                 'icono' => 'fa fa-exclamation-triangle',
-                'title' => 'Limpiar pantalla',
+                'title' => 'Limpiar pantalla"',
+                'display' => 'style="display:none"'
             ], [
                 'id'    => 'guardar',
                 'tipo'  => 'btn-success',
@@ -76,9 +77,9 @@ class ExpedienteController extends Controller
         $user              = \Auth::user()->load('unidad_ejecutora')->load('sectores');
         $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
         $tipoSolicitud     = Cat_Solicitud_Presupuesto::whereIn('id', array(1, 9, 10))->get();
-        $accionesFederales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 4)->get();
-        $accionesEstatales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 1)
-            ->orWhere('id_tipo_acuerdo', '=', 2)
+        $accionesFederales = Cat_Acuerdo::where('id_tipo', '=', 4)->get();
+        $accionesEstatales = Cat_Acuerdo::where('id_tipo', '=', 1)
+            ->orWhere('id_tipo', '=', 2)
             ->get();
         $coberturas     = Cat_Cobertura::where('id', '>', 0)->get();
         $localidades    = Cat_Tipo_Localidad::where('id', '>', 0)->get();

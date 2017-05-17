@@ -12,6 +12,7 @@ jQuery(document).ready(function($) {
     $("#limpiar").on('click', function() {
         location.reload();
     });
+    // $("#observaciones").hide();
     $("#observaciones").on('click',function(){
         abrirObservaciones();
     });

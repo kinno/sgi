@@ -41,7 +41,7 @@
                     <select class="form-control input-md" id="id_region" multiple="multiple" name="id_region[]">
                         @foreach($regiones as $region)
                         <option value="{{$region->id}}">
-                            {{$region->clave_region}} {{$region->nombre_region}}
+                            {{$region->clave}} {{$region->nombre}}
                         </option>
                         @endforeach
                     </select>
@@ -52,7 +52,7 @@
                     <select class="form-control input-md" id="id_municipio" multiple="multiple" name="id_municipio[]">
                         @foreach($municipios as $municipio)
                         <option value="{{$municipio->id}}">
-                            {{$municipio->nombre_municipio}}
+                            {{$municipio->nombre}}
                         </option>
                         @endforeach
                     </select>
@@ -86,7 +86,7 @@
                         </option>
                         @foreach($localidades as $localidad)
                         <option value="{{$localidad->id}}">
-                            {{$localidad->nombre_tipo_localidad}}
+                            {{$localidad->nombre}}
                         </option>
                         @endforeach
                     </select>

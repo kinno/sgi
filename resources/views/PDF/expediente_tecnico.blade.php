@@ -23,8 +23,8 @@
     $clave_acuerdo = "";
     $nombre_acuerdo = "";
     foreach ($relacion->expediente->acuerdos as $acuerdo) {
-        $clave_acuerdo .= $acuerdo["clave_acuerdo"] . "<br>";
-        $nombre_acuerdo .= $acuerdo["nombre_acuerdo"] . "<br>";
+        $clave_acuerdo .= $acuerdo["clave"] . "<br>";
+        $nombre_acuerdo .= $acuerdo["nombre"] . "<br>";
     }
     $total_inversion=0.00;
     $monto_federal = "";
@@ -63,6 +63,7 @@
     div.cont{ }
      .pagenum:before { content: counter(page); }
 </style>
+{{-- {{dd($relacion)}} --}}
 {{-- ANEZXO 1 --}}
 <div class="header">
 <table class="tablaFicha" border="0" style="margin-top: 0;width: 100%">
@@ -96,7 +97,7 @@
         <td  colspan="2" class="punto">Solicitud de Presupuesto</td><td colspan="3" class="punto">Objeto</td>
     </tr>
     <tr class="c">
-        <td colspan="2">{{$relacion->expediente->tipoSolicitud->nombre_solicitud}}</td><td colspan="3">{{$objeto_obra}}</td>
+        <td colspan="2">{{$relacion->expediente->tipoSolicitud->nombre}}</td><td colspan="3">{{$objeto_obra}}</td>
     </tr>
     <tr>
         <td class="punto">Clave</td><td colspan="4" class="punto">Unidad Ejecutora</td>
@@ -118,7 +119,7 @@
     </tr>
     
     @foreach ($relacion->expediente->acuerdos as $acuerdo)
-       <tr> <td>{{$acuerdo->clave_acuerdo}}</td><td colspan="4" class="j">{{$acuerdo->nombre_acuerdo}}</td></tr>
+       <tr> <td>{{$acuerdo->clave}}</td><td colspan="4" class="j">{{$acuerdo->nombre}}</td></tr>
     @endforeach
     <tr>
         <td class="punto">No. de Obra</td><td colspan="4" class="punto">Nombre de la Obra</td>
@@ -193,10 +194,10 @@
         <td colspan="2" class="c">{{$relacion->expediente->hoja2->cobertura->nombre}}</td>
         <td colspan="3" class="j">
                 @foreach ($relacion->expediente->regiones as $regiones)
-                    {{$regiones->nombre_region}},
+                    {{$regiones->nombre}},
                 @endforeach
                 @foreach ($relacion->expediente->municipios as $municipios)
-                     {{$municipios->nombre_municipio}},   
+                     {{$municipios->nombre}},   
                 @endforeach
         </td>
     </tr>
@@ -205,7 +206,7 @@
         <td colspan="4">Localidad(es)</td><td>Tipo de Localidad</td>
     </tr>
     <tr>
-        <td colspan="4" class="j">{{$relacion->expediente->hoja2->nombre_localidad}}</td><td class="c">{{$relacion->expediente->hoja2->localidad->nombre_tipo_localidad}}
+        <td colspan="4" class="j">{{$relacion->expediente->hoja2->nombre_localidad}}</td><td class="c">{{$relacion->expediente->hoja2->localidad->nombre}}
         </td>
     </tr>
     <tr class="punto">

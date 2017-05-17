@@ -138,7 +138,7 @@ $(document).ready(function() {
             serverSide: true,
             ajax: '/Banco/get_datos_comentarios/' + data.id_evaluacion,
             columns: [{
-                data: 'sub_inciso.nombre_subinciso',
+                data: 'sub_inciso.nombre',
                 name: 'inciso'
             }, {
                 data: 'pagina',
