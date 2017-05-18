@@ -83,14 +83,14 @@
             </div>
            <br/>
 		</form>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
                 <button type="submit" class="btn btn-success btn-sm" id="btnGuardar">Guardar</button>
             </div>
             <div class="col-md-2">
-                <a href="{{ route('TechoFinanciero.index') }}"class="btn btn-success btn-sm">Regresar</a>
+                <a href="{{ route('TechoFinanciero.index') }}" class="btn btn-success btn-sm">Regresar</a>
             </div>
-        </div>
+        </div> -->
 		
   	</div>
 </div>

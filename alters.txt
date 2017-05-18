@@ -6,3 +6,12 @@ CHANGE COLUMN `idFte` `id_fuente` INT(10) UNSIGNED NOT NULL ,
 CHANGE COLUMN `AsuOFi` `asunto` VARCHAR(150) CHARACTER SET 'utf8' NOT NULL ,
 CHANGE COLUMN `PfjOfi` `prefijo` VARCHAR(20) CHARACTER SET 'utf8' NULL ,
 CHANGE COLUMN `fundamento` `texto` TEXT CHARACTER SET 'utf8' NULL DEFAULT NULL ;
+
+
+create table `cat_clasificacion_obra` (
+	`id` int (11),
+	`nombre` varchar (60)
+); 
+insert into `cat_clasificacion_obra` (`id`, `nombre`) values('1','Obra');
+insert into `cat_clasificacion_obra` (`id`, `nombre`) values('2','Acción');
+insert into `cat_clasificacion_obra` (`id`, `nombre`) values('3','Proyecto-Estudio');

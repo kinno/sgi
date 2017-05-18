@@ -138,9 +138,14 @@ function Triggers () {
         $('#err_' + $(this).attr('id')).hide();
     });
 
-    // evento guardar
+    // botón guardar
     $('#btnGuardar').unbind('click').on('click', function () {      
         guardaTechoFinanciero ();
+    });
+
+    // botón Regresar
+    $('#btnRegresar').unbind('click').on('click', function () {      
+        window.location='/TechoFinanciero';
     });
 }
 

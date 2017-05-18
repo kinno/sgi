@@ -14,13 +14,20 @@ class ModuloController extends Controller
 {
     use Funciones;
 
-    public $rules = [
+    protected $rules = [
     		'id_usuario' => 'not_in:0'
         ];
-
     protected $messages = [
             'id_usuario.not_in'	    => 'Seleccione Tipo de Usuario',
         ];
+    protected $barraMenu = array(
+            'botones' => array([
+                'id'    => 'btnGuardar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-save',
+                'title' => 'Guardar',
+                'texto' => 'Guardar'
+            ]));
 
     public function __construct()
     {
@@ -38,7 +45,8 @@ class ModuloController extends Controller
     	//dd($filas);
     	return view('Administracion.Modulo.permisos')
             ->with('opciones_usuario', $opciones_usuario)
-            ->with('filas', $filas);
+            ->with('filas', $filas)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     public function dropdownUsuario (Request $request)

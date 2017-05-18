@@ -35,10 +35,15 @@ function Triggers () {
         $('#err_' + $(this).attr('id')).hide();
     });
 
-    // evento guardar
+    // botón guardar
     $('#btnGuardar').unbind('click').on('click', function () {      
        guardaEjecutora ();
    });
+
+    // botón Regresar
+    $('#btnRegresar').unbind('click').on('click', function () {      
+        window.location='/Catalogo/Ejecutora';
+    });
 
 }
 

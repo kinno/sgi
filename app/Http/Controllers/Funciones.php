@@ -90,8 +90,7 @@ trait Funciones
         if ($n == 0)
             $salida = $vacio;
         else if ($n == 1)
-            //$salida = $tmp;
-        	$salida = $opciones;
+        	$salida = $vacio.$opciones;
         else if ($selected)
             $salida = $vacio1.chr(10).$opciones;
         else

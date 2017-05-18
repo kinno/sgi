@@ -44,8 +44,6 @@ function Triggers () {
                 }
             });
         }
-        
-        
     });
 
     // chkboxs de ejercicio
@@ -83,7 +81,7 @@ function Triggers () {
             $('input[name=Menu0]').prop('checked', true);
     });
 
-    // evento guardar
+    // botón guardar
     $('#btnGuardar').unbind('click').on('click', function () {      
        guardaPermisos ();
    });

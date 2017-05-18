@@ -22,7 +22,7 @@ class TechoController extends Controller
 {
     use Funciones;
 
-    public $rules = [
+    protected $rules = [
             'ejercicio' => 'not_in:0',
             'id_unidad_ejecutora' => 'not_in:0',
             'id_proyecto_ep' => 'not_in:0',
@@ -32,11 +32,11 @@ class TechoController extends Controller
             'monto' => 'required|numeric|not_in:0',
             'observaciones' => 'required'
         ];
-    public $rules2 = [
+    protected $rules2 = [
             'monto' => 'required|numeric|not_in:0',
             'observaciones' => 'required'
         ];
-    public $rules3 = [
+    protected $rules3 = [
             'id_tipo_movimiento' => 'not_in:0',
             'monto' => 'required|numeric|not_in:0',
             'observaciones' => 'required'
@@ -53,6 +53,20 @@ class TechoController extends Controller
             'monto.not_in'                      => 'Introduzca monto',
             'observaciones.required'            => 'Introduzca observaciones'
         ];
+    protected $barraMenu = array(
+            'botones' => array([
+                'id'    => 'btnGuardar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-save',
+                'title' => 'Guardar',
+                'texto' => 'Guardar'
+            ], [
+                'id'    => 'btnRegresar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-arrow-left',
+                'title' => 'Regresar',
+                'texto' => 'Regresar'
+            ] ));
     
     public function __construct()
     {
@@ -111,7 +125,8 @@ class TechoController extends Controller
             ->with('opciones_ejercicio', $opciones_ejercicio)
             ->with('opciones_sector', $opciones_sector)
             ->with('opciones_tipo_fuente', $opciones_tipo_fuente)
-            ->with('opciones_tipo_movimiento', $opciones_tipo_movimiento);
+            ->with('opciones_tipo_movimiento', $opciones_tipo_movimiento)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     public function store(Request $request)
@@ -132,7 +147,6 @@ class TechoController extends Controller
                 $data['error'] = 2;
                 return $data;
             }
-            //return;
             $p_techo  = new P_Techo($request->only(['ejercicio', 'id_unidad_ejecutora', 'id_proyecto_ep', 'id_tipo_fuente', 'id_fuente']));
             $d_techo = new D_Techo($request->only(['monto', 'observaciones']));
             $p_techo->techo = $request->monto;
@@ -161,7 +175,8 @@ class TechoController extends Controller
         //dd($d_techo);
         return view('TechoFinanciero.edit')
             ->with('d_techo', $d_techo)
-            ->with('programa', $programa);
+            ->with('programa', $programa)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     public function update(Request $request, $id)
@@ -213,7 +228,8 @@ class TechoController extends Controller
         return view('TechoFinanciero.agregar')
             ->with('d_techo', $d_techo)
             ->with('programa', $programa)
-            ->with('opciones_tipo_movimiento', $opciones_tipo_movimiento);
+            ->with('opciones_tipo_movimiento', $opciones_tipo_movimiento)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     public function guarda(Request $request, $id)

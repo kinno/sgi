@@ -20,6 +20,7 @@ use App\D_Obra;
 use App\P_Obra;
 use App\Rel_Estudio_Expediente_Obra;
 use App\P_Expediente_Tecnico;
+use App\P_Techo;
 use Illuminate\Support\Facades\DB;
 
 class ObraController extends Controller
@@ -75,6 +76,20 @@ class ObraController extends Controller
 
     public function index(Request $request)
     {
+        $barraMenu = array(
+            'botones' => array([
+                'id'    => 'btnGuardar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-save',
+                'title' => 'Guardar',
+                'texto' => 'Guardar'
+            ], [
+                'id'    => 'btnLimpiar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-refresh',
+                'title' => 'Limpiar pantalla',
+                'texto' => 'Limpiar'
+            ], ));
         $modalidades 		= Cat_Modalidad_Ejecucion::orderBy('nombre', 'ASC')->get()->toArray();
         $ejercicios 		= Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get()->toArray();
         $clasificaciones 	= Cat_Clasificacion_Obra::get()->toArray();
@@ -113,7 +128,8 @@ class ObraController extends Controller
             ->with('opciones_acuerdo_estatal', $opciones_acuerdo_estatal)
             ->with('opciones_fuente_federal', $opciones_fuente_federal)
             ->with('opciones_fuente_estatal', $opciones_fuente_estatal)
-            ->with('opciones_grupo', $opciones_grupo);
+            ->with('opciones_grupo', $opciones_grupo)
+            ->with('barraMenu', $barraMenu);
     }
 
     public function buscar_expediente(Request $request)
@@ -165,22 +181,10 @@ class ObraController extends Controller
     {
         try {
             $obra = D_Obra::with(['acuerdos', 'fuentes', 'regiones', 'municipios', 'relacion'])->where('id_obra', $request->id_obra)->where('ejercicio', $request->ejercicio)->firstOrFail();
-            //$relacion = $obra->relacion;
-            /*$nexp = Rel_Estudio_Expediente_Obra::where('id_det_obra', $obra->id)->where('id_expediente_tecnico', '>', 0)->count();
-            if ($nexp == 0)
-            	$obra['expediente'] = false;
-            else
-            	$obra['expediente'] = true;
-            	*/
-            /*if ($relacion->id_expediente_tecnico > 0)
-            	$obra['expediente'] = true;
-            else
-            	$obra['expediente'] = false;*/
             $ejecutoras = $obra->sector->unidad_ejecutoras->toArray();
 	        $opciones = $this->llena_combo($ejecutoras, $obra->id_unidad_ejecutora);
 	        $obra['opciones_ue'] = $opciones;
-	        $proyecto = $obra->proyecto;
-	        //$obra['proyecto'] = $proyecto;	        
+	        $proyecto = $obra->proyecto;	        
 	        $programas = Cat_Estructura_Programatica::where('ejercicio', $obra->ejercicio)->where('tipo', 'P')->orderBy('clave','ASC')->get()->toArray();
 	        $programa = Cat_Estructura_Programatica::where('ejercicio', $obra->ejercicio)->where('tipo', 'P')->where('clave', 'like', substr($proyecto->clave, 0, 8).'%')->get()->first();
         	$opciones = $this->llena_combo($programas, $programa->id, 'clave,nombre');
@@ -201,40 +205,27 @@ class ObraController extends Controller
 
     public function guardar (Request $request)
     {
-        // para validar
-        $valores = $request->all();
-        return $valores;
-        foreach ($valores['monto_federal'] as $clave => $valor) {
-        	if ($valor == 0)
-        		$valores['monto_federal'][$clave] = null;
-        }
-        foreach ($valores['fuente_federal'] as $clave => $valor) {
-        	if ($valor == 0)
-        		$valores['fuente_federal'][$clave] = null;
-        }
-        foreach ($valores['monto_estatal'] as $clave => $valor) {
-        	if ($valor == 0)
-        		$valores['monto_estatal'][$clave] = null;
-        }
-        foreach ($valores['fuente_estatal'] as $clave => $valor) {
-        	if ($valor == 0)
-        		$valores['fuente_estatal'][$clave] = null;
-        }
-        //return array($valores);
-        $validator = \Validator::make($valores, $this->rules, $this->messages);
+        //return $request->all();
+        $validator = \Validator::make($request->all(), $this->rules, $this->messages);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
             return array('errores' => $errors);
         }
+        $data = $this->validaMonto($request, 'F', 0);
+        if (count($data) > 0)
+            return $data;
+        $data = $this->validaMonto($request, 'E', 0);
+        if (count($data) > 0)
+            return $data;
         $data = array();
         try {
             $d_obra  = new D_Obra($request->only(['id_modalidad_ejecucion', 'ejercicio', 'id_clasificacion_obra', 'id_sector', 'id_unidad_ejecutora', 'nombre', 'justificacion', 'caracteristicas', 'id_cobertura', 'localidad', 'id_proyecto_ep', 'id_grupo_social']));
             if ($request->id_cobertura <= 2)
             	$d_obra->id_municipio = $request->id_cobertura;
-            else if (count($valores['id_municipio']) > 1)
+            else if (count($request->id_municipio) > 1)
             	$d_obra->id_municipio = 3;
             else
-            	$d_obra->id_municipio = $valores['id_municipio'][0] + 3;
+            	$d_obra->id_municipio = $request->id_municipio[0] + 3;
             if ($request->accion == 1) {
             	$relacion = Rel_Estudio_Expediente_Obra::where('id_expediente_tecnico', $request->id_exp_tec)->first();
             	$relacion->id_usuario = \Auth::user()->id;
@@ -255,14 +246,14 @@ class ObraController extends Controller
                 if (isset($request->fuente_federal[0]) && $request->fuente_federal[0] > 0)
 	                foreach ($request->fuente_federal as $key => $value) {
 	                   $syncArray[$value] = array('id_det_obra' => $d_obra->id,
-	                        'monto' => str_replace(",", "", $request->monto_federal[$key]),
+	                        'monto' => $request->monto_federal[$key],
 	                        'cuenta' => $request->cuenta_federal[$key],
 	                        'tipo_fuente' => 'F');
 	                }
                 if (isset($request->fuente_estatal[0]) && $request->fuente_estatal[0] > 0)
 	                foreach ($request->fuente_estatal as $key => $value) {
 	                    $syncArray[$value] = array('id_det_obra' => $d_obra->id,
-	                    'monto' => str_replace(",", "", $request->monto_estatal[$key]),
+	                    'monto' => $request->monto_estatal[$key],
 	                    'cuenta' => $request->cuenta_estatal[$key],
 	                    'tipo_fuente' => 'E' );
 	                }
@@ -305,31 +296,18 @@ class ObraController extends Controller
 
     public function update (Request $request)
     {
-        // para validar
-        $valores = $request->all();
-        return $valores;
-        foreach ($valores['monto_federal'] as $clave => $valor) {
-        	if ($valor == 0)
-        		$valores['monto_federal'][$clave] = null;
-        }
-        foreach ($valores['fuente_federal'] as $clave => $valor) {
-        	if ($valor == 0)
-        		$valores['fuente_federal'][$clave] = null;
-        }
-        foreach ($valores['monto_estatal'] as $clave => $valor) {
-        	if ($valor == 0)
-        		$valores['monto_estatal'][$clave] = null;
-        }
-        foreach ($valores['fuente_estatal'] as $clave => $valor) {
-        	if ($valor == 0)
-        		$valores['fuente_estatal'][$clave] = null;
-        }
-        //return array($valores);
-        $validator = \Validator::make($valores, $this->rules, $this->messages);
+        //return $request->all();
+        $validator = \Validator::make($request->all(), $this->rules, $this->messages);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
             return array('errores' => $errors);
         }
+        $data = $this->validaMonto($request, 'F', $request->id_det_obra);
+        if (count($data) > 0)
+            return $data;
+        $data = $this->validaMonto($request, 'E', $request->id_det_obra);
+        if (count($data) > 0)
+            return $data;
         $data = array();
         try {
             $d_obra = D_Obra::find($request->id_det_obra);
@@ -347,10 +325,10 @@ class ObraController extends Controller
             $d_obra->id_grupo_social = $request->id_grupo_social;
             if ($request->id_cobertura <= 2)
             	$d_obra->id_municipio = $request->id_cobertura;
-            else if (count($valores['id_municipio']) > 1)
+            else if (count($request->id_municipio) > 1)
             	$d_obra->id_municipio = 3;
             else
-            	$d_obra->id_municipio = $valores['id_municipio'][0] + 3;
+            	$d_obra->id_municipio = $request->id_municipio[0] + 3;
             DB::transaction(function () use ($d_obra, $request) {
                 $d_obra->save();
                 // fuentes
@@ -358,14 +336,14 @@ class ObraController extends Controller
                 if (isset($request->fuente_federal[0]) && $request->fuente_federal[0] > 0)
 	                foreach ($request->fuente_federal as $key => $value) {
 	                   $syncArray[$value] = array('id_det_obra' => $d_obra->id,
-	                        'monto' => str_replace(",", "", $request->monto_federal[$key]),
+	                        'monto' => $request->monto_federal[$key],
 	                        'cuenta' => $request->cuenta_federal[$key],
 	                        'tipo_fuente' => 'F');
 	                }
                 if (isset($request->fuente_estatal[0]) && $request->fuente_estatal[0] > 0)
 	                foreach ($request->fuente_estatal as $key => $value) {
 	                    $syncArray[$value] = array('id_det_obra' => $d_obra->id,
-	                    'monto' => str_replace(",", "", $request->monto_estatal[$key]),
+	                    'monto' => $request->monto_estatal[$key],
 	                    'cuenta' => $request->cuenta_estatal[$key],
 	                    'tipo_fuente' => 'E' );
 	                }
@@ -403,5 +381,63 @@ class ObraController extends Controller
             $data['error'] = 3;
         }
         return ($data);
+    }
+
+    public function asignado ($request, $fuente, $tipo, $id_det_obra)
+    {
+        $asignado = DB::table('d_obra')
+            ->join('rel_obra_fuente', 'd_obra.id', '=', 'rel_obra_fuente.id_det_obra')
+            ->where('ejercicio', $request->ejercicio)
+            ->where('id_unidad_ejecutora', $request->id_unidad_ejecutora)
+            ->where('id_proyecto_ep', $request->id_proyecto_ep)
+            ->where('id_fuente', $fuente)
+            ->where('tipo_fuente', $tipo)
+            ->where('id_det_obra', '<>', $id_det_obra)
+            ->sum(DB::raw('CASE WHEN rel_obra_fuente.asignado > 0 THEN rel_obra_fuente.asignado ELSE rel_obra_fuente.monto END'));
+        return $asignado;
+
+    }
+
+    public function techo ($request, $fuente, $tipo)
+    {
+        $techo = P_Techo::select('techo')
+            ->where('ejercicio', $request->ejercicio)
+            ->where('id_unidad_ejecutora', $request->id_unidad_ejecutora)
+            ->where('id_proyecto_ep', $request->id_proyecto_ep)
+            ->where('id_fuente', $fuente)
+            ->where('id_tipo_fuente', $tipo)->first();
+        if (count($techo) > 0)
+            return $techo['techo'];
+        else
+            return 0;
+
+    }
+
+    public function validaMonto($request, $tipo, $id_det_obra)
+    {
+        $data = array();
+        if ($tipo == 'F') {
+            $fuente = $request->fuente_federal;
+            $monto = $request->monto_federal;
+            $id_tipo = 2;
+        }
+        else {
+            $fuente = $request->fuente_estatal;
+            $monto = $request->monto_estatal;
+            $id_tipo = 1;
+        }
+        foreach ($fuente as $key => $value) {
+            if ($value != null) {
+                $asignado = $this->asignado($request, $value, $tipo, $id_det_obra);
+                $techo = $this->techo($request, $value, $id_tipo);
+                if ($asignado + $monto[$key] * 1 > $techo) {
+                    $fuente = Cat_Fuente::find($value);
+                    $data['mensaje'] = "Está rebasando el techo financiero para la fuente: ".$fuente->nombre.'<br>Techo: '.number_format($techo,2).'<br>Asignado: '.number_format($asignado, 2).'<br>A registrar: '.number_format($monto[$key], 2);
+                    $data['error'] = 2;
+                    return $data;
+                }
+            }
+        }
+        return $data;
     }
 }

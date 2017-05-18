@@ -12,7 +12,7 @@
    		    <input type="hidden" name="_method" value="PUT">
             <input type="hidden" id="id" value="{{ $ejecutora->id }}">
             <div class="form-group" id="div_id_sector">
-                <label for="id_sector" class="col-md-2 control-label input-sm">Sector: <span class="obligatorio"> *</span></label>
+                <label for="id_sector" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Sector:</label>
                 <div class="col-md-6">
                     <select name="id_sector" id="id_sector" class="form-control input-sm">
                         {!! $opciones_sector !!}
@@ -21,14 +21,14 @@
                 </div>
             </div>
             <div class="form-group" id="div_clave">
-                <label for="clave" class="col-md-2 control-label input-sm">Clave:<span class="obligatorio"> *</span></label>
+                <label for="clave" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Clave:</label>
                 <div class="col-md-2">
                     <input type="text" class="form-control input-sm" name="clave" id="clave" maxlength="10" value="{{ $ejecutora->clave }}">
                     <span id="err_clave" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 </div>
             </div>
             <div class="form-group" id="div_nombre">
-                <label for="nombre" class="col-md-2 control-label input-sm">Ejecutora:<span class="obligatorio"> *</span></label>
+                <label for="nombre" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Ejecutora:</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control input-sm" name="nombre" id="nombre" maxlength="150" value="{{ $ejecutora->nombre }}">
                     <span id="err_nombre" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
@@ -36,28 +36,28 @@
             </div>
             <div id="div_grupo_titular">
             <div class="form-group" id="div_titulo">
-                <label for="titulo" class="col-md-2 control-label input-sm">Titulo:<span class="obligatorio"> *</span></label>
+                <label for="titulo" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Titulo:</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control input-sm" name="titulo" id="titulo" maxlength="60" value="{{ $titular->titulo }}">
                     <span id="err_titulo" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 </div>
             </div>
             <div class="form-group" id="div_titular">
-                <label for="titular" class="col-md-2 control-label input-sm">Titular:<span class="obligatorio"> *</span></label>
+                <label for="titular" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Titular:</label>
                 <div class="col-md-4">
                     <input type="text" class="form-control input-sm" name="titular" id="titular" maxlength="30" value="{{ $titular->nombre }}">
                     <span id="err_titular" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 </div>
             </div>
             <div class="form-group" id="div_apellido">
-                <label for="apellido" class="col-md-2 control-label input-sm">Apellidos:<span class="obligatorio"> *</span></label>
+                <label for="apellido" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Apellidos:</label>
                 <div class="col-md-4">
                     <input type="text" class="form-control input-sm" name="apellido" id="apellido" maxlength="40" value="{{ $titular->apellido }}">
                     <span id="err_apellido" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 </div>
             </div>
             <div class="form-group" id="div_cargo">
-                <label for="cargo" class="col-md-2 control-label input-sm">Cargo:<span class="obligatorio"> *</span></label>
+                <label for="cargo" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Cargo:</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control input-sm" name="cargo" id="cargo" maxlength="100" value="{{ $titular->cargo }}">
                     <span id="err_cargo" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
@@ -78,16 +78,15 @@
       				</div>
     			</div>
   			</div>
-            <br/>
 		</form>	
-        <div class="form-group">
+        <!-- <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
                 <button class="btn btn-success btn-sm" id="btnGuardar">Guardar</button>
             </div>
             <div class="col-md-2">
                 <a href="{{ route('Ejecutora.index') }}"class="btn btn-success btn-sm">Regresar</a>
             </div>
-        </div>	
+        </div> -->	
   	</div>
 </div>
 <script src="{{ asset('js/Catalogo/Ejecutora/ejecutora-update.js') }}"></script>

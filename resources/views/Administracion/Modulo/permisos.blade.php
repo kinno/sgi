@@ -10,8 +10,8 @@
     	<form enctype="”multipart/form-data”" class="form-horizontal" role="form" id="Permisos">
     		{{ csrf_field() }}
     		<div class="form-group" id="div_id_usuario">
-            	<label for="id_usuario" class="col-md-2 control-label input-sm">Usuario: <span class="obligatorio"> *</span></label>
-              	<div class="col-md-6">
+            	<label for="id_usuario" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Usuario:</label>
+              	<div class="col-md-5">
                 	<select name="id_usuario" id="id_usuario" class="form-control input-sm">
                     	{!! $opciones_usuario !!}
                  	</select>
@@ -20,7 +20,7 @@
 			</div>
 			<div class="form-group">
 				<label class="col-md-2 control-label input-sm">Módulos:</label>
-				<div class="col-md-6" style="display: block; overflow: auto; height: 300px">
+				<div class="col-md-7" style="display: block; overflow: auto; height: 320px">
 					<table class="table table-hover table-condensed" id="opciones_menu">
 						<tbody id="opciones_menu1">
 							{!! $filas !!}
@@ -28,13 +28,12 @@
 					</table>
 				</div>
 			</div>
-           <br/>
 		</form>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
                 <button class="btn btn-success btn-sm" id="btnGuardar">Guardar</button>
             </div>
-        </div>
+        </div> -->
 		
   	</div>
 </div>

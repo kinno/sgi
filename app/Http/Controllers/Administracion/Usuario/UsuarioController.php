@@ -21,14 +21,14 @@ class UsuarioController extends Controller
 {
     use Funciones;
 
-    public $rules0 = [
+    protected $rules0 = [
             'id_tipo_usuario' => 'not_in:0',
             'username' => 'required|min:6|unique:users',
             'name' => 'required',
             'email' => 'required|email|max:100|unique:users',
             'password' => 'required|min:6|confirmed'
         ];
-    public $rules1 = [
+    protected $rules1 = [
             'id_tipo_usuario' => 'not_in:0',
             'id_unidad_ejecutora' => 'not_in:0',
             'username' => 'required|min:6|unique:users',
@@ -36,7 +36,7 @@ class UsuarioController extends Controller
             'email' => 'required|email|max:100|unique:users',
             'password' => 'required|min:6|confirmed'
         ];
-    public $rules2 = [
+    protected $rules2 = [
     		'id_tipo_usuario' => 'not_in:0',
     		'id_departamento' => 'not_in:0',
             'username' => 'required|min:6|unique:users',
@@ -45,7 +45,6 @@ class UsuarioController extends Controller
             'iniciales' => 'required',
             'password' => 'required|min:6|confirmed'
         ];
-
     protected $messages = [
             'id_tipo_usuario.not_in'	    => 'Seleccione Tipo de Usuario',
             'id_departamento.not_in'	    => 'Seleccione Departamento',
@@ -62,6 +61,20 @@ class UsuarioController extends Controller
             'password.confirmed'     	  	=> 'Confirme contraseña',
             'iniciales.required'            => 'Introduzca iniciales del Usuario'
         ];
+    protected $barraMenu = array(
+            'botones' => array([
+                'id'    => 'btnGuardar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-save',
+                'title' => 'Guardar',
+                'texto' => 'Guardar'
+            ], [
+                'id'    => 'btnRegresar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-arrow-left',
+                'title' => 'Regresar',
+                'texto' => 'Regresar'
+            ] ));
 
     public function __construct()
     {
@@ -94,7 +107,8 @@ class UsuarioController extends Controller
         return view('Administracion.Usuario.create')
         	->with('opciones_tipo_usuario', $opciones_tipo_usuario)
         	->with('opciones_sector', $opciones_sector)
-            ->with('opciones_area', $opciones_area);
+            ->with('opciones_area', $opciones_area)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     public function store(Request $request)
@@ -172,7 +186,8 @@ class UsuarioController extends Controller
         	->with('opciones_sector', $opciones_sector)
             ->with('opciones_unidad_ejecutora', $opciones_unidad_ejecutora)
             ->with('opciones_area', $opciones_area)
-            ->with('opciones_departamento', $opciones_departamento);
+            ->with('opciones_departamento', $opciones_departamento)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     public function update(Request $request, $id)

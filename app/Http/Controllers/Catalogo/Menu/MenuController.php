@@ -14,7 +14,7 @@ class MenuController extends Controller
 {
     use Funciones;
 
-    public $rules = [
+    protected $rules = [
             'nombre'    => 'required',
             'orden'     => 'required|numeric|min:1',
             'ruta'      => 'required'
@@ -25,6 +25,20 @@ class MenuController extends Controller
             'orden.min'                 => 'Introduzca orden del Menu',
             'ruta.required'             => 'Introduzca ruta del Menú'
         ];
+    protected $barraMenu = array(
+            'botones' => array([
+                'id'    => 'btnGuardar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-save',
+                'title' => 'Guardar',
+                'texto' => 'Guardar'
+            ], [
+                'id'    => 'btnRegresar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-arrow-left',
+                'title' => 'Regresar',
+                'texto' => 'Regresar'
+            ] ));
 
     public function __construct()
     {
@@ -45,17 +59,18 @@ class MenuController extends Controller
     {
         $menus = P_Menu::where('id_menu_padre', 0)->orderBy('nombre', 'ASC')->get()->toArray();
         //dd($menus);
-        $opciones = $this->llena_combo($menus);
+        $opciones = $this->llena_combo($menus, 0, 'nombre', 'id', true);
         //dd($opciones);
         return view('Catalogo.Menu.create')
-            ->with('opciones_menu', $opciones);
+            ->with('opciones_menu', $opciones)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     
     public function store(Request $request)
     {
         // dd($request->all());
-        if ($request->id_menu_padre == "0") {
+        if ($request->id_menu_padre == 0) {
             array_pop($this->rules);
             $blink = 0;
             $ruta = '';
@@ -106,7 +121,8 @@ class MenuController extends Controller
         return view('Catalogo.Menu.edit')
             ->with('menu', $menu)
             ->with('opciones_menu', $opciones)
-            ->with('tiene_sub', $tiene_sub);
+            ->with('tiene_sub', $tiene_sub)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     

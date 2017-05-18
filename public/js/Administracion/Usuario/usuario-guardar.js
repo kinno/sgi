@@ -112,10 +112,15 @@ function Triggers () {
         $('#err_password').hide();
     });
 
-	// evento guardar
+	// botón guardar
 	$('#btnGuardar').unbind('click').on('click', function () {		
 	   guardaUsuario ();
    });
+
+    // botón Regresar
+    $('#btnRegresar').unbind('click').on('click', function () {      
+        window.location='/Administracion/Usuario';
+    });
 }
 
 function guardaUsuario () {

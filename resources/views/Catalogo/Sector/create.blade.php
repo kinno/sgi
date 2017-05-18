@@ -18,7 +18,7 @@
               	</div>
 			</div>
 			<div class="form-group" id="div_id_departamento">
-            	<label for="id_departamento" class="col-md-2 control-label input-sm">Departamento<span class="obligatorio"> *</span></label>
+            	<label for="id_departamento" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Departamento</label>
               	<div class="col-md-6">
                 	<select name="id_departamento" id="id_departamento" class="form-control input-sm">
                     	<option value="0">- Selecciona </option>
@@ -27,35 +27,35 @@
               	</div>
 			</div>
     		<div class="form-group" id="div_nombre">
-            	<label for="nombre" class="col-md-2 control-label input-sm">Sector:<span class="obligatorio"> *</span></label>
+            	<label for="nombre" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Sector:</label>
             	<div class="col-md-4">
                 	<input type="text" class="form-control input-sm" name="nombre" id="nombre" maxlength="40">
                     <span id="err_nombre" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               	</div>
            	</div>
            	<div class="form-group" id="div_titulo">
-            	<label for="titulo" class="col-md-2 control-label input-sm">Titulo:<span class="obligatorio"> *</span></label>
+            	<label for="titulo" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Titulo:</label>
             	<div class="col-md-6">
                 	<input type="text" class="form-control input-sm" name="titulo" id="titulo" maxlength="60">
                     <span id="err_titulo" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               	</div>
            	</div>
            	<div class="form-group" id="div_titular">
-            	<label for="titular" class="col-md-2 control-label input-sm">Titular:<span class="obligatorio"> *</span></label>
+            	<label for="titular" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Titular:</label>
             	<div class="col-md-4">
                 	<input type="text" class="form-control input-sm" name="titular" id="titular" maxlength="30">
                     <span id="err_titular" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               	</div>
            	</div>
            	<div class="form-group" id="div_apellido">
-            	<label for="apellido" class="col-md-2 control-label input-sm">Apellidos:<span class="obligatorio"> *</span></label>
+            	<label for="apellido" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Apellidos:</label>
             	<div class="col-md-4">
                 	<input type="text" class="form-control input-sm" name="apellido" id="apellido" maxlength="40">
                     <span id="err_apellido" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               	</div>
            	</div>
            	<div class="form-group" id="div_cargo">
-            	<label for="cargo" class="col-md-2 control-label input-sm">Cargo:<span class="obligatorio"> *</span></label>
+            	<label for="cargo" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Cargo:</label>
             	<div class="col-md-6">
                 	<input type="text" class="form-control input-sm" name="cargo" id="cargo" maxlength="100">
                     <span id="err_cargo" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
@@ -70,17 +70,15 @@
       				</div>
     			</div>
   			</div>
-           <br/>
-           	
 		</form>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
                 <button class="btn btn-success btn-sm" id="btnGuardar">Registrar</button>
             </div>
             <div class="col-md-2">
                 <a href="{{ route('Sector.index') }}"class="btn btn-success btn-sm">Regresar</a>
             </div>
-        </div>
+        </div> -->
 		
   	</div>
 </div>

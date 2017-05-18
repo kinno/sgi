@@ -14,12 +14,12 @@ class EjecutoraController extends Controller
 {
     use Funciones;
 
-    public $rules = [
+    protected $rules = [
             'id_sector' => 'not_in:0',
             'clave' => 'required|size:10',
             'nombre' => 'required'
         ];
-    public $rules_ayuntamiento = [
+    protected $rules_ayuntamiento = [
             'id_sector' => 'not_in:0',
             'nombre' => 'required',
             'titulo' => 'required',
@@ -37,6 +37,20 @@ class EjecutoraController extends Controller
             'apellido.required'         => 'Introduzca apellidos del titular',
             'cargo.required'            => 'Introduzca cargo del titular'
         ];
+    protected $barraMenu = array(
+            'botones' => array([
+                'id'    => 'btnGuardar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-save',
+                'title' => 'Guardar',
+                'texto' => 'Guardar'
+            ], [
+                'id'    => 'btnRegresar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-arrow-left',
+                'title' => 'Regresar',
+                'texto' => 'Regresar'
+            ] ));
     
     public function index(Request $request)
     {
@@ -57,7 +71,8 @@ class EjecutoraController extends Controller
         $opciones = $this->llena_combo($sectores);
         //dd($opciones);
         return view('Catalogo.Ejecutora.create')
-            ->with('opciones_sector', $opciones);
+            ->with('opciones_sector', $opciones)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     public function store(Request $request)
@@ -114,7 +129,8 @@ class EjecutoraController extends Controller
         return view('Catalogo.Ejecutora.edit')
             ->with('ejecutora', $ejecutora)
             ->with('titular', $titular)
-            ->with('opciones_sector', $opciones);
+            ->with('opciones_sector', $opciones)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     public function update(Request $request, $id)

@@ -17,7 +17,7 @@ class SectorController extends Controller
 {
     use Funciones;
 
-    public $rules = [
+    protected $rules = [
             'id_departamento' => 'not_in:0',
             'nombre' => 'required|unique:Cat_Sector',
             'titulo' => 'required',
@@ -34,6 +34,20 @@ class SectorController extends Controller
             'apellido.required'         => 'Introduzca apellidos del titular',
             'cargo.required'            => 'Introduzca cargo del titular'
         ];
+    protected $barraMenu = array(
+            'botones' => array([
+                'id'    => 'btnGuardar',
+                'tipo'  => 'btn-success',
+                'icono' => 'fa fa-save',
+                'title' => 'Guardar',
+                'texto' => 'Guardar'
+            ], [
+                'id'    => 'btnRegresar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-arrow-left',
+                'title' => 'Regresar',
+                'texto' => 'Regresar'
+            ] ));
 
     public function __construct()
     {
@@ -60,7 +74,8 @@ class SectorController extends Controller
         $opciones = $this->llena_combo($areas);
         //dd($opciones);
         return view('Catalogo.Sector.create')
-            ->with('opciones_area', $opciones);
+            ->with('opciones_area', $opciones)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     /**
@@ -123,7 +138,8 @@ class SectorController extends Controller
             ->with('sector', $sector)
             ->with('titular',$titular)
             ->with('opciones_area', $opciones_area)
-            ->with('opciones_departamento', $opciones_departamento);
+            ->with('opciones_departamento', $opciones_departamento)
+            ->with('barraMenu', $this->barraMenu);
     }
 
     /**

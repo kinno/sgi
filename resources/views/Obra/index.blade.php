@@ -49,7 +49,9 @@
 	                </div>
 	            </div>
 	            <div id="div_buscar">
-	            	<button class="btn btn-default btn-sm" id="btnBuscar">Buscar</button>
+	            	<button class="btn btn-default btn-sm" id="btnBuscar">Buscar&nbsp;
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
 	            </div>
 	        </div>
 	        <br/>
@@ -279,14 +281,14 @@
            <br/>
 		</form>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
                 <button class="btn btn-success btn-sm" id="btnGuardar">Guardar</button>
             </div>
             <div class="col-md-2">
                 <button class="btn btn-success btn-sm" id="btnLimpiar">Limpiar</button>
             </div>
-        </div>
+        </div> -->
   	</div>
 </div>
 <script src="{{ asset('js/Obra/obra.js') }}"></script>

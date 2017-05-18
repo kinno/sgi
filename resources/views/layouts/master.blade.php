@@ -61,13 +61,11 @@
         </div>
         --}}
         <div id="page-wrapper">
-            
                 @include('layouts.header-menu')
-           
             <div class="container-fluid">
-                <div style="padding-top: 5%;">
+                @isset ($barraMenu) <div style="padding-top: 5%;">@endif
                     @yield('content')
-                </div>
+                @isset ($barraMenu) </div>@endif
             </div>
             <!-- /.container-fluid -->
         </div>
