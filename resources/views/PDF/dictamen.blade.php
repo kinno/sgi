@@ -141,10 +141,10 @@
 @php
 	$tabla = "";
 	foreach ($puntos as $value) {
-		$tabla.= '<tr><td colspan="2" align="center" class="verde">'.$value->nombre_punto.'</td></tr>';
+		$tabla.= '<tr><td colspan="2" align="center" class="verde">'.$value->nombre.'</td></tr>';
 		foreach ($value->inciso as $inciso) {
 			$tabla.= '<tr>
-			<td colspan="2" align="left" class="concepto">'.$inciso->etiqueta.' '.$inciso->nombre_inciso.'</td>         
+			<td colspan="2" align="left" class="concepto">'.$inciso->etiqueta.' '.$inciso->nombre.'</td>         
 			</tr>';
 			$bandColor=false;
 			foreach ($inciso->subinciso as $key => $subinciso) {
@@ -168,7 +168,7 @@
 	        			
 	        			if ( $subinciso->id !==36 && $subinciso->id !==37 && $subinciso->id !==38 && $subinciso->id !==39 && $subinciso->id !==40 && $subinciso->id !==41 && $subinciso->id !==42) {
 	        				$tabla.='<tr>
-								<td align="left" class="'.$bRenglon.'">'.$subinciso->etiqueta.' '.$subinciso->nombre_subinciso.'</td>
+								<td align="left" class="'.$bRenglon.'">'.$subinciso->etiqueta.' '.$subinciso->nombre.'</td>
 								<td align="center" class="cuadro '.$bRenglon.'">'.$resp.'</td>
 						       
 							</tr>';

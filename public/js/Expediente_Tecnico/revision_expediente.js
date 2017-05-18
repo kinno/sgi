@@ -35,8 +35,8 @@ function initTable() {
             data: 'expediente.fecha_envio',
             name: 'expediente.fecha_envio'
         }, {
-            data: 'expediente.tipo_solicitud.nombre_solicitud',
-            name: 'expediente.fecha_envio'
+            data: 'expediente.tipo_solicitud.nombre',
+            name: 'expediente.tipo_solicitud.nombre'
         }, {
             "className": 'mto',
             data: 'expediente.hoja1.monto',

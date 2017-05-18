@@ -75,15 +75,15 @@ class BancoController extends Controller
         // dd($arrayIncisosSubincisos);
         $tablaincisos = "";
         foreach ($arrayIncisosSubincisos as $punto) {
-            $tablaincisos .= '<tr><td class="col-sm-12 text-center" colspan="12"><b>' . $punto->nombre_punto . '</b></td></tr>';
+            $tablaincisos .= '<tr><td class="col-sm-12 text-center" colspan="12"><b>' . $punto->nombre . '</b></td></tr>';
             foreach ($punto->inciso as $inciso) {
                 $etiqueta = !empty($inciso->etiqueta) ? $inciso->etiqueta . '. ' : '';
-                $tablaincisos .= '  <tr><td class="col-sm-12 text-left" colspan="12"><b>' . $etiqueta . '</b>&nbsp;' . $inciso->nombre_inciso . '</td></tr>';
+                $tablaincisos .= '  <tr><td class="col-sm-12 text-left" colspan="12"><b>' . $etiqueta . '</b>&nbsp;' . $inciso->nombre . '</td></tr>';
                 if (count($inciso->subinciso) > 0) {
                     foreach ($inciso->subinciso as $subinciso) {
                         $etiqueta = isset($subinciso->etiqueta) ? $subinciso->etiqueta : '';
                         $tablaincisos .= '<tr id="row_' . $subinciso->id . '" class="' . $idElem . '">
-                                    <td colspan="3" class="col-sm-4 text-left">' . $etiqueta . '&nbsp;' . $subinciso->nombre_subinciso . '</td>
+                                    <td colspan="3" class="col-sm-4 text-left">' . $etiqueta . '&nbsp;' . $subinciso->nombre . '</td>
                                     <td colspan="2" class="col-sm-2">
                                     <div class="text-center">
                                        <label class="radio-inline">

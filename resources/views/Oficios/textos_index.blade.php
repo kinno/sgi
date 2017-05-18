@@ -15,7 +15,7 @@
                         <span class="input-group-addon">Tipo: </span>
                          <select class="form-control input-trigger" name="id_solicitud_presupuesto" id="id_solicitud_presupuesto" aria-describedby="basic-addon1">
                             @foreach ($tipoSolicitud as $element)
-                                <option value="{{$element->id}}">{{$element->nombre_solicitud}}</option>
+                                <option value="{{$element->id}}">{{$element->nombre}}</option>
                             @endforeach
                         </select>   
                     </div>                    

@@ -145,7 +145,7 @@
                         <div class="col-sm-12" id="aF">
                             <select name="accion_federal[]" id="accion_federal" class="form-control input-md" multiple="multiple">
                                 @foreach($accionesFederales as $accionFederal)
-                                    <option value="{{$accionFederal->id}}">{{$accionFederal->clave_acuerdo}} {{$accionFederal->nombre_acuerdo}}</option>
+                                    <option value="{{$accionFederal->id}}">{{$accionFederal->clave}} {{$accionFederal->nombre}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -165,7 +165,7 @@
                     <div class="col-sm-12" id="aE">
                         <select name="accion_estatal[]" id="accion_estatal" class="form-control input-md" multiple="multiple">
                             @foreach($accionesEstatales as $accionEstatal)
-                                <option value="{{$accionEstatal->id}}">{{$accionEstatal->clave_acuerdo}} {{$accionEstatal->nombre_acuerdo}}</option>
+                                <option value="{{$accionEstatal->id}}">{{$accionEstatal->clave}} {{$accionEstatal->nombre}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -298,7 +298,7 @@
                     <select id="id_grupo_social" class="form-control" name="id_grupo_social">
                         <option value="">Seleccione...</option>
                         @foreach($grupoSocial as $grupo)
-                        <option value="{{$grupo->IdGpo}}">{{$grupo->NomGpo}}</option>
+                        <option value="{{$grupo->id}}">{{$grupo->nombre}}</option>
                         @endforeach
                     </select>
                 </div>

@@ -25,7 +25,7 @@
                         </option>
                         @foreach ($tipoSolicitud as $value)
                         <option value="{{$value->id}}">
-                            {{$value->nombre_solicitud}}
+                            {{$value->nombre}}
                         </option>
                         @endforeach
                     </select>
@@ -225,7 +225,7 @@
                             <select class="form-control input-md" id="accion_federal" multiple="multiple" name="accion_federal[]">
                                 @foreach($accionesFederales as $accionFederal)
                                 <option value="{{$accionFederal->id}}">
-                                    {{$accionFederal->clave_acuerdo}} {{$accionFederal->nombre_acuerdo}}
+                                    {{$accionFederal->clave}} {{$accionFederal->nombre}}
                                 </option>
                                 @endforeach
                             </select>
@@ -247,7 +247,7 @@
                         <select class="form-control input-md" id="accion_estatal" multiple="multiple" name="accion_estatal[]">
                             @foreach($accionesEstatales as $accionEstatal)
                             <option value="{{$accionEstatal->id}}">
-                                {{$accionEstatal->clave_acuerdo}} {{$accionEstatal->nombre_acuerdo}}
+                                {{$accionEstatal->clave}} {{$accionEstatal->nombre}}
                             </option>
                             @endforeach
                         </select>

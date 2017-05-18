@@ -60,9 +60,9 @@ class EstudioController extends Controller
             ]));
         $user              = \Auth::user()->load('unidad_ejecutora')->load('sectores');
         $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
-        $accionesFederales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 4)->get();
-        $accionesEstatales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 1)
-            ->orWhere('id_tipo_acuerdo', '=', 2)
+        $accionesFederales = Cat_Acuerdo::where('id_tipo', '=', 4)->get();
+        $accionesEstatales = Cat_Acuerdo::where('id_tipo', '=', 1)
+            ->orWhere('id_tipo', '=', 2)
             ->get();
         $grupoSocial    = Cat_Grupo_Social::All();
         $coberturas     = Cat_Cobertura::where('id', '>', 0)->get();
@@ -450,8 +450,8 @@ class EstudioController extends Controller
             array_push($arrayAcuerdos, $value->id_acuerdo);
         }
         // dd($arrayAcuerdos);
-        $acuerdos_federales = Cat_Acuerdo::whereIn('id', $arrayAcuerdos)->where('id_tipo_acuerdo', '=', 4)->get();
-        $acuerdos_estatales = Cat_Acuerdo::whereIn('id', $arrayAcuerdos)->whereIn('id_tipo_acuerdo', array(1, 2))->get();
+        $acuerdos_federales = Cat_Acuerdo::whereIn('id', $arrayAcuerdos)->where('id_tipo', '=', 4)->get();
+        $acuerdos_estatales = Cat_Acuerdo::whereIn('id', $arrayAcuerdos)->whereIn('id_tipo', array(1, 2))->get();
         // dd($acuerdos_estatales);
 
         $pdf = \PDF::loadView('PDF/ficha_tecnica', compact('estudio', 'acuerdos_federales', 'acuerdos_estatales'));
