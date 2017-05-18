@@ -76,7 +76,7 @@ function Triggers () {
         var id = $(this).val();
         if (id != '0')
             $('#name').val($('#id_unidad_ejecutora option:selected').text());
-   });
+    });
 
     // evento Area
 	$('#id_area').unbind("change").on('change', function (){
@@ -98,7 +98,7 @@ function Triggers () {
             	}
             });
 		}
-   });
+    });
 
 	// evento cambio, para ocultar error
 	$('#username, #name, #email, #password, #iniciales').unbind("change").on('change', function (){
@@ -115,7 +115,7 @@ function Triggers () {
 	// botón guardar
 	$('#btnGuardar').unbind('click').on('click', function () {		
 	   guardaUsuario ();
-   });
+    });
 
     // botón Regresar
     $('#btnRegresar').unbind('click').on('click', function () {      

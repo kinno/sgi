@@ -101,7 +101,7 @@ function Triggers () {
 	// botón guardar
 	$('#btnGuardar').unbind('click').on('click', function () {		
 	   guardaUsuario ();
-   });
+    });
 
     // botón Regresar
     $('#btnRegresar').unbind('click').on('click', function () {      

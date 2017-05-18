@@ -12,7 +12,7 @@ function LimpiaSector () {
 	var vacio ='<option value="0">- Selecciona</option>';
 	$('#id_departamento').html(vacio);
 	$('#id_area, #id_departamento').val('0');
-	$('#nombre, #titulo, #titular, #apellido, #cargo').val('');
+	$('#clave, #unidad_responsabvle, #nombre, #titulo, #titular, #apellido, #cargo').val('');
 	$('#bactivo').prop('checked', true);
 	$("#btnGuardar").removeAttr("disabled");
 	$("[id^='err_']" ).hide();
@@ -45,10 +45,10 @@ function Triggers () {
                 }
             });
 		}
-   });
+    });
 
 	// evento cambio, para ocultar error
-	$('#id_departamento, #nombre, #titulo, #titular, #apellido, #cargo').unbind("change").on('change', function (){
+	$('#id_departamento, #clave, #unidad_responsdable, #nombre, #titulo, #titular, #apellido, #cargo').unbind("change").on('change', function (){
 		$('#div_' + $(this).attr('id')).removeClass('has-error has-feedback');
 		$('#err_' + $(this).attr('id')).hide();
 	});

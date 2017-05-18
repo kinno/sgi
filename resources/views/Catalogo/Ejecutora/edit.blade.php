@@ -1,12 +1,10 @@
 @extends('layouts.master')
 @section('content')
-<br/>  
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title text-center"><strong>Editar Unidad Ejecutora</strong></h3>
 	</div>
 	<div class="panel-body">
-   	    <br/>
         <form enctype="”multipart/form-data”" class="form-horizontal" role="form" id="Ejecutora">
    		    {{ csrf_field() }}
    		    <input type="hidden" name="_method" value="PUT">

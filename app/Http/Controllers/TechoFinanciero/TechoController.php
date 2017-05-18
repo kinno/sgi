@@ -41,7 +41,6 @@ class TechoController extends Controller
             'monto' => 'required|numeric|not_in:0',
             'observaciones' => 'required'
         ];
-    
     protected $messages = [
             'ejercicio.not_in'                  => 'Seleccione Ejercicio',
             'id_unidad_ejecutora.not_in'        => 'Seleccione Unidad Ejecutora',
@@ -120,7 +119,6 @@ class TechoController extends Controller
         $opciones_sector = $this->llena_combo($sectores);
         $opciones_tipo_fuente = $this->llena_combo($tipo_fuentes);
         $opciones_tipo_movimiento = $this->llena_combo($tipo_movimientos);
-        //dd($opciones_sector);
         return view('TechoFinanciero.create')
             ->with('opciones_ejercicio', $opciones_ejercicio)
             ->with('opciones_sector', $opciones_sector)
@@ -133,7 +131,6 @@ class TechoController extends Controller
     {
         //return ($request->all());
         $request->merge(['monto' => str_replace(",", "", $request->monto)]);
-        //return ($request->all());
         $validator = \Validator::make($request->all(), $this->rules, $this->messages);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
@@ -171,7 +168,6 @@ class TechoController extends Controller
     {
         $d_techo = D_Techo::with(['techo.unidad_ejecutora.sector', 'techo.proyecto', 'techo.tipo_fuente', 'techo.fuente', 'movimiento'])->find($id);
         $programa = Cat_Estructura_Programatica::where('ejercicio', $d_techo->techo->ejercicio)->where('tipo', 'P')->where('clave', 'like', substr($d_techo->techo->proyecto->clave, 0, 8).'%')->first();
-        //dd($programa);
         //dd($d_techo);
         return view('TechoFinanciero.edit')
             ->with('d_techo', $d_techo)
@@ -277,17 +273,20 @@ class TechoController extends Controller
         try {
             $d_techo = D_Techo::find($id);
             $p_techo = $d_techo->techo;
-            if ($d_techo->id_tipo_movimiento == '3')
+            if ($d_techo->id_tipo_movimiento == 3)
                 $p_techo->techo = $p_techo->techo + $d_techo->monto;
-            else
+            else if ($d_techo->id_tipo_movimiento == 2)
                 $p_techo->techo = $p_techo->techo - $d_techo->monto;
-            if ($p_techo->techo < 0) {
+            if ($p_techo->techo < 0 && $d_techo->id_tipo_movimiento != 1) {
                 $data['mensaje'] = "La suma de todos los montos no puede ser negativa";
                 $data['error'] = 2;
                 return $data;
             }
             DB::transaction(function () use ($p_techo, $d_techo) {
-                $p_techo->save();
+                if ($d_techo->id_tipo_movimiento == 1)
+                    $p_techo->delete();
+                else
+                    $p_techo->save();
                 $d_techo->delete();
             });
             $data['mensaje'] = "Monto del Techo Financiero eliminado correctamente: ".$d_techo->observaciones;
@@ -305,9 +304,9 @@ class TechoController extends Controller
     {
         $tabla = array();
         $sector = ''; $ue = ''; $proyecto = ''; $tipo_fuente = ''; $fuente = ''; $fecha = '';
-        $keys = array('columna', 'techo', 'id', 'id_tipo_movimiento', 'created_at', 'monto', 'observaciones', 'total', 'clase_row', 'clase_numero');
+        $keys = array('columna', 'techo', 'id', 'id_tipo_movimiento', 'created_at', 'monto', 'observaciones', 'total', 'clase_row', 'clase_numero', 'n_detalle');
         $total = array_fill(1, 4, 0);
-        $ren = array_fill(1, 4, 0);
+        $ren = array_fill(1, 5, 0);
         $i = 0;
         reset($datos);
         $fila = current($datos);
@@ -340,7 +339,10 @@ class TechoController extends Controller
                 $total[4] = 0;
                 $ren[4] = $i;
                 $tabla[$i++]['columna'] = '('.$fila->tipo_fuente.') '.$fila->fuente;
+                $ren[5] = $i;
+                $n_grupo4 = 0;
             }
+            $n_grupo4++;
             // todos
             foreach ($fila as $clave => $valor) {
                 if ($clave == 'monto')
@@ -371,6 +373,7 @@ class TechoController extends Controller
                 $tabla[$i]['clase_numero'] = '';
             $tabla[$i]['clase_row'] = '';
             $tabla[$i]['created_at'] = substr($tabla[$i]['created_at'], 0, 10);
+            $tabla[$i]['n_detalle'] = '';
             $tabla[$i++]['columna'] = '';
 
             $sector = $fila->sector;
@@ -381,6 +384,7 @@ class TechoController extends Controller
             $fila = next($datos);
             if (!$fila || $fuente != $fila->sector.$fila->ue.$fila->proyecto.$fila->tipo_fuente.$fila->fuente) {
                 $tabla[$ren[4]]['monto'] = number_format($total[4], 2);
+                $tabla[$ren[5]]['n_detalle'] = $n_grupo4;
             }
             if (!$fila || $proyecto != $fila->sector.$fila->ue.$fila->proyecto) {
                 $tabla[$ren[3]]['monto'] = number_format($total[3], 2);

@@ -1,12 +1,10 @@
 @extends('layouts.master')
 @section('content')
-<br/>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title text-center"><strong>Actualizar Sectores asignados a Usuarios</strong></h3>
 	</div>
 	<div class="panel-body">
-    	<br/>
     	<form enctype="”multipart/form-data”" class="form-horizontal" role="form" id="Permisos">
     		{{ csrf_field() }}
     		<div class="form-group" id="div_id_usuario">
@@ -20,7 +18,7 @@
 			</div>
 			<div class="form-group">
 				<label class="col-md-2 control-label input-sm">Sectores:</label>
-				<div class="col-md-7" style="display: block; overflow: auto; height: 320px">
+				<div class="col-md-7" style="display: block; overflow: auto; height: 340px">
 					<table class="table table-hover table-condensed" id="opciones_sector">
 						<tbody>
 							{!! $filas !!}
@@ -28,7 +26,6 @@
 					</table>
 				</div>
 			</div>
-           
 		</form>
         <!-- <div class="form-group">
             <div class="col-md-2 col-md-offset-2">

@@ -57,9 +57,8 @@ class MenuController extends Controller
     
     public function create()
     {
-        $menus = P_Menu::where('id_menu_padre', 0)->orderBy('nombre', 'ASC')->get()->toArray();
-        //dd($menus);
-        $opciones = $this->llena_combo($menus, 0, 'nombre', 'id', true);
+        $menus = P_Menu::where('id_menu_padre', 0)->orderBy('orden', 'ASC')->get()->toArray();
+        $opciones = $this->llena_combo($menus, 0, 'nombre', 'id', true, true);
         //dd($opciones);
         return view('Catalogo.Menu.create')
             ->with('opciones_menu', $opciones)
@@ -86,8 +85,6 @@ class MenuController extends Controller
         }
 
         $data = array();
-        //$data['dos'] = $rules;
-        //return $data; 
         try {
             $menu  = new P_Menu($request->only(['id_menu_padre', 'nombre', 'descripcion', 'orden']));
             $menu->blink = $blink;
@@ -102,7 +99,6 @@ class MenuController extends Controller
             $data['error'] = 3;
         }
         return ($data);
-        //return redirect()->route('Sector.index');
     }
 
     
@@ -165,7 +161,6 @@ class MenuController extends Controller
             $data['error'] = 3;
         }
         return ($data);
-        //return redirect()->route('Sector.index');
     }
 
     

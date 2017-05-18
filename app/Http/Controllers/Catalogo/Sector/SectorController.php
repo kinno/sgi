@@ -20,6 +20,8 @@ class SectorController extends Controller
     protected $rules = [
             'id_departamento' => 'not_in:0',
             'nombre' => 'required|unique:Cat_Sector',
+            'clave' => 'required|size:10',
+            'unidad_responsable' => 'required',
             'titulo' => 'required',
             'titular' => 'required',
             'apellido' => 'required',
@@ -29,6 +31,9 @@ class SectorController extends Controller
             'id_departamento.not_in'    => 'Seleccione departamento',
             'nombre.required'           => 'Introduzca nombre del sector',
             'nombre.unique'             => 'Sector ya se encuentra registrado',
+            'clave.required'            => 'Introduzca clave del sector',
+            'clave.size'                => 'La clave debe contener 10 caracteres',
+            'unidad_responsable.required'   => 'Introduzca nombre de la unidad responsable',
             'titulo.required'           => 'Introduzca titulo del titular',
             'titular.required'          => 'Introduzca nombre del titular',
             'apellido.required'         => 'Introduzca apellidos del titular',
@@ -78,25 +83,20 @@ class SectorController extends Controller
             ->with('barraMenu', $this->barraMenu);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
+        //return $request->all();
         $validator = \Validator::make($request->all(), $this->rules, $this->messages);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
             return array('errores' => $errors);
         }
-
         $data = array();
         try {
             $titular  = new Cat_Titular($request->only(['titulo', 'apellido', 'cargo']));
             $titular->nombre = $request->titular;
-            $sector  = new Cat_Sector($request->only(['nombre', 'bactivo', 'id_departamento']));
+            $sector  = new Cat_Sector($request->only(['nombre', 'clave', 'unidad_responsable' ,'bactivo', 'id_departamento']));
             DB::transaction(function () use ($titular, $sector) {
                 $titular->save();
                 $sector->id_titular = $titular->id;
@@ -111,15 +111,9 @@ class SectorController extends Controller
             $data['error'] = 3;
         }
         return ($data);
-        //return redirect()->route('Sector.index');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         $areas = Cat_Area::join('Cat_Departamento', 'Cat_Area.id', '=', 'Cat_Departamento.id_area')->select('Cat_Area.*')->distinct()->get()->toArray();
@@ -142,13 +136,7 @@ class SectorController extends Controller
             ->with('barraMenu', $this->barraMenu);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
         $ayuntamiento = false;
@@ -171,6 +159,8 @@ class SectorController extends Controller
         try {
             $sector = Cat_Sector::find($id);
             $sector->nombre = $request->nombre;
+            $sector->clave = $request->clave;
+            $sector->unidad_responsable = $request->unidad_responsable;
             $sector->bactivo = $request->bactivo;
             $sector->id_departamento = $request->id_departamento;
             if ($ayuntamiento)
@@ -196,15 +186,9 @@ class SectorController extends Controller
             $data['error'] = 3;
         }
         return ($data);
-        //return redirect()->route('Sector.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         $data = array();

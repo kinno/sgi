@@ -107,66 +107,77 @@ Route::group(['prefix' => 'Oficios'], function() {
 });
 
 // Rutas Catalogo - Sector
-Route::group(['prefix' => 'Catalogo'], function () {
-    Route::resource('Sector', 'Catalogo\Sector\SectorController');
+Route::group(['prefix' => 'Catalogo/Sector'], function () {
+    Route::resource('', 'Catalogo\Sector\SectorController');
+	Route::post('{id}/destroy', 'Catalogo\Sector\SectorController@destroy');
+	Route::post('dropdownArea', 'Catalogo\Sector\SectorController@dropdownArea');
 });
-Route::post('Catalogo/Sector/dropdownArea', 'Catalogo\Sector\SectorController@dropdownArea');
-Route::post('Catalogo/Sector/{id}/destroy', 'Catalogo\Sector\SectorController@destroy');
 
-// Rutas Catalogo - Unidad Ejecutora
-Route::group(['prefix' => 'Catalogo'], function () {
-    Route::resource('Ejecutora', 'Catalogo\Ejecutora\EjecutoraController');
+// Rutas Catalogo/Ejecutora
+Route::group(['prefix' => 'Catalogo/Ejecutora'], function () {
+    Route::resource('', 'Catalogo\Ejecutora\EjecutoraController');
+    Route::post('{id}/destroy', 'Catalogo\Ejecutora\EjecutoraController@destroy');
 });
-Route::post('Catalogo/Ejecutora/{id}/destroy', 'Catalogo\Ejecutora\EjecutoraController@destroy');
 
-// Rutas Catalogo - Menues
-Route::group(['prefix' => 'Catalogo'], function () {
-    Route::resource('Menu', 'Catalogo\Menu\MenuController');
+// Rutas Catalogo/Menu
+Route::group(['prefix' => 'Catalogo/Menu'], function () {
+    Route::resource('', 'Catalogo\Menu\MenuController');
+    Route::post('{id}/destroy', 'Catalogo\Menu\MenuController@destroy');
 });
-Route::post('Catalogo/Menu/{id}/destroy', 'Catalogo\Menu\MenuController@destroy');
 
-// Rutas Administracion
-Route::group(['prefix' => 'Administracion'], function () {
-    Route::resource('Usuario', 'Administracion\Usuario\UsuarioController');
+// Rutas Administracion/Usuario
+Route::group(['prefix' => 'Administracion/Usuario'], function () {
+    //Route::resource('Usuario', 'Administracion\Usuario\UsuarioController');
+    Route::get('','Administracion\Usuario\UsuarioController@index')->name('Usuario.index');
+	Route::get('create','Administracion\Usuario\UsuarioController@create')->name('Usuario.create');
+	Route::post('','Administracion\Usuario\UsuarioController@store')->name('Usuario.store');
+	Route::get('{id}/edit','Administracion\Usuario\UsuarioController@edit')->name('Usuario.edit');
+	Route::put('{id}','Administracion\Usuario\UsuarioController@update')->name('Usuario.update');
+	Route::post('{id}/destroy', 'Administracion\Usuario\usuarioController@destroy');
+	Route::post('dropdownSector', 'Administracion\Usuario\UsuarioController@dropdownSector');
+	Route::post('dropdownArea', 'Administracion\Usuario\UsuarioController@dropdownArea');
 });
-Route::post('Administracion/Usuario/dropdownSector', 'Administracion\Usuario\UsuarioController@dropdownSector');
-Route::post('Administracion/Usuario/dropdownArea', 'Administracion\Usuario\UsuarioController@dropdownArea');
-Route::post('Administracion/Usuario/{id}/destroy', 'Administracion\Usuario\usuarioController@destroy');
 
-//Route::get('/home', 'HomeController@index');
+// Rutas Administracion/Modulo
+Route::group(['prefix' => 'Administracion/Modulo'], function () {
+	Route::get('permisos', 'Administracion\Modulo\ModuloController@permisos')->name('Administracion.Modulo.permisos');
+	Route::post('dropdownUsuario', 'Administracion\Modulo\ModuloController@dropdownUsuario');
+	Route::post('guarda_permisos', 'Administracion\Modulo\ModuloController@guarda_permisos');
+});
 
-Route::get('Administracion/Modulo/permisos', 'Administracion\Modulo\ModuloController@permisos');
-Route::post('Administracion/Modulo/dropdownUsuario', 'Administracion\Modulo\ModuloController@dropdownUsuario');
-Route::post('Administracion/Modulo/guarda_permisos', 'Administracion\Modulo\ModuloController@guarda_permisos');
-
-Route::get('Administracion/Sector/permisos', 'Administracion\Sector\SectorController@permisos');
-Route::post('Administracion/Sector/dropdownUsuario', 'Administracion\Sector\SectorController@dropdownUsuario');
-Route::post('Administracion/Sector/guarda_permisos', 'Administracion\Sector\SectorController@guarda_permisos');
+// Rutas Administracion/Sector
+Route::group(['prefix' => 'Administracion/Sector'], function () {
+	Route::get('permisos', 'Administracion\Sector\SectorController@permisos')->name('Administracion.Sector.permisos');
+	Route::post('dropdownUsuario', 'Administracion\Sector\SectorController@dropdownUsuario');
+	Route::post('guarda_permisos', 'Administracion\Sector\SectorController@guarda_permisos');
+});
 
 // Rutas Obra
-Route::get('Obra/crear', 'Obra\ObraController@index');
-Route::post('Obra/buscar_expediente', 'Obra\ObraController@buscar_expediente');
-Route::post('Obra/buscar_obra', 'Obra\ObraController@buscar_obra');
-Route::post('Obra/guardar', 'Obra\ObraController@guardar');
-Route::post('Obra/update', 'Obra\ObraController@update');
-Route::post('Obra/dropdownEjercicio', 'Obra\ObraController@dropdownEjercicio');
-Route::post('Obra/dropdownSector', 'Obra\ObraController@dropdownSector');
-Route::post('Obra/dropdownPrograma', 'Obra\ObraController@dropdownPrograma');
-
+Route::group(['prefix' => 'Obra'], function () {
+	Route::get('crear', 'Obra\ObraController@index')->name('Obra.crear');
+	Route::post('buscar_expediente', 'Obra\ObraController@buscar_expediente');
+	Route::post('buscar_obra', 'Obra\ObraController@buscar_obra');
+	Route::post('guardar', 'Obra\ObraController@guardar');
+	Route::post('update', 'Obra\ObraController@update');
+	Route::post('dropdownEjercicio', 'Obra\ObraController@dropdownEjercicio');
+	Route::post('dropdownSector', 'Obra\ObraController@dropdownSector');
+	Route::post('dropdownPrograma', 'Obra\ObraController@dropdownPrograma');
+});
 
 \Auth::routes();
 
 // Rutas Techos Financieros
-Route::get('TechoFinanciero','TechoFinanciero\TechoController@index')->name('TechoFinanciero.index');
-Route::get('TechoFinanciero/create','TechoFinanciero\TechoController@create')->name('TechoFinanciero.create');
-Route::post('TechoFinanciero/create','TechoFinanciero\TechoController@store');
-Route::get('TechoFinanciero/{id}/agregar','TechoFinanciero\TechoController@agregar')->name('TechoFinanciero.agregar');
-Route::post('TechoFinanciero/guarda/{id}','TechoFinanciero\TechoController@guarda');
-Route::get('TechoFinanciero/{id}/edit','TechoFinanciero\TechoController@edit')->name('TechoFinanciero.edit');
-Route::put('TechoFinanciero/{id}','TechoFinanciero\TechoController@update')->name('TechoFinanciero.update');
-Route::post('TechoFinanciero/{id}/destroy','TechoFinanciero\TechoController@destroy')->name('TechoFinanciero.destroy');
-Route::post('TechoFinanciero/dropdownEjercicio', 'TechoFinanciero\TechoController@dropdownEjercicio');
-Route::post('TechoFinanciero/dropdownSector', 'TechoFinanciero\TechoController@dropdownSector');
-Route::post('TechoFinanciero/dropdownPrograma', 'TechoFinanciero\TechoController@dropdownPrograma');
-Route::post('TechoFinanciero/dropdownTipoFuente','TechoFinanciero\TechoController@dropdownTipoFuente');
-
+Route::group(['prefix' => 'TechoFinanciero'], function () {
+    Route::get('','TechoFinanciero\TechoController@index')->name('TechoFinanciero.index');
+	Route::get('create','TechoFinanciero\TechoController@create')->name('TechoFinanciero.create');
+	Route::post('','TechoFinanciero\TechoController@store');
+	Route::get('{id}/agregar','TechoFinanciero\TechoController@agregar')->name('TechoFinanciero.agregar');
+	Route::post('guarda/{id}','TechoFinanciero\TechoController@guarda');
+	Route::get('{id}/edit','TechoFinanciero\TechoController@edit')->name('TechoFinanciero.edit');
+	Route::put('{id}','TechoFinanciero\TechoController@update')->name('TechoFinanciero.update');
+	Route::post('{id}/destroy','TechoFinanciero\TechoController@destroy')->name('TechoFinanciero.destroy');
+	Route::post('dropdownEjercicio', 'TechoFinanciero\TechoController@dropdownEjercicio');
+	Route::post('dropdownSector', 'TechoFinanciero\TechoController@dropdownSector');
+	Route::post('dropdownPrograma', 'TechoFinanciero\TechoController@dropdownPrograma');
+	Route::post('dropdownTipoFuente','TechoFinanciero\TechoController@dropdownTipoFuente');
+});

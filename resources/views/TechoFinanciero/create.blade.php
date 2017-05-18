@@ -1,12 +1,10 @@
 @extends('layouts.master')
 @section('content')
-<br/>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title text-center"><strong>Registrar Monto del Techo Financiero</strong></h3>
 	</div>
 	<div class="panel-body">
-    	<br/>
     	<form enctype="”multipart/form-data”" class="form-horizontal" role="form" id="TechoFinanciero">
     		{{ csrf_field() }}
     		<div class="form-group form-group-sm" id="div_ejercicio">
@@ -95,8 +93,6 @@
                     <span id="err_observaciones" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 </div>
             </div>
-            
-           <br/>
 		</form>
         <!-- <div class="form-group">
             <div class="col-md-2 col-md-offset-2">

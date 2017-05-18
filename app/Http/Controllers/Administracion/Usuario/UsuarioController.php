@@ -87,10 +87,10 @@ class UsuarioController extends Controller
         $usuarios->each(function($usuarios){
             $usuarios->tipo_usuario;
         });
-        //dd ($usuarios);
         return view('Administracion.Usuario.index')
             ->with('usuarios', $usuarios);
     }
+
 
     public function create()
     {
@@ -98,18 +98,17 @@ class UsuarioController extends Controller
         $opciones_tipo_usuario = $this->llena_combo($tipo_usuarios);
 
         $sectores = Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
-        //dd($sectores);
         $opciones_sector = $this->llena_combo($sectores);
         $areas = Cat_Area::join('Cat_Departamento', 'Cat_Area.id', '=', 'Cat_Departamento.id_area')->select('Cat_Area.*')->distinct()->get()->toArray();
         //dd($areas);
         $opciones_area = $this->llena_combo($areas);
-        //dd($opciones);
         return view('Administracion.Usuario.create')
         	->with('opciones_tipo_usuario', $opciones_tipo_usuario)
         	->with('opciones_sector', $opciones_sector)
             ->with('opciones_area', $opciones_area)
             ->with('barraMenu', $this->barraMenu);
     }
+
 
     public function store(Request $request)
     {
@@ -149,6 +148,7 @@ class UsuarioController extends Controller
         return ($data);
     }
 
+
     public function edit($id)
     {
         $usuario = User::find($id);
@@ -178,8 +178,6 @@ class UsuarioController extends Controller
 	    	$opciones_area = $this->llena_combo($areas);
 	    	$opciones_departamento = $this->llena_combo(array());
 	    }
-        //dd($opciones_departamento);
-        //dd($areas);
         return view('Administracion.Usuario.edit')
             ->with('usuario', $usuario)
             ->with('opciones_tipo_usuario', $opciones_tipo_usuario)
@@ -189,6 +187,7 @@ class UsuarioController extends Controller
             ->with('opciones_departamento', $opciones_departamento)
             ->with('barraMenu', $this->barraMenu);
     }
+
 
     public function update(Request $request, $id)
     {
@@ -219,7 +218,6 @@ class UsuarioController extends Controller
             return array('errores' => $errors);
         }
         $data = array();
-        //return $data;
         try {
             $usuario = User::find($id);
             $anterior = $usuario->id_tipo_usuario;
@@ -253,10 +251,9 @@ class UsuarioController extends Controller
             $data['mensaje'] = "Error al guardar.<br/> Intente nuevamente";
             $data['error'] = 3;
         }
-        
         return ($data);
-        //return redirect()->route('Sector.index');
     }
+
 
     public function destroy($id)
     {

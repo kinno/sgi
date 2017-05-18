@@ -1,13 +1,10 @@
 @extends('layouts.master')
 @section('content')
-<br/>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title text-center"><strong>Agregar Monto a un Techo Financiero Autorizado</strong></h3>
 	</div>
 	<div class="panel-body">
-    	<br/>
-    	<!-- <form action="{{ route('TechoFinanciero.update', $d_techo->id) }}" class="form-horizontal" role="form" id="TechoFinanciero" method="POST"> -->
         <form enctype="”multipart/form-data”" class="form-horizontal" role="form" id="TechoFinanciero">
     		{{ csrf_field() }}
             <input type="hidden" name="id" id="id" value="{{ $d_techo->id_techo }}">
@@ -82,7 +79,6 @@
                     <span id="err_observaciones" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 </div>
             </div>
-           <br/>
 		</form>
         <!-- <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
@@ -92,7 +88,6 @@
                 <a href="{{ route('TechoFinanciero.index') }}"class="btn btn-success btn-sm">Regresar</a>
             </div>
         </div> -->
-		
   	</div>
 </div>
 <script src="{{ asset('js/TechoFinanciero/techofinanciero-agregar.js') }}"></script>

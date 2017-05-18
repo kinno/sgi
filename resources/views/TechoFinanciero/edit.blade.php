@@ -1,12 +1,10 @@
 @extends('layouts.master')
 @section('content')
-<br/>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title text-center"><strong>Editar Monto del Techo Financiero</strong></h3>
 	</div>
 	<div class="panel-body">
-    	<br/>
     	<!-- <form action="{{ route('TechoFinanciero.update', $d_techo->id) }}" class="form-horizontal" role="form" id="TechoFinanciero" method="POST"> -->
         <form enctype="”multipart/form-data”" class="form-horizontal" role="form" id="TechoFinanciero">
     		{{ csrf_field() }}
@@ -81,7 +79,6 @@
                     <span id="err_observaciones" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                 </div>
             </div>
-           <br/>
 		</form>
         <!-- <div class="form-group">
             <div class="col-md-2 col-md-offset-2">

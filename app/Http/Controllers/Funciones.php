@@ -54,7 +54,7 @@ trait Funciones
         return $opciones;
     }
 
-    public function llena_combo ($arreglo, $valor = 0, $name = 'nombre', $id = 'id', $selecciona = true)
+    public function llena_combo ($arreglo, $valor = 0, $name = 'nombre', $id = 'id', $selecciona = true, $una_opcion = false )
     {
         $n = count($arreglo);
         $selected = false;
@@ -80,17 +80,21 @@ trait Funciones
             		$nombre_opcion .= ' ' . $rows[$acampos[$j]];
             if ($valor == $rows[$id]) {
                 $selected = true;
-                $opciones .= '<option value="'.$rows[$id].'" selected="selected">'.$nombre_opcion.'</option>';
+                $opciones .= '<option value="'.$rows[$id].'" selected="selected">'.$nombre_opcion.'</option>'.chr(10);
             }
             else
                 $opciones .= '<option value="'.$rows[$id].'">'.$nombre_opcion.'</option>'.chr(10);
-            if ($i == 0)
-                $tmp = '<option value="'.$rows[$id].'" selected="selected">'.$nombre_opcion.'</option>';
+            /*if ($i == 0)
+                $tmp = '<option value="'.$rows[$id].'" selected="selected">'.$nombre_opcion.'</option>';*/
         }
         if ($n == 0)
             $salida = $vacio;
-        else if ($n == 1)
-        	$salida = $vacio.$opciones;
+        else if ($n == 1) {
+        	if ($una_opcion)
+        		$salida = $vacio.$opciones;
+        	else
+        		$salida = $opciones;
+        }
         else if ($selected)
             $salida = $vacio1.chr(10).$opciones;
         else

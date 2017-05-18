@@ -9,7 +9,7 @@ class Cat_Sector extends Model
     protected $table = "cat_sector";
 	public $timestamps = false;
 	protected $fillable = [
-        'nombre', 'bactivo', 'id_titular', 'id_departamento'
+        'nombre', 'clave', 'unidad_responsable', 'bactivo', 'id_titular', 'id_departamento'
     ];
 
     

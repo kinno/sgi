@@ -3,13 +3,11 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js">
 </script>
-<br/>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title text-center"><strong>Control de Obras</strong></h3>
 	</div>
 	<div class="panel-body">
-		
     	<form enctype="”multipart/form-data”" class="form-horizontal" role="form" id="Obra">
     		{{ csrf_field() }}
     		<input type="hidden" id="id_exp_tec" name="id_exp_tec"/>
@@ -277,8 +275,6 @@
                     </select>
                 </div>
             </div>
-    		
-           <br/>
 		</form>
 
         <!-- <div class="form-group">

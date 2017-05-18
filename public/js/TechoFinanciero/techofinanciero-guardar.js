@@ -51,7 +51,7 @@ function Triggers () {
             $('#div_ejercicio').removeClass('has-error has-feedback');
             $('#err_ejercicio').hide();
         }
-   });
+    });
 
     // evento Sector
     $('#id_sector').unbind("change").on('change', function (){
@@ -78,7 +78,7 @@ function Triggers () {
             $('#div_id_sector').removeClass('has-error has-feedback');
             $('#err_id_sector').hide();
         }
-   });
+    });
 
     // evento Programa
     $('#programa').unbind("change").on('change', function (){
@@ -155,7 +155,7 @@ function guardaTechoFinanciero () {
     $("#btnGuardar").attr("disabled","disabled");
     $.ajax({
         data: data,
-        url: '/TechoFinanciero/create',
+        url: '/TechoFinanciero',
         type: 'POST',
         processData: false,
         contentType: false,
