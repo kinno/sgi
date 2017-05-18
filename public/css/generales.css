@@ -1,20 +1,20 @@
 .fecha {
-   cursor: pointer !important;
+    cursor: pointer !important;
 }
 
 .numero, .numeroEntero, .numeroDecimal {
-	text-align:right !important;
+    text-align: right !important;
 }
 
 .vamiddle {
-	vertical-align: middle !important;
+    vertical-align: middle !important;
 }
 
 .obligatorio {
-	color:#FF0000;
-  /*color: #a94442;*/
-	padding-right: 4px;
-	/*font-size: 10px;*/
+    color: #FF0000;
+    /*color: #a94442;*/
+    padding-right: 4px;
+    /*font-size: 10px;*/
 }
 
 .menu_padre {
@@ -59,12 +59,62 @@
 }
 
 input {
-    background-image:url(../images/Fnd_2.png);
+    background-image: url(../images/Fnd_2.png);
     border: 1px solid #666666;
     text-align: left;
-    height:14pt;
+    height: 14pt;
     font-size: 9pt;
     font-family: Arial, serif;
     font-weight: normal;
 }
 
+.notificaciones {
+    width: 500px;
+}
+
+.message-preview {
+    width: 100% !important;
+}
+
+.notificaciones::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.notificaciones::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+.notificaciones::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #555;
+}
+
+.no-leido {
+    background-color: #f1fff0 !important;
+}
+
+.mnu-inicio {
+    height: 25px;
+    background: #2B2B2B;
+    color: #F7F7F7;
+    padding: 2px 10px;
+}
+
+.separador {
+    border-bottom: 1px #CCC solid;
+    padding: 1px 20px;
+}
+
+.side-nav li a:hover, .side-nav li a:focus {
+    outline: none;
+    background-color: #0A2E3A !important;
+}
+
+.in li a:hover {
+    outline: none;
+    background-color: #6b6b6b !important;
+}

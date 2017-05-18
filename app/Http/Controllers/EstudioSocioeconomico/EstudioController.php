@@ -73,6 +73,7 @@ class EstudioController extends Controller
         $beneficiarios  = Cat_Beneficiario::where('id', '>', 0)->get();
         $fuentesFederal = Cat_Fuente::where('tipo', '=', 'F')->get();
         $fuentesEstatal = Cat_Fuente::where('tipo', '=', 'E')->get();
+        // dd($user);
         $ue             = array('id' => $user->unidad_ejecutora->id, 'nombre' => $user->unidad_ejecutora->nombre);
         $sector         = array('id' => $user->sectores[0]->id, 'nombre' => $user->sectores[0]->nombre);
 

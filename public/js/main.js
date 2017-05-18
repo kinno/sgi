@@ -5,6 +5,13 @@ $(document).ready(function(){
 		});
 	});
 
+    $(".element-menu").each(function(){
+        $(this).on('click',function(){
+            // $(this).removeClass('fa-caret-right').addClass('fa-caret-down');
+            $("ul.in").collapse("hide");
+        });
+    });
+
 });
 
 function marcar_notificacion_leida(id){

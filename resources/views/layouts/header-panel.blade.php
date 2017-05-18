@@ -5,39 +5,61 @@ $listaN="";
     foreach ($notificaciones as $notificacion) {
         if($notificacion->bleido==0){
             $count++;
-            $negritas="style='font-weight:bold;'";
+            $noleido="style='font-weight:bold;'";
+            $backNoLeido = "no-leido";
             $botonLeer ="<span style='float:right;' class='btn btn-default btn-xs fa fa-check-circle-o notificacion-element' title='Marcar como leída' id='".$notificacion->id."'></span>";
         }else{
-            $negritas ="";
+            $noleido ="";
             $botonLeer="";
+            $backNoLeido = "";
         }
-        $listaN .= "<li class='message-preview '>
-                <a>
-                    <div class='media' $negritas>
-                        <span class='pull-left'>
-                            <img alt='' class='media-object' src='http://placehold.it/50x50'>
-                            </img>
-                        </span>
-                        <div class='media-body'>
-                            <h5 class='media-heading'>
-                                <strong>
-                                    ".Auth::user()->name."
-                                </strong>
-                            </h5>
-                            <p class='small text-muted'>
-                                <i class='fa fa-clock-o'>
-                                </i>
-                              ".$notificacion->created_at." $botonLeer
-                            </p>
+        $listaN .= "<li class='message-preview $backNoLeido'>
+                        <a>
+                            <div class='media' $noleido>
+                                <div class='media-body'>
+                                    
+                                    <p class='small text-muted'>
+                                        <i class='fa fa-clock-o'>
+                                        </i>
+                                      ".$notificacion->created_at." $botonLeer
+                                    </p>
 
-                            <p>
-                               ".$notificacion->detalle_notificacion."
-                            </p>
+                                    <p class='small'>
+                                       ".$notificacion->detalle_notificacion."
+                                    </p>
+                                   
+                                </div>
+                            </div>
+                        </a>
+                    </li>";
+
+            // $listaN .= "<li class='message-preview '>
+            //     <a>
+            //         <div class='media' $negritas>
+            //             <span class='pull-left'>
+            //                 <img alt='' class='media-object' src='http://placehold.it/50x50'>
+            //                 </img>
+            //             </span>
+            //             <div class='media-body'>
+            //                 <h5 class='media-heading'>
+            //                     <strong>
+            //                         ".Auth::user()->name."
+            //                     </strong>
+            //                 </h5>
+            //                 <p class='small text-muted'>
+            //                     <i class='fa fa-clock-o'>
+            //                     </i>
+            //                   ".$notificacion->created_at." $botonLeer
+            //                 </p>
+
+            //                 <p>
+            //                    ".$notificacion->detalle_notificacion."
+            //                 </p>
                            
-                        </div>
-                    </div>
-                </a>
-            </li>";
+            //             </div>
+            //         </div>
+            //     </a>
+            // </li>";
     }
    
 @endphp
@@ -79,7 +101,7 @@ $listaN="";
             <b class="caret">
             </b>
         </a>
-        <ul id="panel_notificaciones" class="dropdown-menu message-dropdown">
+        <ul id="panel_notificaciones" class="dropdown-menu notificaciones message-dropdown">
        @php
            echo $listaN;
        @endphp
