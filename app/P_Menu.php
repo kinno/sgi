@@ -26,9 +26,16 @@ class P_Menu extends Model
     	return $this->hasOne('App\P_Menu','id','id_menu_padre');
     }
 
-    public function scopeSearch($query, $nombre)
+    public function scopeSearch($query, $request)
     {
-        return $query->where('P_Menu.nombre', 'LIKE', "%$nombre%");
+        if ($request->nombre != null || $request->id_menu_padre != 0)
+            $query->where(function($query) use($request) {
+                $query->where('p_menu.id_menu_padre', $request->id_menu_padre)->orWhere('p_menu.id', $request->id_menu_padre);
+            })
+            ->where('p_menu.nombre', 'LIKE', "%$request->nombre%");
+        else
+            $query->where('p_menu.nombre', 'LIKE', "%$request->nombre%");
+        return $query;
     }
 
 }

@@ -22,11 +22,11 @@
 			</div>
     	</div>
     	<hr>
-    	<table class="table table-striped table-condensed">
+    	<table class="table table-striped tabla-condensada">
   			<thead>
   				<tr>
   					<th>ID</th>
-  					<th>Clave</th>
+  					<th>Usuario</th>
   					<th>Nombre</th>
   					<th>Correo</th>
   					<th>Tipo</th>

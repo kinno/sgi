@@ -51,17 +51,26 @@ class EjecutoraController extends Controller
                 'title' => 'Regresar',
                 'texto' => 'Regresar'
             ] ));
+    protected $barraMenu2 = array(
+            'botones' => array([
+                'id'    => 'btnLimpiar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-refresh',
+                'title' => 'Actualizar pantalla',
+                'texto' => 'Actualizar'
+            ] ));
     
     public function index(Request $request)
     {
-        $ejecutoras = Cat_Unidad_Ejecutora::search($request->nombre)->orderBy('nombre', 'ASC')->paginate(8);
-        $ejecutoras->each(function($ejecutoras){
-            $ejecutoras->titular;
-            $ejecutoras->sector;
-        });
+        $ejecutoras = Cat_Unidad_Ejecutora::with(['titular', 'sector'])->search($request)->orderBy('nombre', 'ASC')->paginate(8);
+        $sectores = Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
+        $opciones = $this->llena_combo($sectores, $request->id_sector);
         //dd ($ejecutoras);
         return view('Catalogo.Ejecutora.index')
-            ->with('ejecutoras', $ejecutoras);
+            ->with('ejecutoras', $ejecutoras)
+            ->with('opciones_sector', $opciones)
+            ->with('request', $request)
+            ->with('barraMenu', $this->barraMenu2);
     }
 
     public function create()
@@ -69,7 +78,6 @@ class EjecutoraController extends Controller
         $sectores = Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
         //dd($sectores);
         $opciones = $this->llena_combo($sectores);
-        //dd($opciones);
         return view('Catalogo.Ejecutora.create')
             ->with('opciones_sector', $opciones)
             ->with('barraMenu', $this->barraMenu);
@@ -114,22 +122,22 @@ class EjecutoraController extends Controller
         return ($data);
     }
 
-    public function edit($id)
+    public function edit($id, $page)
     {
-        $ejecutora = Cat_Unidad_Ejecutora::find($id);
+        $ejecutora = Cat_Unidad_Ejecutora::with('titular')->find($id);
         $sectores = Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
         $opciones = $this->llena_combo($sectores, $ejecutora->id_sector);
         //dd($ejecutora);
         // ayuntamientos
         if ($ejecutora->id_sector == 4)
-            $titular =Cat_Titular::find($ejecutora->id_titular);
+            $titular = $ejecutora->titular;
         else
         	$titular = new Cat_Titular(['titulo' => '', 'nombre' => '', 'apellido' => '', 'cargo' => '']);
-        //dd($titular);
         return view('Catalogo.Ejecutora.edit')
             ->with('ejecutora', $ejecutora)
             ->with('titular', $titular)
             ->with('opciones_sector', $opciones)
+            ->with('page', $page)
             ->with('barraMenu', $this->barraMenu);
     }
 
@@ -148,6 +156,7 @@ class EjecutoraController extends Controller
             return array('errores' => $errors);
         }
         $data = array();
+        $data['page'] = $request->page;
         try {
             $ejecutora = Cat_Unidad_Ejecutora::find($id);
             $ejecutora->nombre = $request->nombre;
@@ -156,7 +165,7 @@ class EjecutoraController extends Controller
             if ($ejecutora->id_titular == 0)
             	$titular = new Cat_Titular;
             else
-            	$titular = Cat_Titular::find($ejecutora->id_titular);
+            	$titular = $ejecutora->titular;
             if (!$ayuntamiento)
                 $ejecutora->clave = $request->clave;
             else {
@@ -195,7 +204,7 @@ class EjecutoraController extends Controller
             $ejecutora = Cat_Unidad_Ejecutora::find($id);
             if ($ejecutora->id_sector == 4) {
                 $ayuntamiento = true;
-                $titular =Cat_Titular::find($ejecutora->id_titular);
+                $titular = $ejecutora->titular;
             }
             else {
                 $ayuntamiento = false;

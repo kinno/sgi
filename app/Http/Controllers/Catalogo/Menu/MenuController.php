@@ -39,6 +39,14 @@ class MenuController extends Controller
                 'title' => 'Regresar',
                 'texto' => 'Regresar'
             ] ));
+    protected $barraMenu2 = array(
+            'botones' => array([
+                'id'    => 'btnLimpiar',
+                'tipo'  => 'btn-warning',
+                'icono' => 'fa fa-refresh',
+                'title' => 'Actualizar pantalla',
+                'texto' => 'Actualizar'
+            ] ));
 
     public function __construct()
     {
@@ -48,17 +56,22 @@ class MenuController extends Controller
 
     public function index(Request $request)
     {
-        $menus = P_Menu::leftjoin('P_Menu As t2', 'p_menu.id_menu_padre', '=', 't2.id')->select('P_Menu.*')->search($request->nombre)->orderBy(DB::raw('(CASE p_menu.id_menu_padre WHEN 0 THEN p_menu.orden * 10 ELSE t2.orden * 10 + p_menu.orden END)'), 'ASC')->paginate(8);
+        $menus = P_Menu::leftjoin('p_menu As t2', 'p_menu.id_menu_padre', '=', 't2.id')->select('P_Menu.*')->search($request)->orderBy(DB::raw('(CASE p_menu.id_menu_padre WHEN 0 THEN p_menu.orden * 10 ELSE t2.orden * 10 + p_menu.orden END)'), 'ASC')->paginate(8);
+        $menus_padre = P_Menu::where('id_menu_padre', 0)->orderBy('orden', 'ASC')->get()->toArray();
+        $opciones = $this->llena_combo($menus_padre, $request->id_menu_padre);
         //dd ($menus);
         return view('Catalogo.Menu.index')
-            ->with('menus', $menus);
+            ->with('menus', $menus)
+            ->with('opciones_menu', $opciones)
+            ->with('request', $request)
+            ->with('barraMenu', $this->barraMenu2);;
     }
 
     
     public function create()
     {
         $menus = P_Menu::where('id_menu_padre', 0)->orderBy('orden', 'ASC')->get()->toArray();
-        $opciones = $this->llena_combo($menus, 0, 'nombre', 'id', true, true);
+        $opciones = $this->llena_combo($menus);
         //dd($opciones);
         return view('Catalogo.Menu.create')
             ->with('opciones_menu', $opciones)
@@ -68,7 +81,7 @@ class MenuController extends Controller
     
     public function store(Request $request)
     {
-        // dd($request->all());
+        //return ($request->all());
         if ($request->id_menu_padre == 0) {
             array_pop($this->rules);
             $blink = 0;
@@ -104,7 +117,7 @@ class MenuController extends Controller
     
     public function edit($id)
     {
-        $menus = P_Menu::where('id_menu_padre', 0)->orderBy('nombre', 'ASC')->get()->toArray();
+        $menus = P_Menu::where('id_menu_padre', 0)->where('id', '<>', $id)->orderBy('nombre', 'ASC')->get()->toArray();
         //dd($menus);
         $menu = P_Menu::find($id);        
         $opciones = $this->llena_combo($menus, $menu->id_menu_padre);

@@ -62,13 +62,11 @@ class SectorController extends Controller
 
     public function index(Request $request)
     {
-        $sectores = Cat_Sector::search($request->nombre)->orderBy('nombre', 'ASC')->paginate(8);
-        $sectores->each(function($sectores){
-            $sectores->titular;
-        });
+        $sectores = Cat_Sector::with('titular')->search($request->nombre)->orderBy('nombre', 'ASC')->paginate(10);
         //dd ($sectores);
         return view('Catalogo.Sector.index')
-            ->with('sectores', $sectores);
+            ->with('sectores', $sectores)
+            ->with('request', $request);
     }
 
     
@@ -77,7 +75,6 @@ class SectorController extends Controller
         $areas = Cat_Area::join('Cat_Departamento', 'Cat_Area.id', '=', 'Cat_Departamento.id_area')->select('Cat_Area.*')->distinct()->get()->toArray();
         //dd($areas);
         $opciones = $this->llena_combo($areas);
-        //dd($opciones);
         return view('Catalogo.Sector.create')
             ->with('opciones_area', $opciones)
             ->with('barraMenu', $this->barraMenu);
@@ -114,25 +111,26 @@ class SectorController extends Controller
     }
 
 
-    public function edit($id)
+    public function edit($id, $page)
     {
         $areas = Cat_Area::join('Cat_Departamento', 'Cat_Area.id', '=', 'Cat_Departamento.id_area')->select('Cat_Area.*')->distinct()->get()->toArray();
-        //dd($areas);
-        $sector = Cat_Sector::find($id);
-        if (strtoupper($sector->nombre) == 'AYUNTAMIENTOS')
+        $sector = Cat_Sector::with(['titular', 'departamento.area.departamentos'])->find($id);
+        if ($sector->id_titular == 0)
             $titular = new Cat_Titular(['titulo' => '', 'nombre' => '', 'apellido' => '', 'cargo' => '']);
         else
-            $titular =Cat_Titular::find($sector->id_titular);
-        $area = $sector->departamento->area;
-        $opciones_area = $this->llena_combo($areas, $area->id);
-        $departamentos = $area->departamentos->toArray();
-        $opciones_departamento = $this->llena_combo($departamentos, $sector->id_departamento);
-        //dd($titular);
+            $titular = $sector->titular;
+        //dd($sector);
+        $opciones_area = $this->llena_combo($areas, $sector->departamento->id_area);
+        //$departamentos = $sector->departamento->area->departamentos->toArray();
+        //$opciones_departamento = $this->llena_combo($departamentos, $sector->id_departamento);
+        $request = new Request(['id' => $sector->departamento->id_area]);
+        $opciones_departamento = $this->dropdownArea($request);
         return view('Catalogo.Sector.edit')
             ->with('sector', $sector)
             ->with('titular',$titular)
             ->with('opciones_area', $opciones_area)
             ->with('opciones_departamento', $opciones_departamento)
+            ->with('page', $page)
             ->with('barraMenu', $this->barraMenu);
     }
 
@@ -142,7 +140,7 @@ class SectorController extends Controller
         $ayuntamiento = false;
         if (trim(strtoupper($request->nombre)) == 'AYUNTAMIENTOS') {
             $ayuntamiento = true;
-            for ($i = 0; $i < 4; $i++) {
+            for ($i = 0; $i < 6; $i++) {
                 array_pop($this->rules);
             }
         }
@@ -156,6 +154,7 @@ class SectorController extends Controller
             return array('errores' => $errors);
         }
         $data = array();
+        $data['page'] = $request->page;
         try {
             $sector = Cat_Sector::find($id);
             $sector->nombre = $request->nombre;

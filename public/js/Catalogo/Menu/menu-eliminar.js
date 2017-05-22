@@ -15,6 +15,10 @@ $(document).ready( function() {
 				eliminaMenu (id);
 		});
 	});
+    // botón Limpiar
+    $('#btnLimpiar').unbind('click').on('click', function () {      
+        window.location='/Catalogo/Menu';
+    });
 });
 
 

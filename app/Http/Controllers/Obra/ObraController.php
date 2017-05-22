@@ -46,7 +46,6 @@ class ObraController extends Controller
             'fuente_estatal.*'			=> 'required_with:monto_estatal.*',
             'cuenta_estatal.*'			=> 'required_with:fuente_estatal.*|required_with:monto_estatal.*'
         ];
-
     protected $messages = [
             'id_modalidad_ejecucion.not_in'		=> 'Seleccione Modalidad de Ejecución',
             'ejercicio.not_in'					=> 'Seleccione Ejercicio',
@@ -67,16 +66,7 @@ class ObraController extends Controller
             'fuente_estatal.*.required_with'	=> 'Seleccione Fuente Estatal',
             'cuenta_estatal.*.required_with'	=> 'Introduzca No. de cuenta Estatal',
         ];
-
-	public function __construct()
-    {
-        $this->middleware(['auth','verifica.notificaciones']);
-    }
-
-
-    public function index(Request $request)
-    {
-        $barraMenu = array(
+    protected $barraMenu = array(
             'botones' => array([
                 'id'    => 'btnGuardar',
                 'tipo'  => 'btn-success',
@@ -86,21 +76,31 @@ class ObraController extends Controller
             ], [
                 'id'    => 'btnLimpiar',
                 'tipo'  => 'btn-warning',
-                'icono' => 'fa fa-refresh',
+                'icono' => 'fa fa-eraser',
                 'title' => 'Limpiar pantalla',
                 'texto' => 'Limpiar'
-            ], ));
+            ] ));
+
+	public function __construct()
+    {
+        $this->middleware(['auth','verifica.notificaciones']);
+    }
+
+
+    public function index(Request $request)
+    {   
+        $ids_sectores = $this->getIdsSectores();
         $modalidades 		= Cat_Modalidad_Ejecucion::orderBy('nombre', 'ASC')->get()->toArray();
         $ejercicios 		= Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get()->toArray();
         $clasificaciones 	= Cat_Clasificacion_Obra::get()->toArray();
-        $sectores 			= Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
+        $sectores 			= Cat_Sector::where('bactivo', 1)->whereIn('id', $ids_sectores)->orderBy('nombre', 'ASC')->get()->toArray();
         $coberturas		 	= Cat_Cobertura::get()->toArray();
         $regiones 			= Cat_Region::orderBy('nombre', 'ASC')->get()->toArray();
         $municipios 		= Cat_Municipio::orderBy('nombre', 'ASC')->get()->toArray();
         $fuentes_federales 	= Cat_Fuente::where('tipo', 'F')->orderBy('descripcion', 'ASC')->get()->toArray();
         $fuentes_estatales 	= Cat_Fuente::where('tipo', 'E')->orderBy('descripcion', 'ASC')->get()->toArray();
-        $acuerdos_estatales = Cat_Acuerdo::whereIn('id_tipo_acuerdo',[1, 2])->orderBy('clave_acuerdo', 'ASC')->get()->toArray();
-        $acuerdos_federales = Cat_Acuerdo::where('id_tipo_acuerdo', 4)->orderBy('clave_acuerdo', 'ASC')->get()->toArray();
+        $acuerdos_estatales = Cat_Acuerdo::whereIn('id_tipo',[1, 2])->orderBy('clave', 'ASC')->get()->toArray();
+        $acuerdos_federales = Cat_Acuerdo::where('id_tipo', 4)->orderBy('clave', 'ASC')->get()->toArray();
         $grupos 			= Cat_Grupo_Social::orderBy('nombre', 'ASC')->get()->toArray();
 
         $opciones_ejercicio = $this->llena_combo ($ejercicios, 0, 'ejercicio', 'ejercicio');
@@ -109,13 +109,13 @@ class ObraController extends Controller
         $opciones_grupo = $this->llena_combo ($grupos);
         $opciones_modalidad = $this->llena_combo ($modalidades);
         $opciones_clasificacion = $this->llena_combo ($clasificaciones);
-        $opciones_acuerdo_estatal = $this->llena_combo ($acuerdos_estatales, 0, 'clave_acuerdo,nombre_acuerdo', 'id', false);
-        $opciones_acuerdo_federal = $this->llena_combo ($acuerdos_federales, 0, 'clave_acuerdo,nombre_acuerdo', 'id', false);
+        $opciones_acuerdo_estatal = $this->llena_combo ($acuerdos_estatales, 0, 'clave,nombre', 'id', false);
+        $opciones_acuerdo_federal = $this->llena_combo ($acuerdos_federales, 0, 'clave,nombre', 'id', false);
         $opciones_fuente_estatal = $this->llena_combo ($fuentes_estatales, 0, 'clave,descripcion');
         $opciones_fuente_federal = $this->llena_combo ($fuentes_federales, 0, 'clave,descripcion');
         $opciones_region = $this->llena_combo ($regiones, 0, 'nombre', 'id', false);
         $opciones_municipio = $this->llena_combo ($municipios, 0, 'nombre', 'id', false);
-        //dd ($ejercicios);
+        //dd ($opciones_sector);
         return view('Obra.index')
             ->with('opciones_modalidad', $opciones_modalidad)
             ->with('opciones_ejercicio', $opciones_ejercicio)
@@ -129,7 +129,7 @@ class ObraController extends Controller
             ->with('opciones_fuente_federal', $opciones_fuente_federal)
             ->with('opciones_fuente_estatal', $opciones_fuente_estatal)
             ->with('opciones_grupo', $opciones_grupo)
-            ->with('barraMenu', $barraMenu);
+            ->with('barraMenu', $this->barraMenu);
     }
 
     public function buscar_expediente(Request $request)

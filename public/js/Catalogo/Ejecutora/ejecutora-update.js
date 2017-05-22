@@ -42,7 +42,7 @@ function Triggers () {
 
     // botón Regresar
     $('#btnRegresar').unbind('click').on('click', function () {      
-        window.location='/Catalogo/Ejecutora';
+        window.location='/Catalogo/Ejecutora?page=' + $('#page').val();
     });
 
 }
@@ -71,7 +71,7 @@ function guardaEjecutora () {
             if (!data.errores) {
                 if (data.error == 1) {
                     BootstrapDialog.mensaje (null, data.mensaje, 1, function () {
-                        window.location='/Catalogo/Ejecutora';
+                        window.location='/Catalogo/Ejecutora?page=' + data.page;
                     });
                 } 
                 else

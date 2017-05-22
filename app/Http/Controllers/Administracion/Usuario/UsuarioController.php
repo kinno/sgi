@@ -50,8 +50,8 @@ class UsuarioController extends Controller
             'id_departamento.not_in'	    => 'Seleccione Departamento',
             'id_unidad_ejecutora.not_in'    => 'Seleccione Unidad Ejecutora',
             'username.required'             => 'Introduzca clave del Usuario',
-            'username.min'	             	=> 'Clave debe contener por lo menos 6 caracteres',
-            'username.unique'             	=> 'Clave ya se encuentra registrada',
+            'username.min'	             	=> 'Usuario debe contener por lo menos 6 caracteres',
+            'username.unique'             	=> 'Usuario ya se encuentra registrado',
             'name.required'  	     	    => 'Introduzca nombre del Usuario',
             'email.required' 	     	    => 'Introduzca correo electrónico',
             'email.email'	 	     	    => 'Correo electrónico no valido',
@@ -83,10 +83,7 @@ class UsuarioController extends Controller
 
     public function index(Request $request)
     {
-        $usuarios = User::search($request->name)->orderBy('name', 'ASC')->paginate(8);
-        $usuarios->each(function($usuarios){
-            $usuarios->tipo_usuario;
-        });
+        $usuarios = User::with('tipo_usuario')->search($request->name)->orderBy('name', 'ASC')->paginate(8);
         return view('Administracion.Usuario.index')
             ->with('usuarios', $usuarios);
     }
@@ -96,7 +93,6 @@ class UsuarioController extends Controller
     {
         $tipo_usuarios = Cat_Tipo_Usuario::all()->toArray();
         $opciones_tipo_usuario = $this->llena_combo($tipo_usuarios);
-
         $sectores = Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
         $opciones_sector = $this->llena_combo($sectores);
         $areas = Cat_Area::join('Cat_Departamento', 'Cat_Area.id', '=', 'Cat_Departamento.id_area')->select('Cat_Area.*')->distinct()->get()->toArray();

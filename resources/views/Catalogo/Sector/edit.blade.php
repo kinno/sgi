@@ -9,6 +9,7 @@
 			{{ csrf_field() }}
 			<input type="hidden" name="_method" value="PUT">
 			<input type="hidden" id="id" value="{{ $sector->id }}">
+			<input type="hidden" id="page" name="page" value="{{ $page }}">
 			<div class="form-group">
 				<label for="id_area" class="col-md-2 control-label input-sm">Area</label>
 				<div class="col-md-6">

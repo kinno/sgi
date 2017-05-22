@@ -37,8 +37,14 @@ class Cat_Unidad_Ejecutora extends Model
         return ($valor == 1 ? 'si' : 'no');
     }
 
-    public function scopeSearch($query, $nombre)
+    public function scopeSearch($query, $request)
     {
-        return $query->where('nombre', 'LIKE', "%$nombre%");
+        if ($request->nombre != null || $request->id_sector != 0)
+            $query->where('id_sector', $request->id_sector)->where('nombre', 'LIKE', "%$request->nombre%");
+        else
+            $query->where('nombre', 'LIKE', "%$request->nombre%");
+        return $query;
     }
+
+    
 }

@@ -12,9 +12,7 @@
 
 .obligatorio {
     color: #FF0000;
-    /*color: #a94442;*/
     padding-right: 4px;
-    /*font-size: 10px;*/
 }
 
 .menu_padre {
@@ -117,4 +115,14 @@ input {
 .in li a:hover {
     outline: none;
     background-color: #6b6b6b !important;
+}
+
+.tabla-condensada > thead > tr > th,
+.tabla-condensada > tbody > tr > th,
+.tabla-condensada > tfoot > tr > th,
+.tabla-condensada > thead > tr > td,
+.tabla-condensada > tbody > tr > td,
+.tabla-condensada > tfoot > tr > td {
+  padding: 4px;
+  font-size: 0.85em;
 }

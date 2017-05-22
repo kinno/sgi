@@ -1,6 +1,5 @@
 @extends('layouts.master')
 @section('content')
-<br/>
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title text-center"><strong>Catálogo de Menus</strong></h3>
@@ -10,19 +9,27 @@
 			<div class="col-md-2">
     			<a href="{{ route('Menu.create') }}" class="btn btn-success btn-sm">Registrar Menu</a>
     		</div>
-    		<div class="col-md-4 col-md-offset-6">
-		    	<form method="GET" action="{{ route('Menu.index') }}">
-		    		<div class="input-group input-group-sm">
-						<input type="text" name="nombre" class="form-control" placeholder="Buscar Menu . . . " maxlength="40">
-						<span class="input-group-btn">
-					    	<button type="submit" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-					    </span>
+    		<div class="col-md-8 col-md-offset-2">
+		    	<form class="form-horizontal" method="GET" action="{{ route('Menu.index') }}">
+		    		<div class="form-group form-group-sm">
+			    		<label for="id_menu_padre" class="col-md-1 control-label">Menu:</label>
+						<div class="col-md-5">
+							<select name="id_menu_padre" id="id_menu_padre" class="form-control input-sm">
+								{!! $opciones_menu !!}
+							</select>
+						</div>
+			    		<div class="col-md-4">
+							<input type="text" name="nombre" class="form-control" placeholder="Buscar Menu . . . " maxlength="40" value="{{ $request->nombre }}">
+						</div>
+						<div class="col-md-1">
+							<button type="submit" class="btn btn-default btn-sm">Buscar&nbsp;&nbsp;<span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+						</div>
 					</div>
-				</form>
-			</div>
+    			</form>
+    		</div>
     	</div>
     	<hr>
-    	<table class="table table-striped table-condensed">
+    	<table class="table table-striped tabla-condensada table-hover">
   			<thead>
   				<tr>
   					<th>ID</th>
@@ -66,7 +73,11 @@
   				
   			</tbody>
 		</table>
-		{{ $menus->links() }}
+		@if ($request->nombre != '' || $request->id_menu_padre > 0)
+			{{ $menus->appends(['id_menu_padre' => $request->id_menu_padre, 'nombre' => $request->nombre])->links() }}
+		@else
+			{{ $menus->links() }}
+		@endif
   	</div>
 </div>
 <script src="{{ asset('js/Catalogo/Menu/menu-eliminar.js') }}"></script>

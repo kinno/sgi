@@ -108,20 +108,35 @@ Route::group(['prefix' => 'Oficios'], function() {
 
 // Rutas Catalogo - Sector
 Route::group(['prefix' => 'Catalogo/Sector'], function () {
-    Route::resource('', 'Catalogo\Sector\SectorController');
+    //Route::resource('', 'Catalogo\Sector\SectorController');
+    Route::get('','Catalogo\Sector\SectorController@index')->name('Sector.index');
+	Route::get('create','Catalogo\Sector\SectorController@create')->name('Sector.create');
+	Route::post('','Catalogo\Sector\SectorController@store')->name('Sector.store');
+	Route::get('{id}/edit/{page}','Catalogo\Sector\SectorController@edit')->name('Sector.edit');
+	Route::put('{id}','Catalogo\Sector\SectorController@update')->name('Sector.update');
 	Route::post('{id}/destroy', 'Catalogo\Sector\SectorController@destroy');
 	Route::post('dropdownArea', 'Catalogo\Sector\SectorController@dropdownArea');
 });
 
 // Rutas Catalogo/Ejecutora
 Route::group(['prefix' => 'Catalogo/Ejecutora'], function () {
-    Route::resource('', 'Catalogo\Ejecutora\EjecutoraController');
+    //Route::resource('', 'Catalogo\Ejecutora\EjecutoraController');
+    Route::get('','Catalogo\Ejecutora\EjecutoraController@index')->name('Ejecutora.index');
+	Route::get('create','Catalogo\Ejecutora\EjecutoraController@create')->name('Ejecutora.create');
+	Route::post('','Catalogo\Ejecutora\EjecutoraController@store')->name('Ejecutora.store');
+	Route::get('{id}/edit/{page}','Catalogo\Ejecutora\EjecutoraController@edit')->name('Ejecutora.edit');
+	Route::put('{id}','Catalogo\Ejecutora\EjecutoraController@update')->name('Ejecutora.update');
     Route::post('{id}/destroy', 'Catalogo\Ejecutora\EjecutoraController@destroy');
 });
 
 // Rutas Catalogo/Menu
 Route::group(['prefix' => 'Catalogo/Menu'], function () {
-    Route::resource('', 'Catalogo\Menu\MenuController');
+    //Route::resource('', 'Catalogo\Menu\MenuController');
+    Route::get('','Catalogo\Menu\MenuController@index')->name('Menu.index');
+	Route::get('create','Catalogo\Menu\MenuController@create')->name('Menu.create');
+	Route::post('','Catalogo\Menu\MenuController@store')->name('Menu.store');
+	Route::get('{id}/edit','Catalogo\Menu\MenuController@edit')->name('Menu.edit');
+	Route::put('{id}','Catalogo\Menu\MenuController@update')->name('Menu.update');
     Route::post('{id}/destroy', 'Catalogo\Menu\MenuController@destroy');
 });
 

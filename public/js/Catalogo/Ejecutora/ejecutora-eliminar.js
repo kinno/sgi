@@ -13,6 +13,10 @@ $(document).ready( function() {
 				eliminaEjecutora (id);
 		});
 	});
+    // botón Limpiar
+    $('#btnLimpiar').unbind('click').on('click', function () {      
+        window.location='/Catalogo/Ejecutora';
+    });
 });
 
 
