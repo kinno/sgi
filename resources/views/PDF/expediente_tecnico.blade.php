@@ -335,7 +335,7 @@
         <td class="encabezado">Observaciones de la Dependencia y/o Unidad Ejecutora</td>
     </tr>
     <tr>
-        <td class="j">{{$relacion->expediente->hoja5->observaciones_unidad_ejecutora}}</td>
+        <td class="j">{!!nl2br(e($relacion->expediente->hoja5->observaciones_unidad_ejecutora))!!}</td>
     </tr>
 </table>   
 </div>
@@ -357,7 +357,7 @@
         <td class="punto">Criterios Sociales</td>
     </tr>
     <tr class="j">
-        <td> {{$relacion->expediente->hoja6->criterios_sociales}} </td>
+        <td> {!! nl2br($relacion->expediente->hoja6->criterios_sociales)!!} </td>
     </tr>
 </table>
 </div>

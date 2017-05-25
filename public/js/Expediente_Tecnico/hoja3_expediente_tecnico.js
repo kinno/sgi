@@ -231,11 +231,19 @@ function actualizaTotales() {
     $("#totalSinIva,#totalIva,#total").autoNumeric("update");
     if (total > totalGeneral) {
         // console.log(total + "::" + totalGeneral);
+        eliminaNotificacion();
         colocaNotificacion('','Atenci\u00f3n! El monto ha superado el monto inicial, Monto inicial: $'+ totalGeneralFormat,'error','right bottom');
         error = true;
         desactivaNavegacion(true);
         return false;
-    } else {
+    } else if(($("#form_anexo_uno #id_tipo_solicitud").val()=="10"||$("#form_anexo_uno #id_tipo_solicitud").val()=="11")&& total<totalGeneral){
+        eliminaNotificacion();
+        colocaNotificacion('','Atenci\u00f3n! El monto de los conceptos debe ser igual al monto inicial, Monto inicial: $'+ totalGeneralFormat,'error','right bottom');
+        error = true;
+        desactivaNavegacion(true);
+        return false;
+    }
+    else{
         eliminaNotificacion();
         error = false;
         desactivaNavegacion(false);

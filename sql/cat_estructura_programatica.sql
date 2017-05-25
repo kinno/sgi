@@ -5,13 +5,13 @@ MySQL - 5.5.29
 */
 /*!40101 SET NAMES utf8 */;
 
-create table `cat_estructura_programatica` (
-	`id` int (10),
-	`ejercicio` int (11),
-	`clave` char (36),
-	`nombre` varchar (765),
-	`tipo` varchar (9)
-); 
+-- create table `cat_estructura_programatica` (
+-- 	`id` int (10),
+-- 	`ejercicio` int (11),
+-- 	`clave` char (36),
+-- 	`nombre` varchar (765),
+-- 	`tipo` varchar (9)
+-- ); 
 insert into `cat_estructura_programatica` (`id`, `ejercicio`, `clave`, `nombre`, `tipo`) values('1','2017','01','Gobierno ','FNL');
 insert into `cat_estructura_programatica` (`id`, `ejercicio`, `clave`, `nombre`, `tipo`) values('2','2017','0101','Legislación','F');
 insert into `cat_estructura_programatica` (`id`, `ejercicio`, `clave`, `nombre`, `tipo`) values('3','2017','010101','Legislación','SF');

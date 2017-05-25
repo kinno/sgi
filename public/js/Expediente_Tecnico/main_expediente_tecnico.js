@@ -23,52 +23,58 @@ jQuery(document).ready(function($) {
         enviar_revision();
     });
     $("#panel1").on('click', function() {
-        if ($(this).hasClass('error')) {
-            $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
-            return false;
-        }else{
-            $("#hojaActual").val('1');    
-        }
+        // if ($(this).hasClass('error')) {
+        //     $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
+        //     return false;
+        // }else{
+        //     $("#hojaActual").val('1');    
+        // }
+        $("#hojaActual").val('1');
         
     });
     $("#panel2").on('click', function() {
-         if ($(this).hasClass('error')) {
-             $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
-            return false;
-        }else{
-            $("#hojaActual").val('2');    
-        }
+        //  if ($(this).hasClass('error')) {
+        //      $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
+        //     return false;
+        // }else{
+        //     $("#hojaActual").val('2');    
+        // }
+        $("#hojaActual").val('2');
     });
     $("#panel3").on('click', function() {
-        if ($(this).hasClass('error')) {
-             $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
-            return false;
-        }else{
-            $("#hojaActual").val('3');    
-        }
+        // if ($(this).hasClass('error')) {
+        //      $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
+        //     return false;
+        // }else{
+        //     $("#hojaActual").val('3');    
+        // }
+        $("#hojaActual").val('3');
     });
     $("#panel4").on('click', function() {
-        if ($(this).hasClass('error')) {
-             $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
-            return false;
-        }else{
-            $("#hojaActual").val('4');    
-        }
+        // if ($(this).hasClass('error')) {
+        //      $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
+        //     return false;
+        // }else{
+        //     $("#hojaActual").val('4');    
+        // }
+        $("#hojaActual").val('4');
     });
     $("#panel5").on('click', function() {
-         if ($(this).hasClass('error')) {
-             $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
-            return false;
-        }else{
-            $("#hojaActual").val('5');    
-        }
+        //  if ($(this).hasClass('error')) {
+        //      $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
+        //     return false;
+        // }else{
+        //     $("#hojaActual").val('5');    
+        // }
+        $("#hojaActual").val('5'); 
     });
     $("#panel6").on('click', function() {
-         if ($(this).hasClass('error')) {
-             $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
-        }else{
-            $("#hojaActual").val('6');    
-        }
+        //  if ($(this).hasClass('error')) {
+        //      $.notify("Existen errores en el anexo actual, se deben corregir para cambiar de anexo", "error");
+        // }else{
+        //     $("#hojaActual").val('6');    
+        // }
+        $("#hojaActual").val('6');
     });
     $("#imprimir_expediente").on('click', function() {
         imprime_expediente($("#form_anexo_uno #id_expediente_tecnico").val());

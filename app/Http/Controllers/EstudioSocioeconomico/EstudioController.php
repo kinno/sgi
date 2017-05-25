@@ -59,7 +59,7 @@ class EstudioController extends Controller
                 'title' => 'Imprimir ficha técnica',
             ]));
         $user              = \Auth::user()->load('unidad_ejecutora')->load('sectores');
-        $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
+        $ejercicios        = Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get();
         $accionesFederales = Cat_Acuerdo::where('id_tipo', '=', 4)->get();
         $accionesEstatales = Cat_Acuerdo::where('id_tipo', '=', 1)
             ->orWhere('id_tipo', '=', 2)
@@ -210,7 +210,7 @@ class EstudioController extends Controller
             if ($bNuevo) {
                 //Guardamos la relacion del Anexo 1 a la tabla estudio socioeconomuico
                 $estudio_socioeconomico                       = new P_Estudio_Socioeconomico;
-                $estudio_socioeconomico->ejercicio            = $request->ejercicio;
+                //$estudio_socioeconomico->ejercicio            = $request->ejercicio;
                 $estudio_socioeconomico->id_anexo_uno_estudio = $hoja1->id;
                 $estudio_socioeconomico->id_estatus           = 1;
                 $estudio_socioeconomico->fecha_registro       = date('Y-m-d H:i:s');
@@ -222,7 +222,7 @@ class EstudioController extends Controller
                 //Creamos nueva relación en Rel_Estudio_Expediente_Obra
                 $rel_estudio_expediente_obra                            = new Rel_Estudio_Expediente_Obra;
                 $rel_estudio_expediente_obra->id_estudio_socioeconomico = $id_estudio_socioeconomico;
-                $rel_estudio_expediente_obra->ejercicio                 = $request->ejercicio;
+                //$rel_estudio_expediente_obra->ejercicio                 = $request->ejercicio;
                 $rel_estudio_expediente_obra->id_usuario                = \Auth::user()->id;
                 $rel_estudio_expediente_obra->save();
 
@@ -295,8 +295,8 @@ class EstudioController extends Controller
 
         $validator = \Validator::make($request->all(), [
             'id_cobertura'              => 'required',
-            'id_region'                 => 'required_without:id_municipio',
-            'id_municipio'              => 'required_without:id_region',
+            'id_region'                 => 'required_if:id_cobertura,2',
+            'id_municipio'              => 'required_if:id_cobertura,3',
             'id_tipo_localidad'         => 'required',
             'bcoordenadas'              => 'required',
             'observaciones_coordenadas' => 'required_if:bcoordenadas,2',

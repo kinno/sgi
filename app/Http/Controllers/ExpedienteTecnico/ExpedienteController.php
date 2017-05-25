@@ -41,8 +41,8 @@ class ExpedienteController extends Controller
 
     public function index()
     {
-        $barraMenu = array('input'=>array('id'=>'id_expediente_tecnico_search','class'=>'text-right num','title'=>'No. Solcitud:'),
-            'botones' => array([
+        $barraMenu = array('input' => array('id' => 'id_expediente_tecnico_search', 'class' => 'text-right num', 'title' => 'No. Solcitud:'),
+            'botones'                  => array([
                 'id'    => 'buscar',
                 'tipo'  => 'btn-default',
                 'icono' => 'fa fa-search',
@@ -53,30 +53,30 @@ class ExpedienteController extends Controller
                 'icono' => 'fa fa-refresh',
                 'title' => 'Limpiar pantalla',
             ], [
-                'id'    => 'observaciones',
-                'tipo'  => 'btn-danger',
-                'icono' => 'fa fa-exclamation-triangle',
-                'title' => 'Limpiar pantalla"',
-                'display' => 'style="display:none"'
+                'id'      => 'observaciones',
+                'tipo'    => 'btn-danger',
+                'icono'   => 'fa fa-exclamation-triangle',
+                'title'   => 'Ver observaciones',
+                
             ], [
                 'id'    => 'guardar',
                 'tipo'  => 'btn-success',
                 'icono' => 'fa fa-save',
                 'title' => 'Guardar',
-            ],[
+            ], [
                 'id'    => 'enviar_revision',
                 'tipo'  => 'btn-success',
                 'icono' => 'fa fa-share-square',
                 'title' => 'Enviar a la DGI para revisión',
-            ],[
+            ], [
                 'id'    => 'imprimir_expediente',
                 'tipo'  => 'btn-success',
                 'icono' => 'fa fa-file-pdf-o',
                 'title' => 'Imprimir Expediente Técnico',
             ]));
         $user              = \Auth::user()->load('unidad_ejecutora')->load('sectores');
-        $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
-        $tipoSolicitud     = Cat_Solicitud_Presupuesto::whereIn('id', array(1, 9, 10))->get();
+        $ejercicios        = Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get();
+        $tipoSolicitud     = Cat_Solicitud_Presupuesto::whereIn('id', array(1, 10, 11, 8))->get();
         $accionesFederales = Cat_Acuerdo::where('id_tipo', '=', 4)->get();
         $accionesEstatales = Cat_Acuerdo::where('id_tipo', '=', 1)
             ->orWhere('id_tipo', '=', 2)
@@ -91,7 +91,7 @@ class ExpedienteController extends Controller
         $fuentesEstatal = Cat_Fuente::where('tipo', '=', 'E')->get();
         $ue             = array('id' => $user->unidad_ejecutora->id, 'nombre' => $user->unidad_ejecutora->nombre);
         $sector         = array('id' => $user->sectores[0]->id, 'nombre' => $user->sectores[0]->nombre);
-        return view('ExpedienteTecnico.index', compact('ejercicios', 'tipoSolicitud', 'accionesFederales', 'accionesEstatales', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector','barraMenu'));
+        return view('ExpedienteTecnico.index', compact('ejercicios', 'tipoSolicitud', 'accionesFederales', 'accionesEstatales', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector', 'barraMenu'));
     }
 
     public function buscar_expediente(Request $request)
@@ -103,11 +103,10 @@ class ExpedienteController extends Controller
             //     ->findOrFail($request->id_expediente_tecnico);
 
             $expediente_tecnico = Rel_Estudio_Expediente_Obra::with(['expediente.hoja1.sector', 'expediente.hoja1.unidad_ejecutora', 'expediente.hoja2', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios', 'expediente.avance_financiero', 'expediente.hoja5', 'expediente.hoja6'])
-                ->with(array('expediente.observaciones' => function($query)
-                        {
-                            $query->orderBy('created_at', 'desc');
+                ->with(array('expediente.observaciones' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
 
-                        }))
+                }))
                 ->where('id_expediente_tecnico', '=', $request->id_expediente_tecnico)
                 ->first();
 
@@ -231,13 +230,14 @@ class ExpedienteController extends Controller
                 } else {
                     $rel_estudio_expediente_obra                        = new Rel_Estudio_Expediente_Obra;
                     $rel_estudio_expediente_obra->id_expediente_tecnico = $id_expediente_tecnico;
-                    $rel_estudio_expediente_obra->ejercicio             = $request->ejercicio;
-                    $rel_estudio_expediente_obra->id_usuario            = \Auth::user()->id;
+                    // $rel_estudio_expediente_obra->ejercicio             = $request->ejercicio;
+                    $rel_estudio_expediente_obra->id_usuario = \Auth::user()->id;
                     $rel_estudio_expediente_obra->save();
                 }
             } else {
                 //obtener el id del expediente que se quiere actualizar
                 $expediente_tecnico             = P_expediente_tecnico::find($request->id_expediente_tecnico);
+                $expediente_tecnico->id_estatus = 1;
                 $expediente_tecnico->id_usuario = \Auth::user()->id;
                 $expediente_tecnico->save();
             }
@@ -305,8 +305,8 @@ class ExpedienteController extends Controller
 
         $validator = \Validator::make($request->all(), [
             'id_cobertura'              => 'required',
-            'id_region'                 => 'required_without:id_municipio',
-            'id_municipio'              => 'required_without:id_region',
+            'id_region'                 => 'required_if:id_cobertura,2',
+            'id_municipio'              => 'required_if:id_cobertura,3',
             'id_tipo_localidad'         => 'required',
             'bcoordenadas'              => 'required',
             'observaciones_coordenadas' => 'required_if:bcoordenadas,2',
@@ -608,10 +608,11 @@ class ExpedienteController extends Controller
     {
         $p_avance = P_Avance_Financiero::where('id_expediente_tecnico', '=', $id_expediente_tecnico)
             ->first();
-        // dd($p_avance->count());
-        if ($p_avance->count() === 0) {
-            $p_avance = new P_Avance_Financiero;
+        // dd($p_avance);
+        if (!$p_avance) {
+                $p_avance = new P_Avance_Financiero;
         }
+
         $p_avance->id_expediente_tecnico = $id_expediente_tecnico;
         $p_avance->enero                 = $avance_financiero['enero'];
         $p_avance->febrero               = $avance_financiero['febrero'];

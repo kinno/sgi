@@ -18,7 +18,7 @@ class OficiosController extends Controller
     {
         // $this->dispatch(new VerificarNotificaciones());
         // $user              = \Auth::user()->load('unidad_ejecutora')->load('sectores');
-        $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
+        $ejercicios        = Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get();
         $tipoSolicitud     = Cat_Solicitud_Presupuesto::all();
         // $accionesFederales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 4)->get();
         // $accionesEstatales = Cat_Acuerdo::where('id_tipo_acuerdo', '=', 1)

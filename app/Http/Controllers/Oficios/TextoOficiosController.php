@@ -33,7 +33,7 @@ class TextoOficiosController extends Controller
             ]));
 
         
-        $ejercicios        = Cat_Ejercicio::orderBy('Ejercicio', 'DESC')->get();
+        $ejercicios        = Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get();
         $tipoSolicitud     = Cat_Solicitud_Presupuesto::all();
         $fuentes = Cat_Fuente::where('tipo','=','F')
         	->orWhere('tipo','=','E')

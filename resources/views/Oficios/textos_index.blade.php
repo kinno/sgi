@@ -25,7 +25,7 @@
                         <span class="input-group-addon">Ejercicio: </span>               
                         <select class="form-control input-sm input-trigger" id="ejercicio" name="ejercicio">
                             @foreach ($ejercicios as $element)
-                                <option value="{{$element->Ejercicio}}">{{$element->Ejercicio}}</option>
+                                <option value="{{$element->ejercicio}}">{{$element->ejercicio}}</option>
                             @endforeach              
                         </select>
                     </div>  

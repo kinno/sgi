@@ -21,7 +21,7 @@
                 <div class="col-md-2">
                     <select id="ejercicio" name="ejercicio" class="form-control obligatorio">
                         @foreach($ejercicios as $ejercicio)
-                        <option value="{{$ejercicio->Ejercicio}}">{{$ejercicio->Ejercicio}}</option>
+                        <option value="{{$ejercicio->ejercicio}}">{{$ejercicio->ejercicio}}</option>
                         @endforeach
                     </select>
                 </div>

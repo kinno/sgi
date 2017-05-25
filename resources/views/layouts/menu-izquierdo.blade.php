@@ -5,7 +5,7 @@
     <div class="separador"></div>
     @php
 
-        $menus = \Auth::user()->menus()->with('menuPadre')->get();
+        $menus = \Auth::user()->menus()->with('menuPadre')->orderBy('id_menu_padre','ASC')->get();
         // dd($menus);
         // $menus = $user->menus;
         $menuItems = "";
@@ -50,5 +50,6 @@
     @endphp
        
     </ul>
+    <div class="separador"></div>
 </div>
 <!-- /.navbar-collapse -->
