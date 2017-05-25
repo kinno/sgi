@@ -21,23 +21,33 @@ function Triggers () {
         $('#err_id_unidad_ejecutora, #err_id_departamento, #err_iniciales').hide();
         var id = $(this).val();
         if (id == '0') {
-            $('#div_grupo_ue, #div_grupo_departamento, #div_iniciales').hide();
-            $('#id_departamento, #id_unidad_ejecutora').html(vacio);
-            $('#id_sector, #id_unidad_ejecutora, #id_area, #id_departamento').val('0');
+            $('#div_grupo_ue, #div_grupo_departamento, #div_iniciales').hide()
+            if ($('#id_sector').children().length > 1) {
+                $('#id_unidad_ejecutora').html(vacio);
+                $('#id_sector, #id_unidad_ejecutora').val('0');
+            }
+            if ($('#id_area').children().length > 1) {
+                $('#id_departamento').html(vacio);
+                $('#id_area, #id_departamento').val('0');
+            }
             $('#iniciales').val('');
         }
         else if (id == '1') {
-            $('#div_grupo_ue').show();
-            $('#div_grupo_departamento, #div_iniciales').hide();
-            $('#id_departamento').html(vacio);
-            $('#id_area, #id_departamento').val('0');
+            $('#div_grupo_ue').show()
+            $('#div_grupo_departamento, #div_iniciales').hide()
+            if ($('#id_area').children().length > 1) {
+                $('#id_departamento').html(vacio);
+                $('#id_area, #id_departamento').val('0');
+            }
             $('#iniciales').val('');
         }
         else {
             $('#div_grupo_departamento, #div_iniciales').show();
             $('#div_grupo_ue').hide();
-            $('#id_unidad_ejecutora').html(vacio);
-            $('#id_sector, #id_unidad_ejecutora').val('0');
+            if ($('#id_sector').children().length > 1) {
+                $('#id_unidad_ejecutora').html(vacio);
+                $('#id_sector, #id_unidad_ejecutora').val('0');
+            }
         }
     });
 

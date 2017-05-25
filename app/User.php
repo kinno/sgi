@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Cat_Unidad_Ejecutora', 'id_unidad_ejecutora');
     }
 
+    public function departamento()
+    {
+        return $this->belongsTo('App\Cat_Departamento', 'id_departamento');
+    }
+
     public function sectores()
     {
         return $this->belongsToMany('App\Cat_Sector', 'rel_usuario_sector', 'id_usuario', 'id_sector')->withTimestamps();

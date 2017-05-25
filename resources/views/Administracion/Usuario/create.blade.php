@@ -11,7 +11,7 @@
 				<label for="id_tipo_usuario" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Tipo de Usuario:</label>
 				<div class="col-md-3">
 					<select name="id_tipo_usuario" id="id_tipo_usuario" class="form-control input-sm">
-						{!! $opciones_tipo_usuario !!}
+						{!! $opciones['tipo_usuario'] !!}
 					</select>
 					<span id="err_id_tipo_usuario" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 				</div>
@@ -19,17 +19,17 @@
 			<div id="div_grupo_ue">
 			<div class="form-group">
 				<label for="id_sector" class="col-md-2 control-label input-sm">Sector:</label>
-				<div class="col-md-6">
+				<div class="col-md-5">
 					<select name="id_sector" id="id_sector" class="form-control input-sm">
-						{!! $opciones_sector !!}
+						{!! $opciones['sector'] !!}
 					</select>
 				</div>
 			</div>
 			<div class="form-group" id="div_id_unidad_ejecutora">
 				<label for="id_unidad_ejecutora" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Unidad Ejecutora:</label>
-				<div class="col-md-6">
+				<div class="col-md-7">
 					<select name="id_unidad_ejecutora" id="id_unidad_ejecutora" class="form-control input-sm">
-						<option value="0">- Selecciona </option>
+						{!! $opciones['ue'] !!}
 					</select>
 					<span id="err_id_unidad_ejecutora" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 				</div>
@@ -40,7 +40,7 @@
 				<label for="id_area" class="col-md-2 control-label input-sm">Area:</label>
 				<div class="col-md-6">
 					<select name="id_area" id="id_area" class="form-control input-sm">
-						{!! $opciones_area !!}
+						{!! $opciones['area'] !!}
 					</select>
 				</div>
 			</div>
@@ -48,7 +48,7 @@
 				<label for="id_departamento" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Departamento:</label>
 				<div class="col-md-6">
 					<select name="id_departamento" id="id_departamento" class="form-control input-sm">
-						<option value="0">- Selecciona </option>
+						{!! $opciones['departamento'] !!}
 					</select>
 					<span id="err_id_departamento" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 				</div>

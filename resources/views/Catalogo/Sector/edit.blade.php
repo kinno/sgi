@@ -14,7 +14,7 @@
 				<label for="id_area" class="col-md-2 control-label input-sm">Area</label>
 				<div class="col-md-6">
 					<select name="id_area" id="id_area" class="form-control input-sm">
-						{!! $opciones_area !!}
+						{!! $opciones['area'] !!}
 					</select>
 				</div>
 			</div>
@@ -22,7 +22,7 @@
 				<label for="id_departamento" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Departamento</label>
 				<div class="col-md-6">
 					<select name="id_departamento" id="id_departamento" class="form-control input-sm">
-						{!! $opciones_departamento !!}
+						{!! $opciones['departamento'] !!}
 					</select>
 					<span id="err_id_departamento" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 				</div>

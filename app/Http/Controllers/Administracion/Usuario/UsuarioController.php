@@ -91,17 +91,12 @@ class UsuarioController extends Controller
 
     public function create()
     {
-        $tipo_usuarios = Cat_Tipo_Usuario::all()->toArray();
-        $opciones_tipo_usuario = $this->llena_combo($tipo_usuarios);
-        $sectores = Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
-        $opciones_sector = $this->llena_combo($sectores);
-        $areas = Cat_Area::join('Cat_Departamento', 'Cat_Area.id', '=', 'Cat_Departamento.id_area')->select('Cat_Area.*')->distinct()->get()->toArray();
-        //dd($areas);
-        $opciones_area = $this->llena_combo($areas);
+        $opciones = [];
+        $opciones['tipo_usuario'] = $this->opcionesTipoUsuario();
+        $opciones += $this->opcionesSector();
+        $opciones += $this->opcionesArea();
         return view('Administracion.Usuario.create')
-        	->with('opciones_tipo_usuario', $opciones_tipo_usuario)
-        	->with('opciones_sector', $opciones_sector)
-            ->with('opciones_area', $opciones_area)
+        	->with('opciones', $opciones)
             ->with('barraMenu', $this->barraMenu);
     }
 
@@ -147,40 +142,25 @@ class UsuarioController extends Controller
 
     public function edit($id)
     {
-        $usuario = User::find($id);
-        $tipo_usuarios = Cat_Tipo_Usuario::all()->toArray();
-        $opciones_tipo_usuario = $this->llena_combo($tipo_usuarios, $usuario->id_tipo_usuario);
-        $sectores = Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
-        if ($usuario->id_unidad_ejecutora > 0) {
-	        $ejecutora = Cat_Unidad_Ejecutora::find($usuario->id_unidad_ejecutora);
-	        $opciones_sector = $this->llena_combo($sectores, $ejecutora->id_sector);
-	        $sector = $ejecutora->sector;
-	        $ejecutoras = $sector->unidad_ejecutoras->toArray();
-	        $opciones_unidad_ejecutora = $this->llena_combo($ejecutoras, $usuario->id_unidad_ejecutora);
-        }
-	    else {
-	    	$opciones_sector = $this->llena_combo($sectores);
-	    	$opciones_unidad_ejecutora = $this->llena_combo(array());
-	    }
-	    $areas = Cat_Area::join('Cat_Departamento', 'Cat_Area.id', '=', 'Cat_Departamento.id_area')->select('Cat_Area.*')->distinct()->get()->toArray();
-	    if ($usuario->id_departamento > 0) {
-	        $departamento = Cat_Departamento::find($usuario->id_departamento);
-	        $opciones_area = $this->llena_combo($areas, $departamento->id_area);
-	        $area = $departamento->area;
-	        $departamentos = $area->departamentos->toArray();
-	        $opciones_departamento = $this->llena_combo($departamentos, $usuario->id_departamento);
-	    }
-	    else {
-	    	$opciones_area = $this->llena_combo($areas);
-	    	$opciones_departamento = $this->llena_combo(array());
-	    }
+        $opciones = [];
+        $usuario = User::with(['unidad_ejecutora', 'departamento'])->find($id);
+        $opciones['tipo_usuario'] = $this->opcionesTipoUsuario($usuario->id_tipo_usuario);
+        if ($usuario->id_unidad_ejecutora > 0)
+            $opciones += $this->opcionesSector($usuario->unidad_ejecutora->id_sector, $usuario->id_unidad_ejecutora);
+        else
+            $opciones += $this->opcionesSector();
+        if ($usuario->id_departamento > 0)
+            $opciones += $this->opcionesArea($usuario->departamento->id_area, $usuario->id_departamento);
+        else
+            $opciones += $this->opcionesArea();
+        //dd($opciones);
         return view('Administracion.Usuario.edit')
             ->with('usuario', $usuario)
-            ->with('opciones_tipo_usuario', $opciones_tipo_usuario)
-        	->with('opciones_sector', $opciones_sector)
-            ->with('opciones_unidad_ejecutora', $opciones_unidad_ejecutora)
-            ->with('opciones_area', $opciones_area)
-            ->with('opciones_departamento', $opciones_departamento)
+            /*->with('opciones_tipo_usuario', $opciones_tipo_usuario)
+        	->with('opciones_sector', $opciones_sector[0])
+            ->with('opciones_unidad_ejecutora', $opciones_sector[1])*/
+            ->with('opciones', $opciones)
+            //->with('opciones_departamento', $opciones_area[1])
             ->with('barraMenu', $this->barraMenu);
     }
 

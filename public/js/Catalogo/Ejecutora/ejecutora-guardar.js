@@ -9,7 +9,7 @@ $(document).ready( function() {
 });
 
 function LimpiaEjecutora () {
-	$('#id_sector').val('0');
+	//$('#id_sector').val('0');
 	$('#clave, #nombre, #titulo, #titular, #apellido, #cargo').val('');
     $('#div_clave').show();
     $('#div_grupo_titular').hide();

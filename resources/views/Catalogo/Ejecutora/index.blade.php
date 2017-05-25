@@ -15,7 +15,7 @@
 			    		<label for="id_sector" class="col-md-1 control-label">Sector:</label>
 						<div class="col-md-5">
 							<select name="id_sector" id="id_sector" class="form-control input-sm">
-								{!! $opciones_sector !!}
+								{!! $opciones['sector'] !!}
 							</select>
 						</div>
 			    		<div class="col-md-4">
@@ -43,7 +43,7 @@
   			</thead>
   			<tbody>
   				@forelse ($ejecutoras as $ejecutora)
-	  				<tr>
+	  				<tr{{ ($ejecutora->bactivo == 'no')?' class=inactivo':'' }}>
 	  					<td>{{ $ejecutora->id }}</td>
 	  					<td>{{ $ejecutora->clave }}</td>
 	  					<td>{{ $ejecutora->nombre }}</td>

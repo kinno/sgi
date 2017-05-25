@@ -9,7 +9,7 @@ $(document).ready(function() {
 });
 
 function LimpiaPermisos () {
-    var vacio ='<option value="0">- Selecciona</option>';
+    //var vacio ='<option value="0">- Selecciona</option>';
     if ($('#id_usuario').children().length > 1) {
         $('#id_usuario').val('0');
         $('input[name=Menu0]').prop('checked', false).change();
@@ -37,7 +37,7 @@ function Triggers () {
                 type: 'POST',
                 success: function (data) {
                     //console.log(data);
-                    $('#opciones_menu').children().html(data);
+                    $('#opciones_menu').html(data);
                 },
                 error: function(data) {
                     console.log("Errores::", data);
@@ -46,7 +46,7 @@ function Triggers () {
         }
     });
 
-    // chkboxs de ejercicio
+    // chkboxs de menus
     $('body').on('change','#chkMenu', function () {
         var x = $(this).attr('data-x');
         var y = $(this).attr('data-y');
@@ -73,7 +73,7 @@ function Triggers () {
                 $('#opciones_menu [name=' + name + ']').eq(0).prop('checked', true);
         }
         // Todo
-        n =$('#opciones_menu input').length;
+        n = $('#opciones_menu input').length;
         n2 = $('input:checked').length;
         if (!checked)
             $('input[name=Menu0]').prop('checked', false);
@@ -91,6 +91,10 @@ function guardaPermisos () {
     var id_usuario = $('#id_usuario').val(), ids = [];
     if (id_usuario == '0') {
         BootstrapDialog.mensaje (null,'Seleccione usuario', 3);
+        return;
+    }
+    if ($('#opciones_menu').children().length == 1) {
+        BootstrapDialog.mensaje (null,'No hay módulos a elegir', 3);
         return;
     }
     ids = getAllValues($('#opciones_menu input:checked'));

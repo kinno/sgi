@@ -9,14 +9,13 @@ $(document).ready(function() {
 });
 
 function LimpiaPermisos () {
-    var vacio ='<option value="0">- Selecciona</option>';
+    //var vacio ='<option value="0">- Selecciona</option>';
     if ($('#id_usuario').children().length > 1) {
         $('#id_usuario').val('0');
         $('input[name=Sector0]').prop('checked', false).change();
     }
     $("#btnGuardar").removeAttr("disabled");
     $("[id^='err_']" ).hide();
-
 }
 
 
@@ -37,7 +36,7 @@ function Triggers () {
                 type: 'POST',
                 success: function (data) {
                     //console.log(data);
-                    $('#opciones_sector').children().html(data);
+                    $('#opciones_sector').html(data);
                 },
                 error: function(data) {
                     console.log("Errores::", data);
@@ -46,7 +45,7 @@ function Triggers () {
         }
     });
 
-    // chkboxs de ejercicio
+    // chkboxs de sectores
     $('body').on('change','#chkSector', function () {
         var x = $(this).attr('data-x');
         var y = $(this).attr('data-y');
@@ -91,6 +90,10 @@ function guardaPermisos () {
     var id_usuario = $('#id_usuario').val(), ids = [];
     if (id_usuario == '0') {
         BootstrapDialog.mensaje (null,'Seleccione usuario', 3);
+        return;
+    }
+    if ($('#opciones_sector').children().length == 1) {
+        BootstrapDialog.mensaje (null,'No hay sectores a elegir', 3);
         return;
     }
     ids = getAllValues($('#opciones_sector input:checked'));

@@ -9,13 +9,14 @@ $(document).ready( function() {
 });
 
 function LimpiaSector () {
-	var vacio ='<option value="0">- Selecciona</option>';
-	$('#id_departamento').html(vacio);
-	$('#id_area, #id_departamento').val('0');
+	//var vacio ='<option value="0">- Selecciona</option>';
+	//$('#id_departamento').html(vacio).val('0');
 	$('#clave, #unidad_responsabvle, #nombre, #titulo, #titular, #apellido, #cargo').val('');
 	$('#bactivo').prop('checked', true);
 	$("#btnGuardar").removeAttr("disabled");
 	$("[id^='err_']" ).hide();
+    //if ($('#id_area').val() != '0')
+    //    $('#id_area').change();
 }
 
 

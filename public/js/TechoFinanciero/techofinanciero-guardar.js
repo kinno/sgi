@@ -14,10 +14,10 @@ jQuery(document).ready(function($) {
 });
 
 function LimpiaTechoFinanciero () {
-    var vacio ='<option value="0">- Selecciona</option>';
-    $('#id_unidad_ejecutora, #programa, #id_proyecto_ep, #id_fuente').html(vacio);
-    $('#ejercicio, #id_sector, #id_unidad_ejecutora, #prograna, #id_proyecto_ep').val('0');
-    $('#id_tipo_fuente, #id_fuente_id_tipo_movimiento').val('0');
+    //var vacio ='<option value="0">- Selecciona</option>';
+    //$('#id_unidad_ejecutora, #programa, #id_proyecto_ep, #id_fuente').html(vacio);
+    //$('#ejercicio, #id_sector, #id_unidad_ejecutora, #prograna, #id_proyecto_ep').val('0');
+    //$('#id_tipo_fuente, #id_fuente, #id_tipo_movimiento').val('0');
     $('#monto, #observaciones').val('');
     $("#btnGuardar").removeAttr("disabled");
     $('.has-error').removeClass('has-error has-feedback');
@@ -42,7 +42,8 @@ function Triggers () {
                 type: 'POST',
                 success: function (data) {
                     console.log(data);
-                    $('#programa').html(data);
+                    $('#programa').html(data[0]);
+                    $('#id_proyecto_ep').html(data[1]);
                 },
                 error: function(data) {
                     console.log("Errores::", data);
@@ -67,8 +68,8 @@ function Triggers () {
                 type: 'POST',
                 success: function (data) {
                     console.log(data);
-                    $('#div_id_unidad_ejecutora').removeClass('has-error has-feedback');
-                    $('#err_id_unidad_ejecutora').hide();
+                    /*$('#div_id_unidad_ejecutora').removeClass('has-error has-feedback');
+                    $('#err_id_unidad_ejecutora').hide();*/
                     $('#id_unidad_ejecutora').html(data);
                 },
                 error: function(data) {
@@ -96,8 +97,8 @@ function Triggers () {
                 type: 'POST',
                 success: function (data) {
                     console.log(data);
-                    $('#div_id_proyecto_ep').removeClass('has-error has-feedback');
-                    $('#err_id_proyecto_ep').hide();
+                    /*$('#div_id_proyecto_ep').removeClass('has-error has-feedback');
+                    $('#err_id_proyecto_ep').hide();*/
                     $('#id_proyecto_ep').html(data);
                 },
                 error: function(data) {
@@ -121,14 +122,14 @@ function Triggers () {
                 type: 'POST',
                 success: function (data) {
                     console.log(data);
-                    $('#div_id_tipo_fuente').removeClass('has-error has-feedback');
-                    $('#err_id_tipo_fuente').hide();
                     $('#id_fuente').html(data);
                 },
                 error: function(data) {
                     console.log("Errores::", data);
                 }
             });
+            $('#div_id_tipo_fuente').removeClass('has-error has-feedback');
+            $('#err_id_tipo_fuente').hide();
         }
     });
 

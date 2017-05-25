@@ -63,23 +63,20 @@ class EjecutoraController extends Controller
     public function index(Request $request)
     {
         $ejecutoras = Cat_Unidad_Ejecutora::with(['titular', 'sector'])->search($request)->orderBy('nombre', 'ASC')->paginate(8);
-        $sectores = Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
-        $opciones = $this->llena_combo($sectores, $request->id_sector);
         //dd ($ejecutoras);
+        $opciones = $this->opcionesSector($request->id_sector, 0, false);
         return view('Catalogo.Ejecutora.index')
             ->with('ejecutoras', $ejecutoras)
-            ->with('opciones_sector', $opciones)
+            ->with('opciones', $opciones)
             ->with('request', $request)
             ->with('barraMenu', $this->barraMenu2);
     }
 
     public function create()
     {
-        $sectores = Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
-        //dd($sectores);
-        $opciones = $this->llena_combo($sectores);
+        $opciones = $this->opcionesSector(0, 0, false);
         return view('Catalogo.Ejecutora.create')
-            ->with('opciones_sector', $opciones)
+            ->with('opciones', $opciones)
             ->with('barraMenu', $this->barraMenu);
     }
 
@@ -125,8 +122,7 @@ class EjecutoraController extends Controller
     public function edit($id, $page)
     {
         $ejecutora = Cat_Unidad_Ejecutora::with('titular')->find($id);
-        $sectores = Cat_Sector::where('bactivo', 1)->orderBy('nombre', 'ASC')->get()->toArray();
-        $opciones = $this->llena_combo($sectores, $ejecutora->id_sector);
+        $opciones = $this->opcionesSector($ejecutora->id_sector, 0, false);
         //dd($ejecutora);
         // ayuntamientos
         if ($ejecutora->id_sector == 4)
@@ -136,7 +132,7 @@ class EjecutoraController extends Controller
         return view('Catalogo.Ejecutora.edit')
             ->with('ejecutora', $ejecutora)
             ->with('titular', $titular)
-            ->with('opciones_sector', $opciones)
+            ->with('opciones', $opciones)
             ->with('page', $page)
             ->with('barraMenu', $this->barraMenu);
     }

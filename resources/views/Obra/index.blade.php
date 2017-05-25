@@ -42,7 +42,7 @@
 					<div class="input-group">
 						<span class="input-group-addon input-sm">Ejercicio:</span>
 						<select name="ejercicio_obra" id="ejercicio_obra" class="form-control input-sm">
-							{!! $opciones_ejercicio !!}
+							{!! $opciones['ejercicio'] !!}
 						</select>
 					</div>
 				</div>
@@ -65,7 +65,7 @@
 					<label for="id_modalidad_ejecucion" class="col-md-2 control-label"><span class="obligatorio">*</span>Modalidad de Ejecución:</label>
 					<div class="col-md-2">
 						<select name="id_modalidad_ejecucion" id="id_modalidad_ejecucion" class="form-control">
-							{!! $opciones_modalidad !!}
+							{!! $opciones['modalidad'] !!}
 						</select>
 						<span id="err_id_modalidad_ejecucion" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 					</div>
@@ -74,7 +74,7 @@
 					<label for="ejercicio" class="col-md-1 control-label"><span class="obligatorio">*</span>Ejercicio:</label>
 					<div class="col-md-2">
 						<select name="ejercicio" id="ejercicio" class="form-control">
-							{!! $opciones_ejercicio !!}
+							{!! $opciones['ejercicio'] !!}
 						</select>
 						<span id="err_ejercicio" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 					</div>
@@ -83,7 +83,7 @@
 					<label for="id_clasificacion_obra" class="col-md-2 control-label"><span class="obligatorio">*</span>Clasificación de la Obra:</label>
 					<div class="col-md-2">
 						<select name="id_clasificacion_obra" id="id_clasificacion_obra" class="form-control">
-							{!! $opciones_clasificacion !!}
+							{!! $opciones['clasificacion'] !!}
 						</select>
 						<span id="err_id_clasificacion_obra" class="glyphicon glyphicon-remove form-control-feedback"  aria-hidden="true" style="right: -7px"></span>
 					</div>
@@ -93,7 +93,7 @@
 				<label for="id_sector" class="col-md-2 control-label"><span class="obligatorio">*</span>Sector:</label>
 				<div class="col-md-4">
 					<select name="id_sector" id="id_sector" class="form-control">
-						{!! $opciones_sector !!}
+						{!! $opciones['sector'] !!}
 					</select>
 					<span id="err_id_sector" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 				</div>
@@ -102,7 +102,7 @@
 				<label for="id_unidad_ejecutora" class="col-md-2 control-label"><span class="obligatorio">*</span>Unidad Ejecutora:</label>
 				<div class="col-md-9">
 					<select name="id_unidad_ejecutora" id="id_unidad_ejecutora" class="form-control">
-						<option>- Selecciona</option>
+						{!! $opciones['ue'] !!}
 					</select>
 					<span id="err_id_unidad_ejecutora" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 				</div>
@@ -133,7 +133,7 @@
 				</label>
 				<div class="col-md-3">
 					<select class="form-control" name="id_cobertura" id="id_cobertura">
-						{!! $opciones_cobertura !!}
+						{!! $opciones['cobertura'] !!}
 					</select>
 					<span id="err_id_cobertura" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 				</div>
@@ -145,7 +145,7 @@
 				</label>
 				<div class="col-md-9">
 					<select class="form-control" name="id_region[]" id="id_region" multiple="multiple">
-						{!! $opciones_region !!}
+						{!! $opciones['region'] !!}
 					</select>
 					<span id="err_id_region" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 				</div>
@@ -156,7 +156,7 @@
 				</label>
 				<div class="col-md-9">
 					<select class="form-control" name="id_municipio[]" id="id_municipio" multiple="multiple">
-						{!! $opciones_municipio !!}
+						{!! $opciones['municipio'] !!}
 					</select>
 					<span id="err_id_municipio" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 				</div>
@@ -189,7 +189,7 @@
 						<label for="fuente_federal" class="col-md-1 control-label"><span class="obligatorio">*</span>Fuente:</label>
 						<div class="col-md-5">
 							<select id="fuente_federal" name="fuente_federal[]" class="form-control numftef">
-								{!! $opciones_fuente_federal !!}
+								{!! $opciones['fuente_federal'] !!}
 							</select>
 							<span id="err_fuente_federal" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 						</div>
@@ -218,7 +218,7 @@
 						<label for="fuente_estatal" class="col-md-1 control-label"><span class="obligatorio">*</span>Fuente:</label>
 						<div class="col-md-5">
 							<select id="fuente_estatal" name="fuente_estatal[]" class="form-control numftee">
-								{!! $opciones_fuente_estatal !!}
+								{!! $opciones['fuente_estatal'] !!}
 							</select>
 							<span id="err_fuente_estatal" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 						</div>
@@ -238,7 +238,7 @@
 				<label for="programa" class="col-md-2 control-label">Programa EP:</label>
 				<div class="col-md-9">
 					<select name="programa" id="programa" class="form-control">
-						<option>- Selecciona</option>
+						{!! $opciones['programa'] !!}
 					</select>
 				</div>
 			</div>
@@ -246,7 +246,7 @@
 				<label for="id_proyecto_ep" class="col-md-2 control-label"><span class="obligatorio">*</span>Proyecto EP:</label>
 				<div class="col-md-9">
 					<select name="id_proyecto_ep" id="id_proyecto_ep" class="form-control">
-						<option>- Selecciona</option>
+						{!! $opciones['proyecto'] !!}
 					</select>
 					<span id="err_id_proyecto_ep" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 				</div>
@@ -255,7 +255,7 @@
 				<label class="col-md-2 control-label">Acciones de Gobierno Estatal: </label>
 				<div class="col-md-9">
 					<select name="id_acuerdo_est[]" id="id_acuerdo_est" class="form-control" multiple="multiple">
-						{!! $opciones_acuerdo_estatal !!}
+						{!! $opciones['acuerdo_estatal'] !!}
 					</select>
 				</div>
 			</div>
@@ -263,7 +263,7 @@
 				<label class="col-md-2 control-label">Acciones de Gobierno Federal:</label>
 				<div class="col-md-9">
 					<select name="id_acuerdo_fed[]" id="id_acuerdo_fed" class="form-control" multiple="multiple">
-						{!! $opciones_acuerdo_federal !!}
+						{!! $opciones['acuerdo_federal'] !!}
 					</select>
 				</div>
 			</div>
@@ -271,7 +271,7 @@
 				<label class="col-md-2 control-label">Grupo Social:</label>
 				<div class="col-md-9">
 					<select name="id_grupo_social" id="id_grupo_social" class="form-control">
-						{!! $opciones_grupo !!}
+						{!! $opciones['grupo'] !!}
 					</select>
 				</div>
 			</div>

@@ -11,7 +11,7 @@
                 <label for="ejercicio" class="col-md-2 control-label"><span class="obligatorio">*</span>Ejercicio:</label>
                 <div class="col-md-2">
                     <select name="ejercicio" id="ejercicio" class="form-control">
-                        {!! $opciones_ejercicio !!}
+                        {!! $opciones['ejercicio'] !!}
                     </select>
                     <span id="err_ejercicio" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
                 </div>
@@ -20,7 +20,7 @@
             	<label for="id_sector" class="col-md-2 control-label">Sector:</label>
               	<div class="col-md-4">
                 	<select name="id_sector" id="id_sector" class="form-control">
-                    	{!! $opciones_sector !!}
+                    	{!! $opciones['sector'] !!}
                  	</select>
               	</div>
 			</div>
@@ -28,7 +28,7 @@
                 <label for="id_unidad_ejecutora" class="col-md-2 control-label"><span class="obligatorio">*</span>Unidad Ejecutora:</label>
                 <div class="col-md-9">
                     <select name="id_unidad_ejecutora" id="id_unidad_ejecutora" class="form-control">
-                        <option>- Selecciona</option>
+                        {!! $opciones['ue'] !!}
                     </select>
                     <span id="err_id_unidad_ejecutora" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
                 </div>
@@ -37,7 +37,7 @@
                 <label for="programa" class="col-md-2 control-label">Programa EP:</label>
                 <div class="col-md-9">
                     <select name="programa" id="programa" class="form-control">
-                        <option>- Selecciona</option>
+                        {!! $opciones['programa'] !!}
                     </select>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                 <label for="id_proyecto_ep" class="col-md-2 control-label"><span class="obligatorio">*</span>Proyecto EP:</label>
                 <div class="col-md-9">
                     <select name="id_proyecto_ep" id="id_proyecto_ep" class="form-control">
-                        <option>- Selecciona</option>
+                        {!! $opciones['proyecto'] !!}
                     </select>
                     <span id="err_id_proyecto_ep" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
                 </div>
@@ -54,7 +54,7 @@
                 <label for="id_tipo_fuente" class="col-md-2 control-label"><span class="obligatorio">*</span>Tipo de Fuente:</label>
                 <div class="col-md-2">
                     <select name="id_tipo_fuente" id="id_tipo_fuente" class="form-control">
-                        {!! $opciones_tipo_fuente !!}
+                        {!! $opciones['tipo_fuente'] !!}
                     </select>
                     <span id="err_id_tipo_fuente" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
                 </div>
@@ -63,7 +63,7 @@
                 <label for="id_fuente" class="col-md-2 control-label"><span class="obligatorio">*</span>Fuente:</label>
                 <div class="col-md-6">
                     <select name="id_fuente" id="id_fuente" class="form-control">
-                        <option>- Selecciona</option>
+                        {!! $opciones['fuente'] !!}
                     </select>
                     <span id="err_id_fuente" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
                 </div>

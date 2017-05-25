@@ -11,7 +11,7 @@
             	<label for="id_usuario" class="col-md-2 control-label input-sm"><span class="obligatorio">*</span>Usuario:</label>
               	<div class="col-md-5">
                 	<select name="id_usuario" id="id_usuario" class="form-control input-sm">
-                    	{!! $opciones_usuario !!}
+                    	{!! $opciones['usuario'] !!}
                  	</select>
                     <span id="err_id_usuario" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
               	</div>
@@ -19,8 +19,8 @@
 			<div class="form-group">
 				<label class="col-md-2 control-label input-sm">Sectores:</label>
 				<div class="col-md-7" style="display: block; overflow: auto; height: 340px">
-					<table class="table table-hover table-condensed" id="opciones_sector">
-						<tbody>
+					<table class="table table-hover table-condensed">
+						<tbody id="opciones_sector">
 							{!! $filas !!}
 						</tbody>
 					</table>

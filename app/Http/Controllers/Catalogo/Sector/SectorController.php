@@ -72,11 +72,12 @@ class SectorController extends Controller
     
     public function create()
     {
-        $areas = Cat_Area::join('Cat_Departamento', 'Cat_Area.id', '=', 'Cat_Departamento.id_area')->select('Cat_Area.*')->distinct()->get()->toArray();
-        //dd($areas);
+        /*$areas = Cat_Area::join('Cat_Departamento', 'Cat_Area.id', '=', 'Cat_Departamento.id_area')->select('Cat_Area.*')->distinct()->get()->toArray();
         $opciones = $this->llena_combo($areas);
+        */
+        $opciones = $this->opcionesArea();
         return view('Catalogo.Sector.create')
-            ->with('opciones_area', $opciones)
+            ->with('opciones', $opciones)
             ->with('barraMenu', $this->barraMenu);
     }
 
@@ -113,23 +114,17 @@ class SectorController extends Controller
 
     public function edit($id, $page)
     {
-        $areas = Cat_Area::join('Cat_Departamento', 'Cat_Area.id', '=', 'Cat_Departamento.id_area')->select('Cat_Area.*')->distinct()->get()->toArray();
         $sector = Cat_Sector::with(['titular', 'departamento.area.departamentos'])->find($id);
         if ($sector->id_titular == 0)
             $titular = new Cat_Titular(['titulo' => '', 'nombre' => '', 'apellido' => '', 'cargo' => '']);
         else
             $titular = $sector->titular;
         //dd($sector);
-        $opciones_area = $this->llena_combo($areas, $sector->departamento->id_area);
-        //$departamentos = $sector->departamento->area->departamentos->toArray();
-        //$opciones_departamento = $this->llena_combo($departamentos, $sector->id_departamento);
-        $request = new Request(['id' => $sector->departamento->id_area]);
-        $opciones_departamento = $this->dropdownArea($request);
+        $opciones = $this->opcionesArea($sector->departamento->id_area, $sector->departamento->id);
         return view('Catalogo.Sector.edit')
             ->with('sector', $sector)
             ->with('titular',$titular)
-            ->with('opciones_area', $opciones_area)
-            ->with('opciones_departamento', $opciones_departamento)
+            ->with('opciones', $opciones)
             ->with('page', $page)
             ->with('barraMenu', $this->barraMenu);
     }

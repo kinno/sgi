@@ -16,13 +16,13 @@
 				<label for="ejercicio" class="col-md-1 col-md-offset-3 control-label">Ejercicio:</label>
 				<div class="col-md-2">
 					<select name="ejercicio" id="ejercicio" class="form-control">
-						{!! $opciones_ejercicio !!}
+						{!! $opciones['ejercicio'] !!}
 					</select>
 				</div>
 				<label for="id_sector" class="col-md-1 control-label">Sector:</label>
 				<div class="col-md-3">
 					<select name="id_sector" id="id_sector" class="form-control">
-						{!! $opciones_sector !!}
+						{!! $opciones['sector'] !!}
 					</select>
 				</div>
 				<div class="col-md-1">

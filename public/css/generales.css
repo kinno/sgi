@@ -126,3 +126,7 @@ input {
   padding: 4px;
   font-size: 0.85em;
 }
+
+.inactivo {
+    background-color: #FF5A5A !important;
+}

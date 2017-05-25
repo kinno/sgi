@@ -95,35 +95,24 @@ class TechoController extends Controller
             ->orderBy('cat_unidad_ejecutora.nombre')->orderBy('cat_tipo_fuente.nombre')
             ->orderBy('cat_fuente.descripcion')->orderBy('cat_estructura_programatica.nombre')
             ->orderBy('d_techo.id_tipo_movimiento')->orderBy('d_techo.created_at')->get()->toArray();
-        $ejercicios = Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get()->toArray();
-        $sectores = Cat_Sector::where('bactivo', 1)->whereIn('id', $ids_Sector)->orderBy('nombre', 'ASC')->get()->toArray();
-        $opciones_ejercicio = $this->llena_combo ($ejercicios, $request->ejercicio, 'ejercicio', 'ejercicio');
-        $opciones_sector = $this->llena_combo ($sectores, $request->id_sector);
-        //dd($montos);
         $tabla = $this->tabla($montos);
         //dd($tabla);
+        $opciones = array();
+        $opciones += $this->opcionesEjercicio ($request->ejercicio, 0, 0, false);
+        $opciones += $this->opcionesSector ($request->id_sector, 0, false, $ids_Sector);
         return view('TechoFinanciero.index')
             ->with('montos', $tabla)
-            ->with('opciones_ejercicio', $opciones_ejercicio)
-            ->with('opciones_sector', $opciones_sector);
+            ->with('opciones', $opciones);
     }
 
     public function create()
     {
         $ids_Sector = $this->getIdsSectores();
-        $ejercicios = Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get()->toArray();
-        $sectores = Cat_Sector::where('bactivo', 1)->whereIn('id', $ids_Sector)->orderBy('nombre', 'ASC')->get()->toArray();
-        $tipo_fuentes = Cat_Tipo_Fuente::orderBy('nombre', 'ASC')->get()->toArray();
-        $tipo_movimientos = Cat_Tipo_Movimiento::orderBy('nombre', 'ASC')->get()->toArray();
-        $opciones_ejercicio = $this->llena_combo ($ejercicios, 0, 'ejercicio', 'ejercicio');
-        $opciones_sector = $this->llena_combo($sectores);
-        $opciones_tipo_fuente = $this->llena_combo($tipo_fuentes);
-        $opciones_tipo_movimiento = $this->llena_combo($tipo_movimientos);
+        $opciones = $this->opcionesEjercicio ();
+        $opciones += $this->opcionesSector(0, 0, true, $ids_Sector);
+        $opciones += $this->opcionesTipoFuente();
         return view('TechoFinanciero.create')
-            ->with('opciones_ejercicio', $opciones_ejercicio)
-            ->with('opciones_sector', $opciones_sector)
-            ->with('opciones_tipo_fuente', $opciones_tipo_fuente)
-            ->with('opciones_tipo_movimiento', $opciones_tipo_movimiento)
+            ->with('opciones', $opciones)
             ->with('barraMenu', $this->barraMenu);
     }
 
@@ -219,8 +208,7 @@ class TechoController extends Controller
     {
         $d_techo = D_Techo::with(['techo.unidad_ejecutora.sector', 'techo.proyecto', 'techo.tipo_fuente', 'techo.fuente', 'movimiento'])->find($id);
         $programa = Cat_Estructura_Programatica::where('ejercicio', $d_techo->techo->ejercicio)->where('tipo', 'P')->where('clave', 'like', substr($d_techo->techo->proyecto->clave, 0, 8).'%')->first();
-        $tipo_movimientos = Cat_Tipo_Movimiento::where('id', '>=', '2' )->orderBy('nombre', 'ASC')->get()->toArray();
-        $opciones_tipo_movimiento = $this->llena_combo($tipo_movimientos);
+        $opciones_tipo_movimiento = $this->opcionesTipoMovimiento();
         return view('TechoFinanciero.agregar')
             ->with('d_techo', $d_techo)
             ->with('programa', $programa)
