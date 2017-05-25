@@ -107,7 +107,7 @@
 	</tr>
 	<tr>
 		<th>Tipo de PPI:</th>
-		<td class="contenido">{{$estudio->indicadores[0]->tipo_ppi->nombre_ppi}} </td>
+		<td class="contenido">{{$estudio->indicadores[0]->tipo_ppi->nombre}} </td>
 	</tr>
 	<tr>
 	@php

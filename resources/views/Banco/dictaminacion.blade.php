@@ -207,7 +207,7 @@
                                     >
                                 @foreach($tipoEvaluacion as $tipo)
                                     <option value="{{ $tipo->id }}">
-                                        {{$tipo->nombre_evaluacion}}
+                                        {{$tipo->nombre}}
                                     </option>
                                     @endforeach
                                 </select>
@@ -225,7 +225,7 @@
                                     >
                              @foreach($tipoPpi as $tipoP)
                                     <option value="{{ $tipoP->id }}">
-                                        {{$tipoP->nombre_ppi}}
+                                        {{$tipoP->nombre}}
                                     </option>
                                     @endforeach
                                 </select>
