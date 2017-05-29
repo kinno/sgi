@@ -12,20 +12,20 @@
         </input>
     </div>
     <div class="panel-body">
-        <div class="form-group" id="sp">
+        <div class="form-group form-group-sm" id="sp">
             <label class="col-md-3 col-md-offset-1 control-label" >
                 Citerios Sociales: 
             </label>
             <div class="col-md-4">
-                <textarea class="form-control am-as" id="criterios_sociales" name="criterios_sociales" rows="10"></textarea>
+                <textarea class="form-control input-sm am-as" id="criterios_sociales" name="criterios_sociales" rows="10"></textarea>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group form-group-sm">
             <label class="col-md-3 col-md-offset-1 control-label" >
                 Unidad Ejecutora Normativa:
             </label>
             <div class="col-md-4">
-                <input class="form-control input-md am-as" id="unidad_ejecutora_normativa" name="unidad_ejecutora_normativa" placeholder="" type="text">
+                <input class="form-control input-sm am-as" id="unidad_ejecutora_normativa" name="unidad_ejecutora_normativa" placeholder="" type="text">
                 </input>
             </div>
             <span class="glyphicon glyphicon-question-sign ayuda" title="Colocar la firma del titular de la Unidad Normativa que otorga el Visto Bueno al entregar el documento.">

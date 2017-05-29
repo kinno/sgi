@@ -2,6 +2,7 @@
 $count=0;
 $listaN="";
     $notificaciones = session('notificaciones');
+    if(isset($notificaciones)){
     foreach ($notificaciones as $notificacion) {
         if($notificacion->bleido==0){
             $count++;
@@ -32,6 +33,7 @@ $listaN="";
                             </div>
                         </a>
                     </li>";
+                }
 
             // $listaN .= "<li class='message-preview '>
             //     <a>

@@ -22,7 +22,7 @@
                         No. Banco de Proyectos:
                     </p>
                     <form class="navbar-form navbar-left col-md-10" role="search">
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <input class="form-control text-right num" id="id_estudio_socioeconomico" name="id_estudio_socioeconomico" placeholder="Buscar" type="text" value="">
                             </input>
                         </div>
@@ -195,7 +195,7 @@
                 </div>
                 <br>
                     <div id="datosES" style="display:none;">
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-sm-2 control-label input-sm" for="CmbTipEva">
                                 Tipo de Evaluación
                             </label>
@@ -213,7 +213,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group" id="TipInf">
+                        <div class="form-group form-group-sm" id="TipInf">
                             <label class="col-sm-2 control-label input-sm" for="CmbTipInf">
                                 Tipo de PPI
                             </label>
@@ -231,7 +231,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-sm-2 control-label input-sm">
                             </label>
                             <div class="col-sm-7">
@@ -239,7 +239,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-sm-2 control-label input-sm" for="taObsDgi">
                                 Observaciones Generales
                             </label>
@@ -248,7 +248,7 @@
                                 </textarea>
                             </div>
                         </div>
-                        <div class="form-group" style="display: none">
+                        <div class="form-group form-group-sm" style="display: none">
                             <label class="col-sm-3 control-label input-sm" for="taObsDgi">
                                 Accion a seguir
                             </label>
@@ -268,7 +268,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group" style="display: none">
+                        <div class="form-group form-group-sm" style="display: none">
                             <label class="col-sm-3 control-label input-sm text-right">
                                 <input id="ingresoFisico" name="ingresoFisico" type="checkbox" value="1"/>
                             </label>
@@ -311,7 +311,7 @@
                                 INDICADORES DE RENTABILIDAD
                             </b>
                         </div>
-                        <div class="form-group" id="TasDes">
+                        <div class="form-group form-group-sm" id="TasDes">
                             <label class="col-sm-2 control-label input-sm" for="tfTasDes">
                                 Tasa social de descuento
                             </label>
@@ -320,7 +320,7 @@
                             </div>
                         </div>
                         <div id="InfEco">
-                            <div class="form-group">
+                            <div class="form-group form-group-sm">
                                 <label class="col-sm-2 control-label input-sm" for="tfVAN">
                                     VAN o VPN
                                 </label>
@@ -342,7 +342,7 @@
                             </div>
                         </div>
                         <div id="InfSoc">
-                            <div class="form-group">
+                            <div class="form-group form-group-sm">
                                 <label class="col-sm-2 control-label input-sm">
                                     Proyecto Propuesto:
                                 </label>
@@ -359,7 +359,7 @@
                                     <input class="form-control input-sm" id="tfCAEPta" name="tfCAEPta" type="text"/>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group form-group-sm">
                                 <label class="col-sm-2 control-label input-sm">
                                     Alternativa:
                                 </label>

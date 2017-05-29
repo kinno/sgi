@@ -11,7 +11,7 @@
             </input>
         </div>
         <div class="panel-body">
-            <div class="form-group" id="sp">
+            <div class="form-group form-group-sm form-group form-group-sm-sm" id="sp">
                 <label class="col-md-3 col-md-offset-1 control-label" for="id_tipo_solicitud">
                     <font color="red" size="2">
                         *
@@ -19,7 +19,7 @@
                     Solicitud de presupuesto:
                 </label>
                 <div class="col-md-4">
-                    <select class="form-control obligatorioHoja1" id="id_tipo_solicitud" name="id_tipo_solicitud">
+                    <select class="form-control input-sm obligatorioHoja1" id="id_tipo_solicitud" name="id_tipo_solicitud">
                         <option value="">
                             Seleccione...
                         </option>
@@ -33,7 +33,7 @@
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Seleccionar según corresponda el tipo de trámite.">
                 </span>
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <label class="col-md-3 col-md-offset-1 control-label" for="bevaluacion_socioeconomica">
                     <font color="red" size="2">
                         *
@@ -41,7 +41,7 @@
                     Se Incluye Evaluación Socioeconómica:
                 </label>
                 <div class="col-md-2">
-                    <select class="form-control am-as obligatorioHoja1" id="bevaluacion_socioeconomica" name="bevaluacion_socioeconomica">
+                    <select class="form-control input-sm am-as obligatorioHoja1" id="bevaluacion_socioeconomica" name="bevaluacion_socioeconomica">
                         <option value="">
                             Seleccionar...
                         </option>
@@ -60,38 +60,38 @@
                       Socioeconómico, en caso de ser afirmativo colocar el folio del Banco de Proyectos.">
                 </span>
             </div>
-            <div class="form-group" hidden="true" id="nes">
+            <div class="form-group form-group-sm" hidden="true" id="nes">
                 <label class="col-md-3 col-md-offset-1 control-label" for="nbp">
                     No. Banco de Proyectos:
                 </label>
                 <div class="col-md-2">
-                    <input class="form-control input-md am-as" id="id_estudio_socioeconomico" name="id_estudio_socioeconomico" type="text"/>
+                    <input class="form-control input-sm input-md am-as" id="id_estudio_socioeconomico" name="id_estudio_socioeconomico" type="text"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <label class="col-md-3 col-md-offset-1 control-label" for="idsol">
                     No. Solicitud:
                 </label>
                 <div class="col-md-2">
-                    <input class="form-control input-md" id="id_expediente_tecnico" name="id_expediente_tecnico" placeholder="" readonly="" type="text"/>
+                    <input class="form-control input-sm input-md" id="id_expediente_tecnico" name="id_expediente_tecnico" placeholder="" readonly="" type="text"/>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="De uso exclusivo de la Dirección 
                       General de Inversión, para anotar el número progresivo correspondiente al ingreso 
                       del expediente Técnico.">
                 </span>
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <label class="col-md-3 col-md-offset-1 control-label" for="noobra">
                     No. de Obra:
                 </label>
                 <div class="col-md-2">
-                    <input class="form-control input-md am-as" id="id_obra" name="id_obra" readonly="" type="text"/>
+                    <input class="form-control input-sm input-md am-as" id="id_obra" name="id_obra" readonly="" type="text"/>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Número de Control que identifica a la obra
                       o acción y que se incluye en el documento Anexo al Oficio de Asignación">
                 </span>
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <label class="col-md-3 col-md-offset-1 control-label" for="objeto">
                     Para qué se requiere:
                 </label>
@@ -110,7 +110,7 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <div class="col-md-6 col-md-offset-4">
                     <label class="checkbox-inline" for="obj-3">
                         <input class="am-as" id="bimpacto_ambiental" name="bimpacto_ambiental" type="checkbox" value="1"/>
@@ -126,9 +126,9 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <div class="col-md-6 col-md-offset-4">
-                    <div class="form-group row">
+                    <div class="form-group form-group-sm row">
                         <div class="col-md-2">
                             <label class="checkbox-inline" for="obj-6">
                                 <input class="am-as" id="botro" name="botro" type="checkbox" value="1"/>
@@ -136,7 +136,7 @@
                             </label>
                         </div>
                         <div class="col-md-6" hidden="true" id="otro">
-                            <input class="form-control input-md am-as" id="descripcion_botro" name="descripcion_botro" placeholder="" type="text"/>
+                            <input class="form-control input-sm input-md am-as" id="descripcion_botro" name="descripcion_botro" placeholder="" type="text"/>
                         </div>
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                       propósito que se pretenda dar al presupuesto solicitado.">
                 </span>
             </div>
-            <div class="row form-group">
+            <div class="row form-group form-group-sm">
                 <label class="col-md-3 col-md-offset-1 control-label" for="ejercicio">
                     <font color="red" size="2">
                         *
@@ -152,7 +152,7 @@
                     Ejercicio:
                 </label>
                 <div class="col-md-2">
-                    <select class="form-control obligatorio" id="ejercicio" name="ejercicio">
+                    <select class="form-control input-sm obligatorio" id="ejercicio" name="ejercicio">
                         @foreach($ejercicios as $ejercicio)
                         <option value="{{$ejercicio->ejercicio}}">
                             {{$ejercicio->ejercicio}}
@@ -161,7 +161,7 @@
                     </select>
                 </div>
             </div>
-            <div class="row form-group">
+            <div class="row form-group form-group-sm">
                 <label class="col-md-3 col-md-offset-1 control-label" for="nombre_obra">
                     <font color="red" size="2">
                         *
@@ -169,19 +169,19 @@
                     Nombre de la obra:
                 </label>
                 <div class="col-md-7">
-                    <textarea class="form-control obligatorio" id="nombre_obra" name="nombre_obra" rows="2"></textarea>
+                    <textarea class="form-control input-sm obligatorio" id="nombre_obra" name="nombre_obra" rows="2"></textarea>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Anotar la denominación de la obra oacción, de tal manera que permita identificar con claridad los trabajos a realizar y suubicación.">
                 </span>
             </div>
             <div id="depnoruni">
-                <div class="row form-group">
+                <div class="row form-group form-group-sm">
                     <label class="col-md-3 col-md-offset-1 control-label" for="ue">
                         Unidad Ejecutora:
                     </label>
                     <div class="col-md-7" id="ue0">
-                        <input class="form-control" id="unidad_ejecutora" name="unidad_ejecutora" type="text" value="{{$ue['nombre']}}">
-                            <input class="form-control" id="id_unidad_ejecutora" name="id_unidad_ejecutora" type="hidden" value="{{$ue['id']}}">
+                        <input class="form-control input-sm" id="unidad_ejecutora" name="unidad_ejecutora" type="text" value="{{$ue['nombre']}}">
+                            <input class="form-control input-sm" id="id_unidad_ejecutora" name="id_unidad_ejecutora" type="hidden" value="{{$ue['id']}}">
                             </input>
                         </input>
                     </div>
@@ -192,13 +192,13 @@
                       programa o acción.">
                     </span>
                 </div>
-                <div class="row form-group">
+                <div class="row form-group form-group-sm">
                     <label class="col-md-3 col-md-offset-1 control-label" for="ur">
                         Sector:
                     </label>
                     <div class="col-lg-7" id="ur0">
-                        <input class="form-control" id="sector" name="sector" type="text" value="{{$sector['nombre']}}">
-                            <input class="form-control" id="id_sector" name="id_sector" type="hidden" value="{{$sector['id']}}">
+                        <input class="form-control input-sm" id="sector" name="sector" type="text" value="{{$sector['nombre']}}">
+                            <input class="form-control input-sm" id="id_sector" name="id_sector" type="hidden" value="{{$sector['id']}}">
                             </input>
                         </input>
                     </div>
@@ -211,7 +211,7 @@
                 </div>
             </div>
             <div id="accfed">
-                <div class="row form-group">
+                <div class="row form-group form-group-sm">
                     <label class="col-lg-3 col-md-offset-4 control-label">
                         Acciones de Gobierno Federal
                     </label>
@@ -222,7 +222,7 @@
                 <div id="mult">
                     <div class="panel-body">
                         <div class="col-sm-12" id="aF">
-                            <select class="form-control input-md" id="accion_federal" multiple="multiple" name="accion_federal[]">
+                            <select class="form-control input-sm input-md" id="accion_federal" multiple="multiple" name="accion_federal[]">
                                 @foreach($accionesFederales as $accionFederal)
                                 <option value="{{$accionFederal->id}}">
                                     {{$accionFederal->clave}} {{$accionFederal->nombre}}
@@ -233,7 +233,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row form-group">
+            <div class="row form-group form-group-sm">
                 <label class="col-lg-3 col-md-offset-4 control-label">
                     Acciones de Gobierno Estatal
                 </label>
@@ -244,7 +244,7 @@
             <div id="mult">
                 <div class="panel-body">
                     <div class="col-sm-12" id="aE">
-                        <select class="form-control input-md" id="accion_estatal" multiple="multiple" name="accion_estatal[]">
+                        <select class="form-control input-sm input-md" id="accion_estatal" multiple="multiple" name="accion_estatal[]">
                             @foreach($accionesEstatales as $accionEstatal)
                             <option value="{{$accionEstatal->id}}">
                                 {{$accionEstatal->clave}} {{$accionEstatal->nombre}}
@@ -254,7 +254,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row form-group">
+            <div class="row form-group form-group-sm">
                 <label class="col-md-3 col-md-offset-1 control-label" for="justificacion_obra">
                     <font color="red" size="2">
                         *
@@ -262,10 +262,10 @@
                     Justificación de la obra:
                 </label>
                 <div class="col-md-7">
-                    <textarea class="form-control obligatorio" id="justificacion_obra" name="justificacion_obra" rows="2"></textarea>
+                    <textarea class="form-control input-sm obligatorio" id="justificacion_obra" name="justificacion_obra" rows="2"></textarea>
                 </div>
             </div>
-            <div class="row form-group">
+            <div class="row form-group form-group-sm">
                 <label class="col-md-3 col-md-offset-1 control-label" for="modalidad">
                     <font color="red" size="2">
                         *
@@ -273,7 +273,7 @@
                     Modalidad de ejecución:
                 </label>
                 <div class="col-md-2">
-                    <select class="form-control obligatorio" id="id_modalidad_ejecucion" name="id_modalidad_ejecucion">
+                    <select class="form-control input-sm obligatorio" id="id_modalidad_ejecucion" name="id_modalidad_ejecucion">
                         <option value="">
                             Seleccione...
                         </option>
@@ -295,7 +295,7 @@
                 Expediente, la información que sustente esta condición.">
                 </span>
             </div>
-            <div class="row form-group">
+            <div class="row form-group form-group-sm">
                 <label class="col-md-3 col-md-offset-1 control-label" for="id_tipo_obra">
                     <font color="red" size="2">
                         *
@@ -303,7 +303,7 @@
                     Tipo de obra:
                 </label>
                 <div class="col-md-2">
-                    <select class="form-control obligatorio" id="id_tipo_obra" name="id_tipo_obra">
+                    <select class="form-control input-sm obligatorio" id="id_tipo_obra" name="id_tipo_obra">
                         <option value="">
                             Seleccione...
                         </option>
@@ -322,7 +322,7 @@
                 </span>
             </div>
             <div id="todo">
-                <div class="form-group">
+                <div class="form-group form-group-sm">
                     <label class="col-lg-3 control-label" for="monto">
                         <font color="red" size="2">
                             *
@@ -330,26 +330,26 @@
                         Monto de la Inversi&oacuten;:
                     </label>
                     <div class="col-lg-3" id="tres">
-                        <input class="form-control text-right obligatorio" id="monto" name="monto" readonly="" type="text"/>
+                        <input class="form-control input-sm text-right obligatorio" id="monto" name="monto" readonly="" type="text"/>
                     </div>
                     <span class="glyphicon glyphicon-question-sign ayuda" title="Seleccionar la Fuente de financiamiento para
                         llevar a cabo la obra o acción. En caso de ser más de una fuente, deberá
                         colocar el importe que corresponda a cada una de ellas.">
                     </span>
                 </div>
-                <div class="form-group ftefederal">
+                <div class="form-group form-group-sm ftefederal">
                     <label class="col-lg-3 control-label" id="labelfed">
                         Federal:
                     </label>
                     <div class="col-lg-3">
-                        <input class="form-control monfed text-right" name="monto_fuente_federal[]" type="text" value=""/>
+                        <input class="form-control input-sm monfed text-right" name="monto_fuente_federal[]" type="text" value=""/>
                     </div>
                     <!--<div id="catffed">-->
                     <label class="col-lg-1 control-label">
                         Fuente:
                     </label>
                     <div class="col-lg-4">
-                        <select class="form-control numftef" name="fuente_federal[]">
+                        <select class="form-control input-sm numftef" name="fuente_federal[]">
                             <option value="">
                                 Seleccione...
                             </option>
@@ -363,18 +363,18 @@
                     <!--</div>-->
                     <input class="bt_ftefed input-sm" type="button" value="+"/>
                 </div>
-                <div class="form-group fteestatal">
+                <div class="form-group form-group-sm fteestatal">
                     <label class="col-lg-3 control-label" id="labeles">
                         Recursos Fiscales (Estatal):
                     </label>
                     <div class="col-lg-3">
-                        <input class="form-control monest text-right" name="monto_fuente_estatal[]" type="text" value=""/>
+                        <input class="form-control input-sm monest text-right" name="monto_fuente_estatal[]" type="text" value=""/>
                     </div>
                     <label class="col-lg-1 control-label">
                         Fuente:
                     </label>
                     <div class="col-lg-4">
-                        <select class="form-control numftee" name="fuente_estatal[]">
+                        <select class="form-control input-sm numftee" name="fuente_estatal[]">
                             <option value="">
                                 Seleccione...
                             </option>
@@ -387,25 +387,25 @@
                     </div>
                     <input class="bt_fteest input-sm" type="button" value="+"/>
                 </div>
-                <div class="form-group">
+                <div class="form-group form-group-sm">
                     <label class="col-lg-3 control-label" for="ejemplo_password_3" id="labelmu">
                         Municipal:
                     </label>
                     <div class="col-lg-3">
-                        <input class="form-control monmun text-right" id="monto_municipal" name="monto_municipal" type="text" value=""/>
+                        <input class="form-control input-sm monmun text-right" id="monto_municipal" name="monto_municipal" type="text" value=""/>
                     </div>
                     <div id="catfmun">
                         <label class="col-lg-1 control-label">
                             Fuente:
                         </label>
                         <div class="col-lg-4">
-                            <input class="form-control numftem" id="fuente_municipal" maxlength="30" name="fuente_municipal" type="text">
+                            <input class="form-control input-sm numftem" id="fuente_municipal" maxlength="30" name="fuente_municipal" type="text">
                             </input>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row form-group">
+            <div class="row form-group form-group-sm">
                 <label class="col-md-3 control-label" for="principales_caracteristicas">
                     <font color="red" size="2">
                         *
@@ -413,13 +413,13 @@
                     Principales características:
                 </label>
                 <div class="col-md-7">
-                    <textarea class="form-control obligatorio" id="principales_caracteristicas" name="principales_caracteristicas" rows="2"></textarea>
+                    <textarea class="form-control input-sm obligatorio" id="principales_caracteristicas" name="principales_caracteristicas" rows="2"></textarea>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Describir las principales características
                     de la obra o acción.">
                 </span>
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <label class="col-lg-5 control-label">
                     Metas a lograr
                 </label>
@@ -427,7 +427,7 @@
                     corresponda a la meta que se alcanzará al concluirse la obra o acción.">
                 </span>
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <label class="col-lg-3 control-label">
                     <font color="red" size="2">
                         *
@@ -435,7 +435,7 @@
                     U. Medida:
                 </label>
                 <div class="col-lg-3">
-                    <select class="form-control obligatorio" id="id_meta" name="id_meta">
+                    <select class="form-control input-sm obligatorio" id="id_meta" name="id_meta">
                         <option value="">
                             Seleccione...
                         </option>
@@ -452,11 +452,11 @@
                     </label>
                 </div>
                 <div class="col-lg-2">
-                    <input class="form-control text-right number-oneDec" id="cantidad_meta" name="cantidad_meta" placeholder="0" type="text">
+                    <input class="form-control input-sm text-right number-oneDec" id="cantidad_meta" name="cantidad_meta" placeholder="0" type="text">
                     </input>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <label class="col-lg-5 control-label">
                     Beneficiarios
                 </label>
@@ -465,12 +465,12 @@
                     unidad de medida que corresponda de acuerdo al catálogo correspondien.">
                 </span>
             </div>
-            <div class="form-group">
+            <div class="form-group form-group-sm">
                 <label class="col-lg-3 control-label">
                     U. Medida:
                 </label>
                 <div class="col-lg-3">
-                    <select class="form-control" id="id_beneficiario" name="id_beneficiario">
+                    <select class="form-control input-sm" id="id_beneficiario" name="id_beneficiario">
                         <option value="">
                             Seleccione...
                         </option>
@@ -487,14 +487,14 @@
                     </label>
                 </div>
                 <div class="col-lg-2">
-                    <input class="form-control number-int text-right" id="cantidad_beneficiario" name="cantidad_beneficiario" placeholder="0" type="text">
+                    <input class="form-control input-sm number-int text-right" id="cantidad_beneficiario" name="cantidad_beneficiario" placeholder="0" type="text">
                     </input>
                 </div>
             </div>
         </div>
     </div>
 </form>
-<div class="form-group col-md-10">
+<div class="form-group form-group-sm col-md-10">
     <label class="col-lg-6 control-label">
     </label>
     <h6>

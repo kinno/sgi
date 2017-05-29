@@ -7,7 +7,7 @@
         </h1>
     </div>
     <div class="panel-body">
-        <div class="form-group panel-body">
+        <div class="form-group form-group-sm panel-body">
             <div class="row">
                 <p class="panel-title col-md-12 panel-body">
                     <strong>
@@ -18,7 +18,7 @@
                     </strong>
                 </p>
             </div>
-            <div class="row form-group">
+            <div class="row form-group form-group-sm">
                 <div class="col-md-12" id="divTabContratosAdmin" role="tabpanel">
                     <ul class="nav nav-tabs" id="tabHoja4Admin" role="tablist">
                         <li class="active" role="presentation">
@@ -148,7 +148,7 @@
                                                             ENERO
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="meseneAdmin" name="meseneAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="meseneAdmin" name="meseneAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -160,7 +160,7 @@
                                                             FEBRERO
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesfebAdmin" name="mesfebAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="mesfebAdmin" name="mesfebAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -172,7 +172,7 @@
                                                             MARZO
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesmarAdmin" name="mesmarAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="mesmarAdmin" name="mesmarAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -184,7 +184,7 @@
                                                             ABRIL
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesabrAdmin" name="mesabrAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="mesabrAdmin" name="mesabrAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -196,7 +196,7 @@
                                                             MAYO
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesmayAdmin" name="mesmayAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="mesmayAdmin" name="mesmayAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -208,7 +208,7 @@
                                                             JUNIO
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesjunAdmin" name="mesjunAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="mesjunAdmin" name="mesjunAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -220,7 +220,7 @@
                                                             JULIO
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesjulAdmin" name="mesjulAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="mesjulAdmin" name="mesjulAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -232,7 +232,7 @@
                                                             AGOSTO
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesagoAdmin" name="mesagoAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="mesagoAdmin" name="mesagoAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -244,7 +244,7 @@
                                                             SEPTIEMBRE
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="messepAdmin" name="messepAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="messepAdmin" name="messepAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -256,7 +256,7 @@
                                                             OCTUBRE
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesoctAdmin" name="mesoctAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="mesoctAdmin" name="mesoctAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -268,7 +268,7 @@
                                                             NOVIEMBRE
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesnovAdmin" name="mesnovAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="mesnovAdmin" name="mesnovAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -280,7 +280,7 @@
                                                             DICIEMBRE
                                                         </td>
                                                         <td>
-                                                            <input class="form-control numero2 montoMesFinaAdmin" id="mesdicAdmin" name="mesdicAdmin" type="text" value=""/>
+                                                            <input class="form-control input-sm numero2 montoMesFinaAdmin" id="mesdicAdmin" name="mesdicAdmin" type="text" value=""/>
                                                         </td>
                                                         <td class="acumesfinaAdmin">
                                                         </td>
@@ -314,11 +314,11 @@
             <div class="modal-body">
                 <!--                <form class="form-horizontal" method="POST" id="formdemodal1">-->
                 <div class="row">
-                    <div class="form-group">
+                    <div class="form-group form-group-sm">
                         <div class="col-xs-18 col-md-12">
                             <div class="col-xs-2 col-md-4">Concepto de Trabajo:</div>
                             <div class="col-xs-16 col-md-8">
-                                <input type="text" class="form-control " placeholder="Ingresa" id="contrato" name="contrato" value=""/>
+                                <input type="text" class="form-control input-sm " placeholder="Ingresa" id="contrato" name="contrato" value=""/>
                                 <input type="hidden" id="isEdit" name="isEdit" value="0"/>
                                 <input type="hidden" id="indexTable" name="indexTable" value="0"/>
                                 <input type="hidden" id="valIndex0" name="valIndex0" value="0"/>
@@ -326,74 +326,74 @@
                             </div>
                         </div> 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-group-sm">
                         <div class="col-xs-18 col-md-12">
                             <div class="col-xs-2 col-md-1">ENE:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="ene" name="ene"  maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="ene" name="ene"  maxlength="40"/>
                             </div>
                             <div class="col-xs-2 col-md-1">FEB:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="feb" name="feb"  maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="feb" name="feb"  maxlength="40"/>
                             </div>
                             <div class="col-xs-2 col-md-1">MAR:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="mar" name="mar" value="" maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="mar" name="mar" value="" maxlength="40"/>
                             </div>
                         </div> 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-group-sm">
                         <div class="col-xs-18 col-md-12">
                             <div class="col-xs-2 col-md-1">ABR:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="abr" name="abr" value="" maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="abr" name="abr" value="" maxlength="40"/>
                             </div>
                             <div class="col-xs-2 col-md-1">MAY:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="may" name="may" value="" maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="may" name="may" value="" maxlength="40"/>
                             </div>
                             <div class="col-xs-2 col-md-1">JUN:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="jun" name="jun" value="" maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="jun" name="jun" value="" maxlength="40"/>
                             </div>
                         </div> 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-group-sm">
                         <div class="col-xs-18 col-md-12">
                             <div class="col-xs-2 col-md-1">JUL:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="jul" name="jul" value="" maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="jul" name="jul" value="" maxlength="40"/>
                             </div>
                             <div class="col-xs-2 col-md-1">AGO:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="ago" name="ago" value="" maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="ago" name="ago" value="" maxlength="40"/>
                             </div>
                             <div class="col-xs-2 col-md-1">SEP:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="sep" name="sep" value="" maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="sep" name="sep" value="" maxlength="40"/>
                             </div>
                         </div> 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-group-sm">
                         <div class="col-xs-18 col-md-12">
                             <div class="col-xs-2 col-md-1">OCT:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="oct" name="oct" value="" maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="oct" name="oct" value="" maxlength="40"/>
                             </div>
                             <div class="col-xs-2 col-md-1">NOV:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="nov" name="nov" value="" maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="nov" name="nov" value="" maxlength="40"/>
                             </div>
                             <div class="col-xs-2 col-md-1">DIC:</div>
                             <div class="col-xs-4 col-md-3">
-                                <input type="text" class="form-control numerote mesFinanciero" placeholder="" id="dic" name="dic" value="" maxlength="40"/>
+                                <input type="text" class="form-control input-sm numerote mesFinanciero" placeholder="" id="dic" name="dic" value="" maxlength="40"/>
                             </div>
                         </div> 
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <div class="form-group">
+                    <div class="form-group form-group-sm">
                         <div class="col-xs-18 col-md-12">
                             <div class="col-xs-2 col-md-2"><label class="col-lg-3 control-label">TOTAL:</label></div>
                             <div class="col-xs-4 col-md-3">

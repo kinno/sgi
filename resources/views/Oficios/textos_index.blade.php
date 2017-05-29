@@ -11,7 +11,7 @@
         <div class="panel-body">
             <div class="row form-inline">            
                 <div class="col-md-4">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                         <span class="input-group-addon">Tipo: </span>
                          <select class="form-control input-trigger" name="id_solicitud_presupuesto" id="id_solicitud_presupuesto" aria-describedby="basic-addon1">
                             @foreach ($tipoSolicitud as $element)
@@ -21,7 +21,7 @@
                     </div>                    
                 </div>                
                 <div class="col-sm-3">
-                   <div class="input-group">
+                   <div class="input-group input-group-sm">
                         <span class="input-group-addon">Ejercicio: </span>               
                         <select class="form-control input-sm input-trigger" id="ejercicio" name="ejercicio">
                             @foreach ($ejercicios as $element)
@@ -31,7 +31,7 @@
                     </div>  
                 </div>
                 <div class="col-md-5">
-                 <div class="input-group">
+                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">Fuente: </span>     
                     <select class="form-control input-sm input-trigger" id="id_fuente" name="id_fuente">
                         <option>Seleccione...</option>

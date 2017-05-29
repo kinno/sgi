@@ -7,7 +7,7 @@
         </h1>
     </div>
     <div class="panel-body">
-        <div class="form-group">
+        <div class="form-group form-group-sm">
             <p class="panel-title">
                 <strong>
                     <h5>
@@ -20,7 +20,7 @@
             </p>
         </div>
         
-        <div class="form-group">
+        <div class="form-group form-group-sm">
             <div class="col-md-2 col-md-offset-5">
                 <span class="btn btn-default" id="abreModal">
                     Agregar
@@ -28,7 +28,7 @@
             </div>
         </div>
         
-        <div class="form-group">
+        <div class="form-group form-group-sm">
             <div class="container-fluid " id="divConceptos">
                 <table class="table table-bordered" id="tablaConceptos" style="font-size: 12px; width: 100%;">
                     <thead>
@@ -153,13 +153,13 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="row form-group">
+                <div class="row form-group form-group-sm">
                     <div class="col-lg-11">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" id="sizing-addon1">
                                 Clave por objeto de gasto:
                             </span>
-                            <input aria-describedby="sizing-addon1" class="form-control" id="clave" maxlength="40" name="clave" type="text" value="">
+                            <input aria-describedby="sizing-addon1" class="form-control input-sm input-sm" id="clave" maxlength="40" name="clave" type="text" value="">
                             </input>
                         </div>
                     </div>
@@ -167,26 +167,26 @@
                           objeto de gasto.">
                     </span>
                 </div>
-                <div class="row form-group">
+                <div class="row form-group form-group-sm">
                     <div class="col-lg-11">
                         <div class="input-group ">
                             <span class="input-group-addon" id="sizing-addon2">
                                 Concepto:
                             </span>
-                            <textarea aria-describedby="sizing-addon2" class="form-control" id="concepto" name="concepto" rows="2"></textarea>
+                            <textarea aria-describedby="sizing-addon2" class="form-control input-sm" id="concepto" name="concepto" rows="2"></textarea>
                         </div>
                     </div>
                     <span class="glyphicon glyphicon-question-sign ayuda" title="Anotar en forma detallada los trabajos a realizar para llevar 
                           a cabo la obra o acción.">
                     </span>
                 </div>
-                <div class="row form-group">
+                <div class="row form-group form-group-sm">
                     <div class="col-lg-5">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" id="sizing-addon3">
                                 Unidad de Medida:
                             </span>
-                            <input aria-describedby="sizing-addon3" class="form-control" id="unidadm" maxlength="40" name="unidadm" placeholder="" type="text">
+                            <input aria-describedby="sizing-addon3" class="form-control input-sm" id="unidadm" maxlength="40" name="unidadm" placeholder="" type="text">
                             </input>
                         </div>
                     </div>
@@ -200,7 +200,7 @@
                             <span class="input-group-addon" id="sizing-addon4">
                                 Cantidad:
                             </span>
-                            <input aria-describedby="sizing-addon4" class="form-control number" id="cantidad" maxlength="40" name="cantidad" placeholder="" type="text" value="">
+                            <input aria-describedby="sizing-addon4" class="form-control input-sm number" id="cantidad" maxlength="40" name="cantidad" placeholder="" type="text" value="">
                             </input>
                         </div>
                     </div>
@@ -210,13 +210,13 @@
                     </div>
                 </div>
                 <!-- /.row -->
-                <div class="row form-group">
+                <div class="row form-group form-group-sm">
                     <div class="col-lg-5">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon" id="sizing-addon5">
                                 Precio Unitario:
                             </span>
-                            <input aria-describedby="sizing-addon3" class="form-control number" id="preciou" maxlength="40" name="preciou" placeholder="" type="text" value="">
+                            <input aria-describedby="sizing-addon3" class="form-control input-sm number" id="preciou" maxlength="40" name="preciou" placeholder="" type="text" value="">
                             </input>
                         </div>
                     </div>
@@ -229,7 +229,7 @@
                             <span class="input-group-addon" id="sizing-addon6">
                                 Importe sin I.V.A.:
                             </span>
-                            <input aria-describedby="sizing-addon4" class="form-control number" id="impsiniva" name="impsiniva" readonly="true" type="text" value="0.00">
+                            <input aria-describedby="sizing-addon4" class="form-control input-sm number" id="impsiniva" name="impsiniva" readonly="true" type="text" value="0.00">
                             </input>
                         </div>
                     </div>
@@ -239,7 +239,7 @@
                     </div>
                 </div>
                 <!-- /.row -->
-                <div class="row form-group">
+                <div class="row form-group form-group-sm">
                     <div class="col-lg-3">
                         <div class="input-group">
                             <span class="input-group-addon">
@@ -248,7 +248,7 @@
                                     </input>
                                 </input>
                             </span>
-                            <input aria-label="ivaCheck" class="form-control col-lg-1" placeholder="I.V.A." readonly="" type="text">
+                            <input aria-label="ivaCheck" class="form-control input-sm col-lg-1" placeholder="I.V.A." readonly="" type="text">
                             </input>
                         </div>
                         <!-- /input-group -->
@@ -259,7 +259,7 @@
                 </div>
               
                 <div class="modal-footer">
-                    <div class="form-group">
+                    <div class="form-group form-group-sm">
                         <div class="col-xs-18 col-md-12">
                             <div class="col-xs-2 col-md-2">
                                 <label class="col-lg-3 control-label">
@@ -296,7 +296,7 @@
                                 </span>
                             </div>
                             <div class="col-xs-2 col-md-6">
-                                <div class="row form-group" hidden="true" id="contEd">
+                                <div class="row form-group form-group-sm" hidden="true" id="contEd">
                                     <div class="col-md-10">
                                         <input id="decScroll" type="text">
                                         </input>

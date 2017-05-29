@@ -11,7 +11,7 @@
                 </div>
                 <div id='collapse' class='panel-collapse collapse off' role='tabpanel' aria-labelledby='heading'>
                     <div class='panel-body'>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="libder">Liberaci&oacute;n de Derecho de V&iacute;a:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="libder-0">
@@ -32,7 +32,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="libter">Liberaci&oacute;n del Terreno (libre de gravamen):</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="libter-0">
@@ -53,7 +53,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="cfe">Permisos de CFE:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="cfe-0">
@@ -74,7 +74,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="telmex">Permisos de TELMEX:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="telmex-0">
@@ -95,7 +95,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="pemex">Permisos de PEMEX:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="pemex-0">
@@ -116,7 +116,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="inah">Permisos del INAH:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="inah-0">
@@ -137,7 +137,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="inba">Permisos del INBA:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="inba-0">
@@ -158,7 +158,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="sep">Autorizaci&oacute;n de la SEP:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="sep-0">
@@ -179,7 +179,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="isem">Permisos del ISEM:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="isem-0">
@@ -200,7 +200,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="conagua">Permisos de CONAGUA:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="conagua-0">
@@ -221,7 +221,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="marcas">Registro de Marcas:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="marcas-0">
@@ -242,7 +242,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="producto">Uso del Producto:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="producto-0">
@@ -263,7 +263,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="caem">Permisos de CAEM:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="caem-0">
@@ -284,7 +284,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="jc">Permisos de la JC:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="jc-0">
@@ -305,7 +305,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="autmun">Permisos de la Autoridad Municipal:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="autmun-0">
@@ -342,7 +342,7 @@
                         <div class='panel-heading'>
                             <h4 class='panel-title'>Cambio de Uso de Suelo</h4>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="moda">Tr&aacute;mite Unificado de Cambio de Uso de Suelo Forestal. Modalidad A:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="moda-0">
@@ -363,7 +363,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="solautcu">Solicitud de Autorizaci&oacute;n de Cambio de Uso de Suelo en Terrenos Forestales:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="solautcu-0">
@@ -387,7 +387,7 @@
                         <div class='panel-heading'>
                             <h4 class='panel-title'>Manifestaci&oacute;n de Impacto Ambiental</h4>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="miariesgo">MIA con riesgo:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="miariesgo-0">
@@ -408,7 +408,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="miapart">MIA Particular:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="miapart-0">
@@ -429,7 +429,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="miapr">MIA Particular con Riesgo:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="miapr-0">
@@ -450,7 +450,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="infpre">Informe Preventivo:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="infpre-0">
@@ -471,7 +471,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="camb">Certificaci&oacute;n Ambiental:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="camb-0">
@@ -495,7 +495,7 @@
                         <div class='panel-heading'>
                             <h4 class='panel-title'>Modificaciones Extenciones y Avisos</h4>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="aamia">Aviso de Desistimiento de la Autorizaci&oacute;n en Materia de Impacto Ambiental:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="aamia-0">
@@ -516,7 +516,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="actamia">Aviso de Cambio de Titularidad de la Autorizaci&oacute;n de Impacto Ambiental:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="actamia-0">
@@ -537,7 +537,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="anramia">Aviso de No Requerimiento de Autorizaci&oacute;n en Materia de Impacto Ambiental:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="anramia-0">
@@ -558,7 +558,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="sepmia">Solicitud de Exenci&oacute;n de la Presentaci&oacute;n de la Manifestaci&oacute;n de Impacto Ambiental:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="sepmia-0">
@@ -579,7 +579,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="mpamia">Modificaciones a Proyectos Autorizados en Materia de Impacto Ambiental:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="mpamia-0">
@@ -600,7 +600,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="pcca">Permiso para la Combusti&oacute;n a Cielo Abierto:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="pcca-0">
@@ -621,7 +621,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="atscrp">Autorizaci&oacute;n para la Transferencia de Sitios Contaminados con Residuos Peligrosos:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="atscrp-0">
@@ -642,7 +642,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="salfor">Salud Forestal:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="salfor-0">
@@ -663,7 +663,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="plca">Permiso de Liberaci&oacute;n Comercial al Ambiente:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="plca-0">
@@ -684,7 +684,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="apfo">Aprovechamiento Forestal:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="apfo-0">
@@ -718,7 +718,7 @@
                 </div>
                 <div id='collapse3' class='panel-collapse collapse off' role='tabpanel' aria-labelledby='heading3'>
                     <div class='panel-body'>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="antpry">Anteproyecto:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="antpry-0">
@@ -739,7 +739,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="pryeje">Proyecto Ejecutivo:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="pryeje-0">
@@ -760,7 +760,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="mecsue">Mec&aacute;nica de Suelos:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="mecsue-0">
@@ -781,7 +781,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="esth">Estudio Hidrol&oacute;gico:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="esth-0">
@@ -802,7 +802,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="estt">Estudio Topogr&aacute;fico:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="estt-0">
@@ -823,7 +823,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="estit">Estudio de Ingenier&iacute;a de Tr&aacute;nsito:</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="estit-0">
@@ -844,7 +844,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-sm">
                             <label class="col-md-5 control-label" for="terref">T&eacute;rminos de Referencia</label>
                             <div class="col-md-4">
                                 <label class="radio-inline" for="terref-0">
