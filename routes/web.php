@@ -99,8 +99,14 @@ Route::group(['prefix' => 'ExpedienteTecnico'], function () {
     Route::get('impresion_expediente/{id_expediente_tecnio}', 'ExpedienteTecnico\ExpedienteController@imprime_expediente');
 });
 
+// Rutas Oficios
 Route::group(['prefix' => 'Oficios'], function() {
     Route::get('crear_oficios', 'Oficios\OficiosController@index')->name('creacionOficios');
+    Route::post('buscar_oficio', 'Oficios\OficiosController@buscar_oficio');
+    Route::post('buscar_obra', 'Oficios\OficiosController@buscar_obra');
+    Route::get('get_data_fuentes/{id_det_obra}', 'Oficios\OficiosController@get_data_fuentes');
+    Route::get('get_data_obras/{id_oficio}', 'Oficios\OficiosController@get_data_obras');
+    Route::post('guardar', 'Oficios\OficiosController@guardar');
     Route::get('textos_oficios', 'Oficios\TextoOficiosController@index')->name('controlTextos');
     Route::post('guardar_texto', 'Oficios\TextoOficiosController@guardar_texto');
     Route::post('buscar_texto', 'Oficios\TextoOficiosController@buscar_texto');
