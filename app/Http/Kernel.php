@@ -60,5 +60,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verifica.notificaciones' => \App\Http\Middleware\VerificarNotificaciones::class,
+        'valida_ruta'  => \App\Http\Middleware\ValidaRuta::class
     ];
 }

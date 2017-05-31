@@ -17,6 +17,12 @@ jQuery(document).ready(function($) {
 	$(".bt_fteest").unbind("click").on("click", function() {
 		addest($(this));
 	});
+	$('.partida').autoNumeric({
+		aSep: '',
+		mDec: 0,
+		vMin: 0,
+		vMax: 9999
+	});
 	$('.numero').autoNumeric({
 		aSep: '',
 		mDec: 0,
@@ -63,7 +69,7 @@ function LimpiaObra () {
 	if ($('#id_grupo_social').children().length > 1)
 		$('#id_grupo_social').val('0');
 	$("#id_region, #id_municipio, #id_acuerdo_est, #id_acuerdo_fed").val([]).change();
-	$('#id_expediente_tecnico, #nombre, #justificacion, #caracteristicas, #localidad, .numeroDecimal, .numcta, .numero').val('');
+	$('#id_expediente_tecnico, #nombre, #justificacion, #caracteristicas, #localidad, .numeroDecimal, .numcta, .numero, .partida').val('');
 	$('.fuente_federal:gt(0), .fuente_estatal:gt(0)').remove();
 	if ($('#fuente_federal').children().length > 1)
 		$('#fuente_federal').val('0');
@@ -77,10 +83,14 @@ function HabilitaCamposObra (asignado, cuenta_federal, cuenta_estatal) {
 	$('#id_clasificacion_obra, #id_grupo_social').removeAttr('disabled');
 	if (!asignado)
 		$('#programa, #id_proyecto_ep').removeAttr('disabled');
-	if (cuenta_federal)
+	if (cuenta_federal) {
 		$('.cuenta_federal .numcta').removeAttr('disabled');
-	if (cuenta_estatal)
+		$('.cuenta_federal .partida').removeAttr('disabled');
+	}
+	if (cuenta_estatal) {
 		$('.cuenta_estatal .numcta').removeAttr('disabled');
+		$('.cuenta_estatal .partida').removeAttr('disabled');
+	}
 	$("#btnGuardar").removeAttr("disabled");
 }
 
@@ -90,7 +100,7 @@ function HabilitaCampos () {
 	$('#id_unidad_ejecutora, #id_cobertura, #programa, #id_proyecto_ep, #id_grupo_social').removeAttr('disabled');
 	$("#id_region, #id_municipio, #id_acuerdo_est, #id_acuerdo_fed").removeAttr('disabled');
 	$('#nombre, #justificacion, #caracteristicas, #localidad').removeAttr('disabled');
-	$('.monfed, .monest, .numftef, .numftee, .numcta').removeAttr('disabled');
+	$('.monfed, .monest, .numftef, .numftee, .numcta, .partida').removeAttr('disabled');
 	$('.bt_ftefed, .bt_fteest').removeAttr("disabled");
 	$("#btnGuardar").removeAttr("disabled");
 }
@@ -101,7 +111,7 @@ function inHabilitaCampos () {
 	$('#id_unidad_ejecutora, #id_cobertura, #programa, #id_proyecto_ep').attr("disabled","disabled");
 	$("#id_region, #id_municipio, #id_acuerdo_est, #id_acuerdo_fed").attr("disabled","disabled");
 	$('#nombre, #justificacion, #caracteristicas, #localidad, #id_grupo_social').attr("disabled","disabled");
-	$('.monfed, .monest, .numftef, .numftee, .numcta').attr("disabled","disabled");
+	$('.monfed, .monest, .numftef, .numftee, .numcta, .partida').attr("disabled","disabled");
 	$('.bt_ftefed, .bt_fteest').attr("disabled","disabled");
 	$("#btnGuardar").attr("disabled","disabled");
 }
@@ -119,7 +129,12 @@ function addfed(elem, callback) {
 		mDec: 2,
 		vMin: '0.00'
 	});
-
+	$('.partida').autoNumeric({
+		aSep: '',
+		mDec: 0,
+		vMin: 0,
+		vMax: 9999
+	});
 	$('.monfed, .monest, .monmun, .numftef, .numftee, .numftem').unbind("change").on("change", function() {
 		suma();
 	});
@@ -140,6 +155,12 @@ function addest(elem, callback) {
 		aSep: ',',
 		mDec: 2,
 		vMin: '0.00'
+	});
+	$('.partida').autoNumeric({
+		aSep: '',
+		mDec: 0,
+		vMin: 0,
+		vMax: 9999
 	});
 	$('.monfed, .monest, .monmun, .numftef, .numftee, .numftem').unbind("change").on("change", function() {
 		suma();
@@ -328,7 +349,7 @@ function Triggers () {
 		$('#err_' + $(this).attr('id')).hide();
 	});
 	// selects Fuente
-	$('body').on('change','#monto_federal, #fuente_federal, #cuenta_federal, #monto_estatal, #fuente_estatal, #cuenta_estatal', function () {
+	$('body').on('change','#monto_federal, #fuente_federal, #cuenta_federal, #monto_estatal, #fuente_estatal, #cuenta_estatal, #partida_federal, #partida_estatal', function () {
 		$(this).parent().parent().removeClass('has-error has-feedback');
 		$(this).siblings('span').hide();
 	});
@@ -539,12 +560,14 @@ function muestraObra () {
 						if (i === 0) {
 							$(".monfed:first").val(fuentes[i].pivot.monto).autoNumeric('update');
 							$('select[name="fuente_federal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+							$(".partida_federal:eq(0) .partida").val(fuentes[i].pivot.partida).autoNumeric('update');
 							$(".cuenta_federal:eq(0) .numcta").val(fuentes[i].pivot.cuenta);
 						}
 						else {
 							addfed($(".monfed:first"), function() {
 								$(".monfed:eq(" + i + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
 								$('select[name="fuente_federal[]"]:eq(' + i + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+								$(".partida_federal:eq(" + i + ")" + " .partida").val(fuentes[i].pivot.partida).autoNumeric('update');
 								$(".cuenta_federal:eq(" + i + ")" + " .numcta").val(fuentes[i].pivot.cuenta);
 							});
 						}
@@ -554,12 +577,14 @@ function muestraObra () {
 						if (j === 0) {
 							$(".monest:first").val(fuentes[i].pivot.monto).autoNumeric('update');
 							$('select[name="fuente_estatal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+							$(".partida_estatal:eq(0) .partida").val(fuentes[i].pivot.partida).autoNumeric('update');
 							$(".cuenta_estatal:eq(0) .numcta").val(fuentes[i].pivot.cuenta);
 						}
 						else {
 							addest($(".monest:first"), function() {
 								$(".monest:eq(" + j + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
 								$('select[name="fuente_estatal[]"]:eq(' + j + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+								$(".partida_estatal:eq(" + i + ")" + " .partida").val(fuentes[i].pivot.partida).autoNumeric('update');
 								$(".cuenta_estatal:eq(" + i + ")" + " .numcta").val(fuentes[i].pivot.cuenta);
 							});
 						}
@@ -628,6 +653,9 @@ function guardaObra () {
 		var ftefed = $.trim($(this).val()) != "0" ? $(this).val() * 1 : '';
 		data.append("fuente_federal[]", ftefed);
 	});
+	$('.cuenta_federal .partida').each(function() {
+		data.append("partida_federal[]", $(this).val());
+	});
 	$('.cuenta_federal .numcta').each(function() {
 		data.append("cuenta_federal[]", $(this).val());
 	});
@@ -638,6 +666,9 @@ function guardaObra () {
 	$('.numftee').each(function() {
 		var fteest = $.trim($(this).val()) != "0" ? $(this).val() * 1 : '';
 		data.append("fuente_estatal[]", fteest);
+	});
+	$('.cuenta_estatal .partida').each(function() {
+		data.append("partida_estatal[]", $(this).val());
 	});
 	$('.cuenta_estatal .numcta').each(function() {
 		data.append("cuenta_estatal[]", $(this).val());

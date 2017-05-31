@@ -49,6 +49,8 @@ Route::post('/marcar_leida', function (Request $request) {
 });
 Route::get('/actualizar_head', function () {return view('layouts.header-panel');});
 
+Route::get('sin_permiso', function () {return view('sin_permiso');});
+
 //Rutas Estudio
 Route::group(['prefix' => 'EstudioSocioeconomico'], function () {
     Route::get('crear_estudio', 'EstudioSocioeconomico\EstudioController@index')->name('creacion');
@@ -113,7 +115,7 @@ Route::group(['prefix' => 'Oficios'], function() {
 });
 
 // Rutas Catalogo - Sector
-Route::group(['prefix' => 'Catalogo/Sector'], function () {
+Route::group(['prefix' => 'Catalogo/Sector', 'middleware' => 'valida_ruta:Catalogo/Sector'], function () {
     //Route::resource('', 'Catalogo\Sector\SectorController');
     Route::get('','Catalogo\Sector\SectorController@index')->name('Sector.index');
 	Route::get('create','Catalogo\Sector\SectorController@create')->name('Sector.create');
@@ -125,7 +127,7 @@ Route::group(['prefix' => 'Catalogo/Sector'], function () {
 });
 
 // Rutas Catalogo/Ejecutora
-Route::group(['prefix' => 'Catalogo/Ejecutora'], function () {
+Route::group(['prefix' => 'Catalogo/Ejecutora', 'middleware' => 'valida_ruta:Catalogo/Ejecutora'], function () {
     //Route::resource('', 'Catalogo\Ejecutora\EjecutoraController');
     Route::get('','Catalogo\Ejecutora\EjecutoraController@index')->name('Ejecutora.index');
 	Route::get('create','Catalogo\Ejecutora\EjecutoraController@create')->name('Ejecutora.create');
@@ -136,7 +138,7 @@ Route::group(['prefix' => 'Catalogo/Ejecutora'], function () {
 });
 
 // Rutas Catalogo/Menu
-Route::group(['prefix' => 'Catalogo/Menu'], function () {
+Route::group(['prefix' => 'Catalogo/Menu', 'middleware' => 'valida_ruta:Catalogo/Menu'], function () {
     //Route::resource('', 'Catalogo\Menu\MenuController');
     Route::get('','Catalogo\Menu\MenuController@index')->name('Menu.index');
 	Route::get('create','Catalogo\Menu\MenuController@create')->name('Menu.create');
@@ -147,7 +149,7 @@ Route::group(['prefix' => 'Catalogo/Menu'], function () {
 });
 
 // Rutas Administracion/Usuario
-Route::group(['prefix' => 'Administracion/Usuario'], function () {
+Route::group(['prefix' => 'Administracion/Usuario', 'middleware' => 'valida_ruta:Administracion/Usuario'], function () {
     //Route::resource('Usuario', 'Administracion\Usuario\UsuarioController');
     Route::get('','Administracion\Usuario\UsuarioController@index')->name('Usuario.index');
 	Route::get('create','Administracion\Usuario\UsuarioController@create')->name('Usuario.create');
@@ -160,21 +162,21 @@ Route::group(['prefix' => 'Administracion/Usuario'], function () {
 });
 
 // Rutas Administracion/Modulo
-Route::group(['prefix' => 'Administracion/Modulo'], function () {
+Route::group(['prefix' => 'Administracion/Modulo', 'middleware' => 'valida_ruta:Administracion/Modulo/permisos'], function () {
 	Route::get('permisos', 'Administracion\Modulo\ModuloController@permisos')->name('Administracion.Modulo.permisos');
 	Route::post('dropdownUsuario', 'Administracion\Modulo\ModuloController@dropdownUsuario');
 	Route::post('guarda_permisos', 'Administracion\Modulo\ModuloController@guarda_permisos');
 });
 
 // Rutas Administracion/Sector
-Route::group(['prefix' => 'Administracion/Sector'], function () {
+Route::group(['prefix' => 'Administracion/Sector', 'middleware' => 'valida_ruta:Administracion/Sector/permisos'], function () {
 	Route::get('permisos', 'Administracion\Sector\SectorController@permisos')->name('Administracion.Sector.permisos');
 	Route::post('dropdownUsuario', 'Administracion\Sector\SectorController@dropdownUsuario');
 	Route::post('guarda_permisos', 'Administracion\Sector\SectorController@guarda_permisos');
 });
 
 // Rutas Obra
-Route::group(['prefix' => 'Obra'], function () {
+Route::group(['prefix' => 'Obra', 'middleware' => 'valida_ruta:Obra/crear'], function () {
 	Route::get('crear', 'Obra\ObraController@index')->name('Obra.crear');
 	Route::post('buscar_expediente', 'Obra\ObraController@buscar_expediente');
 	Route::post('buscar_obra', 'Obra\ObraController@buscar_obra');
@@ -188,7 +190,7 @@ Route::group(['prefix' => 'Obra'], function () {
 \Auth::routes();
 
 // Rutas Techos Financieros
-Route::group(['prefix' => 'TechoFinanciero'], function () {
+Route::group(['prefix' => 'TechoFinanciero', 'middleware' => 'valida_ruta:TechoFinanciero'], function () {
     Route::get('','TechoFinanciero\TechoController@index')->name('TechoFinanciero.index');
 	Route::get('create','TechoFinanciero\TechoController@create')->name('TechoFinanciero.create');
 	Route::post('','TechoFinanciero\TechoController@store');
@@ -202,3 +204,5 @@ Route::group(['prefix' => 'TechoFinanciero'], function () {
 	Route::post('dropdownPrograma', 'TechoFinanciero\TechoController@dropdownPrograma');
 	Route::post('dropdownTipoFuente','TechoFinanciero\TechoController@dropdownTipoFuente');
 });
+
+

@@ -42,8 +42,8 @@ function Triggers () {
                 type: 'POST',
                 success: function (data) {
                     console.log(data);
-                    $('#programa').html(data[0]);
-                    $('#id_proyecto_ep').html(data[1]);
+                    $('#programa').html(data.programa);
+                    $('#id_proyecto_ep').html(data.proyecto);
                 },
                 error: function(data) {
                     console.log("Errores::", data);

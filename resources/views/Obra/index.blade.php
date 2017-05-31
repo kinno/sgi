@@ -176,7 +176,7 @@
 				</div>
 			</div>
 
-			<div class="fuente_federal monto_federal cuenta_federal">
+			<div class="fuente_federal monto_federal cuenta_federal partida_federal">
 				<div class="form-group form-group-sm">
 					<div id="div_monto_federal">
 						<label for="monto_federal" class="col-md-2 control-label"><span class="obligatorio">*</span>Federal: </label>
@@ -196,16 +196,25 @@
 					</div>
 					<input class="bt_ftefed input-sm" type="button" value="+"/>
 				</div>
-				<div class="form-group form-group-sm" id="div_cuenta_federal">
-					<label for="cuenta_federal" class="col-md-2 col-md-offset-4 control-label"><span class="obligatorio">*</span>No. cuenta: </label>
-					<div class="col-md-3">
-						<input type="text" class="form-control numcta" id="cuenta_federal" name="cuenta_federal[]" maxlength="40" />
-						<span id="err_cuenta_federal" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+				<div class="form-group form-group-sm">
+					<div id="div_partida_federal">
+						<label for="partida_federal" class="col-md-2 control-label"><span class="obligatorio">*</span>Partida:</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control partida" id="partida_federal" name="partida_federal[]" maxlength="4" />
+							<span id="err_partida_federal" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div id="div_cuenta_federal">
+						<label for="cuenta_federal" class="col-md-2 control-label"><span class="obligatorio">*</span>No. cuenta: </label>
+						<div class="col-md-3">
+							<input type="text" class="form-control numcta" id="cuenta_federal" name="cuenta_federal[]" maxlength="40" />
+							<span id="err_cuenta_federal" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="fuente_estatal monto_estatal cuenta_estatal">
+			<div class="fuente_estatal monto_estatal cuenta_estatal partida_estatal">
 				<div class="form-group form-group-sm">
 					<div id="div_monto_estatal">
 						<label for="monto_estatal" class="col-md-2 control-label"><span class="obligatorio">*</span>Rec Fiscales (Estatal): </label>
@@ -225,11 +234,20 @@
 					</div>
 					<input class="bt_fteest input-sm" type="button" value="+" />
 				</div>
-				<div class="form-group form-group-sm" id="div_cuenta_estatal">
-					<label for="cuenta_estatal" class="col-md-2 col-md-offset-4 control-label"><span class="obligatorio">*</span>No. cuenta: </label>
-					<div class="col-md-3">
-						<input type="text" class="form-control numcta" id="cuenta_estatal" name="cuenta_estatal[]" maxlength="40" />
-						<span id="err_cuenta_estatal" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+				<div class="form-group form-group-sm">
+					<div id="div_partida_estatal">
+						<label for="partida_estatal" class="col-md-2 control-label"><span class="obligatorio">*</span>Partida:</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control partida" id="partida_estatal" name="partida_estatal[]" maxlength="4" />
+							<span id="err_partida_estatal" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div id="div_cuenta_estatal">
+						<label for="cuenta_estatal" class="col-md-2 control-label"><span class="obligatorio">*</span>No. cuenta: </label>
+						<div class="col-md-3">
+							<input type="text" class="form-control numcta" id="cuenta_estatal" name="cuenta_estatal[]" maxlength="40" />
+							<span id="err_cuenta_estatal" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -30,7 +30,7 @@ class D_Obra extends Model
 
     public function fuentes()
     {
-        return $this->belongsToMany('App\Cat_Fuente','rel_obra_fuente','id_det_obra', 'id_fuente')->withPivot('monto', 'cuenta', 'tipo_fuente');
+        return $this->belongsToMany('App\Cat_Fuente','rel_obra_fuente','id_det_obra', 'id_fuente')->withPivot('monto', 'cuenta','partida','tipo_fuente');
     }
 
     public function regiones()

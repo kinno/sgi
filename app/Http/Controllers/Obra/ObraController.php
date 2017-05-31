@@ -28,23 +28,25 @@ class ObraController extends Controller
 	use Funciones;
 
 	public $rules = [
-			'id_modalidad_ejecucion'	=> 'not_in:0',
-			'ejercicio'					=> 'not_in:0',
-			'id_clasificacion_obra'		=> 'not_in:0',
-			'id_sector'					=> 'not_in:0',
-			'id_unidad_ejecutora'		=> 'not_in:0',
-			'nombre'					=> 'required',
-			'id_cobertura'				=> 'not_in:0',
-			'monto'						=> 'required|numeric|not_in:0',
-			'id_proyecto_ep'			=> 'not_in:0',
-			'id_region'					=> 'required_if:id_cobertura,2',
-			'id_municipio'				=> 'required_if:id_cobertura,3',
-			'monto_federal.*'			=> 'required_with:fuente_federal.*',
-			'fuente_federal.*'			=> 'required_with:monto_federal.*',
-			'cuenta_federal.*'			=> 'required_with:fuente_federal.*|required_with:monto_federal.*',
-			'monto_estatal.*'			=> 'required_with:fuente_estatal.*',
-			'fuente_estatal.*'			=> 'required_with:monto_estatal.*',
-			'cuenta_estatal.*'			=> 'required_with:fuente_estatal.*|required_with:monto_estatal.*'
+		'id_modalidad_ejecucion'	=> 'not_in:0',
+		'ejercicio'					=> 'not_in:0',
+		'id_clasificacion_obra'		=> 'not_in:0',
+		'id_sector'					=> 'not_in:0',
+		'id_unidad_ejecutora'		=> 'not_in:0',
+		'nombre'					=> 'required',
+		'id_cobertura'				=> 'not_in:0',
+		'monto'						=> 'required|numeric|not_in:0',
+		'id_proyecto_ep'			=> 'not_in:0',
+		'id_region'					=> 'required_if:id_cobertura,2',
+		'id_municipio'				=> 'required_if:id_cobertura,3',
+		'monto_federal.*'	=> 'required_with:fuente_federal.*|required_with:partida_federal.*|required_with:cuenta_federal.*',
+		'fuente_federal.*'	=> 'required_with:monto_federal.*|required_with:partida_federal.*|required_with:cuenta_federal.*',
+		'partida_federal.*'	=> 'required_with:monto_federal.*|required_with:fuente_federal.*|required_with:cuenta_federal.*',
+		'cuenta_federal.*'	=> 'required_with:monto_federal.*|required_with:fuente_federal.*|required_with:partida_federal.*',
+		'monto_estatal.*'	=> 'required_with:fuente_estatal.*|required_with:partida_estatal.*|required_with:cuenta_estatal.*',
+		'fuente_estatal.*'	=> 'required_with:monto_estatal.*|required_with:partida_estatal.*|required_with:cuenta_estatal.*',
+		'partida_estatal.*'	=> 'required_with:monto_estatal.*|required_with:fuente_estatal.*|required_with:cuenta_estatal.*',
+		'cuenta_estatal.*'	=> 'required_with:monto_estatal.*|required_with:fuente_estatal.*|required_with:partida_estatal.*'
 		];
 	protected $messages = [
 			'id_modalidad_ejecucion.not_in'		=> 'Seleccione Modalidad de Ejecución',
@@ -61,9 +63,11 @@ class ObraController extends Controller
 			'id_municipio.required_if'			=> 'Seleccione al menos un Municipio',
 			'monto_federal.*.required_with'		=> 'Introduzac monto Federal',
 			'fuente_federal.*.required_with'	=> 'Seleccione Fuente Federal',
+			'partida_federal.*.required_with'	=> 'Introduzca Partida',
 			'cuenta_federal.*.required_with'	=> 'Introduzca No. de cuenta Federal',
 			'monto_estatal.*.required_with'		=> 'Introduzca monto Estatal',
 			'fuente_estatal.*.required_with'	=> 'Seleccione Fuente Estatal',
+			'partida_estatal.*.required_with'	=> 'Introduzca Partida',
 			'cuenta_estatal.*.required_with'	=> 'Introduzca No. de cuenta Estatal',
 		];
 	protected $barraMenu = array(
@@ -226,6 +230,7 @@ class ObraController extends Controller
 					   $syncArray[$value] = array('id_det_obra' => $d_obra->id,
 							'monto' => $request->monto_federal[$key],
 							'cuenta' => $request->cuenta_federal[$key],
+							'partida' => $request->partida_federal[$key],
 							'tipo_fuente' => 'F');
 					}
 				if (isset($request->fuente_estatal[0]) && $request->fuente_estatal[0] > 0)
@@ -233,6 +238,7 @@ class ObraController extends Controller
 						$syncArray[$value] = array('id_det_obra' => $d_obra->id,
 						'monto' => $request->monto_estatal[$key],
 						'cuenta' => $request->cuenta_estatal[$key],
+						'partida' => $request->partida_estatal[$key],
 						'tipo_fuente' => 'E' );
 					}
 				$d_obra->fuentes()->sync($syncArray);
@@ -316,6 +322,7 @@ class ObraController extends Controller
 					   $syncArray[$value] = array('id_det_obra' => $d_obra->id,
 							'monto' => $request->monto_federal[$key],
 							'cuenta' => $request->cuenta_federal[$key],
+							'partida' => $request->partida_federal[$key],
 							'tipo_fuente' => 'F');
 					}
 				if (isset($request->fuente_estatal[0]) && $request->fuente_estatal[0] > 0)
@@ -323,6 +330,7 @@ class ObraController extends Controller
 						$syncArray[$value] = array('id_det_obra' => $d_obra->id,
 						'monto' => $request->monto_estatal[$key],
 						'cuenta' => $request->cuenta_estatal[$key],
+						'partida' => $request->partida_estatal[$key],
 						'tipo_fuente' => 'E' );
 					}
 				$d_obra->fuentes()->sync($syncArray);

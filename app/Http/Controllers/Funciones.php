@@ -358,4 +358,17 @@ trait Funciones
 			$arreglo_ids[] = $sector->id;
 		return $arreglo_ids;
 	}
+
+	public function getIdsMenus ($id_usuario = 0)
+	{
+		if ($id_usuario == 0)
+			$usuario = \Auth::user();
+		else
+			$usuario = User::find($id_usuario);
+		$menus = $usuario->menus;
+		$arreglo_ids = [];
+		foreach ($menus as $menu)
+			$arreglo_ids[] =  $menu->id;
+		return $arreglo_ids;
+	}
 }
