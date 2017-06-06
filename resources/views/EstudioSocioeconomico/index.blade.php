@@ -66,7 +66,7 @@
                 </div>
             </div>
         </nav> --}}
-        <input id="hojaActual" name="hojaActual" type="hidden" value="1">
+        <input id="hojaActual" name="hojaActual" type="hidden" value="1" />
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="active" id="panel1">
                     <a data-toggle="tab" href="#h1" role="tab">
@@ -91,7 +91,6 @@
                     </div>
                 </div>
             </div>
-        </input>
     </div>
 </div>
 {{--

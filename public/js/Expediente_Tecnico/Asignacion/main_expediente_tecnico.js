@@ -138,7 +138,7 @@ function buscarExpediente() {
             data: {
                 'id_expediente_tecnico': $("#id_expediente_tecnico_search").val()
             },
-            url: '/ExpedienteTecnico/buscar_expediente',
+            url: '/ExpedienteTecnico/Asignacion/buscar_expediente',
             type: 'post',
             beforeSend: function() {
                 $("#divLoading").show();
@@ -206,7 +206,7 @@ function buscarBanco() {
             'id_estudio_socioeconomico': $("#id_estudio_socioeconomico").val(),
             'externo': true
         },
-        url: '/EstudioSocioeconomico/buscar_estudio',
+        url: '/EstudioSocioeconomico/Asignacion/buscar_estudio',
         type: 'post',
         beforeSend: function() {
             $("#divLoading").show();
@@ -252,7 +252,7 @@ function enviar_revision() {
                     'id_expediente_tecnico': $("#form_anexo_uno #id_expediente_tecnico").val(),
                     'estatus': 2
                 },
-                url: '/ExpedienteTecnico/enviar_revision',
+                url: '/ExpedienteTecnico/Asignacion/enviar_revision',
                 type: 'post',
                 beforeSend: function() {
                     $("#divLoading").show();

@@ -71,7 +71,7 @@ function initDataConceptos(id_expediente_tecnico) {
         "destroy": true,
         processing: false,
         serverSide: false,
-        ajax: '/ExpedienteTecnico/get_data_conceptos/' + id_expediente_tecnico,
+        ajax: '/ExpedienteTecnico/Asignacion/get_data_conceptos/' + id_expediente_tecnico,
         columns: [{
             data: 'id',
             name: 'id'
@@ -310,7 +310,7 @@ function guardarHoja3() {
                 'conceptosEliminados': arrayEliminados,
                 'id_expediente_tecnico': exp,
             },
-            url: '/ExpedienteTecnico/guardar_hoja_3',
+            url: '/ExpedienteTecnico/Asignacion/guardar_hoja_3',
             type: 'post',
             beforeSend: function() {
                 $("#divLoading").show();
@@ -386,7 +386,7 @@ function cargaExterna() {
     var formdata = new FormData($("#formCargaExterna")[0]);
     $.ajax({
         data: new FormData($("#formCargaExterna")[0]),
-        url: '/ExpedienteTecnico/carga_externa',
+        url: '/ExpedienteTecnico/Asignacion/carga_externa',
         type: 'post',
         processData: false,
         contentType: false,

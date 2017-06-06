@@ -18,6 +18,11 @@ class D_Obra extends Model
         return $this->belongsTo('App\Cat_Sector', 'id_sector');
     }
 
+    public function unidad_ejecutora()
+    {
+        return $this->belongsTo('App\Cat_Unidad_Ejecutora', 'id_unidad_ejecutora');
+    }
+
     public function proyecto()
     {
         return $this->belongsTo('App\Cat_Estructura_Programatica', 'id_proyecto_ep');
@@ -46,5 +51,9 @@ class D_Obra extends Model
     public function relacion()
     {
         return $this->hasOne('App\Rel_Estudio_Expediente_Obra', 'id_det_obra', 'id');
+    }
+
+    public function modalidad_ejecucion(){
+        return $this->belongsTo('App\Cat_Modalidad_Ejecucion', 'id_modalidad_ejecucion');
     }
 }

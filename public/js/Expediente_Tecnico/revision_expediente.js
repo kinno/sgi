@@ -18,7 +18,7 @@ function initTable() {
         processing: true,
         serverSide: true,
          "destroy": true,
-        ajax: '/ExpedienteTecnico/get_datos_revision',
+        ajax: '/ExpedienteTecnico/Revision/get_datos_revision',
         columns: [{
             data: 'id_expediente_tecnico',
             name: 'id_expediente_tecnico',
@@ -80,7 +80,7 @@ function aceptar(elem) {
                     'id_expediente_tecnico': datosFila['id_expediente_tecnico'],
                     'estatus':6
                 },
-                url: '/ExpedienteTecnico/aceptar_expediente',
+                url: '/ExpedienteTecnico/Revision/aceptar_expediente',
                 type: 'post',
                 beforeSend: function() {
                     $("#divLoading").show();
@@ -116,7 +116,7 @@ function observaciones(elem) {
                     'id_expediente_tecnico': datosFila['id_expediente_tecnico'],
                     'observaciones': $("#observaciones").val()
                 },
-                url: '/ExpedienteTecnico/regresar_observaciones',
+                url: '/ExpedienteTecnico/Revision/regresar_observaciones',
                 type: 'post',
                 beforeSend: function() {
                     $("#divLoading").show();

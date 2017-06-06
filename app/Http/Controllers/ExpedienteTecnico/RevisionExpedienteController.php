@@ -21,7 +21,7 @@ class RevisionExpedienteController extends Controller
     public function index()
     {   
          // $this->dispatch(new VerificarNotificaciones());
-        return View("ExpedienteTecnico.revision_expediente_tecnico");
+        return View("ExpedienteTecnico.Revision/revision_expediente_tecnico");
     }
 
     public function get_data_revision()

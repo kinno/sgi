@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Oficios;
 
-use App\Cat_Departamento;
 use App\Cat_Ejercicio;
 use App\Cat_Fuente;
+use App\Cat_Sector;
 use App\Cat_Servidor_Publico;
 use App\Cat_Solicitud_Presupuesto;
+use App\Cat_Texto_Oficio;
+use App\Cat_Unidad_Ejecutora;
 use App\D_Obra;
 use App\D_Oficio;
 use App\Http\Controllers\Controller;
@@ -52,29 +54,18 @@ class OficiosController extends Controller
         $fuentes       = Cat_Fuente::where('tipo', '=', 'F')
             ->orWhere('tipo', '=', 'E')
             ->get();
-        $SPPDGI = Cat_Servidor_Publico::where('clave', '=', 'spp')
-            ->orWhere('clave', '=', 'dgi')
-            ->where('bactivo', '=', 1)
-            ->get();
-        $iniciales    = "";
-        $departamento = Cat_Departamento::where('id', '=', \Auth::user()->id_departamento)
-            ->with('responsable')
-            ->with('area.responsable')
-            ->first();
-        foreach ($SPPDGI as $value) {
-            $iniciales .= strtoupper($value->iniciales) . "/";
-        }
 
-        $iniciales.= strtoupper(\Auth::user()->departamento->area->responsable->iniciales)."/".strtoupper(\Auth::user()->departamento->responsable->iniciales)."/".strtolower(\Auth::user()->iniciales);
         // $iniciales .= $departamento->area->responsable->iniciales . "/".$departamento->responsable->iniciales;
 
-        return view('Oficios.crear_index', compact('tipoSolicitud', 'ejercicios', 'barraMenu', 'fuentes', 'iniciales'));
+        return view('Oficios.crear_index', compact('tipoSolicitud', 'ejercicios', 'barraMenu', 'fuentes'));
     }
 
     public function buscar_oficio(Request $request)
     {
         $oficio = P_Oficio::where('clave', '=', $request->clave)
+        // ->with('detalle.obras')
             ->first();
+
         if ($oficio) {
             return $oficio;
         } else {
@@ -87,21 +78,40 @@ class OficiosController extends Controller
 
     public function buscar_obra(Request $request)
     {
-        $obra = D_Obra::with('relacion.expediente')
-            ->with('fuentes')
-            ->where('id_obra', '=', $request->id_obra)
-            ->first();
-        // dd($obra->relacion->expediente->id_tipo_solicitud);
+        // dd($request->all());
+        if (isset($request->id_sector)) {
+            $obra = D_Obra::with('relacion.expediente')
+                ->with('fuentes')
+                ->where('id_obra', '=', $request->id_obra)
+                ->where('id_sector', '=', $request->id_sector)
+                ->first();
+        } else if (isset($request->id_unidad_ejecutora)) {
+            $obra = D_Obra::with('relacion.expediente')
+                ->with('fuentes')
+                ->where('id_obra', '=', $request->id_obra)
+                ->where('id_unidad_ejecutora', '=', $request->id_unidad_ejecutora)
+                ->first();
+        } else {
+            $obra = D_Obra::with('relacion.expediente')
+                ->with('fuentes')
+                ->where('id_obra', '=', $request->id_obra)
+                ->first();
+        }
+
         if ($obra) {
-            if ($obra->relacion->expediente->id_tipo_solicitud == (int) $request->id_tipo_solicitud) {
+            if ((!isset($obra->relacion->expediente) && ($request->id_tipo_solicitud == 1 || $request->id_tipo_solicitud == 9 || $request->id_tipo_solicitud == 10 || $request->id_tipo_solicitud == 11))) {
+                return $obra;
+            } else if ($obra->relacion->expediente->id_tipo_solicitud == (int) $request->id_tipo_solicitud) {
                 return $obra;
             } else {
-                $obra                = array();
-                $expediente['error'] = "La solicitud de presupuesto actual de la Obra no corresponde al tipo de solicitud seleccionado.";
-                return ($expediente);
+                $obra          = array();
+                $obra['error'] = "La solicitud de presupuesto actual de la Obra no corresponde al tipo de solicitud seleccionado.";
+                return ($obra);
             }
         } else {
-            return;
+            $obra          = array();
+            $obra['error'] = "No existe la Obra o el Sector o Unidad Ejecutora (Sector Ayuntamiento) es diferente de las Obras del Oficio";
+            return ($obra);
         }
     }
 
@@ -109,7 +119,7 @@ class OficiosController extends Controller
     {
 
         $fuentes = Rel_Obra_Fuente::with('fuentes')
-            ->where('id', '=', $id_det_obra);
+            ->where('id_det_obra', '=', $id_det_obra);
         return \Datatables::of($fuentes)
             ->make(true);
     }
@@ -121,6 +131,57 @@ class OficiosController extends Controller
             ->where('id_oficio', '=', $id_oficio);
         return \Datatables::of($obras)
             ->make(true);
+    }
+
+    public function cargar_texto(Request $request)
+    {
+        // dd($request->all());
+        $texto = Cat_Texto_Oficio::where('id_solicitud_presupuesto', '=', $request->id_solicitud_presupuesto)
+            ->where('ejercicio', '=', $request->ejercicio)
+            ->where('id_fuente', '=', $request->id_fuente)
+            ->first();
+        $SPPDGI = Cat_Servidor_Publico::where('clave', '=', 'spp')
+            ->orWhere('clave', '=', 'dgi')
+            ->where('bactivo', '=', 1)
+            ->get();
+        $iniciales = "";
+
+        $cpp        = "";
+        $claveArray = array('gem', 'sf', 'scem', 'sscec', 'dgi', 'dgids', 'uaag');
+        $i=0;
+        foreach ($claveArray as $value) {
+            if($i>0){
+                $tab = "\t";
+            }else{
+                $tab="";
+            }
+            $servidor = Cat_Servidor_Publico::where('clave', '=', $value)
+                ->first();
+            $cpp .= $tab.$servidor->nombre . ".- " . $servidor->cargo . ".\n";
+            $i++;
+        }
+
+        if (isset($request->id_sector)) {
+            $titular_sector = Cat_Sector::with('titular')
+                ->find($request->id_sector);
+        } else {
+            $titular_sector = Cat_Unidad_Ejecutora::with('titular')
+                ->find($request->id_unidad_ejecutora);
+        }
+        $titular = $titular_sector->titular->titulo . "\n" . $titular_sector->titular->nombre . " " . $titular_sector->titular->apellido . "\n" . $titular_sector->titular->cargo;
+
+        foreach ($SPPDGI as $value) {
+            $iniciales .= strtoupper($value->iniciales) . "/";
+        }
+
+        // foreach ($servidores as $value) {
+        //     $cpp .= $value->nombre . ".- " . $value->cargo . ".\n";
+        // }
+
+        $iniciales .= strtoupper(\Auth::user()->departamento->area->responsable->iniciales) . "/" . strtoupper(\Auth::user()->departamento->responsable->iniciales) . "/" . strtolower(\Auth::user()->iniciales);
+
+        $textos = array('texto' => $texto, 'iniciales' => $iniciales, 'ccp' => $cpp, 'titular' => $titular);
+        return $textos;
     }
 
     public function guardar(Request $request)
@@ -144,6 +205,8 @@ class OficiosController extends Controller
             $p_oficio->id_usuario               = \Auth::user()->id;
             $p_oficio->id_estatus               = 3;
             $p_oficio->ejercicio                = $request->ejercicio;
+            $p_oficio->id_sector                = $request->id_sector;
+            $p_oficio->id_unidad_ejecutora      = $request->id_unidad_ejecutora;
             $p_oficio->fecha_oficio             = Carbon::parse($request->fecha_oficio)->format('Y-m-d H:i:s');
             $p_oficio->titular                  = $request->titular;
             $p_oficio->asunto                   = $request->asunto;
@@ -154,8 +217,9 @@ class OficiosController extends Controller
             $p_oficio->texto                    = $request->texto;
             $p_oficio->save();
 
-            $ids          = $this->guardarDetalle($p_oficio->id, $request->obras, $request->obras_eliminadas);
-            $ids['clave'] = $p_oficio->clave;
+            $ids              = $this->guardarDetalle($p_oficio->id, $request->obras, $request->obras_eliminadas);
+            $ids['clave']     = $p_oficio->clave;
+            $ids['id_oficio'] = $p_oficio->id;
             DB::commit();
             return $ids;
         } catch (\Exception $e) {
@@ -208,5 +272,18 @@ class OficiosController extends Controller
         $consecutivo = $clave->clave + 1;
         $nueva_clave = $año . $mes . substr("000" . $consecutivo, -4);
         return $nueva_clave;
+    }
+
+    public function imprime_oficio($id_oficio)
+    {
+        $oficio = P_Oficio::with('detalle')
+            ->with('frase_ejercicio')
+            ->find($id_oficio);
+
+        
+        $pdf = \PDF::loadView('PDF/oficio', compact('oficio'));
+        return $pdf->stream('Oficio_' . $oficio->clave . '.pdf');
+
+        return view('PDF/oficio', compact('oficio'));
     }
 }

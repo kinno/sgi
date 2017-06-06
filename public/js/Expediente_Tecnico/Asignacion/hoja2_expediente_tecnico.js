@@ -91,7 +91,7 @@ function guardarHoja2() {
         formdata.append('other_data', $("#form_anexo_dos #id_expediente_tecnico").val());
         $.ajax({
             data: formdata,
-            url: '/ExpedienteTecnico/guardar_hoja_2',
+            url: '/ExpedienteTecnico/Asignacion/guardar_hoja_2',
             type: 'post',
             processData: false,
             contentType: false,
@@ -192,7 +192,7 @@ function eliminarImagen() {
     var valoresh2 = $("#form_anexo_dos").serialize();
     $.ajax({
         data: valoresh2,
-        url: '/ExpedienteTecnico/eliminar_imagen',
+        url: '/ExpedienteTecnico/Asignacion/eliminar_imagen',
         type: 'post',
         success: function(response) {
             console.log(response);

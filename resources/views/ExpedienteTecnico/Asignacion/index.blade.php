@@ -111,32 +111,32 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="h1">
                     <div class="content">
-                        @include('ExpedienteTecnico.hoja1_expediente_tecnico')
+                        @include('ExpedienteTecnico/Asignacion.hoja1_expediente_tecnico')
                     </div>
                 </div>
                 <div class="tab-pane " id="h2">
                     <div class="content">
-                        @include('ExpedienteTecnico.hoja2_expediente_tecnico')
+                        @include('ExpedienteTecnico/Asignacion.hoja2_expediente_tecnico')
                     </div>
                 </div>
                 <div class="tab-pane " id="h3">
                     <div class="content">
-                        @include('ExpedienteTecnico.hoja3_expediente_tecnico')
+                        @include('ExpedienteTecnico/Asignacion.hoja3_expediente_tecnico')
                     </div>
                 </div>
                 <div class="tab-pane " id="h4">
                     <div class="content">
-                        @include('ExpedienteTecnico.hoja4_expediente_tecnico')
+                        @include('ExpedienteTecnico/Asignacion.hoja4_expediente_tecnico')
                     </div>
                 </div>
                 <div class="tab-pane " id="h5">
                     <div class="content">
-                        @include('ExpedienteTecnico.hoja5_expediente_tecnico')
+                        @include('ExpedienteTecnico/Asignacion.hoja5_expediente_tecnico')
                     </div>
                 </div>
                 <div class="tab-pane " id="h6">
                     <div class="content">
-                        @include('ExpedienteTecnico.hoja6_expediente_tecnico')
+                        @include('ExpedienteTecnico/Asignacion.hoja6_expediente_tecnico')
                     </div>
                 </div>
             </div>
@@ -177,18 +177,18 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('js/Expediente_Tecnico/main_expediente_tecnico.js') }}">
+<script src="{{ asset('js/Expediente_Tecnico/Asignacion/main_expediente_tecnico.js') }}">
 </script>
-<script src="{{ asset('js/Expediente_Tecnico/hoja1_expediente_tecnico.js') }}">
+<script src="{{ asset('js/Expediente_Tecnico/Asignacion/hoja1_expediente_tecnico.js') }}">
 </script>
-<script src="{{ asset('js/Expediente_Tecnico/hoja2_expediente_tecnico.js') }}">
+<script src="{{ asset('js/Expediente_Tecnico/Asignacion/hoja2_expediente_tecnico.js') }}">
 </script>
-<script src="{{ asset('js/Expediente_Tecnico/hoja3_expediente_tecnico.js') }}">
+<script src="{{ asset('js/Expediente_Tecnico/Asignacion/hoja3_expediente_tecnico.js') }}">
 </script>
-<script src="{{ asset('js/Expediente_Tecnico/hoja4_expediente_tecnico.js') }}">
+<script src="{{ asset('js/Expediente_Tecnico/Asignacion/hoja4_expediente_tecnico.js') }}">
 </script>
-<script src="{{ asset('js/Expediente_Tecnico/hoja5_expediente_tecnico.js') }}">
+<script src="{{ asset('js/Expediente_Tecnico/Asignacion/hoja5_expediente_tecnico.js') }}">
 </script>
-<script src="{{ asset('js/Expediente_Tecnico/hoja6_expediente_tecnico.js') }}">
+<script src="{{ asset('js/Expediente_Tecnico/Asignacion/hoja6_expediente_tecnico.js') }}">
 </script>
 @endsection

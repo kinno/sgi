@@ -235,8 +235,8 @@ function Triggers () {
 				type: 'POST',
 				success: function (data) {
 					console.log(data);
-					$('#programa').html(data[0]);
-					$('#id_proyecto_ep').html(data[1]);
+					$('#programa').html(data.programa);
+					$('#id_proyecto_ep').html(data.proyecto);
 					if ($('#id_proyecto_ep').val() != '0') {
 						$('#div_id_proyecto_ep').removeClass('has-error has-feedback');
 						$('#err_id_proyecto_ep').hide();

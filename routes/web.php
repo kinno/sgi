@@ -76,8 +76,8 @@ Route::group(['prefix' => 'Banco'], function () {
     Route::get('get_datos_comentarios/{id_evaluacion}', 'Banco\ConsultasBancoController@getComentariosDetail');
 });
 
-// Rutas Expediente Técnico
-Route::group(['prefix' => 'ExpedienteTecnico'], function () {
+// Rutas Expediente Técnico Asignacion
+Route::group(['prefix' => 'ExpedienteTecnico/Asignacion'], function () {
     Route::get('crear_expediente', 'ExpedienteTecnico\ExpedienteController@index')->name('creacionExpediente');
     Route::post('buscar_expediente', 'ExpedienteTecnico\ExpedienteController@buscar_expediente');
     Route::post('guardar_hoja_1', 'ExpedienteTecnico\ExpedienteController@guardar_hoja_1');
@@ -101,6 +101,23 @@ Route::group(['prefix' => 'ExpedienteTecnico'], function () {
     Route::get('impresion_expediente/{id_expediente_tecnio}', 'ExpedienteTecnico\ExpedienteController@imprime_expediente');
 });
 
+// Rutas Expediente Técnico Autorizacion
+Route::group(['prefix' => 'ExpedienteTecnico/Autorizacion'], function () {
+    Route::get('crear_autorizacion', 'ExpedienteTecnico\AutorizacionExpedienteController@index')->name('creacionAutorizacion');
+    Route::get('crear_contrato/{id_obra}','ExpedienteTecnico\AutorizacionExpedienteController@crear_contrato')->name('crear_contrato');
+    Route::post('buscar_obra', 'ExpedienteTecnico\AutorizacionExpedienteController@buscar_obra');
+    Route::post('generar_autorizacion', 'ExpedienteTecnico\AutorizacionExpedienteController@generar_autorizacion');
+});
+
+// Rutas Expediente Técnico Revision
+Route::group(['prefix' => 'ExpedienteTecnico/Revision'], function () {
+    Route::get('revision_expediente_tecnico', 'ExpedienteTecnico\RevisionExpedienteController@index')->name('revision_expediente');
+    Route::get('get_datos_revision', 'ExpedienteTecnico\RevisionExpedienteController@get_data_revision');
+    Route::post('aceptar_expediente', 'ExpedienteTecnico\ExpedienteController@cambiar_estatus');
+    Route::post('regresar_observaciones', 'ExpedienteTecnico\RevisionExpedienteController@regresar_observaciones');
+    Route::get('impresion_expediente/{id_expediente_tecnio}', 'ExpedienteTecnico\ExpedienteController@imprime_expediente');
+});
+
 // Rutas Oficios
 Route::group(['prefix' => 'Oficios'], function() {
     Route::get('crear_oficios', 'Oficios\OficiosController@index')->name('creacionOficios');
@@ -108,7 +125,9 @@ Route::group(['prefix' => 'Oficios'], function() {
     Route::post('buscar_obra', 'Oficios\OficiosController@buscar_obra');
     Route::get('get_data_fuentes/{id_det_obra}', 'Oficios\OficiosController@get_data_fuentes');
     Route::get('get_data_obras/{id_oficio}', 'Oficios\OficiosController@get_data_obras');
+    Route::post('cargar_textos', 'Oficios\OficiosController@cargar_texto');
     Route::post('guardar', 'Oficios\OficiosController@guardar');
+    Route::get('imprimir_oficio/{id_oficio}', 'Oficios\OficiosController@imprime_oficio');
     Route::get('textos_oficios', 'Oficios\TextoOficiosController@index')->name('controlTextos');
     Route::post('guardar_texto', 'Oficios\TextoOficiosController@guardar_texto');
     Route::post('buscar_texto', 'Oficios\TextoOficiosController@buscar_texto');

@@ -191,12 +191,12 @@ class ObraController extends Controller
 			$errors = $validator->errors()->toArray();
 			return array('errores' => $errors);
 		}
-		$data = $this->validaMonto($request, 'F', 0);
-		if (count($data) > 0)
-			return $data;
-		$data = $this->validaMonto($request, 'E', 0);
-		if (count($data) > 0)
-			return $data;
+		// $data = $this->validaMonto($request, 'F', 0);
+		// if (count($data) > 0)
+		// 	return $data;
+		// $data = $this->validaMonto($request, 'E', 0);
+		// if (count($data) > 0)
+		// 	return $data;
 		$data = array();
 		try {
 			$d_obra  = new D_Obra($request->only(['id_modalidad_ejecucion', 'ejercicio', 'id_clasificacion_obra', 'id_sector', 'id_unidad_ejecutora', 'nombre', 'justificacion', 'caracteristicas', 'id_cobertura', 'localidad', 'id_proyecto_ep', 'id_grupo_social']));

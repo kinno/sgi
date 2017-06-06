@@ -11,7 +11,7 @@ function guardarHoja5() {
     var valoresh5 = $("#form_anexo_cinco").serialize();
     $.ajax({
         data: valoresh5,
-        url: '/ExpedienteTecnico/guardar_hoja_5',
+        url: '/ExpedienteTecnico/Asignacion/guardar_hoja_5',
         type: 'post',
         beforeSend: function() {
             $("#divLoading").show();

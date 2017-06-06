@@ -143,7 +143,7 @@ function guardarHoja1() {
     var valoresh1 = $("#form_anexo_uno").serialize();
     $.ajax({
         data: valoresh1,
-        url: '/ExpedienteTecnico/guardar_hoja_1',
+        url: '/ExpedienteTecnico/Asignacion/guardar_hoja_1',
         type: 'post',
         beforeSend: function() {
             $("#divLoading").show();

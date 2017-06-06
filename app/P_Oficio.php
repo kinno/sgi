@@ -15,4 +15,8 @@ class P_Oficio extends Model
     public function tipo_solicitud(){
     	return $this->hasOne('App\Cat_Solicitud_Presupuesto','id','id_solicitud_presupuesto');
     }
+
+    public function frase_ejercicio(){
+    	return $this->hasOne('App\Cat_Ejercicio','ejercicio','ejercicio');
+    }
 }

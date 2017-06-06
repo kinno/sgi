@@ -12,7 +12,7 @@ function guardarHoja6() {
     var valoresh6 = $("#form_anexo_seis").serialize();
     $.ajax({
         data: valoresh6,
-        url: '/ExpedienteTecnico/guardar_hoja_6',
+        url: '/ExpedienteTecnico/Asignacion/guardar_hoja_6',
         type: 'post',
         beforeSend: function() {
             $("#divLoading").show();

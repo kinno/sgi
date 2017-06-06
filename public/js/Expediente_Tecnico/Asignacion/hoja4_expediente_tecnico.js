@@ -54,7 +54,7 @@ function initDataPrograma(id_expediente_tecnico) {
         "destroy": true,
         processing: false,
         serverSide: false,
-        ajax: '/ExpedienteTecnico/get_data_programa/' + id_expediente_tecnico,
+        ajax: '/ExpedienteTecnico/Asignacion/get_data_programa/' + id_expediente_tecnico,
         columns: [{
             data: 'id',
             name: 'id'
@@ -382,7 +382,7 @@ function guardarHoja4() {
                 'avanceFinanciero': avanceFinanciero,
                 'id_expediente_tecnico': exp,
             },
-            url: '/ExpedienteTecnico/guardar_hoja_4',
+            url: '/ExpedienteTecnico/Asignacion/guardar_hoja_4',
             type: 'post',
             beforeSend: function() {
                 $("#divLoading").show();
