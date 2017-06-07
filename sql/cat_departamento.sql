@@ -2,7 +2,8 @@
 SQLyog Community v8.71 
 MySQL - 5.5.29 : Database - sgiweb_db
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -19,7 +20,7 @@ CREATE TABLE `cat_departamento` (
   `id_area` tinyint(4) NOT NULL,
   `id_reponsable` smallint(6) NOT NULL,
   `nombre` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
-  `bctivo` tinyint(4) NOT NULL,
+  `bactivo` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='catálogo de los departamentos';
 
