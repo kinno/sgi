@@ -20,6 +20,7 @@ use App\Cat_Region;
 use App\Cat_Municipio;
 use App\Cat_Cobertura;
 use App\User;
+use App\Cat_Estatus_Oficio;
 
 trait Funciones
 {
@@ -234,6 +235,13 @@ trait Funciones
 	{
 		$grupos	= Cat_Grupo_Social::orderBy('nombre', 'ASC')->get()->toArray();
 		$opciones = $this->llena_combo($grupos, $id_grupo, 'nombre', 'id', true, false);
+		return $opciones;
+	}
+
+	public function opcionesEstadoOficio ($id_estatus = 0)
+	{
+		$estados = Cat_Estatus_Oficio::where('id', '<=', 2)->get()->toArray();
+		$opciones = $this->llena_combo($estados, $id_estatus);
 		return $opciones;
 	}
 

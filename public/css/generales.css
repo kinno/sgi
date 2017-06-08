@@ -1,4 +1,4 @@
-.fecha {
+.fecha[readonly]:enabled {
     cursor: pointer !important;
 }
 
