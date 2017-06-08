@@ -7,7 +7,14 @@
 	$fecha_completa = $fecha->day." de ".$meses[$fecha->month]." del ".$fecha->year;
 	$montoTotal = 0;
 	foreach ($oficio->detalle as $value) {
-		$montoTotal += (double)$value->monto;
+         if ($oficio->id_solicitud_presupuesto == 1 || $id_solicitud_presupuesto == 9) {
+            $montoTotal += (double)$value->asignado;
+            } else if ($id_solicitud_presupuesto == 2) {
+                $montoTotal += (double)$value->autorizado;
+            } else {
+                $montoTotal += (double)$value->autorizado;
+            }
+		
 	}
 	// NumeroALetras::convertir($montoTotal, 'de pesos', 'centimos');
 @endphp
@@ -20,6 +27,7 @@
 
 
 }
+@page rotated { size: landscape; }
 html {
     font-family: franklin !important;
 
@@ -29,6 +37,7 @@ html {
     margin-top: 100px;
     margin-bottom: 0px;
     height: 100%;
+    page-break-after: always;
    
 }
 
@@ -79,6 +88,10 @@ p {
     bottom: 0;
     /*transform: scale(1, .9) !important;*/
 }
+
+.historial{
+    page: rotated;
+
 </style>
 <div class="contenedor">
     <div class="leyenda">
@@ -124,4 +137,7 @@ p {
         {{$oficio->iniciales}}
         
     </div>
+</div>
+<div class="historial">
+    <h1>DETALLE DEL HISTORIAL DE LAS OBRAS</h1>
 </div>

@@ -56,19 +56,35 @@
     <div class="panel-body form form-horizontal">
         <div class="row form-group form-group-sm col-md-12">
             <label class="col-md-2 control-label" for="nosolicitud">
+                Obra:
+            </label>
+            <div class="col-md-2">
+                <input class="form-control input-sm enc" id="id_obra_search" name="id_obra_search" placeholder="" type="text">
+                </input>
+            </div>
+            <label class="col-md-1 control-label" for="encejercicio">
+                Ejercicio:
+            </label>
+            <div class="col-md-2">
+                <select class="form-control" id="ejercicio">
+                    @foreach ($ejercicios as $value)
+                        <option value="{{$value->ejercicio}}">{{$value->ejercicio}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-1">
+                <span class="btn btn-default btn-sm fa fa-search" id="buscar"></span>
+            </div>
+        </div>
+        <div class="row form-group form-group-sm col-md-12">
+            <label class="col-md-2 control-label" for="nosolicitud">
                 Solicitud Actual:
             </label>
             <div class="col-md-2">
                 <input class="form-control input-sm enc" id="id_solicitud_presupuesto" name="id_solicitud_presupuesto" placeholder="" readonly="true" type="text">
                 </input>
             </div>
-            <label class="col-md-1 control-label" for="encejercicio">
-                Ejercicio:
-            </label>
-            <div class="col-md-1">
-                <input class="form-control input-sm enc" id="ejercicio" name="ejercicio" placeholder="" readonly="true" type="text">
-                </input>
-            </div>
+            
             <label class="col-md-2 control-label" for="encmonto">
                 Monto Asignado:
             </label>

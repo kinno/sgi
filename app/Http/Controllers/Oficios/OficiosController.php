@@ -51,13 +51,14 @@ class OficiosController extends Controller
             ]));
         $ejercicios    = Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get();
         $tipoSolicitud = Cat_Solicitud_Presupuesto::all();
+        $unidad_ejecutora = Cat_Unidad_Ejecutora::all();
         $fuentes       = Cat_Fuente::where('tipo', '=', 'F')
             ->orWhere('tipo', '=', 'E')
             ->get();
 
         // $iniciales .= $departamento->area->responsable->iniciales . "/".$departamento->responsable->iniciales;
 
-        return view('Oficios.crear_index', compact('tipoSolicitud', 'ejercicios', 'barraMenu', 'fuentes'));
+        return view('Oficios.crear_index', compact('tipoSolicitud', 'ejercicios', 'barraMenu', 'fuentes','unidad_ejecutora'));
     }
 
     public function buscar_oficio(Request $request)
@@ -127,9 +128,11 @@ class OficiosController extends Controller
     public function get_data_obras($id_oficio)
     {
 
-        $obras = D_Oficio::with('fuentes', 'principal_oficio.tipo_solicitud')
+        $obras = D_Oficio::with('fuentes', 'principal_oficio.tipo_solicitud','unidad_ejecutora')
             ->where('id_oficio', '=', $id_oficio);
+
         return \Datatables::of($obras)
+        ->editColumn('monto', '{{$asignado + $autorizado}}')
             ->make(true);
     }
 
@@ -148,16 +151,16 @@ class OficiosController extends Controller
 
         $cpp        = "";
         $claveArray = array('gem', 'sf', 'scem', 'sscec', 'dgi', 'dgids', 'uaag');
-        $i=0;
+        $i          = 0;
         foreach ($claveArray as $value) {
-            if($i>0){
+            if ($i > 0) {
                 $tab = "\t";
-            }else{
-                $tab="";
+            } else {
+                $tab = "";
             }
             $servidor = Cat_Servidor_Publico::where('clave', '=', $value)
                 ->first();
-            $cpp .= $tab.$servidor->nombre . ".- " . $servidor->cargo . ".\n";
+            $cpp .= $tab . $servidor->nombre . ".- " . $servidor->cargo . ".\n";
             $i++;
         }
 
@@ -217,7 +220,7 @@ class OficiosController extends Controller
             $p_oficio->texto                    = $request->texto;
             $p_oficio->save();
 
-            $ids              = $this->guardarDetalle($p_oficio->id, $request->obras, $request->obras_eliminadas);
+            $ids              = $this->guardarDetalle($p_oficio->id, $p_oficio->id_solicitud_presupuesto, $request->obras, $request->obras_eliminadas);
             $ids['clave']     = $p_oficio->clave;
             $ids['id_oficio'] = $p_oficio->id;
             DB::commit();
@@ -233,7 +236,7 @@ class OficiosController extends Controller
 
     }
 
-    public function guardarDetalle($id_oficio, $obras, $obrasEliminadas)
+    public function guardarDetalle($id_oficio, $tipo, $obras, $obrasEliminadas)
     {
         $arrayIds = array();
         foreach ($obras as $value) {
@@ -247,8 +250,16 @@ class OficiosController extends Controller
             $d_oficio->id_oficio   = $id_oficio;
             $d_oficio->id_det_obra = $value['id_det_obra'];
             $d_oficio->id_fuente   = $value['id_fuente'];
-            $d_oficio->monto       = $value['monto'];
-
+            $d_oficio->id_unidad_ejecutora   = $value['id_unidad_ejecutora'];
+            if ($tipo == 1 || $tipo == 9) {
+                $d_oficio->asignado = $value['monto'];
+            } else if ($tipo == 2) {
+                $d_oficio->autorizado = $value['monto'];
+            } else {
+                $d_oficio->asignado = $value['monto'];
+                $d_oficio->autorizado = $value['monto'];
+            }
+            
             $d_oficio->save();
             array_push($arrayIds, $d_oficio->id);
         }
@@ -280,8 +291,8 @@ class OficiosController extends Controller
             ->with('frase_ejercicio')
             ->find($id_oficio);
 
-        
         $pdf = \PDF::loadView('PDF/oficio', compact('oficio'));
+
         return $pdf->stream('Oficio_' . $oficio->clave . '.pdf');
 
         return view('PDF/oficio', compact('oficio'));

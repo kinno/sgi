@@ -72,6 +72,23 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group form-group-sm">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-md-2 control-label">
+                            Unidad Ejecutora:
+                        </label>
+                        <div class="col-md-10">
+                            <select class="form-control" id="id_unidad_ejecutora_select" name="id_unidad_ejecutora_select">
+                                <option></option>
+                                @foreach ($unidad_ejecutora as $element)
+                                    <option value="{{$element->id}}">{{$element->nombre}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="divFuentes">
                 <div class="form-group form-group-sm">
                     <div class="col-md-12">

@@ -8,7 +8,7 @@ $(document).ready(function() {
         if ($("#id_obra_search").val() == "") {
             $("#id_obra_search").notify("Se debe introducir la Obra a buscar");
         } else {
-            buscarObra($("#id_obra_search").val());
+            buscarObra($("#id_obra_search").val(),$("#ejercicio").val());
         }
     });
     $("#agregarContrato").on('click', function(event) {
@@ -29,10 +29,11 @@ $(document).ready(function() {
     });
 });
 
-function buscarObra(id_obra) {
+function buscarObra(id_obra,ejercicio) {
     $.ajax({
         data: {
             id_obra: id_obra,
+            ejercicio: ejercicio,
         },
         url: '/ExpedienteTecnico/Autorizacion/buscar_obra',
         type: 'post',

@@ -30,6 +30,12 @@
                             <th>
                                 Fuente
                             </th>
+                            <th>
+                                id_unidad_ejecutora
+                            </th>
+                            <th>
+                                Unidad Ejecutora
+                            </th>
                             <th style="text-align: right;">
                                 Monto
                             </th>

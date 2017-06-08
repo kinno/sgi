@@ -39,13 +39,13 @@ jQuery(document).ready(function($) {
         autoclose: true
     });
     $("#checkAll").change(function() {
-        if($(this).is(':checked')){
-            $(".seleccion").each(function(){
-                $(this).prop("checked",true);
+        if ($(this).is(':checked')) {
+            $(".seleccion").each(function() {
+                $(this).prop("checked", true);
             });
-        }else{
-            $(".seleccion").each(function(){
-                $(this).prop("checked",false);
+        } else {
+            $(".seleccion").each(function() {
+                $(this).prop("checked", false);
             });
         }
     });
@@ -136,6 +136,12 @@ function initDataOficios(id_oficio) {
             "data": 'fuentes.descripcion',
             "name": 'fuente'
         }, {
+            "data": 'id_unidad_ejecutora',
+            "name": 'id_unidad_ejecutora'
+        }, {
+            "data": 'unidad_ejecutora.nombre',
+            "name": 'unidad_ejecutora'
+        }, {
             "data": 'monto',
             "name": 'monto'
         }, {
@@ -143,7 +149,7 @@ function initDataOficios(id_oficio) {
             "defaultContent": '<span  class="btn btn-danger btn-sm fa fa-trash" title="Eliminar fuente" style="cursor:hand;" onClick="eliminar(this);"></span>'
         }],
         "fnCreatedRow": function(nRow, aData, iDataIndex) {
-            var cell = tablaObras.cell(nRow, 6).node();
+            var cell = tablaObras.cell(nRow, 8).node();
             $(cell).addClass('number');
         },
         "drawCallback": function(settings) {
@@ -154,6 +160,7 @@ function initDataOficios(id_oficio) {
     tablaObras.column(0).visible(false); //ID 
     tablaObras.column(2).visible(false); //ID 
     tablaObras.column(4).visible(false); //ID 
+    tablaObras.column(6).visible(false); //ID 
 }
 
 function buscarOficio() {
@@ -205,7 +212,7 @@ function buscarObra() {
             id_obra: $("#id_obra").val(),
             id_tipo_solicitud: $("#id_tipo_solicitud").val(),
             id_sector: $("#id_sector").val(),
-            id_unidad_ejecutora :  $("#id_unidad_ejecutora").val()
+            id_unidad_ejecutora: $("#id_unidad_ejecutora").val()
         },
         url: '/Oficios/buscar_obra',
         type: 'post',
@@ -221,17 +228,15 @@ function buscarObra() {
                     // $("#tablaFuentes").show();
                     // console.log(response);
                     $("#nombre_obra").val(response.nombre);
-                    if(response.id_sector !== 4){
+                    if (response.id_sector !== 4) {
                         $("#id_sector_tmp").val(response.id_sector);
                         $("#id_unidad_ejecutora_tmp").val('');
-                    }else{
+                    } else {
                         $("#id_unidad_ejecutora_tmp").val(response.id_unidad_ejecutora);
                         $("#id_sector_tmp").val('');
                     }
+                    $("#id_unidad_ejecutora_select").val(response.id_unidad_ejecutora);
                     initDataFuentes(response.id);
-                    
-                    
-
                 }
             } else {
                 $("#id_obra").notify(response.error, "error");
@@ -264,24 +269,29 @@ function agregarObra() {
             fuentes: {
                 descripcion: datosFila['fuentes']['descripcion']
             },
+            id_unidad_ejecutora: $("#id_unidad_ejecutora_select").val(),
+            unidad_ejecutora: {
+                nombre: $("#id_unidad_ejecutora_select option:selected").text()
+            },
             monto: datosFila['monto']
         }
         tablaObras.row.add(objObra).draw('false');
     });
     var datosFila = tablaFuentes.row(0).data();
     $('#id_fuente').val(datosFila['id_fuente']);
-
-    if($("#id_sector_tmp").val()!==''){ // ES SECTOR DIFERENTE A AYUNTAMIENTOS
+    if ($("#id_sector_tmp").val() !== '') { // ES SECTOR DIFERENTE A AYUNTAMIENTOS
         $("#id_sector").val($("#id_sector_tmp").val());
         $("#id_sector_tmp").val('');
-        
-    }else{                              // ES SECTOR AYUNTAMIENTOS
+    } else { // ES SECTOR AYUNTAMIENTOS
         $("#id_unidad_ejecutora").val($("#id_unidad_ejecutora_tmp").val());
         $("#id_unidad_ejecutora_tmp").val('');
     }
-    
     $("#nombre_obra").val('');
     $("#id_obra").val('');
+    $("#id_unidad_ejecutora_select").val('');
+    if ($("#checkAll").is(':checked')) {
+        $("#checkAll").prop("checked", false);
+    }
     tablaFuentes.clear().draw();
 }
 
@@ -328,19 +338,19 @@ function buscaTexto() {
                     $("#iniciales").val(response.iniciales);
                 } else {
                     $("#id").val("");
-                     $("#asunto").val();
+                    $("#asunto").val();
                     $("#prefijo").val();
                     $("#texto").val();
                     $("#titular").val();
                     $("#ccp").val();
-                     $("#iniciales").val();
+                    $("#iniciales").val();
                 }
             },
             error: function(response) {
                 console.log("Errores::", response);
             }
         });
-    } 
+    }
 }
 
 function guardarOficio() {
@@ -386,7 +396,7 @@ function guardarOficio() {
                     }
                     tablaObras.column(0).visible(false);
                     $("#id_oficio").val(response.id_oficio);
-                    BootstrapDialog.mensaje(null, "Se guardo el Oficio: " + response.clave, 1,function(){
+                    BootstrapDialog.mensaje(null, "Se guardo el Oficio: " + response.clave, 1, function() {
                         imprimeOficio(response.id_oficio);
                         location.reload();
                     });
