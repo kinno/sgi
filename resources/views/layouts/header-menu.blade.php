@@ -1,20 +1,20 @@
 <style type="text/css">
-    .menu-bar{
-    overflow: visible;
-    position: fixed; 
-    left:0;
-    top:50px;
-    z-index: 1;
-    height: auto;
-    width: 100%;
-    background-color: #F1F1F1;
-    color: #2B2B2B;
-    border-bottom: 1px solid #C2C2C2;
-    }
-    .botones{
-            right: 10px;
-    top: 10px;
-    }
+	.menu-bar{
+	overflow: visible;
+	position: fixed; 
+	left:0;
+	top:50px;
+	z-index: 1;
+	height: auto;
+	width: 100%;
+	background-color: #F1F1F1;
+	color: #2B2B2B;
+	border-bottom: 1px solid #C2C2C2;
+	}
+	.botones{
+			right: 10px;
+	top: 10px;
+	}
 </style>
 @isset ($barraMenu)
 <div class="menu-bar">

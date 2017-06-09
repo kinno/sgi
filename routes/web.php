@@ -132,6 +132,9 @@ Route::group(['prefix' => 'Oficios'], function() {
     Route::get('textos_oficios', 'Oficios\TextoOficiosController@index')->name('controlTextos');
     Route::post('guardar_texto', 'Oficios\TextoOficiosController@guardar_texto');
     Route::post('buscar_texto', 'Oficios\TextoOficiosController@buscar_texto');
+    Route::get('firma_oficios', 'Oficios\EstatusOficioController@index')->name('firmaOficios');
+    Route::post('buscar_ofi', 'Oficios\EstatusOficioController@buscar_oficio');
+    Route::post('guarda_firma', 'Oficios\EstatusOficioController@guardar');
 });
 
 // Rutas Catalogo - Sector

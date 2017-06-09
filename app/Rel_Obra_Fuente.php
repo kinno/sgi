@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rel_Obra_Fuente extends Model
 {
     protected $table = "rel_obra_fuente";
+    public $timestamps = false;
 
     public function fuentes()
     {
