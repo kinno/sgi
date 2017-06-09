@@ -56,4 +56,14 @@ class D_Obra extends Model
     public function modalidad_ejecucion(){
         return $this->belongsTo('App\Cat_Modalidad_Ejecucion', 'id_modalidad_ejecucion');
     }
+
+    public function tipo_obra()
+    {
+        return $this->belongsTo('App\Cat_Tipo_Obra', 'id_tipo_obra');
+    }
+
+    public function detalles_oficio()
+    {
+        return $this->hasMany('App\D_Oficio', 'id_det_obra');
+    }
 }

@@ -31,6 +31,7 @@ class ObraController extends Controller
 		'id_modalidad_ejecucion'	=> 'not_in:0',
 		'ejercicio'					=> 'not_in:0',
 		'id_clasificacion_obra'		=> 'not_in:0',
+		'id_tipo_obra'				=> 'not_in:0',
 		'id_sector'					=> 'not_in:0',
 		'id_unidad_ejecutora'		=> 'not_in:0',
 		'nombre'					=> 'required',
@@ -52,6 +53,7 @@ class ObraController extends Controller
 			'id_modalidad_ejecucion.not_in'		=> 'Seleccione Modalidad de Ejecución',
 			'ejercicio.not_in'					=> 'Seleccione Ejercicio',
 			'id_clasificacion_obra.not_in'		=> 'Seleccione Clasificación de la Obra',
+			'id_tipo_obra.not_in'				=> 'Seleccione Tipo de Obra',
 			'id_sector.not_in'					=> 'Seleccione Sector',
 			'id_unidad_ejecutora.not_in'		=> 'Seleccione Unidad Ejecutora',
 			'nombre.required'					=> 'Introduzca nombre de la Obra',
@@ -98,6 +100,7 @@ class ObraController extends Controller
 		$opciones += $this->opcionesEjercicio();
 		$opciones['modalidad'] = $this->opcionesModalidadEjecucion();
 		$opciones['clasificacion'] = $this->opcionesClasificacion();
+		$opciones['tipo_obra'] = $this->opcionesTipoObra();
 		$opciones += $this->opcionesSector(0, 0, true, $ids_Sector, true);
 		$opciones['cobertura'] = $this->opcionesCobertura();
 		$opciones['region'] = $this->opcionesRegion();
@@ -133,7 +136,7 @@ class ObraController extends Controller
 				return ($error);
 			}
 			if ($expediente->relacion->id_det_obra != 0) {
-				$error['error'] = "Este expediente, ya tiene relacionada una obra";
+				$error['error'] = "Este expediente ya tiene relacionada una obra";
 				return ($error);
 			}
 			if (!in_array($expediente->hoja1->id_sector, $ids_Sector)) {
@@ -161,6 +164,7 @@ class ObraController extends Controller
 		$ids_Sector = $this->getIdsSectores();
 		try {
 			$obra = D_Obra::with(['acuerdos', 'fuentes', 'regiones', 'municipios', 'relacion', 'sector'])->where('id_obra', $request->id_obra)->where('ejercicio', $request->ejercicio)->first();
+			$obra['has_oficios'] = $this->hasOficios($obra);
 			if (count($obra) == 0) {
 				$error['error'] = 'No existe Obra '.$request->id_obra.' en ejercicio '.$request->ejercicio;
 				return $error;
@@ -199,7 +203,7 @@ class ObraController extends Controller
 		// 	return $data;
 		$data = array();
 		try {
-			$d_obra  = new D_Obra($request->only(['id_modalidad_ejecucion', 'ejercicio', 'id_clasificacion_obra', 'id_sector', 'id_unidad_ejecutora', 'nombre', 'justificacion', 'caracteristicas', 'id_cobertura', 'localidad', 'id_proyecto_ep', 'id_grupo_social']));
+			$d_obra  = new D_Obra($request->only(['id_modalidad_ejecucion', 'ejercicio', 'id_clasificacion_obra', 'id_tipo_obra', 'id_sector', 'id_unidad_ejecutora', 'nombre', 'justificacion', 'caracteristicas', 'id_cobertura', 'localidad', 'id_proyecto_ep', 'id_grupo_social']));
 			if ($request->id_cobertura <= 2)
 				$d_obra->id_municipio = $request->id_cobertura;
 			else if (count($request->id_municipio) > 1)
@@ -286,77 +290,86 @@ class ObraController extends Controller
 			$errors = $validator->errors()->toArray();
 			return array('errores' => $errors);
 		}
+		/*
 		$data = $this->validaMonto($request, 'F', $request->id_det_obra);
 		if (count($data) > 0)
 			return $data;
 		$data = $this->validaMonto($request, 'E', $request->id_det_obra);
 		if (count($data) > 0)
 			return $data;
+		*/
 		$data = array();
 		try {
 			$d_obra = D_Obra::find($request->id_det_obra);
-			$d_obra->id_modalidad_ejecucion = $request->id_modalidad_ejecucion;
-			$d_obra->ejercicio = $request->ejercicio;
+			$has_oficios = $this->hasOficios($obra);			
 			$d_obra->id_clasificacion_obra = $request->id_clasificacion_obra;
-			$d_obra->id_sector = $request->id_sector;
-			$d_obra->id_unidad_ejecutora = $request->id_unidad_ejecutora;
-			$d_obra->nombre = $request->nombre;
-			$d_obra->justificacion = $request->justificacion;
-			$d_obra->caracteristicas = $request->caracteristicas;
-			$d_obra->id_cobertura = $request->id_cobertura;
-			$d_obra->localidad = $request->localidad;
-			$d_obra->id_proyecto_ep = $request->id_proyecto_ep;
+			$d_obra->id_tipo_obra = $request->id_tipo_obra;
 			$d_obra->id_grupo_social = $request->id_grupo_social;
-			if ($request->id_cobertura <= 2)
-				$d_obra->id_municipio = $request->id_cobertura;
-			else if (count($request->id_municipio) > 1)
-				$d_obra->id_municipio = 3;
-			else
-				$d_obra->id_municipio = $request->id_municipio[0] + 3;
-			DB::transaction(function () use ($d_obra, $request) {
+			if (!$has_oficios) {
+				$d_obra->id_modalidad_ejecucion = $request->id_modalidad_ejecucion;
+				$d_obra->ejercicio = $request->ejercicio;
+				$d_obra->id_sector = $request->id_sector;
+				$d_obra->id_unidad_ejecutora = $request->id_unidad_ejecutora;
+				$d_obra->nombre = $request->nombre;
+				$d_obra->justificacion = $request->justificacion;
+				$d_obra->caracteristicas = $request->caracteristicas;
+				$d_obra->id_cobertura = $request->id_cobertura;
+				$d_obra->localidad = $request->localidad;
+				$d_obra->id_proyecto_ep = $request->id_proyecto_ep;
+				
+				if ($request->id_cobertura <= 2)
+					$d_obra->id_municipio = $request->id_cobertura;
+				else if (count($request->id_municipio) > 1)
+					$d_obra->id_municipio = 3;
+				else
+					$d_obra->id_municipio = $request->id_municipio[0] + 3;
+			}
+			DB::transaction(function () use ($d_obra, $request, $has_oficios) {
 				$d_obra->save();
-				// fuentes
-				$syncArray = array();
-				if (isset($request->fuente_federal[0]) && $request->fuente_federal[0] > 0)
-					foreach ($request->fuente_federal as $key => $value) {
-					   $syncArray[$value] = array('id_det_obra' => $d_obra->id,
-							'monto' => $request->monto_federal[$key],
-							'cuenta' => $request->cuenta_federal[$key],
-							'partida' => $request->partida_federal[$key],
-							'tipo_fuente' => 'F');
-					}
-				if (isset($request->fuente_estatal[0]) && $request->fuente_estatal[0] > 0)
-					foreach ($request->fuente_estatal as $key => $value) {
-						$syncArray[$value] = array('id_det_obra' => $d_obra->id,
-						'monto' => $request->monto_estatal[$key],
-						'cuenta' => $request->cuenta_estatal[$key],
-						'partida' => $request->partida_estatal[$key],
-						'tipo_fuente' => 'E' );
-					}
-				$d_obra->fuentes()->sync($syncArray);
-				// acuerdos
-				if (isset($request->id_acuerdo_fed) && isset($request->id_acuerdo_est))
-					$acciones = array_merge($request->id_acuerdo_fed, $request->id_acuerdo_est);
-				elseif (isset($request->id_acuerdo_fed) && !isset($request->id_acuerdo_est))
-					$acciones = $request->id_acuerdo_fed;
-				elseif (!isset($request->id_acuerdo_fed) && isset($request->id_acuerdo_est))
-					$acciones = $request->id_acuerdo_est;
-				else
-					$acciones = null;
-				if (isset($acciones))
-					$d_obra->acuerdos()->sync($acciones);
-				else
-					$d_obra->acuerdos()->detach();
-				// regiones
-				if (isset($request->id_region))
-					$d_obra->regiones()->sync($request->id_region);
-				else
-					$d_obra->regiones()->detach();
-				// municipios
-				if (isset($request->id_municipio))
-					$d_obra->municipios()->sync($request->id_municipio);
-				else
-					$d_obra->municipios()->detach();
+				if (!$has_oficios) {
+					// fuentes
+					$syncArray = array();
+					if (isset($request->fuente_federal[0]) && $request->fuente_federal[0] > 0)
+						foreach ($request->fuente_federal as $key => $value) {
+						   $syncArray[$value] = array('id_det_obra' => $d_obra->id,
+								'monto' => $request->monto_federal[$key],
+								'cuenta' => $request->cuenta_federal[$key],
+								'partida' => $request->partida_federal[$key],
+								'tipo_fuente' => 'F');
+						}
+					if (isset($request->fuente_estatal[0]) && $request->fuente_estatal[0] > 0)
+						foreach ($request->fuente_estatal as $key => $value) {
+							$syncArray[$value] = array('id_det_obra' => $d_obra->id,
+							'monto' => $request->monto_estatal[$key],
+							'cuenta' => $request->cuenta_estatal[$key],
+							'partida' => $request->partida_estatal[$key],
+							'tipo_fuente' => 'E' );
+						}
+					$d_obra->fuentes()->sync($syncArray);
+					// acuerdos
+					if (isset($request->id_acuerdo_fed) && isset($request->id_acuerdo_est))
+						$acciones = array_merge($request->id_acuerdo_fed, $request->id_acuerdo_est);
+					elseif (isset($request->id_acuerdo_fed) && !isset($request->id_acuerdo_est))
+						$acciones = $request->id_acuerdo_fed;
+					elseif (!isset($request->id_acuerdo_fed) && isset($request->id_acuerdo_est))
+						$acciones = $request->id_acuerdo_est;
+					else
+						$acciones = null;
+					if (isset($acciones))
+						$d_obra->acuerdos()->sync($acciones);
+					else
+						$d_obra->acuerdos()->detach();
+					// regiones
+					if (isset($request->id_region))
+						$d_obra->regiones()->sync($request->id_region);
+					else
+						$d_obra->regiones()->detach();
+					// municipios
+					if (isset($request->id_municipio))
+						$d_obra->municipios()->sync($request->id_municipio);
+					else
+						$d_obra->municipios()->detach();
+				}
 			});
 			$data['mensaje'] = "Datos guardados correctamente, Obra No: ".$d_obra->id_obra;
 			$data['error'] = 1;
@@ -425,5 +438,17 @@ class ObraController extends Controller
 			}
 		}
 		return $data;
+	}
+
+	public function hasOficios($obra)
+	{
+		if ($obra->asignado == 0) {
+			$respuesta = false;
+			if (count($obra->detalles_oficio) > 0) 
+				$respuesta = true;
+		}
+		else
+			$respuesta = true;
+		return $respuesta;
 	}
 }

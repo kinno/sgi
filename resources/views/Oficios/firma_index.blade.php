@@ -25,7 +25,7 @@
 			<div class="form-group form-group-sm" id="div_tipo_solicitud">
 				<label for="solicitud_presupuesto" class="col-md-2 control-label">Tipo de Solicitud:</label>
 				<div class="col-md-4">
-					<input type="text" class="form-control input-sm numero" id="solicitud_presupuesto" name="solicitud_presupuesto" readonly="readonly" />
+					<input type="text" class="form-control input-sm" id="solicitud_presupuesto" name="solicitud_presupuesto" readonly="readonly" />
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
@@ -36,9 +36,10 @@
 					</div>
 				</div>
 				<div id="div_fecha_firma">
-					<label for="fecha_firma" class="col-md-2 control-label">Firma:</label>
+					<label for="fecha_firma" class="col-md-2 control-label"><span class="obligatorio">*</span>Firma:</label>
 					<div class="col-md-2">
 						<input type="text" class="form-control fecha" id="fecha_firma" name="fecha_firma" readonly="readonly" />
+						<span id="err_fecha_firma" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
 					</div>
 				</div>
 			</div>
@@ -55,11 +56,11 @@
 			<table class="table table-striped tabla-condensada table-responsive">
 				<thead>
 					<tr>
-						<th width="10%">Obra</th>
-						<th width="30%">Fuente</th>
-						<th width="30%">Ejecutor</th>
-						<th width="15%">Asignado</th>
-						<th width="15%">Autorizado</th>
+						<th width="8%">Obra</th>
+						<th width="34%">Fuente</th>
+						<th width="34%">Ejecutor</th>
+						<th width="12%">Asignado</th>
+						<th width="12%">Autorizado</th>
 					</tr>
 				</thead>
 				<tbody id="detObras">

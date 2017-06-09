@@ -71,7 +71,7 @@
 					</div>
 				</div>
 				<div id="div_ejercicio">
-					<label for="ejercicio" class="col-md-1 control-label"><span class="obligatorio">*</span>Ejercicio:</label>
+					<label for="ejercicio" class="col-md-2 control-label"><span class="obligatorio">*</span>Ejercicio:</label>
 					<div class="col-md-2">
 						<select name="ejercicio" id="ejercicio" class="form-control">
 							{!! $opciones['ejercicio'] !!}
@@ -79,6 +79,8 @@
 						<span id="err_ejercicio" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" style="right: -7px"></span>
 					</div>
 				</div>
+			</div>
+			<div class="form-group form-group-sm">
 				<div id="div_id_clasificacion_obra">
 					<label for="id_clasificacion_obra" class="col-md-2 control-label"><span class="obligatorio">*</span>Clasificación de la Obra:</label>
 					<div class="col-md-2">
@@ -86,6 +88,15 @@
 							{!! $opciones['clasificacion'] !!}
 						</select>
 						<span id="err_id_clasificacion_obra" class="glyphicon glyphicon-remove form-control-feedback"  aria-hidden="true" style="right: -7px"></span>
+					</div>
+				</div>
+				<div id="div_id_tipo_obra">
+					<label for="id_tipo_obra" class="col-md-2 control-label"><span class="obligatorio">*</span>Tipo de Obra:</label>
+					<div class="col-md-2">
+						<select name="id_tipo_obra" id="id_tipo_obra" class="form-control">
+							{!! $opciones['tipo_obra'] !!}
+						</select>
+						<span id="err_id_tipo_obra" class="glyphicon glyphicon-remove form-control-feedback"  aria-hidden="true" style="right: -7px"></span>
 					</div>
 				</div>
 			</div>

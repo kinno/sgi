@@ -21,6 +21,7 @@ use App\Cat_Municipio;
 use App\Cat_Cobertura;
 use App\User;
 use App\Cat_Estatus_Oficio;
+use App\Cat_Tipo_Obra;
 
 trait Funciones
 {
@@ -197,6 +198,13 @@ trait Funciones
 	{
 		$clasificaciones = Cat_Clasificacion_Obra::get()->toArray();
 		$opciones = $this->llena_combo($clasificaciones, $id_clasificacion);
+		return $opciones;
+	}
+
+	public function opcionesTipoObra ($id_tipo = 0)
+	{
+		$tipo_obras = Cat_Tipo_Obra::get()->toArray();
+		$opciones = $this->llena_combo($tipo_obras, $id_tipo);
 		return $opciones;
 	}
 
