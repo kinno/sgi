@@ -27,7 +27,7 @@
             <input class="form-control {{$barraMenu['input']['class']}}" id="{{$barraMenu['input']['id']}}" name="{{$barraMenu['input']['id']}}" placeholder="Buscar" type="text" value=""/>
             @endisset
         @foreach ($barraMenu['botones'] as $boton)
-            <button class="btn {{$boton['tipo']}}" id="{{$boton['id']}}" title="{{$boton['title']}}">@isset($boton['texto'])
+            <button class="btn {{$boton['tipo']}}" id="{{$boton['id']}}" style="@isset($boton['style']){{$boton['style']}}@endisset" title="{{$boton['title']}}">@isset($boton['texto'])
                 {{$boton['texto']}}&nbsp;
             @endisset
             <span class="{{$boton['icono']}}" aria-hidden="true"></span>

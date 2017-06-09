@@ -23,4 +23,9 @@ class D_Oficio extends Model
     public function unidad_ejecutora(){
         return $this->hasOne('App\Cat_Unidad_Ejecutora','id','id_unidad_ejecutora');
     }
+
+    public function oficio(){
+         return $this->hasOne('App\P_Oficio','id','id_oficio');
+    }
+
 }

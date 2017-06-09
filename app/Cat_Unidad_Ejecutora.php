@@ -46,5 +46,8 @@ class Cat_Unidad_Ejecutora extends Model
         return $query;
     }
 
-    
+    public function obras()
+    {
+        return $this->belongsToMany('App\D_Obra','d_oficio','id_unidad_ejecutora', 'id_det_obra','id');
+    }
 }

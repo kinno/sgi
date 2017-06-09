@@ -77,10 +77,10 @@
     'italic' => $rootDir . '\lib\fonts\DejaVuSerif-Italic',
     'normal' => $rootDir . '\lib\fonts\DejaVuSerif',
   ),
-  'franklinb' => array(
-    'normal' => $fontDir . '\7d6eacea854aedd4860e3d0cd0cab68c',
-  ),
-  'franklin' => array(
+  'gotham-book' => array(
     'normal' => $fontDir . '\a8d1238218af0746e7f94f8269cda2e4',
+  ),
+  'gotham-medium' => array(
+    'normal' => $fontDir . '\3d939da44bfb5e8037a7bfbe0d024dae',
   ),
 ) ?>

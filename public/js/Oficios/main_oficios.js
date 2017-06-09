@@ -15,6 +15,7 @@ jQuery(document).ready(function($) {
             }
         }
     });
+    
     initDataFuentes(0);
     initDataOficios(0);
     $("#btnAgregar").on("click", function() {
@@ -37,6 +38,12 @@ jQuery(document).ready(function($) {
         weekStart: 1,
         format: "dd-mm-yyyy",
         autoclose: true
+    });
+    $("#imprimir_oficio").on('click', function(event) {
+        imprimeOficio($("#id_oficio").val());
+    });
+    $("#imprimir_detalle_oficio").on('click', function(event) {
+        imprimeDetalleOficio($("#id_oficio").val());
     });
     $("#checkAll").change(function() {
         if ($(this).is(':checked')) {
@@ -194,10 +201,12 @@ function buscarOficio() {
                     $("#iniciales").val(response.iniciales);
                     $("#texto").val(response.texto);
                     initDataOficios(response.id);
+                    $("#imprimir_oficio,#imprimir_detalle_oficio").show();
                 }
             } else {
                 $("#clave").notify(response.error, "error");
                 $("#id_oficio").val();
+                $("#imprimir_oficio #imprimir_detalle_oficio").hide();
             }
         },
         error: function(response) {
@@ -397,13 +406,13 @@ function guardarOficio() {
                     tablaObras.column(0).visible(false);
                     $("#id_oficio").val(response.id_oficio);
                     BootstrapDialog.mensaje(null, "Se guardo el Oficio: " + response.clave, 1, function() {
-                        imprimeOficio(response.id_oficio);
-                        location.reload();
+                        $("#imprimir_oficio,#imprimir_detalle_oficio").show();
                     });
                 }
                 // console.log(tablaObras.data());
             } else {
                 BootstrapDialog.mensaje(null, response.error, 3);
+                $("#imprimir_oficio,#imprimir_detalle_oficio").hide();
             }
         },
         error: function(response) {
@@ -415,6 +424,14 @@ function guardarOficio() {
 function imprimeOficio(id_oficio) {
     if (id_oficio) {
         window.open('/Oficios/imprimir_oficio/' + id_oficio + '', '_blank');
+    } else {
+        $("#clave").notify("No se ha ingresado ningún Oficio", "warn");
+    }
+}
+
+function imprimeDetalleOficio(id_oficio) {
+    if (id_oficio) {
+        window.open('/Oficios/imprimir_detalle_oficio/' + id_oficio + '', '_blank');
     } else {
         $("#clave").notify("No se ha ingresado ningún Oficio", "warn");
     }

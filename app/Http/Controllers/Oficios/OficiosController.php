@@ -44,21 +44,28 @@ class OficiosController extends Controller
                 'icono' => 'fa fa-save',
                 'title' => 'Guardar',
             ], [
-                'id'    => 'imprimir_expediente',
+                'id'    => 'imprimir_oficio',
                 'tipo'  => 'btn-success btn-sm',
-                'icono' => 'fa fa-file-pdf-o',
-                'title' => 'Imprimir Expediente Técnico',
+                'icono' => 'fa fa-file-text',
+                'title' => 'Imprimir Oficio',
+                'style' => 'display:none',
+            ], [
+                'id'    => 'imprimir_detalle_oficio',
+                'tipo'  => 'btn-success btn-sm',
+                'icono' => 'fa fa-file-text-o',
+                'title' => 'Imprimir Detalle de Oficio',
+                'style' => 'display:none',
             ]));
-        $ejercicios    = Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get();
-        $tipoSolicitud = Cat_Solicitud_Presupuesto::all();
+        $ejercicios       = Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get();
+        $tipoSolicitud    = Cat_Solicitud_Presupuesto::all();
         $unidad_ejecutora = Cat_Unidad_Ejecutora::all();
-        $fuentes       = Cat_Fuente::where('tipo', '=', 'F')
+        $fuentes          = Cat_Fuente::where('tipo', '=', 'F')
             ->orWhere('tipo', '=', 'E')
             ->get();
 
         // $iniciales .= $departamento->area->responsable->iniciales . "/".$departamento->responsable->iniciales;
 
-        return view('Oficios.crear_index', compact('tipoSolicitud', 'ejercicios', 'barraMenu', 'fuentes','unidad_ejecutora'));
+        return view('Oficios.crear_index', compact('tipoSolicitud', 'ejercicios', 'barraMenu', 'fuentes', 'unidad_ejecutora'));
     }
 
     public function buscar_oficio(Request $request)
@@ -128,11 +135,11 @@ class OficiosController extends Controller
     public function get_data_obras($id_oficio)
     {
 
-        $obras = D_Oficio::with('fuentes', 'principal_oficio.tipo_solicitud','unidad_ejecutora')
+        $obras = D_Oficio::with('fuentes', 'principal_oficio.tipo_solicitud', 'unidad_ejecutora')
             ->where('id_oficio', '=', $id_oficio);
 
         return \Datatables::of($obras)
-        ->editColumn('monto', '{{$asignado + $autorizado}}')
+            ->editColumn('monto', '{{$asignado + $autorizado}}')
             ->make(true);
     }
 
@@ -247,19 +254,19 @@ class OficiosController extends Controller
                 $d_oficio = new D_Oficio;
             }
 
-            $d_oficio->id_oficio   = $id_oficio;
-            $d_oficio->id_det_obra = $value['id_det_obra'];
-            $d_oficio->id_fuente   = $value['id_fuente'];
-            $d_oficio->id_unidad_ejecutora   = $value['id_unidad_ejecutora'];
+            $d_oficio->id_oficio           = $id_oficio;
+            $d_oficio->id_det_obra         = $value['id_det_obra'];
+            $d_oficio->id_fuente           = $value['id_fuente'];
+            $d_oficio->id_unidad_ejecutora = $value['id_unidad_ejecutora'];
             if ($tipo == 1 || $tipo == 9) {
                 $d_oficio->asignado = $value['monto'];
             } else if ($tipo == 2) {
                 $d_oficio->autorizado = $value['monto'];
             } else {
-                $d_oficio->asignado = $value['monto'];
+                $d_oficio->asignado   = $value['monto'];
                 $d_oficio->autorizado = $value['monto'];
             }
-            
+
             $d_oficio->save();
             array_push($arrayIds, $d_oficio->id);
         }
@@ -294,6 +301,34 @@ class OficiosController extends Controller
         $pdf = \PDF::loadView('PDF/oficio', compact('oficio'));
 
         return $pdf->stream('Oficio_' . $oficio->clave . '.pdf');
+
+        return view('PDF/oficio', compact('oficio'));
+    }
+
+    public function imprime_detalle_oficio($id_oficio)
+    {
+
+        $detalle = Cat_Unidad_Ejecutora::whereIn('id', D_Oficio::select(\DB::raw('distinct(id_unidad_ejecutora)'))
+                ->where('id_oficio', '=', $id_oficio)->get()->toArray())->get();
+        $oficio_actual = P_Oficio::with('tipo_solicitud','sector')->find($id_oficio);
+
+        foreach ($detalle as $value) {
+            $obras = D_Obra::with('detalle_oficios.oficio','detalle_oficios.fuentes','municipio_reporte')
+                ->whereIn('id',
+                    D_Oficio::
+                        select(\DB::raw('distinct(id_det_obra)'))
+                        ->where('id_oficio', '=', $id_oficio)
+                        ->where('id_unidad_ejecutora', '=', $value->id)
+                        ->get()->toArray()
+                )
+                ->get();
+
+            $value->obras = $obras;
+        }
+
+        $pdf = \PDF::loadView('PDF/detalle_oficio', compact('detalle','oficio_actual'))->setPaper('A4','landscape');;
+
+        return $pdf->stream('Detalle_Oficio_.pdf');
 
         return view('PDF/oficio', compact('oficio'));
     }

@@ -19,4 +19,10 @@ class P_Oficio extends Model
     public function frase_ejercicio(){
     	return $this->hasOne('App\Cat_Ejercicio','ejercicio','ejercicio');
     }
+
+    public function sector(){
+        return $this->hasOne('App\Cat_Sector','id','id_sector');
+    }
+
+    
 }

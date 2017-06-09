@@ -1,4 +1,4 @@
-{{-- {{dd($oficio)}} --}}
+{{-- {{dd($oficio->id_solicitud_presupuesto)}} --}}
 @php
 	$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
 	$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
@@ -7,9 +7,9 @@
 	$fecha_completa = $fecha->day." de ".$meses[$fecha->month]." del ".$fecha->year;
 	$montoTotal = 0;
 	foreach ($oficio->detalle as $value) {
-         if ($oficio->id_solicitud_presupuesto == 1 || $id_solicitud_presupuesto == 9) {
+         if ($oficio->id_solicitud_presupuesto == 1 || $oficio->id_solicitud_presupuesto == 9) {
             $montoTotal += (double)$value->asignado;
-            } else if ($id_solicitud_presupuesto == 2) {
+            } else if ($oficio->id_solicitud_presupuesto == 2) {
                 $montoTotal += (double)$value->autorizado;
             } else {
                 $montoTotal += (double)$value->autorizado;
@@ -19,17 +19,19 @@
 	// NumeroALetras::convertir($montoTotal, 'de pesos', 'centimos');
 @endphp
 <style type="text/css">
+     @font-face {
+        font-family: gotham-book;
+        src: url({{ asset('fonts/Gotham-Book.ttf') }}) format("truetype");
+        
+    }
     @font-face {
-    font-family: franklin;
-    src: url({{ asset('fonts/Gotham-Book.ttf') }}) format("truetype");
-    font-family: franklinB;
-    src: url({{ asset('fonts/Gotham-Medium.ttf') }}) format("truetype");
-
-
-}
+       
+        font-family: gotham-medium;
+        src: url({{ asset('fonts/Gotham-Medium.ttf') }}) format("truetype");
+    }
 @page rotated { size: landscape; }
 html {
-    font-family: franklin !important;
+    font-family: gotham-book !important;
 
 }
 .contenedor {
@@ -44,7 +46,7 @@ html {
 .leyenda {
     text-align: center;
     padding-bottom: 10px;
-    font-family: franklinB !important;
+    font-family: gotham-medium !important;
     /*transform: scale(1, .9) !important;*/
 }
 
@@ -62,7 +64,7 @@ p {
 
 .titular {
     text-align: left;
-    font-family: franklinB !important;
+    font-family: gotham-medium !important;
 }
 
 .texto {
@@ -74,12 +76,12 @@ p {
    
 }
 .monto{
-	font-family: franklinB !important;
+	font-family: gotham-medium !important;
 }
 .atentamente {
     text-align: center;
     padding-top: 20px;
-    font-family: franklinB !important;
+    font-family: gotham-medium !important;
     }
 
 .ccp {
@@ -90,8 +92,18 @@ p {
 }
 
 .historial{
-    page: rotated;
-
+background-color: gray;
+    height: 100%;
+    width: 100%;
+    /*transform: rotate(270deg);*/
+    /*transform-origin: left bottom 0;*/
+    /*page: rotated;*/
+}
+.tabla{
+     transform: rotate(270deg);
+    transform-origin: left bottom 0;
+    left: 100px;
+}
 </style>
 <div class="contenedor">
     <div class="leyenda">
@@ -137,7 +149,4 @@ p {
         {{$oficio->iniciales}}
         
     </div>
-</div>
-<div class="historial">
-    <h1>DETALLE DEL HISTORIAL DE LAS OBRAS</h1>
 </div>

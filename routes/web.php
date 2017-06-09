@@ -128,6 +128,7 @@ Route::group(['prefix' => 'Oficios'], function() {
     Route::post('cargar_textos', 'Oficios\OficiosController@cargar_texto');
     Route::post('guardar', 'Oficios\OficiosController@guardar');
     Route::get('imprimir_oficio/{id_oficio}', 'Oficios\OficiosController@imprime_oficio');
+    Route::get('imprimir_detalle_oficio/{id_oficio}', 'Oficios\OficiosController@imprime_detalle_oficio');
     Route::get('textos_oficios', 'Oficios\TextoOficiosController@index')->name('controlTextos');
     Route::post('guardar_texto', 'Oficios\TextoOficiosController@guardar_texto');
     Route::post('buscar_texto', 'Oficios\TextoOficiosController@buscar_texto');
