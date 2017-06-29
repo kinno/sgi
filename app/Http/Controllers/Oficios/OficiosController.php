@@ -139,7 +139,7 @@ class OficiosController extends Controller
             ->where('id_oficio', '=', $id_oficio);
 
         return \Datatables::of($obras)
-            ->editColumn('monto', '{{$asignado + $autorizado}}')
+            ->editColumn('monto', '{{($autorizado)?$autorizado:$asignado}}')
             ->make(true);
     }
 
@@ -212,6 +212,7 @@ class OficiosController extends Controller
             }
 
             $p_oficio->id_solicitud_presupuesto = $request->id_solicitud_presupuesto;
+            $p_oficio->id_recurso = ($request->id_solicitud_presupuesto==5) ? 2:1;
             $p_oficio->id_usuario               = \Auth::user()->id;
             $p_oficio->id_estatus               = 3;
             $p_oficio->ejercicio                = $request->ejercicio;
@@ -313,7 +314,7 @@ class OficiosController extends Controller
         $oficio_actual = P_Oficio::with('tipo_solicitud','sector')->find($id_oficio);
 
         foreach ($detalle as $value) {
-            $obras = D_Obra::with('detalle_oficios.oficio','detalle_oficios.fuentes','municipio_reporte')
+            $obras = D_Obra::with('detalles_oficio.oficio','detalles_oficio.fuentes','municipio_reporte','tipo_obra')
                 ->whereIn('id',
                     D_Oficio::
                         select(\DB::raw('distinct(id_det_obra)'))

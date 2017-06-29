@@ -3,12 +3,28 @@
 namespace App\Http\Controllers\ExpedienteTecnico;
 
 use App\Cat_Ejercicio;
+use App\Cat_Empresa;
+use App\Cat_Modalidad_Adjudicacion_Contrato;
+use App\Cat_Tipo_Contrato;
+use App\Cat_Tipo_Obra_Contrato;
+use App\D_Contrato;
 use App\D_Obra;
-use App\P_Expediente_Tecnico;
 use App\Http\Controllers\Controller;
+use App\P_Anexo_Cinco;
+use App\P_Anexo_Dos;
+use App\P_Anexo_Seis;
+use App\P_Anexo_Uno;
+use App\P_Avance_Financiero;
+use App\P_Contrato;
+use App\P_Expediente_Tecnico;
+use App\P_Historial_Obra_Expediente;
+use App\P_Presupuesto_Obra;
+use App\P_Programa_Contrato;
+use App\P_Avance_Financiero_Contrato;
 use App\Rel_Estudio_Expediente_Obra;
+use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
-use P_Anexo_Uno;
 
 class AutorizacionExpedienteController extends Controller
 {
@@ -19,7 +35,7 @@ class AutorizacionExpedienteController extends Controller
         $this->middleware(['auth', 'verifica.notificaciones']);
     }
 
-    public function index()
+    public function index($id_obra = null)
     {
         $barraMenu = array(
             'botones' => array([
@@ -33,30 +49,14 @@ class AutorizacionExpedienteController extends Controller
                 'icono' => 'fa fa-share-square',
                 'title' => 'Enviar a la DGI para revisión',
             ], [
-                'id'    => 'imprimir_expediente',
+                'id'    => 'imprimir_contrato',
                 'tipo'  => 'btn-success',
                 'icono' => 'fa fa-file-pdf-o',
-                'title' => 'Imprimir Expediente Técnico',
+                'title' => 'Imprimir Anexo 5',
             ]));
-        // $user              = \Auth::user()->load('unidad_ejecutora')->load('sectores');
+
         $ejercicios = Cat_Ejercicio::orderBy('ejercicio', 'DESC')->get();
-        // $tipoSolicitud     = Cat_Solicitud_Presupuesto::whereIn('id', array(1, 10, 11, 8))->get();
-        // $accionesFederales = Cat_Acuerdo::where('id_tipo', '=', 4)->get();
-        // $accionesEstatales = Cat_Acuerdo::where('id_tipo', '=', 1)
-        //     ->orWhere('id_tipo', '=', 2)
-        //     ->get();
-        // $coberturas     = Cat_Cobertura::where('id', '>', 0)->get();
-        // $localidades    = Cat_Tipo_Localidad::where('id', '>', 0)->get();
-        // $regiones       = Cat_Region::where('id', '>', 0)->get();
-        // $municipios     = Cat_Municipio::where('id', '>', 0)->get();
-        // $metas          = Cat_Meta::where('id', '>', 0)->get();
-        // $beneficiarios  = Cat_Beneficiario::where('id', '>', 0)->get();
-        // $fuentesFederal = Cat_Fuente::where('tipo', '=', 'F')->get();
-        // $fuentesEstatal = Cat_Fuente::where('tipo', '=', 'E')->get();
-        // $ue             = array('id' => $user->unidad_ejecutora->id, 'nombre' => $user->unidad_ejecutora->nombre);
-        // $sector         = array('id' => $user->sectores[0]->id, 'nombre' => $user->sectores[0]->nombre);
-        // return view('ExpedienteTecnico/Asignacion.index', compact('ejercicios', 'tipoSolicitud', 'accionesFederales', 'accionesEstatales', 'coberturas', 'localidades', 'regiones', 'municipios', 'metas', 'beneficiarios', 'fuentesFederal', 'fuentesEstatal', 'ue', 'sector', 'barraMenu'));
-        return view('ExpedienteTecnico/Autorizacion.index', compact('barraMenu', 'ejercicios'));
+        return view('ExpedienteTecnico/Autorizacion.index', compact('barraMenu', 'ejercicios', 'id_obra'));
 
     }
 
@@ -93,48 +93,213 @@ class AutorizacionExpedienteController extends Controller
         $relacion = Rel_Estudio_Expediente_Obra::with(array('expediente.hoja1', 'expediente.hoja2', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios', 'expediente.conceptos', 'expediente.programas', 'expediente.avance_financiero', 'expediente.hoja5', 'expediente.hoja6'))->where('id_det_obra', '=', $request->id_obra)
             ->first();
 
-        dd($relacion);
+        // dd($relacion);
+        DB::beginTransaction();
+        try {
+            $historial                           = new P_Historial_Obra_Expediente;
+            $historial->id_expediente_tecnico    = $relacion->expediente->id;
+            $historial->id_det_obra              = $relacion->id_det_obra;
+            $historial->id_solicitud_presupuesto = $relacion->expediente->id_tipo_solicitud;
+            $historial->monto                    = $relacion->expediente->hoja1->monto;
+            $historial->id_usuario               = \Auth::user()->id;
+            $historial->save();
 
-        $hoja1                              = new P_Anexo_Uno;
-        $hoja1->id_tipo_solicitud           = $request->id_tipo_solicitud;
-        $hoja1->bevaluacion_socioeconomica  = $request->bevaluacion_socioeconomica;
-        $hoja1->bestudio_socioeconomico     = $request->bestudio_socioeconomico;
-        $hoja1->bproyecto_ejecutivo         = $request->bproyecto_ejecutivo;
-        $hoja1->bderecho_via                = $request->bderecho_via;
-        $hoja1->bimpacto_ambiental          = $request->bimpacto_ambiental;
-        $hoja1->bobra                       = $request->bobra;
-        $hoja1->baccion                     = $request->baccion;
-        $hoja1->botro                       = $request->botro;
-        $hoja1->descripcion_botro           = $request->descripcion_botro;
-        $hoja1->ejercicio                   = $request->ejercicio;
-        $hoja1->nombre_obra                 = $request->nombre_obra;
-        $hoja1->id_tipo_obra                = $request->id_tipo_obra;
-        $hoja1->id_modalidad_ejecucion      = $request->id_modalidad_ejecucion;
-        $hoja1->id_unidad_ejecutora         = $request->id_unidad_ejecutora;
-        $hoja1->id_sector                   = $request->id_sector;
-        $hoja1->justificacion_obra          = $request->justificacion_obra;
-        $hoja1->monto                       = $request->monto;
-        $hoja1->monto_municipal             = $request->monto_municipal;
-        $hoja1->fuente_municipal            = $request->fuente_municipal;
-        $hoja1->principales_caracteristicas = $request->principales_caracteristicas;
-        $hoja1->id_meta                     = $request->id_meta;
-        $hoja1->cantidad_meta               = $request->cantidad_meta;
-        $hoja1->id_beneficiario             = $request->id_beneficiario;
-        $hoja1->cantidad_beneficiario       = $request->cantidad_beneficiario;
-        $hoja1->save();
+            $hoja1                              = new P_Anexo_Uno;
+            $hoja1->id_tipo_solicitud           = 2;
+            $hoja1->bevaluacion_socioeconomica  = $relacion->expediente->hoja1->bevaluacion_socioeconomica;
+            $hoja1->bestudio_socioeconomico     = $relacion->expediente->hoja1->bestudio_socioeconomico;
+            $hoja1->bproyecto_ejecutivo         = $relacion->expediente->hoja1->bproyecto_ejecutivo;
+            $hoja1->bderecho_via                = $relacion->expediente->hoja1->bderecho_via;
+            $hoja1->bimpacto_ambiental          = $relacion->expediente->hoja1->bimpacto_ambiental;
+            $hoja1->bobra                       = $relacion->expediente->hoja1->bobra;
+            $hoja1->baccion                     = $relacion->expediente->hoja1->baccion;
+            $hoja1->botro                       = $relacion->expediente->hoja1->botro;
+            $hoja1->descripcion_botro           = $relacion->expediente->hoja1->descripcion_botro;
+            $hoja1->ejercicio                   = $relacion->expediente->hoja1->ejercicio;
+            $hoja1->nombre_obra                 = $relacion->expediente->hoja1->nombre_obra;
+            $hoja1->id_tipo_obra                = $relacion->expediente->hoja1->id_tipo_obra;
+            $hoja1->id_modalidad_ejecucion      = $relacion->expediente->hoja1->id_modalidad_ejecucion;
+            $hoja1->id_unidad_ejecutora         = $relacion->expediente->hoja1->id_unidad_ejecutora;
+            $hoja1->id_sector                   = $relacion->expediente->hoja1->id_sector;
+            $hoja1->justificacion_obra          = $relacion->expediente->hoja1->justificacion_obra;
+            $hoja1->monto                       = $relacion->expediente->hoja1->monto;
+            $hoja1->monto_municipal             = $relacion->expediente->hoja1->monto_municipal;
+            $hoja1->fuente_municipal            = $relacion->expediente->hoja1->fuente_municipal;
+            $hoja1->principales_caracteristicas = $relacion->expediente->hoja1->principales_caracteristicas;
+            $hoja1->id_meta                     = $relacion->expediente->hoja1->id_meta;
+            $hoja1->cantidad_meta               = $relacion->expediente->hoja1->cantidad_meta;
+            $hoja1->id_beneficiario             = $relacion->expediente->hoja1->id_beneficiario;
+            $hoja1->cantidad_beneficiario       = $relacion->expediente->hoja1->cantidad_beneficiario;
+            $hoja1->save();
 
-        $expediente_tecnico                    = new P_Expediente_Tecnico;
-        $expediente_tecnico->ejercicio         = $request->ejercicio;
-        $expediente_tecnico->id_anexo_uno      = $hoja1->id;
-        $expediente_tecnico->id_estatus        = 1;
-        $expediente_tecnico->fecha_creacion    = date('Y-m-d H:i:s');
-        $expediente_tecnico->id_usuario        = \Auth::user()->id;
-        $expediente_tecnico->id_tipo_solicitud = $request->id_tipo_solicitud;
-        $expediente_tecnico->save();
-        
+            $hoja2                            = new P_Anexo_Dos;
+            $hoja2->id_cobertura              = $relacion->expediente->hoja2->id_cobertura;
+            $hoja2->nombre_localidad          = $relacion->expediente->hoja2->nombre_localidad;
+            $hoja2->id_tipo_localidad         = $relacion->expediente->hoja2->id_tipo_localidad;
+            $hoja2->bcoordenadas              = $relacion->expediente->hoja2->bcoordenadas;
+            $hoja2->observaciones_coordenadas = $relacion->expediente->hoja2->observaciones_coordenadas;
+            $hoja2->latitud_inicial           = $relacion->expediente->hoja2->latitud_inicial;
+            $hoja2->longitud_inicial          = $relacion->expediente->hoja2->longitud_inicial;
+            $hoja2->latitud_final             = $relacion->expediente->hoja2->latitud_final;
+            $hoja2->longitud_final            = $relacion->expediente->hoja2->longitud_final;
+            $hoja2->microlocalizacion         = $relacion->expediente->hoja2->microlocalizacion;
+            $hoja2->save();
+
+            $hoja5                                 = new P_Anexo_Cinco;
+            $hoja5->observaciones_unidad_ejecutora = $relacion->expediente->hoja5->observaciones_unidad_ejecutora;
+            $hoja5->save();
+
+            $hoja6                             = new P_Anexo_Seis;
+            $hoja6->criterios_sociales         = $relacion->expediente->hoja6->criterios_sociales;
+            $hoja6->unidad_ejecutora_normativa = $relacion->expediente->hoja6->unidad_ejecutora_normativa;
+            $hoja6->save();
+
+            $expediente_tecnico                    = new P_Expediente_Tecnico;
+            $expediente_tecnico->ejercicio         = $relacion->expediente->ejercicio;
+            $expediente_tecnico->id_anexo_uno      = $hoja1->id;
+            $expediente_tecnico->id_anexo_dos      = $hoja2->id;
+            $expediente_tecnico->id_anexo_cinco    = $hoja5->id;
+            $expediente_tecnico->id_anexo_seis     = $hoja6->id;
+            $expediente_tecnico->id_estatus        = 1;
+            $expediente_tecnico->fecha_creacion    = date('Y-m-d H:i:s');
+            $expediente_tecnico->id_usuario        = \Auth::user()->id;
+            $expediente_tecnico->id_tipo_solicitud = 2;
+            $expediente_tecnico->save();
+
+            foreach ($relacion->expediente->fuentes_monto as $value) {
+                $expediente_tecnico->fuentes_monto()->sync(array('id_expediente_tecnico' => $expediente_tecnico->id, 'id_fuente' => $value->id, 'monto' => $value->pivot->monto, 'tipo_fuente' => $value->tipo));
+            }
+
+            foreach ($relacion->expediente->acuerdos as $value) {
+                $expediente_tecnico->acuerdos()->sync(array('id_expediente_tecnico' => $expediente_tecnico->id, 'id_acuerdo' => $value->id));
+            }
+
+            foreach ($relacion->expediente->municipios as $value) {
+                $expediente_tecnico->municipios()->sync(array('id_expediente_tecnico' => $expediente_tecnico->id, 'id_municipio' => $value->id));
+            }
+
+            foreach ($relacion->expediente->regiones as $value) {
+                $expediente_tecnico->regiones()->sync(array('id_expediente_tecnico' => $expediente_tecnico->id, 'id_municipio' => $value->id));
+            }
+
+            foreach ($relacion->expediente->conceptos as $value) {
+                $conceptos                        = new P_Presupuesto_Obra;
+                $conceptos->id_expediente_tecnico = $expediente_tecnico->id;
+                $conceptos->clave_objeto_gasto    = $value->clave_objeto_gasto;
+                $conceptos->concepto              = $value->concepto;
+                $conceptos->unidad_medida         = $value->unidad_medida;
+                $conceptos->cantidad              = $value->cantidad;
+                $conceptos->precio_unitario       = $value->precio_unitario;
+                $conceptos->importe               = $value->importe;
+                $conceptos->iva                   = $value->iva;
+                $conceptos->total                 = $value->total;
+                $conceptos->save();
+            }
+
+            foreach ($relacion->expediente->programas as $value) {
+                $programa                        = new P_Programa;
+                $programa->id_expediente_tecnico = $expediente_tecnico->id;
+                $programa->concepto              = $value->concepto;
+                $programa->porcentaje_enero      = $value->porcentaje_enero;
+                $programa->porcentaje_febrero    = $value->porcentaje_febrero;
+                $programa->porcentaje_marzo      = $value->porcentaje_marzo;
+                $programa->porcentaje_abril      = $value->porcentaje_abril;
+                $programa->porcentaje_mayo       = $value->porcentaje_mayo;
+                $programa->porcentaje_junio      = $value->porcentaje_junio;
+                $programa->porcentaje_julio      = $value->porcentaje_julio;
+                $programa->porcentaje_agosto     = $value->porcentaje_agosto;
+                $programa->porcentaje_septiembre = $value->porcentaje_septiembre;
+                $programa->porcentaje_octubre    = $value->porcentaje_octubre;
+                $programa->porcentaje_noviembre  = $value->porcentaje_noviembre;
+                $programa->porcentaje_diciembre  = $value->porcentaje_diciembre;
+                $programa->porcentaje_total      = $value->porcentaje_total;
+                $programa->save();
+            }
+
+            $p_avance                        = new P_Avance_Financiero;
+            $p_avance->id_expediente_tecnico = $expediente_tecnico->id;
+            $p_avance->enero                 = $relacion->expediente->avance_financiero->enero;
+            $p_avance->febrero               = $relacion->expediente->avance_financiero->febrero;
+            $p_avance->marzo                 = $relacion->expediente->avance_financiero->marzo;
+            $p_avance->abril                 = $relacion->expediente->avance_financiero->abril;
+            $p_avance->mayo                  = $relacion->expediente->avance_financiero->mayo;
+            $p_avance->junio                 = $relacion->expediente->avance_financiero->junio;
+            $p_avance->julio                 = $relacion->expediente->avance_financiero->julio;
+            $p_avance->agosto                = $relacion->expediente->avance_financiero->agosto;
+            $p_avance->septiembre            = $relacion->expediente->avance_financiero->septiembre;
+            $p_avance->octubre               = $relacion->expediente->avance_financiero->octubre;
+            $p_avance->noviembre             = $relacion->expediente->avance_financiero->noviembre;
+            $p_avance->diciembre             = $relacion->expediente->avance_financiero->diciembre;
+            $p_avance->save();
+
+            $relacion->id_expediente_tecnico = $expediente_tecnico->id;
+            $relacion->save();
+
+            DB::commit();
+
+            $expediente['id'] = $expediente_tecnico->id;
+            return $expediente;
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            $expediente            = array();
+            $expediente['message'] = $e->getMessage();
+            $expediente['trace']   = $e->getTrace();
+            $expediente['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($expediente);
+        }
+
     }
 
-    public function crear_contrato()
+    public function get_data_contratos($id_expediente_tecnico)
+    {
+        $contratos = P_Contrato::
+            where('id_expediente_tecnico', '=', $id_expediente_tecnico);
+
+        return \Datatables::of($contratos)
+            ->make(true);
+    }
+
+    public function get_data_conceptos_contrato($id_contrato)
+    {
+        $conceptos = P_Presupuesto_Obra::
+            where('id_contrato', '=', $id_contrato);
+
+        return \Datatables::of($conceptos)
+            ->make(true);
+    }
+
+    public function buscar_rfc(Request $request)
+    {
+        try {
+            $empresa = Cat_Empresa::where('rfc', '=', $request->rfc)->first();
+            return $empresa;
+        } catch (\Exception $e) {
+            DB::rollback();
+            $empresa            = array();
+            $empresa['message'] = $e->getMessage();
+            $empresa['trace']   = $e->getTrace();
+            $empresa['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($empresa);
+        }
+    }
+
+    public function buscar_contrato(Request $request)
+    {
+        try {
+            $contrato = P_Contrato::with('d_contrato', 'empresa', 'avance_financiero')->where('id', '=', $request->id_contrato)->where('id_usuario', '=', \Auth::user()->id)->first();
+            return $contrato;
+        } catch (\Exception $e) {
+            DB::rollback();
+            $contrato            = array();
+            $contrato['message'] = $e->getMessage();
+            $contrato['trace']   = $e->getTrace();
+            $contrato['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($contrato);
+        }
+    }
+
+    public function crear_contrato($id_obra, $id_contrato)
     {
         $barraMenu = array(
             'botones' => array([
@@ -149,7 +314,327 @@ class AutorizacionExpedienteController extends Controller
                 'title' => 'Regresar',
                 'texto' => 'Regresar',
             ]));
-        return view('ExpedienteTecnico/Autorizacion.detalle_contrato')
-            ->with('barraMenu', $barraMenu);
+        $relacion = Rel_Estudio_Expediente_Obra::with('obra.detalles_oficio.oficio', 'obra.unidad_ejecutora')->where('id_det_obra', '=', $id_obra)
+            ->first();
+        $empresa                = Cat_Empresa::all();
+        $tipo_contrato          = Cat_Tipo_Contrato::all();
+        $modalidad_adjudicacion = Cat_Modalidad_Adjudicacion_Contrato::all();
+        $tipo_obra_contrato     = Cat_Tipo_Obra_Contrato::all();
+        return view('ExpedienteTecnico/Autorizacion.detalle_contrato', compact('barraMenu', 'relacion', 'empresa', 'tipo_contrato', 'modalidad_adjudicacion', 'tipo_obra_contrato', 'id_contrato'));
+    }
+
+    public function guardar_datos_generales(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'numero_contrato'                    => 'required',
+            'fecha_celebracion'                  => 'required',
+            'descripcion'                        => 'required',
+            'rfc'                                => 'required',
+            'padron_contratista'                 => 'required_if:bnueva_empresa,1',
+            'nombre'                             => 'required_if:bnueva_empresa,1',
+            'nombre_representante'               => 'required_if:bnueva_empresa,1',
+            'cargo_representante'                => 'required_if:bnueva_empresa,1',
+            'id_tipo_contrato'                   => 'required',
+            'id_modalidad_adjudicacion_contrato' => 'required',
+            'fecha_inicio'                       => 'required',
+            'fecha_fin'                          => 'required',
+            'bdisponibilidad_inmueble'           => 'required',
+            'motivo_no_disponible'               => 'required_if:bdisponibilidad_inmueble,0',
+            'fecha_disponibilidad'               => 'required_if:bdisponibilidad_inmueble,0',
+            'id_tipo_obra_contrato'              => 'required',
+
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            return array('error_validacion' => $errors);
+
+        }
+        //CREAR CONTRATO
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            if ($request->bnueva_empresa) {
+                $empresa                       = new Cat_Empresa;
+                $empresa->rfc                  = $request->rfc;
+                $empresa->nombre               = $request->nombre;
+                $empresa->padron_contratista   = $request->padron_contratista;
+                $empresa->nombre_representante = $request->nombre_representante;
+                $empresa->cargo_representante  = $request->cargo_representante;
+                $empresa->save();
+                $request->id_empresa = $empresa->id;
+            }
+            if ($request->id_contrato) {
+                $contrato   = P_Contrato::find($request->id_contrato);
+                $d_contrato = D_Contrato::where('id_contrato', '=', $contrato->id)->first();
+            } else {
+                $contrato   = new P_Contrato;
+                $d_contrato = new D_Contrato;
+            }
+
+            $contrato->id_expediente_tecnico = $request->id_expediente_tecnico;
+            $contrato->numero_contrato       = $request->numero_contrato;
+            $contrato->fecha_celebracion     = Carbon::parse($request->fecha_celebracion)->format('Y-m-d H:i:s');
+            $contrato->id_empresa            = $request->id_empresa;
+            $contrato->id_usuario            = \Auth::user()->id;
+            $contrato->save();
+
+            $d_contrato->id_contrato                        = $contrato->id;
+            $d_contrato->descripcion                        = $request->descripcion;
+            $d_contrato->fecha_inicio                       = Carbon::parse($request->fecha_inicio)->format('Y-m-d H:i:s');
+            $d_contrato->fecha_fin                          = Carbon::parse($request->fecha_fin)->format('Y-m-d H:i:s');
+            $d_contrato->dias_calendario                    = $request->dias_calendario;
+            $d_contrato->bdisponibilidad_inmueble           = $request->bdisponibilidad_inmueble;
+            $d_contrato->motivo_no_disponible               = $request->motivo_no_disponible;
+            $d_contrato->fecha_disponibilidad               = ($request->fecha_disponibilidad)?Carbon::parse($request->fecha_disponibilidad)->format('Y-m-d H:i:s'):null;
+            $d_contrato->id_tipo_contrato                   = $request->id_tipo_contrato;
+            $d_contrato->id_modalidad_adjudicacion_contrato = $request->id_modalidad_adjudicacion_contrato;
+            $d_contrato->id_tipo_obra_contrato              = $request->id_tipo_obra_contrato;
+            $d_contrato->save();
+            DB::commit();
+            return ($contrato->id);
+        } catch (Exception $e) {
+            DB::rollback();
+            $contrato            = array();
+            $contrato['message'] = $e->getMessage();
+            $contrato['trace']   = $e->getTrace();
+            $contrato['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($contrato);
+        }
+
+    }
+
+    public function guardar_conceptos_contrato(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $arrayIds = array();
+            foreach ($request->conceptosPresupuesto as $value) {
+                if ($value['id']) {
+                    //ID
+                    $conceptos = P_Presupuesto_Obra::find($value['id']);
+                } else {
+                    $conceptos = new P_Presupuesto_Obra;
+                }
+                $conceptos->id_expediente_tecnico = $request->id_expediente_tecnico;
+                $conceptos->clave_objeto_gasto    = $value['clave_objeto_gasto'];
+                $conceptos->concepto              = $value['concepto'];
+                $conceptos->unidad_medida         = $value['unidad_medida'];
+                $conceptos->cantidad              = $value['cantidad'];
+                $conceptos->precio_unitario       = $value['precio_unitario'];
+                $conceptos->importe               = $value['importe'];
+                $conceptos->iva                   = $value['iva'];
+                $conceptos->total                 = $value['total'];
+                $conceptos->id_contrato           = $request->id_contrato;
+                $conceptos->save();
+                array_push($arrayIds, $conceptos->id);
+
+            }
+
+            if (isset($request->conceptosEliminados)) {
+                P_Presupuesto_Obra::destroy($request->conceptosEliminados);
+            }
+
+            $contrato        = P_Contrato::find($request->id_contrato);
+            $contrato->monto = $request->montoTotal;
+            $contrato->save();
+            DB::commit();
+            return $arrayIds;
+        } catch (\Exception $e) {
+            DB::rollback();
+            $conceptos            = array();
+            $conceptos['message'] = $e->getMessage();
+            $conceptos['trace']   = $e->getTrace();
+            $conceptos['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($conceptos);
+        }
+    }
+
+    public function guardar_contrato_garantias(Request $request)
+    {
+        // dd($request->all());
+        $validator = \Validator::make($request->all(), [
+            // 'folio_garantia'                      => 'required',
+            'fecha_emision_garantia'              => 'required_with:folio_garantia',
+            'importe_garantia'                    => 'required_with:folio_garantia',
+            'fecha_inicio_garantia'               => 'required_with:folio_garantia',
+            'fecha_fin_garantia'                  => 'required_with:folio_garantia',
+            'importe_anticipo'                    => 'required_with:folio_garantia',
+            'porcentaje_anticipo'                 => 'required_with:importe_anticipo',
+            'forma_pago_anticipo'                 => 'required_with:importe_anticipo',
+            // 'folio_garantia_cumplimiento'         => 'required',
+            'fecha_emision_garantia_cumplimiento' => 'required_with:folio_garantia_cumplimiento',
+            'importe_garantia_cumplimiento'       => 'required_with:folio_garantia_cumplimiento',
+            'fecha_inicio_garantia_cumplimiento'  => 'required_with:folio_garantia_cumplimiento',
+            'fecha_fin_garantia_cumplimiento'     => 'required_with:folio_garantia_cumplimiento',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->toArray();
+            return array('error_validacion' => $errors);
+
+        }
+        //CREAR CONTRATO
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $d_contrato                                      = D_Contrato::where('id_contrato', '=', $request->id_contrato)->first();
+            $d_contrato->folio_garantia                      = $request->folio_garantia;
+            $d_contrato->fecha_emision_garantia              = Carbon::parse($request->fecha_emision_garantia)->format('Y-m-d H:i:s');
+            $d_contrato->importe_garantia                    = str_replace(",", "", $request->importe_garantia);
+            $d_contrato->fecha_inicio_garantia               = Carbon::parse($request->fecha_inicio_garantia)->format('Y-m-d H:i:s');
+            $d_contrato->fecha_fin_garantia                  = Carbon::parse($request->fecha_fin_garantia)->format('Y-m-d H:i:s');
+            $d_contrato->importe_anticipo                    = str_replace(",", "", $request->importe_anticipo);
+            $d_contrato->porcentaje_anticipo                 = $request->porcentaje_anticipo;
+            $d_contrato->forma_pago_anticipo                 = $request->forma_pago_anticipo;
+            $d_contrato->folio_garantia_cumplimiento         = $request->folio_garantia_cumplimiento;
+            $d_contrato->fecha_emision_garantia_cumplimiento = Carbon::parse($request->fecha_emision_garantia_cumplimiento)->format('Y-m-d H:i:s');
+            $d_contrato->importe_garantia_cumplimiento       = str_replace(",", "", $request->importe_garantia_cumplimiento);
+            $d_contrato->fecha_inicio_garantia_cumplimiento  = Carbon::parse($request->fecha_inicio_garantia_cumplimiento)->format('Y-m-d H:i:s');
+            $d_contrato->fecha_fin_garantia_cumplimiento     = Carbon::parse($request->fecha_fin_garantia_cumplimiento)->format('Y-m-d H:i:s');
+
+            $d_contrato->save();
+            DB::commit();
+            return ($d_contrato->id_contrato);
+        } catch (Exception $e) {
+            DB::rollback();
+            $contrato            = array();
+            $contrato['message'] = $e->getMessage();
+            $contrato['trace']   = $e->getTrace();
+            $contrato['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($contrato);
+        }
+    }
+
+    public function get_data_programa($id_contrato)
+    {
+
+        $conceptos = P_Programa_Contrato::
+            where('id_contrato', '=', $id_contrato);
+
+        return \Datatables::of($conceptos)
+            ->make(true);
+    }
+
+    public function guardar_programa_contrato(Request $request)
+    {
+        $arrayIds = array();
+        DB::beginTransaction();
+        try {
+            foreach ($request->calendarizadoPrograma as $value) {
+                if ($value['id']) {
+                    //ID
+                    $programa = P_Programa_Contrato::find($value['id']);
+                } else {
+                    $programa = new P_Programa_Contrato;
+                }
+                $programa->id_contrato           = $request->id_contrato;
+                $programa->concepto              = $value['concepto'];
+                $programa->porcentaje_enero      = $value['porcentaje_enero'];
+                $programa->porcentaje_febrero    = $value['porcentaje_febrero'];
+                $programa->porcentaje_marzo      = $value['porcentaje_marzo'];
+                $programa->porcentaje_abril      = $value['porcentaje_abril'];
+                $programa->porcentaje_mayo       = $value['porcentaje_mayo'];
+                $programa->porcentaje_junio      = $value['porcentaje_junio'];
+                $programa->porcentaje_julio      = $value['porcentaje_julio'];
+                $programa->porcentaje_agosto     = $value['porcentaje_agosto'];
+                $programa->porcentaje_septiembre = $value['porcentaje_septiembre'];
+                $programa->porcentaje_octubre    = $value['porcentaje_octubre'];
+                $programa->porcentaje_noviembre  = $value['porcentaje_noviembre'];
+                $programa->porcentaje_diciembre  = $value['porcentaje_diciembre'];
+                $programa->porcentaje_total      = $value['porcentaje_total'];
+
+                $programa->save();
+                array_push($arrayIds, $programa->id);
+            }
+
+            if (isset($request->programasEliminados)) {
+                P_Programa_Contrato::destroy($request->programasEliminados);
+            }
+            DB::commit();
+            return $arrayIds;
+        } catch (\Exception $e) {
+            DB::rollback();
+            $hoja4            = array();
+            $hoja4['message'] = $e->getMessage();
+            $hoja4['trace']   = $e->getTrace();
+            $hoja4['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($hoja4);
+        }
+    }
+
+    public function guardar_avance_financiero_contrato(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $p_avance = P_Avance_Financiero_Contrato::where('id_contrato', '=', $request->id_contrato)
+                ->first();
+            // dd($p_avance);
+            if (!$p_avance) {
+                $p_avance = new P_Avance_Financiero_Contrato;
+            }
+
+            $p_avance->id_contrato = $request->id_contrato;
+            $p_avance->enero       = $request->avance_financiero['enero'];
+            $p_avance->febrero     = $request->avance_financiero['febrero'];
+            $p_avance->marzo       = $request->avance_financiero['marzo'];
+            $p_avance->abril       = $request->avance_financiero['abril'];
+            $p_avance->mayo        = $request->avance_financiero['mayo'];
+            $p_avance->junio       = $request->avance_financiero['junio'];
+            $p_avance->julio       = $request->avance_financiero['julio'];
+            $p_avance->agosto      = $request->avance_financiero['agosto'];
+            $p_avance->septiembre  = $request->avance_financiero['septiembre'];
+            $p_avance->octubre     = $request->avance_financiero['octubre'];
+            $p_avance->noviembre   = $request->avance_financiero['noviembre'];
+            $p_avance->diciembre   = $request->avance_financiero['diciembre'];
+            $p_avance->save();
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            $hoja4            = array();
+            $hoja4['message'] = $e->getMessage();
+            $hoja4['trace']   = $e->getTrace();
+            $hoja4['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($hoja4);
+        }
+    }
+
+    public function eliminar_contrato(Request $request){
+        DB::beginTransaction();
+        try {
+            P_Contrato::destroy($request->id_contrato);
+            D_Contrato::where('id_contrato','=',$request->id_contrato)->delete();
+            P_Avance_Financiero_Contrato::where('id_contrato','=',$request->id_contrato)->delete();
+            P_Programa_Contrato::where('id_contrato','=',$request->id_contrato)->delete();
+            P_Presupuesto_Obra::where('id_contrato','=',$request->id_contrato)->delete();
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            $hoja4            = array();
+            $hoja4['message'] = $e->getMessage();
+            $hoja4['trace']   = $e->getTrace();
+            $hoja4['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($hoja4);
+        }
+    }
+
+    public function imprime_contrato($id_expediente_tecnico){
+        $relacion = Rel_Estudio_Expediente_Obra::with('expediente.contrato.d_contrato.adjudicacion','expediente.contrato.d_contrato.tipo_contrato','expediente.contrato.d_contrato.tipo_obra_contrato','expediente.contrato.empresa','expediente.contrato.avance_financiero','expediente.contrato.avance_fisico','expediente.contrato.conceptos', 'obra.unidad_ejecutora','obra.municipio_reporte')->where('id_expediente_tecnico', '=', $id_expediente_tecnico)
+            ->first();
+        $oficioAsignacion= DB::table('p_oficio')
+        ->join('d_oficio','p_oficio.id','=','d_oficio.id_oficio')
+        ->join('cat_fuente','d_oficio.id_fuente','=','cat_fuente.id')
+        ->select('p_oficio.clave','p_oficio.fecha_oficio','cat_fuente.descripcion','d_oficio.asignado')
+        ->where('id_solicitud_presupuesto','=',1)    
+        ->where('id_det_obra','=',$relacion->obra->id)
+        ->get();
+
+        $pdf = \PDF::loadView('PDF/contrato',compact('relacion','oficioAsignacion'));
+        // return $pdf->stream('Anexo5_Expediente_' . $relacion->id_expediente_tecnico . '.pdf');
+        return $pdf->stream('Contrato_General_Expediente_'.$relacion->id_expediente_tecnico.'.pdf');
     }
 }

@@ -46,35 +46,6 @@
 </style>
 <div class="panel">
     <div class="row">
-       {{--  <nav class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <p class="navbar-text">
-                        No. Solcitud:
-                    </p>
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input class="form-control text-right num" id="id_expediente_tecnico_search" name="id_expediente_tecnico_search" placeholder="Buscar" type="text" value="">
-                            </input>
-                        </div>
-                        <span class="btn btn-default fa fa-search" id="buscar" title="Buscar Solicitud">
-                        </span>
-                        <span class="btn btn-warning fa fa-refresh" id="limpiar" title="Limpiar pantalla">
-                        </span>
-                        <span class="btn btn-danger fa fa-exclamation-triangle" id="observaciones" title="Revisar observaciones" style="display:none;">
-                        </span>
-                        <span class="btn btn-success fa fa-save" id="guardar" title="Guardar">
-                        </span>
-                        <span class="btn btn-success fa fa-share-square" id="enviar_revision" title="Enviar a la DGI para revisión">
-                        </span>
-                        <span class="btn btn-success fa fa-file-pdf-o" id="imprimir_expediente" title="Imprimir Expediente Técnico">
-                        </span>
-                    </form>
-                </div>
-            </div>
-        </nav> --}}
         <input id="hojaActual" name="hojaActual" type="hidden" value="1">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="active" id="panel1">

@@ -60,6 +60,7 @@ class D_Obra extends Model
 
     public function municipio_reporte(){
         return $this->hasOne('App\Cat_Municipio_Reporte','id','id_municipio');
+   }
    
     public function tipo_obra()
     {

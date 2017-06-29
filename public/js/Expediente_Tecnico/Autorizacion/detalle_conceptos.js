@@ -1,7 +1,8 @@
 //GLOBALES
 var fuentes = [];
 var idFuentes = [];
-var tablaConceptos;
+var tablaConceptosContrato;
+var tablaConceptosExpediente;
 var indiceEditar;
 var arrayEliminados = [];
 var ftesEliminadas = [];
@@ -21,7 +22,7 @@ $(document).ready(function() {
         vMax: '99999999999999999999999.00'
     });
     $("#abreModal").click(function() {
-         limpiar("modalConcepto");
+        limpiar("modalConcepto");
         $("#actualizarConcepto").hide();
         $("#agregaConcepto").show();
         $(".number").each(function() {
@@ -59,19 +60,29 @@ $(document).ready(function() {
     $("#subirCatalogo").on('click', function() {
         cargaExterna();
     });
+    $("#btnAbrirConceptos").on('click', function() {
+        $("#modalConceptosContrato").modal("show");
+    });
+    $("#btnAcpetarConceptoContr").on('click', function() {
+        seleccionarConceptos();
+    });
+    $("#btnAddConcepto").on('click', function() {
+        $("#modalConcepto").modal("show");
+    });
+    initDataConceptosExpediente($("#id_expediente_tecnico").val());
 });
 
-function initDataConceptos(id_expediente_tecnico) {
-    if (!id_expediente_tecnico) {
-        id_expediente_tecnico = 0;
+function initDataConceptos(id_contrato) {
+    if (!id_contrato) {
+        id_contrato = 0;
     }
-    tablaConceptos = $('#tablaConceptos').DataTable({
+    tablaConceptosContrato = $('#tablaConceptosContrato').DataTable({
         "ordering": false,
         "searching": false,
         "destroy": true,
         processing: false,
         serverSide: false,
-        ajax: '/ExpedienteTecnico/Asignacion/get_data_conceptos/' + id_expediente_tecnico,
+        ajax: '/ExpedienteTecnico/Autorizacion/get_data_conceptos_contrato/' + id_contrato,
         columns: [{
             data: 'id',
             name: 'id'
@@ -108,9 +119,8 @@ function initDataConceptos(id_expediente_tecnico) {
         }],
         "fnCreatedRow": function(nRow, aData, iDataIndex) {
             for (var i = 4; i <= 8; i++) {
-                var cell = tablaConceptos.cell(nRow, i).node();
+                var cell = tablaConceptosContrato.cell(nRow, i).node();
                 $(cell).addClass('number');
-                
             }
             actualizaTotales();
         },
@@ -119,8 +129,8 @@ function initDataConceptos(id_expediente_tecnico) {
             $(".number").autoNumeric("update");
         }
     });
-    tablaConceptos.column(0).visible(false); //ID CONCEPTO
-    tablaConceptos.on('draw.dt', function() {
+    tablaConceptosContrato.column(0).visible(false); //ID CONCEPTO
+    tablaConceptosContrato.on('draw.dt', function() {
         $(".mto").each(function() {
             $(this).autoNumeric({
                 aSep: ',',
@@ -129,7 +139,104 @@ function initDataConceptos(id_expediente_tecnico) {
             });
         });
     });
+}
 
+function initDataConceptosExpediente(id_expediente_tecnico) {
+    tablaConceptosExpediente = $('#tablaConceptosExpediente').DataTable({
+        "ordering": false,
+        "searching": false,
+        "destroy": true,
+        processing: false,
+        serverSide: false,
+        ajax: '/ExpedienteTecnico/Asignacion/get_data_conceptos/' + id_expediente_tecnico,
+        columns: [{
+            data: 'id',
+            name: 'id'
+        }, {
+            data: 'clave_objeto_gasto',
+            name: 'clave_objeto_gasto'
+        }, {
+            data: 'concepto',
+            name: 'concepto'
+        }, {
+            data: 'unidad_medida',
+            name: 'unidad_medida'
+        }, {
+            data: 'cantidad',
+            name: 'cantidad'
+        }, {
+            data: 'precio_unitario',
+            name: 'precio_unitario'
+        }, {
+            data: 'importe',
+            name: 'importe'
+        }, {
+            data: 'iva',
+            name: 'iva'
+        }, {
+            data: 'total',
+            name: 'total'
+        }, {
+            data: 'id_contrato',
+            name: 'id_contrato'
+        }, {
+            data: 'id',
+            "render": function(data, type, full, meta) {
+                // console.log(full.id_contrato);
+                if(full.id_contrato){
+                    return '<input type="checkbox" class="seleccion" name="touchbutton" disabled id=chck' + data + '>';    
+                }else{
+                    return '<input type="checkbox" class="seleccion" name="touchbutton" id=chck' + data + '>';
+                }
+                
+            }
+        }],
+        "fnCreatedRow": function(nRow, aData, iDataIndex) {
+            for (var i = 4; i <= 8; i++) {
+                var cell = tablaConceptosExpediente.cell(nRow, i).node();
+                $(cell).addClass('number');
+            }
+            if(tablaConceptosExpediente.cell(nRow,9).data()!=""){
+                // console.log(tablaConceptosExpediente.cell(nRow,0).data());
+                var idAux = tablaConceptosExpediente.cell(nRow,0).data();
+                $("#chck"+idAux).prop('disabled', true);
+            }
+        },
+        "drawCallback": function(settings) {
+            $(".number").autoNumeric();
+            $(".number").autoNumeric("update");
+        }
+    });
+
+    tablaConceptosExpediente.column(0).visible(false); //ID CONCEPTO
+    tablaConceptosExpediente.column(9).visible(false); //ID CONTRATO
+    $.fn.dataTable.tables({
+        visible: true,
+        api: true
+    }).columns.adjust();
+    
+}
+
+function seleccionarConceptos() {
+    $("#tablaConceptosExpediente").find(".seleccion:checked").each(function() {
+        var indiceSeleccionar = tablaConceptosExpediente.row($(this).parent().parent()).index();
+        var conceptosSeleccionados = tablaConceptosExpediente.row(indiceSeleccionar).data();
+        var objConcepto = {
+            id: conceptosSeleccionados.id,
+            clave_objeto_gasto: conceptosSeleccionados.clave_objeto_gasto,
+            concepto: conceptosSeleccionados.concepto,
+            unidad_medida: conceptosSeleccionados.unidad_medida,
+            cantidad: conceptosSeleccionados.cantidad,
+            precio_unitario: conceptosSeleccionados.precio_unitario,
+            importe: conceptosSeleccionados.importe,
+            iva: conceptosSeleccionados.iva,
+            total: conceptosSeleccionados.total
+        }
+        tablaConceptosContrato.row.add(objConcepto).draw('false');
+        $(this).prop('checked', false);
+        $(this).prop('disabled', true);
+        $("#modalConceptosContrato").modal('hide');
+    });
 }
 
 function agregarConcepto() {
@@ -146,21 +253,19 @@ function agregarConcepto() {
         iva: $("#iva").val(),
         total: $("#totalConcepto").text()
     }
-    // tablaConceptos.row.add([null, $("#clave").val(), $("#concepto").val(), $("#unidadm").val(), $("#cantidad").val(), $("#preciou").val(), $("#impsiniva").val(), $("#iva").val(), $("#totalConcepto").text(), '<span  class="btn btn-success fa fa-pencil-square-o" title="Editar concepto" style="cursor:hand;" onClick="editar(this);"></span>', '<span  class="btn btn-danger fa fa-trash" title="Eliminar concepto" style="cursor:hand;" onClick="eliminar(this);"></span>']).draw('false');
-    tablaConceptos.row.add(objConcepto).draw('false');
+    tablaConceptosContrato.row.add(objConcepto).draw('false');
     actualizaTotales();
     $("#totalConcepto").text("0.00");
-     $("#ivaCheck").prop('checked',false);
+    $("#ivaCheck").prop('checked', false);
     limpiar("modalConcepto");
     $("#modalConcepto").modal("hide");
 }
 
 function modificarConcepto() {
-    //datosGlobalesSolicitud.fuentes = [];
     var tmpBand = true;
     var sum = 0.00;
-    var id = tablaConceptos.cell(indiceEditar, 0).data();
-    var totalConcepto = $("#totalConcepto").text().replace(/,/g, "");
+    var id = tablaConceptosContrato.cell(indiceEditar, 0).data();
+    var tablaConceptosContrato = $("#totalConcepto").text().replace(/,/g, "");
     if (id != "") {
         id = id;
     } else {
@@ -177,12 +282,12 @@ function modificarConcepto() {
         iva: $("#iva").val(),
         total: $("#totalConcepto").text().replace(/,/g, "")
     }
-    tablaConceptos.row(indiceEditar).data(objConcepto).draw();
+    tablaConceptosContrato.row(indiceEditar).data(objConcepto).draw();
     // tablaConceptos.row(indiceEditar).data([id, $("#clave").val(), $("#concepto").val(), $("#unidadm").val(), $("#cantidad").val(), $("#preciou").val(), $("#impsiniva").val(), $("#iva").val(), $("#totalConcepto").text().replace(/,/g, ""), '<span  class="btn btn-success fa fa-pencil-square-o" title="Editar concepto" style="cursor:hand;" onClick="editar(this);"></span>', '<span  class="btn btn-danger fa fa-trash" title="Eliminar concepto" style="cursor:hand;" onClick="eliminar(this);"></span>']).draw();
-    tablaConceptos.column(0).visible(false); //ID CONCEPTO
+    tablaConceptosContrato.column(0).visible(false); //ID CONCEPTO
     actualizaTotales();
     $("#totalConcepto").text("0.00");
-    $("#ivaCheck").prop('checked',false);
+    $("#ivaCheck").prop('checked', false);
     limpiar("modalConcepto");
     $("#modalConcepto").modal("hide");
     guardado = false; //OBLIGAMOS AL USUARIO A GUARDAR LA HOJA
@@ -214,12 +319,9 @@ function actualizaTotales() {
     var totalSinIva = 0;
     var totalIva = 0;
     var total = 0;
-    var arraySinIva = tablaConceptos.column(6).data();
-    var arrayIva = tablaConceptos.column(7).data();
-    var arrayTotal = tablaConceptos.column(8).data();
-    totalGeneral = $("#form_anexo_uno #monto").val().replace(/,/g, "");
-    totalGeneralFormat = $("#form_anexo_uno #monto").val();
-    // console.log(arraySinIva);
+    var arraySinIva = tablaConceptosContrato.column(6).data();
+    var arrayIva = tablaConceptosContrato.column(7).data();
+    var arrayTotal = tablaConceptosContrato.column(8).data();
     for (var i = 0; i < arrayTotal.length; i++) {
         totalSinIva = parseFloat(totalSinIva) + parseFloat(arraySinIva[i].toString().replace(/,/g, ""));
         totalIva = parseFloat(totalIva) + parseFloat(arrayIva[i].toString().replace(/,/g, ""));
@@ -229,30 +331,11 @@ function actualizaTotales() {
     $("#totalIva").text(totalIva);
     $("#total").text(total);
     $("#totalSinIva,#totalIva,#total").autoNumeric("update");
-    if (total > totalGeneral) {
-        // console.log(total + "::" + totalGeneral);
-        eliminaNotificacion();
-        colocaNotificacion('','Atenci\u00f3n! El monto ha superado el monto inicial, Monto inicial: $'+ totalGeneralFormat,'error','right bottom');
-        error = true;
-        desactivaNavegacion(true);
-        return false;
-    } else if(($("#form_anexo_uno #id_tipo_solicitud").val()=="10"||$("#form_anexo_uno #id_tipo_solicitud").val()=="11")&& total<totalGeneral){
-        eliminaNotificacion();
-        colocaNotificacion('','Atenci\u00f3n! El monto de los conceptos debe ser igual al monto inicial, Monto inicial: $'+ totalGeneralFormat,'error','right bottom');
-        error = true;
-        desactivaNavegacion(true);
-        return false;
-    }
-    else{
-        eliminaNotificacion();
-        error = false;
-        desactivaNavegacion(false);
-    }
 }
 
 function editar(elem) {
-    indiceEditar = tablaConceptos.row($(elem).parent().parent()).index();
-    var datosFila = tablaConceptos.row(indiceEditar).data();
+    indiceEditar = tablaConceptosContrato.row($(elem).parent().parent()).index();
+    var datosFila = tablaConceptosContrato.row(indiceEditar).data();
     $("#clave").val(datosFila['clave_objeto_gasto']);
     $("#concepto").val(datosFila['concepto']);
     $("#unidadm").val(datosFila['unidad_medida']);
@@ -262,9 +345,9 @@ function editar(elem) {
     $("#iva").val(datosFila['iva']);
     if (datosFila['iva'] > 0) {
         // $("#ivaCheck").click();
-        $("#ivaCheck").prop('checked',true);
-    }else{
-        $("#ivaCheck").prop('checked',false);
+        $("#ivaCheck").prop('checked', true);
+    } else {
+        $("#ivaCheck").prop('checked', false);
     }
     $("#totalConcepto").text(datosFila['total']);
     $("#totalConcepto").autoNumeric("update");
@@ -277,13 +360,14 @@ function editar(elem) {
 function eliminar(elem) {
     // bootbox.confirm("Se eliminar\u00e1 el concepto, \u00BFDesea Continuar?", function(response) {
     if (confirm("Se eliminar\u00e1 el concepto, \u00BFDesea Continuar?")) {
-        var indiceEliminar = tablaConceptos.row($(elem).parent().parent()).index();
-        var montosCancel = tablaConceptos.cell(indiceEliminar, 8).data();
-        var datosFila = tablaConceptos.row(indiceEliminar).data();
+        var indiceEliminar = tablaConceptosContrato.row($(elem).parent().parent()).index();
+        var montosCancel = tablaConceptosContrato.cell(indiceEliminar, 8).data();
+        var datosFila = tablaConceptosContrato.row(indiceEliminar).data();
         if (datosFila['id'] !== "") {
             arrayEliminados.push(datosFila['id']);
+            $("#chck" + datosFila['id']).prop('disabled', false);
         }
-        tablaConceptos.row(indiceEliminar).remove().draw();
+        tablaConceptosContrato.row(indiceEliminar).remove().draw();
         actualizaTotales();
     }
     // });
@@ -295,22 +379,25 @@ function limpiar(limformularios) {
     });
 }
 
-function guardarHoja3() {
-    var exp = $("#form_anexo_uno #id_expediente_tecnico").val();
+function guardarConceptosContrato() {
+    var id_contrato = $("#id_contrato").val();
+    var id_expediente_tecnico = $("#id_expediente_tecnico").val();
     if (!error) {
         var conceptosPresupuesto = [];
-        var conceptos = tablaConceptos.rows().data();
+        var conceptos = tablaConceptosContrato.rows().data();
         for (var i = 0; i < conceptos.length; i++) {
             conceptosPresupuesto.push(conceptos[i]);
         }
-        montoAutorizado = $("#total").text().replace(/,/g, "");
+        montoTotal = $("#total").text().replace(/,/g, "");
         $.ajax({
             data: {
                 'conceptosPresupuesto': conceptosPresupuesto,
                 'conceptosEliminados': arrayEliminados,
-                'id_expediente_tecnico': exp,
+                'id_contrato': id_contrato,
+                'id_expediente_tecnico': id_expediente_tecnico,
+                'montoTotal':montoTotal
             },
-            url: '/ExpedienteTecnico/Asignacion/guardar_hoja_3',
+            url: '/ExpedienteTecnico/Autorizacion/guardar_conceptos_contrato',
             type: 'post',
             beforeSend: function() {
                 $("#divLoading").show();
@@ -319,20 +406,24 @@ function guardarHoja3() {
                 $("#divLoading").hide();
             },
             success: function(response) {
-                // console.log(response);
                 if (!response.error) {
                     var id = (response);
                     if (id) {
                         for (var i = 0; i < id.length; i++) {
-                            tablaConceptos.cell(i, 0).data(parseInt(id[i])).draw();
+                            tablaConceptosContrato.cell(i, 0).data(parseInt(id[i])).draw();
+                            // tablaConceptosContrato.cell(i, 9).data($("id_contrato").val()).draw();
                             guardado = true;
                         }
-                        tablaConceptos.column(0).visible(false);
-                        // eliminaWaitGeneral();
-                        BootstrapDialog.mensaje(null, "Datos del Anexo 3 guardados correctamente.<br>Folio de Expediente Técnico: " + exp, 1);
+                        tablaConceptosContrato.column(0).visible(false);
+                        BootstrapDialog.mensaje(null, "Conceptos guardados correctamente en el contrato. ", 1);
                     }
                     guardado = true;
-                    //// console.log(tablaConceptos.data());
+                    initDataConceptosExpediente($("#id_expediente_tecnico").val());
+                    $("#form_general #monto").val(montoTotal);
+                    $("#importe_garantia_cumplimiento").val(parseFloat(montoTotal)*0.1);
+                    $(".number").autoNumeric();
+                    $(".number").autoNumeric("update");
+                    
                 } else {
                     BootstrapDialog.mensaje(null, response.error, 3);
                 }
@@ -397,7 +488,7 @@ function cargaExterna() {
             $("#divLoading").hide();
         },
         success: function(response) {
-                // console.log(response);
+            // console.log(response);
             var data = $.parseJSON(response);
             if (!data.error_validacion) {
                 $.each(data, function(index, val) {
@@ -411,9 +502,10 @@ function cargaExterna() {
                         precio_unitario: data[index].precio_unitario,
                         importe: data[index].importe,
                         iva: data[index].iva,
-                        total: data[index].total
+                        total: data[index].total,
+                        id_contrato:null
                     }
-                    tablaConceptos.row.add(objConcepto).draw('true');
+                    tablaConceptosContrato.row.add(objConcepto).draw('true');
                 });
                 actualizaTotales();
             } else {

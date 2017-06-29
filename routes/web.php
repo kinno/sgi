@@ -103,10 +103,22 @@ Route::group(['prefix' => 'ExpedienteTecnico/Asignacion'], function () {
 
 // Rutas Expediente Técnico Autorizacion
 Route::group(['prefix' => 'ExpedienteTecnico/Autorizacion'], function () {
-    Route::get('crear_autorizacion', 'ExpedienteTecnico\AutorizacionExpedienteController@index')->name('creacionAutorizacion');
-    Route::get('crear_contrato/{id_obra}','ExpedienteTecnico\AutorizacionExpedienteController@crear_contrato')->name('crear_contrato');
+    Route::get('crear_autorizacion/', 'ExpedienteTecnico\AutorizacionExpedienteController@index')->name('creacionAutorizacion');
+    Route::get('crear_autorizacion/{id_obra}', 'ExpedienteTecnico\AutorizacionExpedienteController@index')->name('creacionAutorizacion');
+    Route::get('crear_contrato/{id_obra}/{id_contrato}','ExpedienteTecnico\AutorizacionExpedienteController@crear_contrato')->name('crear_contrato');
     Route::post('buscar_obra', 'ExpedienteTecnico\AutorizacionExpedienteController@buscar_obra');
     Route::post('generar_autorizacion', 'ExpedienteTecnico\AutorizacionExpedienteController@generar_autorizacion');
+    Route::post('buscar_rfc', 'ExpedienteTecnico\AutorizacionExpedienteController@buscar_rfc');
+    Route::post('buscar_contrato', 'ExpedienteTecnico\AutorizacionExpedienteController@buscar_contrato');
+    Route::post('guardar_contrato_datos_generales', 'ExpedienteTecnico\AutorizacionExpedienteController@guardar_datos_generales');
+    Route::get('get_data_contratos/{id_expediente_tecnico}','ExpedienteTecnico\AutorizacionExpedienteController@get_data_contratos');
+    Route::get('get_data_conceptos_contrato/{id_contrato}','ExpedienteTecnico\AutorizacionExpedienteController@get_data_conceptos_contrato');
+    Route::post('guardar_conceptos_contrato', 'ExpedienteTecnico\AutorizacionExpedienteController@guardar_conceptos_contrato');
+    Route::post('guardar_contrato_garantias', 'ExpedienteTecnico\AutorizacionExpedienteController@guardar_contrato_garantias');
+    Route::get('get_data_programa/{id_contrato}', 'ExpedienteTecnico\AutorizacionExpedienteController@get_data_programa');
+    Route::post('guardar_programa_contrato', 'ExpedienteTecnico\AutorizacionExpedienteController@guardar_programa_contrato');
+    Route::post('guardar_avance_financiero_contrato', 'ExpedienteTecnico\AutorizacionExpedienteController@guardar_avance_financiero_contrato');
+    Route::post('eliminar_contrato', 'ExpedienteTecnico\AutorizacionExpedienteController@eliminar_contrato');
 });
 
 // Rutas Expediente Técnico Revision
@@ -116,6 +128,11 @@ Route::group(['prefix' => 'ExpedienteTecnico/Revision'], function () {
     Route::post('aceptar_expediente', 'ExpedienteTecnico\ExpedienteController@cambiar_estatus');
     Route::post('regresar_observaciones', 'ExpedienteTecnico\RevisionExpedienteController@regresar_observaciones');
     Route::get('impresion_expediente/{id_expediente_tecnio}', 'ExpedienteTecnico\ExpedienteController@imprime_expediente');
+});
+
+Route::group(['prefix' => 'ExpedienteTecnico/'], function () {
+    Route::get('impresion_expediente/{id_expediente_tecnio}', 'ExpedienteTecnico\ExpedienteController@imprime_expediente');
+    Route::get('impresion_contrato/{id_expediente_tecnio}', 'ExpedienteTecnico\AutorizacionExpedienteController@imprime_contrato');
 });
 
 // Rutas Oficios
