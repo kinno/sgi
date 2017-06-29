@@ -18,6 +18,7 @@ use App\Cat_Clasificacion_Obra;
 use App\Cat_Acuerdo;
 use App\Cat_Region;
 use App\Cat_Municipio;
+use App\Cat_Municipio_Reporte;
 use App\Cat_Cobertura;
 use App\User;
 use App\Cat_Estatus_Oficio;
@@ -226,6 +227,13 @@ trait Funciones
 	{
 		$municipios = Cat_Municipio::orderBy('nombre', 'ASC')->get()->toArray();
 		$opciones = $this->llena_combo($municipios, 0, 'nombre', 'id', false);
+		return $opciones;
+	}
+
+	public function opcionesMunicipioReporte ()
+	{
+		$municipios = Cat_Municipio_Reporte::get()->toArray();
+		$opciones = $this->llena_combo($municipios);
 		return $opciones;
 	}
 

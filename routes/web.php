@@ -228,4 +228,11 @@ Route::group(['prefix' => 'TechoFinanciero', 'middleware' => 'valida_ruta:TechoF
 	Route::post('dropdownTipoFuente','TechoFinanciero\TechoController@dropdownTipoFuente');
 });
 
+// Rutas Consultas
+Route::group(['prefix' => 'Consulta', 'middleware' => 'valida_ruta:Consulta/consulta'], function () {
+    Route::get('consulta','Consulta\ConsultaController@index')->name('Consulta.index');
+	Route::post('get_datos_obra', 'Consulta\ConsultaController@getDataObra');
+	Route::post('buscar_obra', 'Consulta\ConsultaController@buscar_obra');
+});
+
 

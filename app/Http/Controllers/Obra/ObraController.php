@@ -210,10 +210,8 @@ class ObraController extends Controller
 				$d_obra->id_municipio = 3;
 			else
 				$d_obra->id_municipio = $request->id_municipio[0] + 3;
-			if ($request->accion == 1) {
+			if ($request->accion == 1)
 				$relacion = Rel_Estudio_Expediente_Obra::where('id_expediente_tecnico', $request->id_exp_tec)->first();
-				//$relacion->id_usuario = \Auth::user()->id;
-			}
 			else {
 				$relacion = new Rel_Estudio_Expediente_Obra();
 				$relacion->id_usuario = \Auth::user()->id;
@@ -316,7 +314,6 @@ class ObraController extends Controller
 				$d_obra->id_cobertura = $request->id_cobertura;
 				$d_obra->localidad = $request->localidad;
 				$d_obra->id_proyecto_ep = $request->id_proyecto_ep;
-				
 				if ($request->id_cobertura <= 2)
 					$d_obra->id_municipio = $request->id_cobertura;
 				else if (count($request->id_municipio) > 1)
