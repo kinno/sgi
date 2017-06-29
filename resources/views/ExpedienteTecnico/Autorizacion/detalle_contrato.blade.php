@@ -1,5 +1,19 @@
 @extends('layouts.master')
 @section('content')
+<link href="/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
+<link href="/css/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css"/>
+<script src="/js/jquery.dataTables.min.js" type="text/javascript">
+</script>
+<script src="/js/dataTables.bootstrap.min.js" type="text/javascript">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-filestyle/1.2.1/bootstrap-filestyle.js">
+</script>
+<script src="/js/jquery.bootstrap-touchspin.js">
+</script>
+<input type="text" id="id_obra" value="{{$relacion->obra->id}}"/>
+<input type="text" id="id_expediente_tecnico" value="{{$relacion->id_expediente_tecnico}}"/>
+<input type="text" id="id_contrato" value="{{($id_contrato!=="0")?$id_contrato:''}}"/>
+<input type="text" id="hojaActual" value="1"/>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title text-center">
@@ -9,307 +23,68 @@
         </h3>
     </div>
     <div class="panel-body">
-        <input id="idcontrato" name="idcontrato" type="hidden"/>
-        <input id="idcontratoPadre" name="idcontratoPadre" type="hidden"/>
-        <input id="indexTableContrato" name="indexTableContrato" type="hidden"/>
-        <input id="isEditContrato" name="isEditContrato" type="hidden"/>
-        <input id="isConvenio" name="isConvenio" type="hidden"/>
-        <div class="row form-group">
-            <div class="col-md-4">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Número:
-                    </span>
-                    <input aria-describedby="basic-addon1" class="form-control obligatorioHoja4" id="noContrato" name="noContrato" placeholder="" type="text"/>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        F. de celebración:
-                    </span>
-                    <input class="form-control fechaHoja4 obligatorioHoja4" id="fecCelebracion" name="fecCelebracion" placeholder="" readonly="true" style="background-color: white !important; cursor: pointer !important;" type="text"/>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-                <h4>
-                    <span class="label label-default">
-                        Objeto del contrato:
-                    </span>
-                </h4>
-            </div>
-            <div class="col-md-9">
-                <textarea class="form-control obligatorioHoja4" id="descContrato" name="descContrato" placeholder="">
-                </textarea>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-6">
-                <div id="popRFC" title="RFC no existe">
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            RFC de empresa:
-                        </span>
-                        <input id="idRFC" name="idRFC" type="hidden"/>
-                        <input class="form-control obligatorioHoja4" id="empresaRFC" name="empresaRFC" placeholder="" type="text"/>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Padrón del contratista:
-                    </span>
-                    <input class="form-control " id="numPadronContratista" name="numPadronContratista" placeholder="" type="text"/>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-12">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Empresa:
-                    </span>
-                    <input class="form-control obligatorioHoja4" id="empresaContrato" name="empresaContrato" placeholder="" type="text"/>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-12">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Unidad Ejecutora u organismo:
-                    </span>
-                    <span class="form-control" id="orgOfObr" readonly="true">
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Tipo de contrato:
-                    </span>
-                    <select class="form-control obligatorioHoja4" id="tipoContrato">
-                        <option value="">
-                            Seleccione
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Oficio de asignación:
-                    </span>
-                    <span class="form-control" id="numOfiAsiContrato" readonly="true">
-                    </span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Fecha de oficio de asignación:
-                    </span>
-                    <span class="form-control" id="fecOfiAsiContrato" readonly="true">
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-12">
-                <table class="table table-bordered table-hover" id="tblFuenteContrato">
-                    <thead>
-                        <tr class="success">
-                            <th>
-                                Fuente de financiamiento
-                            </th>
-                            <th>
-                                %
-                            </th>
-                            <th>
-                                Monto total
-                            </th>
-                            <th>
-                                Monto disponible
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Modalidad de Adjudicación:
-                    </span>
-                    <select class="form-control obligatorioHoja4" id="modAdjContrato">
-                        <option value="">
-                            Seleccione
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-4">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Número de obra:
-                    </span>
-                    <span class="form-control" id="numObrContrato" readonly="true">
-                    </span>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Nombre de obra:
-                    </span>
-                    <span class="form-control" id="nomObrContrato" readonly="true" style="overflow-y: auto;">
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Cobertura:
-                    </span>
-                    <span class="form-control" id="coberturaContrato" readonly="true">
-                        cobertura de la obra
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-                <h4>
-                    <span class="label label-default">
-                        Despcripción de la obra:
-                    </span>
-                </h4>
-            </div>
-            <div class="col-md-9">
-                <span id="descObrContrato">
-                </span>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Monto del contrato (incluye IVA):
-                    </span>
-                    <input class="form-control numero2" id="montoContrato" name="montoContrato" readonly="true" type="text"/>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-12">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        Plazo de ejecución
-                    </div>
-                    <div class="panel-body">
-                        <div class="row form-group">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon1">
-                                        Fecha de inicio:
-                                    </span>
-                                    <input class="form-control fechaHoja4 obligatorioHoja4" id="fecInicioContr" name="fecInicioContr" readonly="true" style="background-color: white !important; cursor: pointer !important;" type="text"/>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon1">
-                                        Fecha de término:
-                                    </span>
-                                    <input class="form-control fechaHoja4 obligatorioHoja4" id="fecTerminoContr" name="fecTerminoContr" readonly="true" style="background-color: white !important; cursor: pointer !important;" type="text"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        Días calendario:
-                                    </span>
-                                    <input class="form-control" id="diasContrato" name="diasContrato" readonly="true" type="text"/>
-                                </div>
-                            </div>
+        <div class="form-group panel-body">
+            <div class="row form-group">
+                <input id="hojaActual" name="hojaActual" type="hidden" value="1"/>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="active" id="panel1">
+                        <a data-toggle="tab" href="#h1" role="tab">
+                            Datos Generales
+                        </a>
+                    </li>
+                    <li id="panel2">
+                        <a data-toggle="tab" href="#h2" role="tab">
+                            Conceptos
+                        </a>
+                    </li>
+                    <li id="panel3">
+                        <a data-toggle="tab" href="#h3" role="tab">
+                            Garantías
+                        </a>
+                    </li>
+                    <li id="panel4">
+                        <a data-toggle="tab" href="#h4" role="tab">
+                            Avance Físico
+                        </a>
+                    </li>
+                    <li id="panel5">
+                        <a data-toggle="tab" href="#h5" role="tab">
+                            Avance Financiero
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="h1">
+                        <div class="content">
+                            @include('ExpedienteTecnico/Autorizacion.datos_generales_contrato')
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Disponibilidad del inmueble:
-                    </span>
-                    <select class="form-control obligatorioHoja4" id="dispInmuContrato">
-                        <option value="">
-                            Seleccione
-                        </option>
-                        <option value="1">
-                            Sí
-                        </option>
-                        <option value="0">
-                            No
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group" id="rowMotivos" style="display: none;">
-            <div class="col-md-7">
-                <div class="col-md-3">
-                    <h4>
-                        <span class="label label-default">
-                            Motivos:
-                        </span>
-                    </h4>
-                </div>
-                <div class="col-md-9">
-                    <textarea class="form-control obligatorioHoja4" id="motivosNoDispContrato" name="motivosNoDispContrato">
-                    </textarea>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Fecha de disponibilidad:
-                    </span>
-                    <input class="form-control fechaHoja4 obligatorioHoja4" id="fecDisponibilidadInm" name="fecDisponibilidadInm" readonly="true" style="background-color: white !important; cursor: pointer !important;" type="text"/>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        Tipo de obra (contrato):
-                    </span>
-                    <select class="form-control obligatorioHoja4" id="tipObrContr">
-                        <option value="">
-                            Seleccione
-                        </option>
-                    </select>
+                    <div class="tab-pane " id="h2">
+                        <div class="content">
+                            @include('ExpedienteTecnico/Autorizacion.datos_conceptos')
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="h3">
+                        <div class="content">
+                            @include('ExpedienteTecnico/Autorizacion.datos_garantias')
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="h4">
+                        <div class="content">
+                            @include('ExpedienteTecnico/Autorizacion.datos_avance_fisico')
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="h5">
+                        <div class="content">
+                            @include('ExpedienteTecnico/Autorizacion.datos_avance_financiero')
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="{{ asset('js/Expediente_Tecnico/Autorizacion/main_detalle_contrato.js') }}">
+</script>
+
 @endsection

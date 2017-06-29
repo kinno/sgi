@@ -17,8 +17,6 @@ class Rel_Estudio_Expediente_Obra extends Model
     }
     public function obra(){
     	return $this->hasOne('App\D_Obra','id','id_det_obra');
-    }
-
-    
+    }  
     
 }

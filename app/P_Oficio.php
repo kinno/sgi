@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class P_Oficio extends Model
 {
@@ -11,6 +12,9 @@ class P_Oficio extends Model
         'clave', 'id_solicitud_presupuest', 'id_usuario', 'id_estatus', 'ejercicio', 'id_sector', 'id_unidad_ejecutora', 'fecha_oficio', 'fecha_firma', 'titular', 'asunto', 'ccp', 'prefijo', 'iniciales', 'tarjeta_turno', 'texto'
     ];
 
+    public function getFechaOficioAttribute($value){
+        return Carbon::parse($value)->format('d-m-Y');
+    }
     public function detalle(){
     	return $this->hasMany('App\D_Oficio','id_oficio','id');
     }

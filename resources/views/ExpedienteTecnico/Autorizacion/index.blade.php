@@ -44,13 +44,14 @@
   width: 60px;
 }
 </style>
-<div class="panel panel-default">
+<div class="panel panel-default" id="principal">
     <div class="panel-heading">
         <h3 class="panel-title text-center">
             <strong>
-                Detalle de la Obra
+                Solicitud de Autorización
             </strong>
             <input type="hidden" name="id_obra" id="id_obra">
+            <input type="hidden" name="id_expediente_tecnico" id="id_expediente_tecnico">
         </h3>
     </div>
     <div class="panel-body form form-horizontal">
@@ -59,7 +60,7 @@
                 Obra:
             </label>
             <div class="col-md-2">
-                <input class="form-control input-sm enc" id="id_obra_search" name="id_obra_search" placeholder="" type="text">
+                <input class="form-control input-sm enc" id="id_obra_search" name="id_obra_search" placeholder="" type="text" value="{{$id_obra}}">
                 </input>
             </div>
             <label class="col-md-1 control-label" for="encejercicio">
@@ -136,11 +137,58 @@
                 </input>
             </div>
         </div>
+        <div id="listadoContratos" class="row form-group form-group-sm col-md-12" style="display: none" >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">
+                        <strong>
+                            Contratos
+                        </strong>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <hr>
+                        <table class="table table-striped table-condensed table-hover" id="tablaContratos" {{-- style="font-size: 0.85em" --}}>
+                            <thead>
+                                <tr>
+                                    <th style="display: none;">
+                                        idContrato 0
+                                    </th>
+                                    <th>
+                                        Número de Contrato
+                                        <span class="glyphicon glyphicon-question-sign ayuda" title="Anotar el 
+                                                          número de contrato asignado para la realización de 
+                                                          la obra o acción.">
+                                        </span>
+                                    </th>
+                                    <th>
+                                        Fecha de celebración
+                                    </th>
+                                    <th>
+                                        Monto
+                                        <span class="glyphicon glyphicon-question-sign ayuda" title="Anotar el 
+                                                          monto total del contrato para realizar la obra o acción.">
+                                        </span>
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </hr>
+                </div>
+                <div class="panel-footer">
+                    <span class="btn btn-success btn-sm" id="btnRegistrarContrato" >
+                        Registrar Contrato
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="panel-footer">
-        <span class="btn btn-success btn-sm col-md-offset-4" id="btnVerContratos" style="display: none;">
+    <div class="panel-footer" id="divBotones" style="display: none">
+       {{--  <span class="btn btn-success btn-sm col-md-offset-4" id="btnVerContratos" style="display: none;">
             Ver/Registrar Contratos
-        </span>
+        </span> --}}
         <span class="btn btn-success btn-sm" id="btnGenerarAutorizacion" >
             Generar Autorización
         </span>

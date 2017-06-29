@@ -1,3 +1,4 @@
+{{-- {{dd($oficio_actual)}} --}}
 
 <html>
 <head>
@@ -82,7 +83,11 @@
 						        203200-APAD-{{$oficio_actual->clave}}
 						    </div>
 						    <div class="center negrita">
+						    	@if (isset($oficio_actual->sector->nombre))
 						        {{mb_strtoupper($oficio_actual->sector->nombre)}}
+						        @else
+						        	AYUNTAMIENTOS
+						    	@endif
 						    </div>
 					    </div>
 		    		</td>
@@ -113,7 +118,7 @@
 		    	</tr>
 		    </thead>
 		    <tbody>
-		    @for ($i = 0; $i < 7; $i++)
+		    {{-- @for ($i = 0; $i < 7; $i++) --}}
 		    	@foreach ($detalle as $unidad)
 			    	<tr>
 						<td class="unidad-ejecutora" colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$unidad->nombre}}</td>
@@ -126,12 +131,12 @@
 							@endphp	 
 							<tr class="general">
 								<td class="id-obra">{{$obra->id}}</td>
-								<td class="nombre-obra">{{mb_strtoupper($obra->nombre)}}</td>
-								@foreach ($obra->detalle_oficios as $detalle_oficio)
+								<td class="nombre-obra">{{mb_strtoupper($obra->nombre)}} ({{$obra->tipo_obra->nombre}})</td>
+								@foreach ($obra->detalles_oficio as $detalle_oficio)
 									@if($loop->iteration==1)
 										<tr class="general">
 										<td></td>
-										<td>{{$obra->municipio_reporte->nombre}}</td>
+										<td>{{$obra->municipio_reporte->nombre}}, {{$obra->localidad}}</td>
 									@endif
 									@if(!$loop->first)
 										<tr class="general">
@@ -174,125 +179,13 @@
 						@endforeach
 					</tr>
 				@endforeach
-		    @endfor
+		    {{-- @endfor --}}
 		    </tbody>
 		</table>
 	</div>
   </main>
 </body>
 </html>
-{{-- <div class="header">
-	<div id="container">
-	    <div class="left">
-	        ANEXO
-	    </div>
-	    <div class="right">
-	        TIPO DE SOLICITUD<br>
-	        203200-APAD-CLAVE
-	    </div>
-	    <div class="center">
-	        SECTOR
-	    </div>
-	</div>
-	<table border="1" style="width:100%">
-	    <tr>
-	        <td>	
-	        No. de Control
-	        </td>
-	        <td>
-	        Descripción<br>Municipio / Localidad<br>Estructura Programática
-	        </td>
-	        <td colspan="3">
-	        Oficio
-	        </td>
-	        <td>
-	        Inversión
-	        </td>
-	        <td>
-	        Monto Asignado
-	        </td>
-	        <td>
-	        Monto Autorizado
-	        </td>
-	    </tr>
-    </table>
-</div>
-<div class="main">
-<table border="1" style="width:100%">
-    <tr>
-        <td>	
-        No. de Control
-        </td>
-        <td>
-        Descripción<br>Municipio / Localidad<br>Estructura Programática
-        </td>
-        <td colspan="3">
-        Oficio
-        </td>
-        <td>
-        Inversión
-        </td>
-        <td>
-        Monto Asignado
-        </td>
-        <td>
-        Monto Autorizado
-        </td>
-    </tr>
-    
-    	@foreach ($detalle as $unidad)
-    	<tr>
-			<td colspan="8">{{$unidad->nombre}}</td>
-		</tr>	
-			@foreach ($unidad->obras as $obra)
-				@php
-					$sumaAsignado = 0.00;
-					$sumaAutorizado = 0.00;
-				@endphp	 
-				<tr>
-					<td>{{$obra->id}}</td>
-					<td>{{$obra->nombre}}</td>
-					@foreach ($obra->detalle_oficios as $detalle_oficio)
-						@if(!$loop->first)
-							<tr>
-							<td></td>
-							<td></td>
-						@endif
-							<td>{{$detalle_oficio->oficio->clave}}</td>
-							 <td>{{$detalle_oficio->oficio->fecha_oficio}}</td>
-							 <td>{{$detalle_oficio->oficio->id_solicitud_presupuesto}} {{$detalle_oficio->fuentes->descripcion}}</td>
-							 <td>{{($detalle_oficio->fuentes->tipo=='E')?'Estatal' : 'Federal'}}</td>
-							 @if ($detalle_oficio->oficio->id_solicitud_presupuesto==4)
-							 	<td class="numero">({{($detalle_oficio->asignado)?number_format($detalle_oficio->asignado,2):'0.00'}})</td>
-							 	<td class="numero">({{($detalle_oficio->autorizado)?number_format($detalle_oficio->autorizado,2):'0.00'}})</td>
-							 @else
-							 	<td class="numero">{{($detalle_oficio->asignado)?number_format($detalle_oficio->asignado,2):'0.00'}}</td>
-							 	<td class="numero">{{($detalle_oficio->autorizado)?number_format($detalle_oficio->autorizado,2):'0.00'}}</td>	
-							 @endif
-							 
-						
-						 @if(!$loop->first)
-							</tr>
-						@endif
-						@php
-							if($detalle_oficio->oficio->id_solicitud_presupuesto!==4){
-								$sumaAsignado += $detalle_oficio->asignado;
-								$sumaAutorizado += $detalle_oficio->autorizado;
-							}
-						@endphp	 
-			    	@endforeach
-				</tr>
-				<tr class="totales">
-					<td colspan="6" style="text-align: right">ACUMULADO</td>
-					<td class="numero">{{number_format($sumaAsignado,2)}}</td>
-					<td class="numero">{{number_format($sumaAutorizado,2)}}</td>
-
-				</tr>
-			@endforeach
-		@endforeach
-    </tr>
-</table>
-</div> --}}
 
 {{-- {{dd($detalle)}} --}}
 {{-- {{dd($oficio_actual)}} --}}

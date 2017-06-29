@@ -401,7 +401,7 @@ function guardarOficio() {
                 var id = (response);
                 if (id) {
                     for (var i = 0; i < id.length; i++) {
-                        tablaObras.cell(i, 0).data(parseInt(id)).draw();
+                        tablaObras.cell(i, 0).data(parseInt(id[i])).draw();
                     }
                     tablaObras.column(0).visible(false);
                     $("#id_oficio").val(response.id_oficio);

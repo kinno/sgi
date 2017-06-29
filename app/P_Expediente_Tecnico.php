@@ -81,4 +81,8 @@ class P_Expediente_Tecnico extends Model
         return $this->hasMany('App\P_Evaluacion_Expediente','id_expediente_tecnico','id');
     }
 
+    public function contrato(){
+        return $this->hasMany('App\P_Contrato','id_expediente_tecnico','id');
+    }
+
 }

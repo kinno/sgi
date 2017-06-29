@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class AlertPPrograma extends Migration
+class AlterPProgramaContrato extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +13,7 @@ class AlertPPrograma extends Migration
      */
     public function up()
     {
-        Schema::table('p_programa', function ($table) {
+         Schema::table('p_programa_contrato', function($table) {
             $table->renameColumn('procentaje_enero', 'porcentaje_enero');
             $table->renameColumn('procentaje_febrero', 'porcentaje_febrero');
             $table->renameColumn('procentaje_marzo', 'porcentaje_marzo');
@@ -36,7 +37,7 @@ class AlertPPrograma extends Migration
      */
     public function down()
     {
-        Schema::table('p_programa', function ($table) {
+        Schema::table('p_programa_contrato', function ($table) {
             $table->renameColumn('porcentaje_enero', 'procentaje_enero');
             $table->renameColumn('porcentaje_febrero', 'procentaje_febrero');
             $table->renameColumn('porcentaje_marzo', 'procentaje_marzo');

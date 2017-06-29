@@ -44,9 +44,9 @@ $(document).ready(function() {
     });
 });
 
-function initDataPrograma(id_expediente_tecnico) {
-    if (!id_expediente_tecnico) {
-        id_expediente_tecnico = 0;
+function initDataPrograma(id_contrato) {
+    if (!id_contrato) {
+        id_contrato = 0;
     }
     tablaPrograma = $('#tablaPrograma').DataTable({
         "ordering": false,
@@ -54,7 +54,7 @@ function initDataPrograma(id_expediente_tecnico) {
         "destroy": true,
         processing: false,
         serverSide: false,
-        ajax: '/ExpedienteTecnico/Asignacion/get_data_programa/' + id_expediente_tecnico,
+        ajax: '/ExpedienteTecnico/Autorizacion/get_data_programa/' + id_contrato,
         columns: [{
             data: 'id',
             name: 'id'
@@ -130,21 +130,6 @@ function initDataPrograma(id_expediente_tecnico) {
     });
 }
 
-function llenarAvanceFinanciero(avance_financiero) {
-    $('#meseneAdmin').val(avance_financiero.enero);
-    $('#mesfebAdmin').val(avance_financiero.febrero);
-    $('#mesmarAdmin').val(avance_financiero.marzo);
-    $('#mesabrAdmin').val(avance_financiero.abril);
-    $('#mesmayAdmin').val(avance_financiero.mayo);
-    $('#mesjunAdmin').val(avance_financiero.junio);
-    $('#mesjulAdmin').val(avance_financiero.julio);
-    $('#mesagoAdmin').val(avance_financiero.agosto);
-    $('#messepAdmin').val(avance_financiero.septiembre);
-    $('#mesoctAdmin').val(avance_financiero.octubre);
-    $('#mesnovAdmin').val(avance_financiero.noviembre);
-    $('#mesdicAdmin').val(avance_financiero.diciembre).change();
-}
-
 function agregaValores() {
     var valoresMesHoja4 = obtenervaloresdemodalmodal1();
     var total = (valoresMesHoja4.ene + valoresMesHoja4.feb + valoresMesHoja4.mar + valoresMesHoja4.abr + valoresMesHoja4.may + valoresMesHoja4.jun + valoresMesHoja4.jul + valoresMesHoja4.ago + valoresMesHoja4.sep + valoresMesHoja4.oct + valoresMesHoja4.nov + valoresMesHoja4.dic);
@@ -200,20 +185,20 @@ function agregaValores() {
                 tablaPrograma.column(0).visible(false); //ID 
             }
             eliminaNotificacion();
-             desactivaNavegacion(false);
+             // desactivaNavegacion(false);
             limpiar("modal1");
             // tablaPrograma.column(0).visible(false);
             $("#modal1").modal("hide");
         } else {
             // $("#totaldecontra").before('<div class="alert alert-danger col-md-12" role="alert" style="position: absolute; z-index:1;">El total debe de ser menor a 100%</div>');
             colocaNotificacion("", "El total debe de ser menor a 100%", "error", "right bottom");
-             desactivaNavegacion(true);
+             // desactivaNavegacion(true);
         }
     } else {
         if ((total <= 0 || total > 100)) {
             // $("#totaldecontra").before('<div class="alert alert-danger col-md-12" role="alert" style="position: absolute; z-index:1;">La suma debe ser mayor a 0% y menor a 100%</div>');
             colocaNotificacion("", "La suma debe ser mayor a 0% y menor a 100%", "error", "right bottom");
-             desactivaNavegacion(true);
+             // desactivaNavegacion(true);
         }
     }
     $("#totaldecontra").html("0");
@@ -280,109 +265,53 @@ function limpiar(limformularios) {
     });
 }
 
-function sumaAcumulado() {
-    var totalPresupuesto = $("#form_anexo_uno #monto").val().replace(/,/g, "");
-    var totalPresupuestoFormat = $("#form_anexo_uno #monto").val();
-    var acumulados = obtenerValoresdeMeses();
-    for (var i = 0; i < 12; i++) {
-        if (acumulados[i] > totalPresupuesto) {
-            colocaNotificacion('', "Excediste el Total del Presupuesto ($" + totalPresupuestoFormat + ")", 'error', 'right bottom');
-             desactivaNavegacion(true);
-            error = true;
-            if (i > 0) {
-                $(".montoMesFina:gt( " + (i - 1) + " )").val("0");
-            } else {
-                $(".montoMesFina:eq( 0 )").val("0");
-                $(".montoMesFina:gt( 0 )").val("0");
-            }
-            acumulados = obtenerValoresdeMeses();
-            $(".acumesfinaAdmin:eq( " + i + " )").html(acumulados[i]);
-            $(".acumesfinaAdmin:gt( " + i + " )").html(acumulados[i]);
-            break;
-        } else {
-            eliminaNotificacion();
-            error = false;
-             desactivaNavegacion(false);
-        }
-        $(".acumesfinaAdmin:eq( " + i + " )").html(acumulados[i]);
+function colocaNotificacion(elem, aviso, clase, posicion) {
+    if (!elem) {
+        $.notify(aviso, {
+            autoHide: false,
+            clickToHide: false,
+            className: clase,
+            position: posicion
+        });
+    } else {
+        $(elem).notify(aviso, {
+            autoHide: false,
+            clickToHide: false,
+            className: clase,
+            position: posicion
+        });
     }
-    $('.numero2').autoNumeric({
-        aSep: ',',
-        mDec: 2,
-        vMin: '0.00'
-    });
-    $(".numero2").autoNumeric("update");
-    var porcentajesAcu = new Array();
-    for (var i = 0; i < 12; i++) {
-        porcentajesAcu.push(((acumulados[i] * 100) / totalPresupuesto).toFixed(5));
-        $('.pjeAcuFinaAdmin:eq(' + i + ')').html(porcentajesAcu[i]);
-    }
-    $(".acumesfinaAdmin").autoNumeric("update");
 }
 
-function obtenerValoresdeMeses() {
-    var acumulados = [];
-    var valoresMeses;
-    valoresMeses = {
-        mesene: $.trim($('#meseneAdmin').val()) !== "" ? parseFloat($('#meseneAdmin').val().replace(/,/g, "")) : 0,
-        mesfeb: $.trim($('#mesfebAdmin').val()) !== "" ? parseFloat($('#mesfebAdmin').val().replace(/,/g, "")) : 0,
-        mesmar: $.trim($('#mesmarAdmin').val()) !== "" ? parseFloat($('#mesmarAdmin').val().replace(/,/g, "")) : 0,
-        mesabr: $.trim($('#mesabrAdmin').val()) !== "" ? parseFloat($('#mesabrAdmin').val().replace(/,/g, "")) : 0,
-        mesmay: $.trim($('#mesmayAdmin').val()) !== "" ? parseFloat($('#mesmayAdmin').val().replace(/,/g, "")) : 0,
-        mesjun: $.trim($('#mesjunAdmin').val()) !== "" ? parseFloat($('#mesjunAdmin').val().replace(/,/g, "")) : 0,
-        mesjul: $.trim($('#mesjulAdmin').val()) !== "" ? parseFloat($('#mesjulAdmin').val().replace(/,/g, "")) : 0,
-        mesago: $.trim($('#mesagoAdmin').val()) !== "" ? parseFloat($('#mesagoAdmin').val().replace(/,/g, "")) : 0,
-        messep: $.trim($('#messepAdmin').val()) !== "" ? parseFloat($('#messepAdmin').val().replace(/,/g, "")) : 0,
-        mesoct: $.trim($('#mesoctAdmin').val()) !== "" ? parseFloat($('#mesoctAdmin').val().replace(/,/g, "")) : 0,
-        mesnov: $.trim($('#mesnovAdmin').val()) !== "" ? parseFloat($('#mesnovAdmin').val().replace(/,/g, "")) : 0,
-        mesdic: $.trim($('#mesdicAdmin').val()) !== "" ? parseFloat($('#mesdicAdmin').val().replace(/,/g, "")) : 0
-    };
-    acumulados.push(valoresMeses.mesene);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb + valoresMeses.mesmar);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb + valoresMeses.mesmar + valoresMeses.mesabr);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb + valoresMeses.mesmar + valoresMeses.mesabr + valoresMeses.mesmay);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb + valoresMeses.mesmar + valoresMeses.mesabr + valoresMeses.mesmay + valoresMeses.mesjun);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb + valoresMeses.mesmar + valoresMeses.mesabr + valoresMeses.mesmay + valoresMeses.mesjun + valoresMeses.mesjul);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb + valoresMeses.mesmar + valoresMeses.mesabr + valoresMeses.mesmay + valoresMeses.mesjun + valoresMeses.mesjul + valoresMeses.mesago);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb + valoresMeses.mesmar + valoresMeses.mesabr + valoresMeses.mesmay + valoresMeses.mesjun + valoresMeses.mesjul + valoresMeses.mesago + valoresMeses.messep);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb + valoresMeses.mesmar + valoresMeses.mesabr + valoresMeses.mesmay + valoresMeses.mesjun + valoresMeses.mesjul + valoresMeses.mesago + valoresMeses.messep + valoresMeses.mesoct);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb + valoresMeses.mesmar + valoresMeses.mesabr + valoresMeses.mesmay + valoresMeses.mesjun + valoresMeses.mesjul + valoresMeses.mesago + valoresMeses.messep + valoresMeses.mesoct + valoresMeses.mesnov);
-    acumulados.push(valoresMeses.mesene + valoresMeses.mesfeb + valoresMeses.mesmar + valoresMeses.mesabr + valoresMeses.mesmay + valoresMeses.mesjun + valoresMeses.mesjul + valoresMeses.mesago + valoresMeses.messep + valoresMeses.mesoct + valoresMeses.mesnov + valoresMeses.mesdic);
-    return acumulados;
+function eliminaNotificacion() {
+    $('.notifyjs-wrapper').trigger('notify-hide');
 }
 
-function guardarHoja4() {
-    var exp = $("#form_anexo_uno #id_expediente_tecnico").val();
+// function desactivaNavegacion(errornav) {
+//     if (errornav) {
+//         $("ul.nav-tabs>li").addClass('error');
+//     } else {
+//         $("ul.nav-tabs>li").removeClass('error');
+//     }
+// }
+
+function guardarPrograma() {
+    var id_contrato = $("#id_contrato").val();
     if (!error) {
         var arrayPrograma = [];
-        var avanceFinanciero;
+        
         var programas = tablaPrograma.rows().data();
         for (var i = 0; i < programas.length; i++) {
             arrayPrograma.push(programas[i]);
         }
-        avanceFinanciero = {
-            enero: $.trim($('#meseneAdmin').val()) !== "" ? parseFloat($('#meseneAdmin').val().replace(/,/g, "")) : 0,
-            febrero: $.trim($('#mesfebAdmin').val()) !== "" ? parseFloat($('#mesfebAdmin').val().replace(/,/g, "")) : 0,
-            marzo: $.trim($('#mesmarAdmin').val()) !== "" ? parseFloat($('#mesmarAdmin').val().replace(/,/g, "")) : 0,
-            abril: $.trim($('#mesabrAdmin').val()) !== "" ? parseFloat($('#mesabrAdmin').val().replace(/,/g, "")) : 0,
-            mayo: $.trim($('#mesmayAdmin').val()) !== "" ? parseFloat($('#mesmayAdmin').val().replace(/,/g, "")) : 0,
-            junio: $.trim($('#mesjunAdmin').val()) !== "" ? parseFloat($('#mesjunAdmin').val().replace(/,/g, "")) : 0,
-            julio: $.trim($('#mesjulAdmin').val()) !== "" ? parseFloat($('#mesjulAdmin').val().replace(/,/g, "")) : 0,
-            agosto: $.trim($('#mesagoAdmin').val()) !== "" ? parseFloat($('#mesagoAdmin').val().replace(/,/g, "")) : 0,
-            septiembre: $.trim($('#messepAdmin').val()) !== "" ? parseFloat($('#messepAdmin').val().replace(/,/g, "")) : 0,
-            octubre: $.trim($('#mesoctAdmin').val()) !== "" ? parseFloat($('#mesoctAdmin').val().replace(/,/g, "")) : 0,
-            noviembre: $.trim($('#mesnovAdmin').val()) !== "" ? parseFloat($('#mesnovAdmin').val().replace(/,/g, "")) : 0,
-            diciembre: $.trim($('#mesdicAdmin').val()) !== "" ? parseFloat($('#mesdicAdmin').val().replace(/,/g, "")) : 0
-        };
+        
         $.ajax({
             data: {
                 'calendarizadoPrograma': arrayPrograma,
                 'programasEliminados': arrayProgramasEliminados,
-                'avanceFinanciero': avanceFinanciero,
-                'id_expediente_tecnico': exp,
+                'id_contrato': id_contrato,
             },
-            url: '/ExpedienteTecnico/Asignacion/guardar_hoja_4',
+            url: '/ExpedienteTecnico/Autorizacion/guardar_programa_contrato',
             type: 'post',
             beforeSend: function() {
                 $("#divLoading").show();
@@ -393,14 +322,15 @@ function guardarHoja4() {
             success: function(response) {
                 console.log(response);
                 if (!response.error) {
-                    var id = (response.programas);
+                    var id = (response);
                     if (id) {
                         for (var i = 0; i < id.length; i++) {
+                            console.log(id);
                             tablaPrograma.cell(i, 0).data(parseInt(id[i])).draw();
                         }
-                        tablaPrograma.column(0).visible(false);
+                        // tablaPrograma.column(0).visible(false);
                         // eliminaWaitGeneral();
-                        BootstrapDialog.mensaje(null, "Datos del Anexo 4 guardados correctamente.<br>Folio de Expediente Técnico: " + exp, 1);
+                        BootstrapDialog.mensaje(null, "Datos del Programa guardados correctamente. ", 1);
                     }
                     guardado = true;
                     // console.log(tablaConceptos.data());
