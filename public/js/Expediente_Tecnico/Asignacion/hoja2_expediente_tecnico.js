@@ -112,15 +112,19 @@ function guardarHoja2() {
                         if (data.microlocalizacion) {
                             $("#vista_previa").attr('src', data.microlocalizacion);
                         }
+                        $("#form_anexo_dos").find('.has-error').each(function() {
+                            $(this).removeClass('has-error');
+                        });
                         desactivaNavegacion(false);
                     } else {
                         BootstrapDialog.mensaje(null, data.error, 3);
                     }
                 } else {
+                    $.notify('Por favor llenar los campos seleccionados', "error");
                     for (property in data.error_validacion) {
-                        $("#" + property).notify("Campo requerido", "error");
-                        desactivaNavegacion(true);
+                        $("#" + property).parent().addClass('has-error');
                     }
+                    desactivaNavegacion(true);
                 }
             },
             error: function(response) {
@@ -133,58 +137,95 @@ function guardarHoja2() {
     // 
 }
 
-function llenarHoja2(id_expediente_tecnico, hoja2, regiones, municipios,rutaReal,tipo) {
-    if(tipo=="estudio"){
-        var disabled = true;
-    }else{
-        disabled = false;
-    }
-    $("#form_anexo_dos #id_hoja_dos").val(hoja2.id);
-    $("#form_anexo_dos #id_expediente_tecnico").val(id_expediente_tecnico);
-    $("#form_anexo_dos #id_cobertura").val(hoja2.id_cobertura).prop('readonly', disabled);
-    if (regiones.length > 0) {
-        $("#divRegiones").show(0, function() {
-            arrRegiones = [];
-            for (var i = 0; i < regiones.length; i++) {
-                // arrRegiones.push(regiones[i].id_region);
-                arrRegiones.push(regiones[i].id);
-            }
-            $("#id_region").select2({
-                placeholder: "Seleccione la(s) región(es)"
+function llenarHoja2(id_expediente_tecnico, hoja2, regiones, municipios, rutaReal, tipo) {
+    if (tipo == "obra") {
+        $("#form_anexo_dos #id_cobertura").val(hoja2.id_cobertura).prop('readonly', disabled);
+        if (regiones.length > 0) {
+            $("#divRegiones").show(0, function() {
+                arrRegiones = [];
+                for (var i = 0; i < regiones.length; i++) {
+                    // arrRegiones.push(regiones[i].id_region);
+                    arrRegiones.push(regiones[i].id);
+                }
+                $("#id_region").select2({
+                    placeholder: "Seleccione la(s) región(es)"
+                });
+                $(".select2-container").css({
+                    width: '100%',
+                });
+                $("#id_region").val(arrRegiones).trigger('change');
+            })
+            $("#comloc").show();
+        }
+        if (municipios.length > 0) {
+            $("#divMunicipios").show(0, function() {
+                arrMunicipios = [];
+                for (var i = 0; i < municipios.length; i++) {
+                    arrMunicipios.push(municipios[i].id);
+                }
+                $("#id_municipio").select2({
+                    placeholder: "Seleccione la(s) región(es)"
+                });
+                $(".select2-container").css({
+                    width: '100%',
+                });
+                $("#id_municipio").val(arrMunicipios).trigger('change').prop('readonly', disabled);
             });
-            $(".select2-container").css({
-                width: '100%',
+            $("#comloc").show();
+        }
+    } else {
+        if (tipo == "estudio") {
+            var disabled = true;
+        } else {
+            disabled = false;
+        }
+        $("#form_anexo_dos #id_hoja_dos").val(hoja2.id);
+        $("#form_anexo_dos #id_expediente_tecnico").val(id_expediente_tecnico);
+        $("#form_anexo_dos #id_cobertura").val(hoja2.id_cobertura).prop('readonly', disabled);
+        if (regiones.length > 0) {
+            $("#divRegiones").show(0, function() {
+                arrRegiones = [];
+                for (var i = 0; i < regiones.length; i++) {
+                    // arrRegiones.push(regiones[i].id_region);
+                    arrRegiones.push(regiones[i].id);
+                }
+                $("#id_region").select2({
+                    placeholder: "Seleccione la(s) región(es)"
+                });
+                $(".select2-container").css({
+                    width: '100%',
+                });
+                $("#id_region").val(arrRegiones).trigger('change');
+            })
+            $("#comloc").show();
+        }
+        if (municipios.length > 0) {
+            $("#divMunicipios").show(0, function() {
+                arrMunicipios = [];
+                for (var i = 0; i < municipios.length; i++) {
+                    arrMunicipios.push(municipios[i].id);
+                }
+                $("#id_municipio").select2({
+                    placeholder: "Seleccione la(s) región(es)"
+                });
+                $(".select2-container").css({
+                    width: '100%',
+                });
+                $("#id_municipio").val(arrMunicipios).trigger('change').prop('readonly', disabled);
             });
-            $("#id_region").val(arrRegiones).trigger('change');
-        })
-        $("#comloc").show();
-    }
-    if (municipios.length > 0) {
-        $("#divMunicipios").show(0, function() {
-            arrMunicipios = [];
-            for (var i = 0; i < municipios.length; i++) {
-                arrMunicipios.push(municipios[i].id);
-            }
-            $("#id_municipio").select2({
-                placeholder: "Seleccione la(s) región(es)"
-            });
-            $(".select2-container").css({
-                width: '100%',
-            });
-            $("#id_municipio").val(arrMunicipios).trigger('change').prop('readonly', disabled);
-        });
-        $("#comloc").show();
-    }
-    $("#form_anexo_dos #nombre_localidad").val(hoja2.nombre_localidad).prop('readonly', disabled);
-    $("#form_anexo_dos #id_tipo_localidad").val(hoja2.id_tipo_localidad).prop('readonly', disabled);
-    $("#form_anexo_dos #bcoordenadas").val(hoja2.bcoordenadas).change().prop('readonly', disabled);
-    $("#form_anexo_dos #observaciones_coordenadas").val(hoja2.observaciones_coordenadas).prop('readonly', disabled);
-    $("#form_anexo_dos #latitud_inicial").val(hoja2.latitud_inicial).prop('readonly', disabled);
-    $("#form_anexo_dos #longitud_inicial").val(hoja2.longitud_inicial).prop('readonly', disabled);
-    $("#form_anexo_dos #latitud_final").val(hoja2.latitud_final).prop('readonly', disabled);
-    $("#form_anexo_dos #longitud_final").val(hoja2.longitud_final).prop('readonly', disabled);
-    if (hoja2.microlocalizacion) {
-        $("#form_anexo_dos #vista_previa").attr('src',rutaReal + "/" + hoja2.microlocalizacion);
+            $("#comloc").show();
+        }
+        $("#form_anexo_dos #nombre_localidad").val(hoja2.nombre_localidad).prop('readonly', disabled);
+        $("#form_anexo_dos #id_tipo_localidad").val(hoja2.id_tipo_localidad).prop('readonly', disabled);
+        $("#form_anexo_dos #bcoordenadas").val(hoja2.bcoordenadas).change().prop('readonly', disabled);
+        $("#form_anexo_dos #observaciones_coordenadas").val(hoja2.observaciones_coordenadas).prop('readonly', disabled);
+        $("#form_anexo_dos #latitud_inicial").val(hoja2.latitud_inicial).prop('readonly', disabled);
+        $("#form_anexo_dos #longitud_inicial").val(hoja2.longitud_inicial).prop('readonly', disabled);
+        $("#form_anexo_dos #latitud_final").val(hoja2.latitud_final).prop('readonly', disabled);
+        $("#form_anexo_dos #longitud_final").val(hoja2.longitud_final).prop('readonly', disabled);
+        if (hoja2.microlocalizacion) {
+            $("#form_anexo_dos #vista_previa").attr('src', rutaReal + "/" + hoja2.microlocalizacion);
+        }
     }
 }
 

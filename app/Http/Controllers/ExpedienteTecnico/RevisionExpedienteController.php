@@ -54,16 +54,22 @@ class RevisionExpedienteController extends Controller
             $evaluacion->id_usuario    = \Auth::user()->id;
             $evaluacion->save();
 
-            $expediente_tecnico             = P_Expediente_Tecnico::find($request->id_expediente_tecnico);
-            $expediente_tecnico->id_estatus = 5;
-            $expediente_tecnico->fecha_evaluacion = date('Y-m-d H:i:s');
+            $relacion = Rel_Estudio_Expediente_Obra::with('expediente')
+            ->where('id_expediente_tecnico','=',$request->id_expediente_tecnico)
+            ->first();
+            // $expediente_tecnico             = P_Expediente_Tecnico::find($request->id_expediente_tecnico);
+            // $expediente_tecnico->id_estatus = 5;
+            // $expediente_tecnico->fecha_evaluacion = date('Y-m-d H:i:s');
             
-            $expediente_tecnico->save();
-            $detalle = "La Dirección General de Inversión ha regresado el Expediente Técnico: ".$expediente_tecnico->id." con observaciones para su atención.";
-            dispatch(new CrearNotificacion($expediente_tecnico->id_usuario,\Auth::user()->id,null,$detalle));
+            // $expediente_tecnico->save();
+            $relacion->expediente->id_estatus = 5;
+            $relacion->expediente->fecha_evaluacion = date('Y-m-d H:i:s');
+            $relacion->expediente->save();
+            $detalle = "La Dirección General de Inversión ha regresado el Expediente Técnico: ".$relacion->expediente->id." de la Obra: ".$relacion->id_det_obra." con observaciones para su atención.";
+            dispatch(new CrearNotificacion($relacion->expediente->id_usuario,\Auth::user()->id,null,$detalle));
 
             DB::commit();
-            $expediente['id_expediente_tecnico'] = $expediente_tecnico->id;
+            $expediente['id_expediente_tecnico'] = $relacion->expediente->id;
             return ($expediente);
 
         } catch (Exception $e) {

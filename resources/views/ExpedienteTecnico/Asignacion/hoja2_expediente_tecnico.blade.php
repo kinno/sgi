@@ -21,7 +21,7 @@
                     Tipo de Cobertura:
                 </label>
                 <div class="col-md-3">
-                    <select class="form-control input-sm bnc am-as obligatorioHoja2 obligatorio" id="id_cobertura" name="id_cobertura">
+                    <select class="form-control input-sm bnc am-as " id="id_cobertura" name="id_cobertura">
                         <option value="">
                             Seleccione...
                         </option>
@@ -80,7 +80,7 @@
                     Tipo de Localidad:
                 </label>
                 <div class="col-md-3">
-                    <select class="form-control input-sm bnc am-as obligatorioHoja2 obligatorio" id="id_tipo_localidad" name="id_tipo_localidad">
+                    <select class="form-control input-sm bnc am-as " id="id_tipo_localidad" name="id_tipo_localidad">
                         <option value="">
                             Seleccione...
                         </option>
@@ -100,7 +100,7 @@
                     Coordenadas:
                 </label>
                 <div class="col-lg-2">
-                    <select class="form-control input-sm bnc am-as obligatorioHoja2 obligatorio" id="bcoordenadas" name="bcoordenadas">
+                    <select class="form-control input-sm bnc am-as " id="bcoordenadas" name="bcoordenadas">
                         <option value="">
                             Seleccionar...
                         </option>

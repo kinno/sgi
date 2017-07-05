@@ -217,7 +217,6 @@ class ExpedienteController extends Controller
                 // Si no se crea una nueva relacion
                 if ($request->bevaluacion_socioeconomica == "1" || $request->bevaluacion_socioeconomica == "3") {
                     $rel_estudio_expediente_obra = Rel_Estudio_Expediente_Obra::where('id_estudio_socioeconomico', '=', $request->id_estudio_socioeconomico)
-                        ->where('ejercicio', '=', $request->ejercicio)
                         ->first();
                     $rel_estudio_expediente_obra->id_expediente_tecnico = $id_expediente_tecnico;
                     $rel_estudio_expediente_obra->id_usuario            = \Auth::user()->id;
@@ -227,10 +226,15 @@ class ExpedienteController extends Controller
 
                     // dd($rel_estudio_regionTEMP);
 
-                } else {
+                }else if($request->id_obra){
+                    $rel_estudio_expediente_obra = Rel_Estudio_Expediente_Obra::where('id_det_obra', '=', $request->id_obra)
+                        ->first();
+                    $rel_estudio_expediente_obra->id_expediente_tecnico = $id_expediente_tecnico;
+                    $rel_estudio_expediente_obra->id_usuario            = \Auth::user()->id;
+                    $rel_estudio_expediente_obra->save();
+                }else {
                     $rel_estudio_expediente_obra                        = new Rel_Estudio_Expediente_Obra;
                     $rel_estudio_expediente_obra->id_expediente_tecnico = $id_expediente_tecnico;
-                    // $rel_estudio_expediente_obra->ejercicio             = $request->ejercicio;
                     $rel_estudio_expediente_obra->id_usuario = \Auth::user()->id;
                     $rel_estudio_expediente_obra->save();
                 }

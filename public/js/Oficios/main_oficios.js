@@ -15,7 +15,6 @@ jQuery(document).ready(function($) {
             }
         }
     });
-    
     initDataFuentes(0);
     initDataOficios(0);
     $("#btnAgregar").on("click", function() {
@@ -92,6 +91,9 @@ function initDataFuentes(id_det_obra) {
             data: null,
             name: 'partida_presupuestal',
             "defaultContent": ''
+        }, {
+            data: 'asignado',
+            name: 'asignado'
         }],
         "fnCreatedRow": function(nRow, aData, iDataIndex) {
             var cell = tablaFuentes.cell(nRow, 5).node();
@@ -103,6 +105,7 @@ function initDataFuentes(id_det_obra) {
         }
     });
     tablaFuentes.column(1).visible(false); //ID 
+    tablaFuentes.column(7).visible(false); //MONTO ASIGNADO 
     tablaFuentes.on('draw.dt', function() {
         $(".number").each(function() {
             $(this).autoNumeric({
@@ -131,10 +134,10 @@ function initDataOficios(id_oficio) {
             "data": 'id_det_obra',
             "name": 'id_det_obra'
         }, {
-            "data": 'principal_oficio.id_solicitud_presupuesto',
+            "data": 'id_solicitud_presupuesto',
             "name": 'id_tipo_solicitud'
         }, {
-            "data": 'principal_oficio.tipo_solicitud.nombre',
+            "data": 'tipo_solicitud.nombre',
             "name": 'solicitud'
         }, {
             "data": 'id_fuente',
@@ -235,7 +238,7 @@ function buscarObra() {
             if (!response.error) {
                 if (response) {
                     // $("#tablaFuentes").show();
-                    // console.log(response);
+                    console.log(response);
                     $("#nombre_obra").val(response.nombre);
                     if (response.id_sector !== 4) {
                         $("#id_sector_tmp").val(response.id_sector);
@@ -268,11 +271,9 @@ function agregarObra() {
         var objObra = {
             id: null,
             id_det_obra: $("#id_obra").val(),
-            principal_oficio: {
-                id_solicitud_presupuesto: $("#id_tipo_solicitud").val(),
-                tipo_solicitud: {
-                    nombre: $("#id_tipo_solicitud option:selected").text()
-                }
+            id_solicitud_presupuesto: $("#id_tipo_solicitud").val(),
+            tipo_solicitud: {
+                nombre: $("#id_tipo_solicitud option:selected").text()
             },
             id_fuente: datosFila['id_fuente'],
             fuentes: {
@@ -285,6 +286,29 @@ function agregarObra() {
             monto: datosFila['monto']
         }
         tablaObras.row.add(objObra).draw('false');
+        if ($("#id_tipo_solicitud").val() == "2") { //SI ES AUTORIZACIÓN VERIFICAR LOS MONTOS ASIGNAD Y AUTORIZADO PARA HACER REDUCCIÓN
+            if (datosFila['monto'] < datosFila['asignado']) {
+                var montoCancelacion = datosFila['asignado'] - datosFila['monto'];
+                var objObra = {
+                    id: null,
+                    id_det_obra: $("#id_obra").val(),
+                    id_solicitud_presupuesto: 7,
+                    tipo_solicitud: {
+                        nombre: "Cancelación"
+                    },
+                    id_fuente: datosFila['id_fuente'],
+                    fuentes: {
+                        descripcion: datosFila['fuentes']['descripcion']
+                    },
+                    id_unidad_ejecutora: $("#id_unidad_ejecutora_select").val(),
+                    unidad_ejecutora: {
+                        nombre: $("#id_unidad_ejecutora_select option:selected").text()
+                    },
+                    monto: montoCancelacion
+                }
+                tablaObras.row.add(objObra).draw('false');
+            }
+        }
     });
     var datosFila = tablaFuentes.row(0).data();
     $('#id_fuente').val(datosFila['id_fuente']);

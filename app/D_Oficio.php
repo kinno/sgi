@@ -28,4 +28,8 @@ class D_Oficio extends Model
          return $this->hasOne('App\P_Oficio','id','id_oficio');
     }
 
+    public function tipo_solicitud(){
+        return $this->hasOne('App\Cat_Solicitud_Presupuesto','id','id_solicitud_presupuesto');
+    }
+
 }

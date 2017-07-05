@@ -135,7 +135,7 @@ class OficiosController extends Controller
     public function get_data_obras($id_oficio)
     {
 
-        $obras = D_Oficio::with('fuentes', 'principal_oficio.tipo_solicitud', 'unidad_ejecutora')
+        $obras = D_Oficio::with('fuentes', 'principal_oficio.tipo_solicitud', 'unidad_ejecutora','tipo_solicitud')
             ->where('id_oficio', '=', $id_oficio);
 
         return \Datatables::of($obras)
@@ -258,8 +258,9 @@ class OficiosController extends Controller
             $d_oficio->id_oficio           = $id_oficio;
             $d_oficio->id_det_obra         = $value['id_det_obra'];
             $d_oficio->id_fuente           = $value['id_fuente'];
+            $d_oficio->id_solicitud_presupuesto = $value['id_solicitud_presupuesto'];
             $d_oficio->id_unidad_ejecutora = $value['id_unidad_ejecutora'];
-            if ($tipo == 1 || $tipo == 9) {
+            if ($value['id_solicitud_presupuesto'] == 1 || $value['id_solicitud_presupuesto'] == 9 || $value['id_solicitud_presupuesto']==7) {
                 $d_oficio->asignado = $value['monto'];
             } else if ($tipo == 2) {
                 $d_oficio->autorizado = $value['monto'];

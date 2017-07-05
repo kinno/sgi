@@ -85,7 +85,7 @@
                     No. de Obra:
                 </label>
                 <div class="col-md-2">
-                    <input class="form-control input-sm input-md am-as" id="id_obra" name="id_obra" readonly="" type="text"/>
+                    <input class="form-control input-sm input-md am-as" id="id_obra" name="id_obra" type="text"/>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Número de Control que identifica a la obra
                       o acción y que se incluye en el documento Anexo al Oficio de Asignación">
@@ -152,7 +152,7 @@
                     Ejercicio:
                 </label>
                 <div class="col-md-2">
-                    <select class="form-control input-sm obligatorio" id="ejercicio" name="ejercicio">
+                    <select class="form-control input-sm " id="ejercicio" name="ejercicio">
                         @foreach($ejercicios as $ejercicio)
                         <option value="{{$ejercicio->ejercicio}}">
                             {{$ejercicio->ejercicio}}
@@ -169,7 +169,7 @@
                     Nombre de la obra:
                 </label>
                 <div class="col-md-7">
-                    <textarea class="form-control input-sm obligatorio" id="nombre_obra" name="nombre_obra" rows="2"></textarea>
+                    <textarea class="form-control input-sm " id="nombre_obra" name="nombre_obra" rows="2"></textarea>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Anotar la denominación de la obra oacción, de tal manera que permita identificar con claridad los trabajos a realizar y suubicación.">
                 </span>
@@ -262,7 +262,7 @@
                     Justificación de la obra:
                 </label>
                 <div class="col-md-7">
-                    <textarea class="form-control input-sm obligatorio" id="justificacion_obra" name="justificacion_obra" rows="2"></textarea>
+                    <textarea class="form-control input-sm " id="justificacion_obra" name="justificacion_obra" rows="2"></textarea>
                 </div>
             </div>
             <div class="row form-group form-group-sm">
@@ -273,7 +273,7 @@
                     Modalidad de ejecución:
                 </label>
                 <div class="col-md-2">
-                    <select class="form-control input-sm obligatorio" id="id_modalidad_ejecucion" name="id_modalidad_ejecucion">
+                    <select class="form-control input-sm " id="id_modalidad_ejecucion" name="id_modalidad_ejecucion">
                         <option value="">
                             Seleccione...
                         </option>
@@ -303,7 +303,7 @@
                     Tipo de obra:
                 </label>
                 <div class="col-md-2">
-                    <select class="form-control input-sm obligatorio" id="id_tipo_obra" name="id_tipo_obra">
+                    <select class="form-control input-sm " id="id_tipo_obra" name="id_tipo_obra">
                         <option value="">
                             Seleccione...
                         </option>
@@ -330,7 +330,7 @@
                         Monto de la Inversi&oacuten;:
                     </label>
                     <div class="col-lg-3" id="tres">
-                        <input class="form-control input-sm text-right obligatorio" id="monto" name="monto" readonly="" type="text"/>
+                        <input class="form-control input-sm text-right " id="monto" name="monto" readonly="" type="text"/>
                     </div>
                     <span class="glyphicon glyphicon-question-sign ayuda" title="Seleccionar la Fuente de financiamiento para
                         llevar a cabo la obra o acción. En caso de ser más de una fuente, deberá
@@ -413,7 +413,7 @@
                     Principales características:
                 </label>
                 <div class="col-md-7">
-                    <textarea class="form-control input-sm obligatorio" id="principales_caracteristicas" name="principales_caracteristicas" rows="2"></textarea>
+                    <textarea class="form-control input-sm " id="principales_caracteristicas" name="principales_caracteristicas" rows="2"></textarea>
                 </div>
                 <span class="glyphicon glyphicon-question-sign ayuda" title="Describir las principales características
                     de la obra o acción.">
@@ -435,7 +435,7 @@
                     U. Medida:
                 </label>
                 <div class="col-lg-3">
-                    <select class="form-control input-sm obligatorio" id="id_meta" name="id_meta">
+                    <select class="form-control input-sm " id="id_meta" name="id_meta">
                         <option value="">
                             Seleccione...
                         </option>

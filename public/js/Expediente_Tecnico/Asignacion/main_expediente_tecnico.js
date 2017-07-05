@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
         location.reload();
     });
     // $("#observaciones").hide();
-    $("#observaciones").on('click',function(){
+    $("#observaciones").on('click', function() {
         abrirObservaciones();
     });
     $("#guardar").on('click', function() {
@@ -30,7 +30,6 @@ jQuery(document).ready(function($) {
         //     $("#hojaActual").val('1');    
         // }
         $("#hojaActual").val('1');
-        
     });
     $("#panel2").on('click', function() {
         //  if ($(this).hasClass('error')) {
@@ -66,7 +65,7 @@ jQuery(document).ready(function($) {
         // }else{
         //     $("#hojaActual").val('5');    
         // }
-        $("#hojaActual").val('5'); 
+        $("#hojaActual").val('5');
     });
     $("#panel6").on('click', function() {
         //  if ($(this).hasClass('error')) {
@@ -96,7 +95,9 @@ jQuery(document).ready(function($) {
     $(".navbar-form").submit(function(e) {
         return false;
     });
-
+    $("#id_obra").on('change', function() {
+        buscarObra();
+    });
     tablaObservaciones = $('#tablaObservaciones').DataTable({
         "ordering": false,
         "searching": false,
@@ -179,10 +180,9 @@ function buscarExpediente() {
                         if (hoja6) {
                             llenarHoja6(data.expediente.id, hoja6);
                         }
-
-                        if(data.expediente.observaciones){
-                            $.each(data.expediente.observaciones,function(index,item){
-                             tablaObservaciones.row.add([item.observaciones,item.fecha_observacion]).draw();
+                        if (data.expediente.observaciones) {
+                            $.each(data.expediente.observaciones, function(index, item) {
+                                tablaObservaciones.row.add([item.observaciones, item.fecha_observacion]).draw();
                             })
                             $("#observaciones").show();
                         }
@@ -240,6 +240,61 @@ function buscarBanco() {
         },
         error: function(response) {
             console.log("Errores::", response);
+        }
+    });
+}
+
+function buscarObra() {
+    BootstrapDialog.confirm('¡Atención!', '¿Quieres crear el Expediente Técnico a partir del <b>número de Obra</b>?<br>No. Obra: ' + $("#id_obra").val() + ', Ejercicio: ' + $("#ejercicio").val(), function(result) {
+        if (result) {
+            $.ajax({
+                data: {
+                    'id_obra': $("#id_obra").val(),
+                    'ejercicio': $("#ejercicio").val()
+                },
+                url: '/ExpedienteTecnico/Asignacion/buscar_obra',
+                type: 'post',
+                beforeSend: function() {
+                    $("#divLoading").show();
+                },
+                complete: function() {
+                    $("#divLoading").hide();
+                },
+                success: function(response) {
+                    console.log(response);
+                    var data = response;
+                    if (!data.error) {
+                        hoja1 = data;
+                        acuerdos = data.acuerdos;
+                        fuentes = data.fuentes;
+                        hoja2 = data;
+                        regiones = data.regiones;
+                        municipios = data.municipios;
+                        if (!data.relacion.id_expediente_tecnico) {
+                            if (hoja1) {
+                                llenarHoja1(null, hoja1, acuerdos, fuentes, 'obra');
+                            }
+                            // // LLENADO DE DATOS DE LA HOJA 2
+                            if (hoja2) {
+                                llenarHoja2(null, hoja2, regiones, municipios, null, 'obra');
+                            }
+                        } else {
+                            BootstrapDialog.mensaje(null, "La Obra seleccionada ya tiene registrado un Expediente Técnico", 3, function() {
+                                $("#id_obra").val("");
+                            });
+                        }
+                    } else {
+                        BootstrapDialog.mensaje("Error.", data.error, 3, function() {
+                                $("#id_obra").val("");
+                            });
+                    }
+                },
+                error: function(response) {
+                    console.log("Errores::", response);
+                }
+            });
+        } else {
+            $("#id_obra").val('');
         }
     });
 }
@@ -316,8 +371,6 @@ function desactivaNavegacion(errornav) {
     }
 }
 
-
-
-function abrirObservaciones(){
+function abrirObservaciones() {
     $("#modal_observaciones").modal("show");
 }

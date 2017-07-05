@@ -80,6 +80,9 @@ div.cont{page-break-after: always;}
             <td colspan="4" ><p align="justify">NOMBRE DE LA OBRA Y/O ACCIÓN: {!! nl2br($relacion->obra->nombre) !!}</p></td>
         </tr>
         <tr>
+            <td colspan="4" ><p align="justify">UNIDAD EJECUTORA: {!! nl2br($relacion->obra->unidad_ejecutora->nombre) !!}</p></td>
+        </tr>
+        <tr>
             <td colspan="2">No. OFICIO: {{$oficioAsignacion[0]->clave}}</td>
             <td >FECHA DE OFICIO: {{$oficioAsignacion[0]->fecha_oficio}}</td>
             <td >INVERSIÓN ASIGNADA: ${{number_format($inversion,2)}}</td>

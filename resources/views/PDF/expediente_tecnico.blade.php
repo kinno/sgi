@@ -335,7 +335,11 @@
         <td class="encabezado">Observaciones de la Dependencia y/o Unidad Ejecutora</td>
     </tr>
     <tr>
+    @if ($relacion->expediente->hoja5)
         <td class="j">{!!nl2br(e($relacion->expediente->hoja5->observaciones_unidad_ejecutora))!!}</td>
+    @else
+        <td></td>    
+    @endif
     </tr>
 </table>   
 </div>
@@ -348,7 +352,11 @@
         <td class="punto">Unidad Ejecutora Normativa</td>
     </tr>
     <tr class="j">
-        <td> {{$relacion->expediente->hoja6->unidad_ejecutora_normativa}} </td>
+        @if ($relacion->expediente->hoja6)
+           <td> {{$relacion->expediente->hoja6->unidad_ejecutora_normativa}} </td>
+        @else
+            <td></td>  
+        @endif
     </tr>
 {{-- </table>    
 <br><br>        
@@ -357,7 +365,12 @@
         <td class="punto">Criterios Sociales</td>
     </tr>
     <tr class="j">
-        <td> {!! nl2br($relacion->expediente->hoja6->criterios_sociales)!!} </td>
+        @if ($relacion->expediente->hoja6)
+            <td> {!! nl2br($relacion->expediente->hoja6->criterios_sociales)!!} </td>
+        @else
+            <td></td>  
+        @endif
+       
     </tr>
 </table>
 </div>

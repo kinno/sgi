@@ -23,7 +23,11 @@ function initTable() {
             data: 'id_expediente_tecnico',
             name: 'id_expediente_tecnico',
             render: function(data, type, full, meta) {
-                return '<a href=/ExpedienteTecnico/impresion_expediente/' + data + ' target="_blank">' + data + '</a>';
+                if(full.expediente.tipo_solicitud.id !=="2"){
+                    return '<a href=/ExpedienteTecnico/impresion_expediente/' + data + ' target="_blank">' + data + '</a>';
+                }else{
+                    return '<a href=/ExpedienteTecnico/impresion_contrato/' + data + ' target="_blank">' + data + '</a>';
+                }
             }
         }, {
             data: 'expediente.hoja1.nombre_obra',

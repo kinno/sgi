@@ -160,20 +160,20 @@ function guardarHoja1() {
                     desactivaNavegacion(false);
                     $("#id_expediente_tecnico").val(data.id_expediente_tecnico);
                     $("#id_hoja_uno").val(data.id_anexo_uno);
-                    if(data.id_anexo_dos){
+                    if (data.id_anexo_dos) {
                         $("#form_anexo_dos #id_hoja_dos").val(data.id_anexo_dos);
-
                     }
-                    
+                    $("#form_anexo_dos").find('.has-error').each(function(){
+                        $(this).removeClass('has-error');
+                    });
                 } else {
                     BootstrapDialog.mensaje(null, data.error, 3);
-                    // $.notify(data.error, "error");
-                    if (data.error_validacion) {}
+                    
                 }
             } else {
+                $.notify('Por favor llenar los campos seleccionados', "error");
                 for (property in data.error_validacion) {
-                    $("#" + property).notify("Campo requerido", "error");
-                    desactivaNavegacion(true);
+                    $("#" + property).parent().addClass('has-error');
                 }
             }
         },
@@ -183,101 +183,144 @@ function guardarHoja1() {
     });
 }
 
-function llenarHoja1(id_expediente_tecnico, hoja1, acuerdos, fuentes, tipo,id_estudio_socioeconomico) {
-    if (tipo == 'expediente') {
-        var disabled = false;
-        $("[name='monto_fuente_federal[]'],[name='monto_fuente_estatal[]'],[name='fuente_federal[]'],[name='fuente_estatal[]']").prop('readonly', disabled);
-        $("#id_hoja_uno").val(hoja1.id);
-        $("#id_tipo_solicitud").val(hoja1.id_tipo_solicitud);
-        $("#bevaluacion_socioeconomica").val(hoja1.bevaluacion_socioeconomica).click();
-        $("#id_estudio_socioeconomico").val(id_estudio_socioeconomico);
-        $("#id_expediente_tecnico").val(id_expediente_tecnico);
-        if (hoja1.bestudio_socioeconomico) {
-            $("#bestudio_socioeconomico").prop('checked', true);
+function llenarHoja1(id_expediente_tecnico, hoja1, acuerdos, fuentes, tipo, id_estudio_socioeconomico) {
+    if (tipo == 'obra') {
+        $("[name='monto_fuente_federal[]'],[name='monto_fuente_estatal[]'],[name='fuente_federal[]'],[name='fuente_estatal[]']").prop('readonly', true);
+        $("#bevaluacion_socioeconomica").val('2');
+        (hoja1.id_modalidad_ejecucion == "3") ? $("#id_tipo_solicitud").val(1): $("#id_tipo_solicitud").val(10);
+        $("#nombre_obra").val(hoja1.nombre).prop('readonly', true);
+        arrAcuerdos = [];
+        for (var i = 0; i < acuerdos.length; i++) {
+            arrAcuerdos.push(acuerdos[i].id);
         }
-        if (hoja1.bproyecto_ejecutivo) {
-            $("#bproyecto_ejecutivo").prop('checked', true);
-        }
-        if (hoja1.bderecho_via) {
-            $("#bderecho_via").prop('checked', true);
-        }
-        if (hoja1.bimpacto_ambiental) {
-            $("#bimpacto_ambiental").prop('checked', true);
-        }
-        if (hoja1.bobra) {
-            $("#bobra").prop('checked', true);
-        }
-        if (hoja1.baccion) {
-            $("#baccion").prop('checked', true);
-        }
-        if (hoja1.botro) {
-            $("#botro").prop('checked', true);
-        }
-    } else {
-        var disabled = true;
-        $("[name='monto_fuente_federal[]'],[name='monto_fuente_estatal[]'],[name='fuente_federal[]'],[name='fuente_estatal[]']").prop('readonly', disabled);
-    }
-    $("#ejercicio").val(hoja1.ejercicio).prop('readonly', disabled);
-    $("#nombre_obra").val(hoja1.nombre_obra).prop('readonly', disabled);
-    $("#unidad_ejecutora").val(hoja1.unidad_ejecutora.nombre).prop('readonly', disabled);
-    $("#id_unidad_ejecutora").val(hoja1.unidad_ejecutora.id).prop('readonly', disabled);
-    $("#id_sector").val(hoja1.sector.id).prop('readonly', disabled);
-    $("#sector").val(hoja1.sector.nombre).prop('readonly', disabled);
-    arrAcuerdos = [];
-    for (var i = 0; i < acuerdos.length; i++) {
-        arrAcuerdos.push(acuerdos[i].id);
-    }
-    $("#accion_federal,#accion_estatal").val(arrAcuerdos).trigger('change').prop('readonly', disabled);
-    $("#justificacion_obra").val(hoja1.justificacion_obra).prop('readonly', disabled);
-    $("#id_modalidad_ejecucion").val(hoja1.id_modalidad_ejecucion).prop('readonly', disabled);
-    $("#id_tipo_obra").val(hoja1.id_tipo_obra).prop('readonly', disabled);
-    $("#monto").val(hoja1.monto).autoNumeric('update').prop('readonly', disabled);
-    $("#principales_caracteristicas").val(hoja1.principales_caracteristicas).prop('readonly', disabled);
-    $("#id_meta").val(hoja1.id_meta).prop('readonly', disabled);
-    $("#cantidad_meta").val(hoja1.cantidad_meta).autoNumeric('update').prop('readonly', disabled);
-    $("#id_beneficiario").val(hoja1.id_beneficiario).prop('readonly', disabled);
-    $("#cantidad_beneficiario").val(hoja1.cantidad_beneficiario).autoNumeric('update').prop('readonly', disabled);
-    j = 0;
-    for (var i = 0; i < fuentes.length; i++) {
-        if (fuentes[i].pivot.tipo_fuente == 'F') {
-            if (i === 0) {
-                $(".monfed:first").val(fuentes[i].pivot.monto).autoNumeric('update');
-                $('select[name="fuente_federal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+        $("#accion_federal,#accion_estatal").val(arrAcuerdos).trigger('change').prop('readonly', true);
+        $("#justificacion_obra").val(hoja1.justificacion).prop('readonly', true);
+        $("#id_modalidad_ejecucion").val(hoja1.id_modalidad_ejecucion).prop('readonly', true);
+        $("#id_tipo_obra").val(hoja1.id_tipo_obra).prop('readonly', true);
+        j = 0;
+        for (var i = 0; i < fuentes.length; i++) {
+            if (fuentes[i].pivot.tipo_fuente == 'F') {
+                if (i === 0) {
+                    $(".monfed:first").val(fuentes[i].pivot.monto).autoNumeric('update');
+                    $('select[name="fuente_federal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+                } else {
+                    addfed($(".monfed:first"), function() {
+                        $(".monfed:eq(" + i + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
+                        $('select[name="fuente_federal[]"]:eq(' + i + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+                    });
+                }
             } else {
-                addfed($(".monfed:first"), function() {
-                    $(".monfed:eq(" + i + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
-                    $('select[name="fuente_federal[]"]:eq(' + i + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
-                });
+                if (j === 0) {
+                    $(".monest:first").val(fuentes[i].pivot.monto).autoNumeric('update');
+                    $('select[name="fuente_estatal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+                } else {
+                    addest($(".monest:first"), function() {
+                        $(".monest:eq(" + j + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
+                        $('select[name="fuente_estatal[]"]:eq(' + j + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+                    });
+                }
+                j++;
+            }
+        }
+        $("#monto_municipal, #fuente_municipal").prop('readonly', true);
+        $("#principales_caracteristicas").val(hoja1.caracteristicas);
+        suma();
+    } else {
+        if (tipo == 'expediente') {
+            var disabled = false;
+            $("[name='monto_fuente_federal[]'],[name='monto_fuente_estatal[]'],[name='fuente_federal[]'],[name='fuente_estatal[]']").prop('readonly', disabled);
+            $("#id_hoja_uno").val(hoja1.id);
+            $("#id_tipo_solicitud").val(hoja1.id_tipo_solicitud);
+            $("#bevaluacion_socioeconomica").val(hoja1.bevaluacion_socioeconomica).click();
+            $("#id_estudio_socioeconomico").val(id_estudio_socioeconomico);
+            $("#id_expediente_tecnico").val(id_expediente_tecnico);
+            if (hoja1.bestudio_socioeconomico) {
+                $("#bestudio_socioeconomico").prop('checked', true);
+            }
+            if (hoja1.bproyecto_ejecutivo) {
+                $("#bproyecto_ejecutivo").prop('checked', true);
+            }
+            if (hoja1.bderecho_via) {
+                $("#bderecho_via").prop('checked', true);
+            }
+            if (hoja1.bimpacto_ambiental) {
+                $("#bimpacto_ambiental").prop('checked', true);
+            }
+            if (hoja1.bobra) {
+                $("#bobra").prop('checked', true);
+            }
+            if (hoja1.baccion) {
+                $("#baccion").prop('checked', true);
+            }
+            if (hoja1.botro) {
+                $("#botro").prop('checked', true);
             }
         } else {
-            if (j === 0) {
-                $(".monest:first").val(fuentes[i].pivot.monto).autoNumeric('update');
-                $('select[name="fuente_estatal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
-            } else {
-                addest($(".monest:first"), function() {
-                    $(".monest:eq(" + j + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
-                    $('select[name="fuente_estatal[]"]:eq(' + j + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
-                });
-            }
-            j++;
+            var disabled = true;
+            $("[name='monto_fuente_federal[]'],[name='monto_fuente_estatal[]'],[name='fuente_federal[]'],[name='fuente_estatal[]']").prop('readonly', disabled);
         }
+        $("#ejercicio").val(hoja1.ejercicio).prop('readonly', disabled);
+        $("#nombre_obra").val(hoja1.nombre_obra).prop('readonly', disabled);
+        $("#unidad_ejecutora").val(hoja1.unidad_ejecutora.nombre).prop('readonly', disabled);
+        $("#id_unidad_ejecutora").val(hoja1.unidad_ejecutora.id).prop('readonly', disabled);
+        $("#id_sector").val(hoja1.sector.id).prop('readonly', disabled);
+        $("#sector").val(hoja1.sector.nombre).prop('readonly', disabled);
+        arrAcuerdos = [];
+        for (var i = 0; i < acuerdos.length; i++) {
+            arrAcuerdos.push(acuerdos[i].id);
+        }
+        $("#accion_federal,#accion_estatal").val(arrAcuerdos).trigger('change').prop('readonly', disabled);
+        $("#justificacion_obra").val(hoja1.justificacion_obra).prop('readonly', disabled);
+        $("#id_modalidad_ejecucion").val(hoja1.id_modalidad_ejecucion).prop('readonly', disabled);
+        $("#id_tipo_obra").val(hoja1.id_tipo_obra).prop('readonly', disabled);
+        $("#monto").val(hoja1.monto).autoNumeric('update').prop('readonly', disabled);
+        $("#principales_caracteristicas").val(hoja1.principales_caracteristicas).prop('readonly', disabled);
+        $("#id_meta").val(hoja1.id_meta).prop('readonly', disabled);
+        $("#cantidad_meta").val(hoja1.cantidad_meta).autoNumeric('update').prop('readonly', disabled);
+        $("#id_beneficiario").val(hoja1.id_beneficiario).prop('readonly', disabled);
+        $("#cantidad_beneficiario").val(hoja1.cantidad_beneficiario).autoNumeric('update').prop('readonly', disabled);
+        j = 0;
+        for (var i = 0; i < fuentes.length; i++) {
+            if (fuentes[i].pivot.tipo_fuente == 'F') {
+                if (i === 0) {
+                    $(".monfed:first").val(fuentes[i].pivot.monto).autoNumeric('update');
+                    $('select[name="fuente_federal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+                } else {
+                    addfed($(".monfed:first"), function() {
+                        $(".monfed:eq(" + i + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
+                        $('select[name="fuente_federal[]"]:eq(' + i + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+                    });
+                }
+            } else {
+                if (j === 0) {
+                    $(".monest:first").val(fuentes[i].pivot.monto).autoNumeric('update');
+                    $('select[name="fuente_estatal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+                } else {
+                    addest($(".monest:first"), function() {
+                        $(".monest:eq(" + j + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
+                        $('select[name="fuente_estatal[]"]:eq(' + j + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
+                    });
+                }
+                j++;
+            }
+        }
+        //     if (info.infoFteFed[i].idFte === "134" || info.infoFteFed[i].idFte === "136") {
+        //         $("#isFM").val("1");
+        //         $("#idDetFon").val(info.FM.IdDetFon);
+        //         $('select[name="ffed[]"]:eq(' + i + ') option[value=' + info.infoFteFed[i].idFte + ']').parent().parent().parent().popover({
+        //             html: true,
+        //             animation: true,
+        //             trigger: "focus",
+        //             content: "<p style='width: 150px;'>Proyecto seleccionado: <b>" + info.FM.CvePry + " - " + info.FM.NomPry + "</b></p><p>Monto disponible: <b>$<span class='numeroDecimal'>" + info.FM.disponiblePry + "</span></b></p><p><span class='btn btn-default' onclick='cambioProyectoFM(" + info.FM.idFte + ");'>Cambiar proyecto</span></p>",
+        //             placement: "top"
+        //         }).on('shown.bs.popover', function() {
+        //             $('.numeroDecimal').autoNumeric({
+        //                 mDec: 2
+        //             });
+        //         });
+        //     }
+        // }
+        $("#monto_municipal").val(hoja1.monto_municipal).autoNumeric('update').prop('readonly', disabled);
+        $("#fuente_municipal").val(hoja1.fuente_municipal).prop('readonly', disabled);
     }
-    //     if (info.infoFteFed[i].idFte === "134" || info.infoFteFed[i].idFte === "136") {
-    //         $("#isFM").val("1");
-    //         $("#idDetFon").val(info.FM.IdDetFon);
-    //         $('select[name="ffed[]"]:eq(' + i + ') option[value=' + info.infoFteFed[i].idFte + ']').parent().parent().parent().popover({
-    //             html: true,
-    //             animation: true,
-    //             trigger: "focus",
-    //             content: "<p style='width: 150px;'>Proyecto seleccionado: <b>" + info.FM.CvePry + " - " + info.FM.NomPry + "</b></p><p>Monto disponible: <b>$<span class='numeroDecimal'>" + info.FM.disponiblePry + "</span></b></p><p><span class='btn btn-default' onclick='cambioProyectoFM(" + info.FM.idFte + ");'>Cambiar proyecto</span></p>",
-    //             placement: "top"
-    //         }).on('shown.bs.popover', function() {
-    //             $('.numeroDecimal').autoNumeric({
-    //                 mDec: 2
-    //             });
-    //         });
-    //     }
-    // }
-    $("#monto_municipal").val(hoja1.monto_municipal).autoNumeric('update').prop('readonly', disabled);
-    $("#fuente_municipal").val(hoja1.fuente_municipal).prop('readonly', disabled);
 }

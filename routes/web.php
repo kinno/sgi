@@ -99,6 +99,7 @@ Route::group(['prefix' => 'ExpedienteTecnico/Asignacion'], function () {
     Route::post('aceptar_expediente', 'ExpedienteTecnico\ExpedienteController@cambiar_estatus');
     Route::post('regresar_observaciones', 'ExpedienteTecnico\RevisionExpedienteController@regresar_observaciones');
     Route::get('impresion_expediente/{id_expediente_tecnio}', 'ExpedienteTecnico\ExpedienteController@imprime_expediente');
+    Route::post('buscar_obra', 'Obra\ObraController@buscar_obra');
 });
 
 // Rutas Expediente Técnico Autorizacion
@@ -119,6 +120,7 @@ Route::group(['prefix' => 'ExpedienteTecnico/Autorizacion'], function () {
     Route::post('guardar_programa_contrato', 'ExpedienteTecnico\AutorizacionExpedienteController@guardar_programa_contrato');
     Route::post('guardar_avance_financiero_contrato', 'ExpedienteTecnico\AutorizacionExpedienteController@guardar_avance_financiero_contrato');
     Route::post('eliminar_contrato', 'ExpedienteTecnico\AutorizacionExpedienteController@eliminar_contrato');
+    Route::post('enviar_revision', 'ExpedienteTecnico\AutorizacionExpedienteController@asignar_autorizado_fuentes');
 });
 
 // Rutas Expediente Técnico Revision

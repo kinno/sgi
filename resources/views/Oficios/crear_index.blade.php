@@ -116,6 +116,9 @@
                                     <th>
                                         Partida Presupuestal
                                     </th>
+                                    <th style="display: none;">
+                                        Monto Asignado
+                                    </th>
                                 </tr>
                             </thead>
                             <tfoot>

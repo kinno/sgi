@@ -150,11 +150,14 @@
 											$clase = '';
 										}
 									@endphp	 
-										<td class="{{$clase}}">{{$detalle_oficio->oficio->clave}} {{$detalle_oficio->oficio->fecha_oficio}} {{$detalle_oficio->oficio->id_solicitud_presupuesto}} {{substr($detalle_oficio->fuentes->descripcion,0,3)}}</td>
+										<td class="{{$clase}}">{{$detalle_oficio->oficio->clave}} {{$detalle_oficio->oficio->fecha_oficio}} {{$detalle_oficio->id_solicitud_presupuesto}} {{substr($detalle_oficio->fuentes->descripcion,0,3)}}</td>
 										 <td class="{{$clase}}">{{($detalle_oficio->fuentes->tipo=='E')?'Estatal' : 'Federal'}}</td>
-										 @if ($detalle_oficio->oficio->id_solicitud_presupuesto==4)
+										 @if ($detalle_oficio->id_solicitud_presupuesto==4)
 										 	<td class="{{$clase}} numero">({{($detalle_oficio->asignado)?number_format($detalle_oficio->asignado,2):'0.00'}})</td>
 										 	<td class="{{$clase}} numero">({{($detalle_oficio->autorizado)?number_format($detalle_oficio->autorizado,2):'0.00'}})</td>
+										 @elseif ($detalle_oficio->id_solicitud_presupuesto==7)
+										 	<td class="{{$clase}} numero">(-{{($detalle_oficio->asignado)?number_format($detalle_oficio->asignado,2):'0.00'}})</td>
+										 	<td class="{{$clase}} numero">{{($detalle_oficio->autorizado)?number_format($detalle_oficio->autorizado,2):'0.00'}}</td>	
 										 @else
 										 	<td class="{{$clase}} numero">{{($detalle_oficio->asignado)?number_format($detalle_oficio->asignado,2):'0.00'}}</td>
 										 	<td class="{{$clase}} numero">{{($detalle_oficio->autorizado)?number_format($detalle_oficio->autorizado,2):'0.00'}}</td>	
@@ -163,8 +166,12 @@
 										</tr>
 									@endif
 									@php
-										if($detalle_oficio->oficio->id_solicitud_presupuesto!==4){
+										if($detalle_oficio->id_solicitud_presupuesto!==4&&$detalle_oficio->id_solicitud_presupuesto!==7){
 											$sumaAsignado += $detalle_oficio->asignado;
+											$sumaAutorizado += $detalle_oficio->autorizado;
+										}
+										if($detalle_oficio->id_solicitud_presupuesto==7){
+											$sumaAsignado = $sumaAsignado-$detalle_oficio->asignado;
 											$sumaAutorizado += $detalle_oficio->autorizado;
 										}
 									@endphp	 

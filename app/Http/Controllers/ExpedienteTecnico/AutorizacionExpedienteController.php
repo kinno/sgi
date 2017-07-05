@@ -15,16 +15,19 @@ use App\P_Anexo_Dos;
 use App\P_Anexo_Seis;
 use App\P_Anexo_Uno;
 use App\P_Avance_Financiero;
+use App\P_Avance_Financiero_Contrato;
 use App\P_Contrato;
 use App\P_Expediente_Tecnico;
 use App\P_Historial_Obra_Expediente;
 use App\P_Presupuesto_Obra;
+use App\P_Programa;
 use App\P_Programa_Contrato;
-use App\P_Avance_Financiero_Contrato;
 use App\Rel_Estudio_Expediente_Obra;
+use App\Rel_Obra_Fuente;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
+use App\Jobs\CrearNotificacion;
 
 class AutorizacionExpedienteController extends Controller
 {
@@ -43,6 +46,12 @@ class AutorizacionExpedienteController extends Controller
                 'tipo'  => 'btn-warning',
                 'icono' => 'fa fa-refresh',
                 'title' => 'Limpiar pantalla',
+            ], [
+                'id'    => 'observaciones',
+                'tipo'  => 'btn-danger',
+                'icono' => 'fa fa-exclamation-triangle',
+                'title' => 'Ver observaciones',
+
             ], [
                 'id'    => 'enviar_revision',
                 'tipo'  => 'btn-success',
@@ -64,6 +73,10 @@ class AutorizacionExpedienteController extends Controller
     {
 
         $obra = D_Obra::with(array('sector', 'unidad_ejecutora', 'modalidad_ejecucion', 'relacion.expediente.tipoSolicitud'))
+            ->with(array('relacion.expediente.observaciones' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }))
+            ->with('relacion.expediente.fuentes_monto')
             ->where('ejercicio', '=', $request->ejercicio)->find($request->id_obra);
         // dd($obra);
         if ($obra) {
@@ -93,7 +106,7 @@ class AutorizacionExpedienteController extends Controller
         $relacion = Rel_Estudio_Expediente_Obra::with(array('expediente.hoja1', 'expediente.hoja2', 'expediente.acuerdos', 'expediente.fuentes_monto', 'expediente.regiones', 'expediente.municipios', 'expediente.conceptos', 'expediente.programas', 'expediente.avance_financiero', 'expediente.hoja5', 'expediente.hoja6'))->where('id_det_obra', '=', $request->id_obra)
             ->first();
 
-        // dd($relacion);
+        // dd($relacion->expediente->fuentes_monto);
         DB::beginTransaction();
         try {
             $historial                           = new P_Historial_Obra_Expediente;
@@ -145,42 +158,61 @@ class AutorizacionExpedienteController extends Controller
             $hoja2->microlocalizacion         = $relacion->expediente->hoja2->microlocalizacion;
             $hoja2->save();
 
-            $hoja5                                 = new P_Anexo_Cinco;
-            $hoja5->observaciones_unidad_ejecutora = $relacion->expediente->hoja5->observaciones_unidad_ejecutora;
-            $hoja5->save();
+            if ($relacion->expediente->hoja5) {
+                $hoja5                                 = new P_Anexo_Cinco;
+                $hoja5->observaciones_unidad_ejecutora = $relacion->expediente->hoja5->observaciones_unidad_ejecutora;
+                $hoja5->save();
+            }
 
-            $hoja6                             = new P_Anexo_Seis;
-            $hoja6->criterios_sociales         = $relacion->expediente->hoja6->criterios_sociales;
-            $hoja6->unidad_ejecutora_normativa = $relacion->expediente->hoja6->unidad_ejecutora_normativa;
-            $hoja6->save();
+            if ($relacion->expediente->hoja6) {
+                $hoja6                             = new P_Anexo_Seis;
+                $hoja6->criterios_sociales         = $relacion->expediente->hoja6->criterios_sociales;
+                $hoja6->unidad_ejecutora_normativa = $relacion->expediente->hoja6->unidad_ejecutora_normativa;
+                $hoja6->save();
+            }
 
             $expediente_tecnico                    = new P_Expediente_Tecnico;
             $expediente_tecnico->ejercicio         = $relacion->expediente->ejercicio;
             $expediente_tecnico->id_anexo_uno      = $hoja1->id;
             $expediente_tecnico->id_anexo_dos      = $hoja2->id;
-            $expediente_tecnico->id_anexo_cinco    = $hoja5->id;
-            $expediente_tecnico->id_anexo_seis     = $hoja6->id;
+            $expediente_tecnico->id_anexo_cinco    = (isset($hoja5)) ? $hoja5->id : null;
+            $expediente_tecnico->id_anexo_seis     = (isset($hoja6)) ? $hoja6->id : null;
             $expediente_tecnico->id_estatus        = 1;
             $expediente_tecnico->fecha_creacion    = date('Y-m-d H:i:s');
             $expediente_tecnico->id_usuario        = \Auth::user()->id;
             $expediente_tecnico->id_tipo_solicitud = 2;
             $expediente_tecnico->save();
 
+            $syncArray = array();
+
             foreach ($relacion->expediente->fuentes_monto as $value) {
-                $expediente_tecnico->fuentes_monto()->sync(array('id_expediente_tecnico' => $expediente_tecnico->id, 'id_fuente' => $value->id, 'monto' => $value->pivot->monto, 'tipo_fuente' => $value->tipo));
+                $syncArray[$value->id] = array('id_expediente_tecnico' => $expediente_tecnico->id,
+                    // 'id_fuente' => $value->id,
+                    'monto'                                                => $value->pivot->monto,
+                    'tipo_fuente'                                          => $value->tipo);
             }
 
+            $expediente_tecnico->fuentes_monto()->sync($syncArray);
+
+            $syncArray = array();
             foreach ($relacion->expediente->acuerdos as $value) {
-                $expediente_tecnico->acuerdos()->sync(array('id_expediente_tecnico' => $expediente_tecnico->id, 'id_acuerdo' => $value->id));
-            }
+                $syncArray[$value->id] = array('id_expediente_tecnico' => $expediente_tecnico->id);
 
+            }
+            $expediente_tecnico->acuerdos()->sync($syncArray);
+
+            $syncArray = array();
             foreach ($relacion->expediente->municipios as $value) {
-                $expediente_tecnico->municipios()->sync(array('id_expediente_tecnico' => $expediente_tecnico->id, 'id_municipio' => $value->id));
+                $syncArray[$value->id] = array('id_expediente_tecnico' => $expediente_tecnico->id);
             }
+            $expediente_tecnico->municipios()->sync($syncArray);
 
+            $syncArray = array();
             foreach ($relacion->expediente->regiones as $value) {
-                $expediente_tecnico->regiones()->sync(array('id_expediente_tecnico' => $expediente_tecnico->id, 'id_municipio' => $value->id));
+                $syncArray[$value->id] = array('id_expediente_tecnico' => $expediente_tecnico->id);
+
             }
+            $expediente_tecnico->regiones()->sync($syncArray);
 
             foreach ($relacion->expediente->conceptos as $value) {
                 $conceptos                        = new P_Presupuesto_Obra;
@@ -386,7 +418,7 @@ class AutorizacionExpedienteController extends Controller
             $d_contrato->dias_calendario                    = $request->dias_calendario;
             $d_contrato->bdisponibilidad_inmueble           = $request->bdisponibilidad_inmueble;
             $d_contrato->motivo_no_disponible               = $request->motivo_no_disponible;
-            $d_contrato->fecha_disponibilidad               = ($request->fecha_disponibilidad)?Carbon::parse($request->fecha_disponibilidad)->format('Y-m-d H:i:s'):null;
+            $d_contrato->fecha_disponibilidad               = ($request->fecha_disponibilidad) ? Carbon::parse($request->fecha_disponibilidad)->format('Y-m-d H:i:s') : null;
             $d_contrato->id_tipo_contrato                   = $request->id_tipo_contrato;
             $d_contrato->id_modalidad_adjudicacion_contrato = $request->id_modalidad_adjudicacion_contrato;
             $d_contrato->id_tipo_obra_contrato              = $request->id_tipo_obra_contrato;
@@ -602,14 +634,15 @@ class AutorizacionExpedienteController extends Controller
         }
     }
 
-    public function eliminar_contrato(Request $request){
+    public function eliminar_contrato(Request $request)
+    {
         DB::beginTransaction();
         try {
             P_Contrato::destroy($request->id_contrato);
-            D_Contrato::where('id_contrato','=',$request->id_contrato)->delete();
-            P_Avance_Financiero_Contrato::where('id_contrato','=',$request->id_contrato)->delete();
-            P_Programa_Contrato::where('id_contrato','=',$request->id_contrato)->delete();
-            P_Presupuesto_Obra::where('id_contrato','=',$request->id_contrato)->delete();
+            D_Contrato::where('id_contrato', '=', $request->id_contrato)->delete();
+            P_Avance_Financiero_Contrato::where('id_contrato', '=', $request->id_contrato)->delete();
+            P_Programa_Contrato::where('id_contrato', '=', $request->id_contrato)->delete();
+            P_Presupuesto_Obra::where('id_contrato', '=', $request->id_contrato)->delete();
             DB::commit();
 
         } catch (\Exception $e) {
@@ -622,19 +655,78 @@ class AutorizacionExpedienteController extends Controller
         }
     }
 
-    public function imprime_contrato($id_expediente_tecnico){
-        $relacion = Rel_Estudio_Expediente_Obra::with('expediente.contrato.d_contrato.adjudicacion','expediente.contrato.d_contrato.tipo_contrato','expediente.contrato.d_contrato.tipo_obra_contrato','expediente.contrato.empresa','expediente.contrato.avance_financiero','expediente.contrato.avance_fisico','expediente.contrato.conceptos', 'obra.unidad_ejecutora','obra.municipio_reporte')->where('id_expediente_tecnico', '=', $id_expediente_tecnico)
+    public function imprime_contrato($id_expediente_tecnico)
+    {
+        $relacion = Rel_Estudio_Expediente_Obra::with('expediente.contrato.d_contrato.adjudicacion', 'expediente.contrato.d_contrato.tipo_contrato', 'expediente.contrato.d_contrato.tipo_obra_contrato', 'expediente.contrato.empresa', 'expediente.contrato.avance_financiero', 'expediente.contrato.avance_fisico', 'expediente.contrato.conceptos', 'obra.unidad_ejecutora', 'obra.municipio_reporte')->where('id_expediente_tecnico', '=', $id_expediente_tecnico)
             ->first();
-        $oficioAsignacion= DB::table('p_oficio')
-        ->join('d_oficio','p_oficio.id','=','d_oficio.id_oficio')
-        ->join('cat_fuente','d_oficio.id_fuente','=','cat_fuente.id')
-        ->select('p_oficio.clave','p_oficio.fecha_oficio','cat_fuente.descripcion','d_oficio.asignado')
-        ->where('id_solicitud_presupuesto','=',1)    
-        ->where('id_det_obra','=',$relacion->obra->id)
-        ->get();
+        $oficioAsignacion = DB::table('p_oficio')
+            ->join('d_oficio', 'p_oficio.id', '=', 'd_oficio.id_oficio')
+            ->join('cat_fuente', 'd_oficio.id_fuente', '=', 'cat_fuente.id')
+            ->select('p_oficio.clave', 'p_oficio.fecha_oficio', 'cat_fuente.descripcion', 'd_oficio.asignado')
+            ->where('id_solicitud_presupuesto', '=', 1)
+            ->where('id_det_obra', '=', $relacion->obra->id)
+            ->get();
 
-        $pdf = \PDF::loadView('PDF/contrato',compact('relacion','oficioAsignacion'));
+        $pdf = \PDF::loadView('PDF/contrato', compact('relacion', 'oficioAsignacion'));
         // return $pdf->stream('Anexo5_Expediente_' . $relacion->id_expediente_tecnico . '.pdf');
-        return $pdf->stream('Contrato_General_Expediente_'.$relacion->id_expediente_tecnico.'.pdf');
+        return $pdf->stream('Contrato_General_Expediente_' . $relacion->id_expediente_tecnico . '.pdf');
+    }
+
+    public function asignar_autorizado_fuentes(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $expediente = P_Expediente_Tecnico::with('fuentes_monto', 'contrato','hoja1')
+                ->find($request->id_expediente_tecnico);
+            $montoTotal        = 0.00;
+            $montoTotalFuentes = 0.00;
+
+            foreach ($expediente->contrato as $value) {
+                $montoTotal += floatval($value->monto);
+            }
+            foreach ($expediente->fuentes_monto as $value) {
+                $montoTotalFuentes += $value->pivot->monto;
+
+            }
+
+            $syncArray = array();
+            //sacando el porcentaje de las fuentes
+            foreach ($expediente->fuentes_monto as $value) {
+                $porcentajeFuente      = floatval((($value->pivot->monto) * 100) / $montoTotalFuentes);
+                $montoFuente           = floatval(($porcentajeFuente * $montoTotal) / 100);
+                $syncArray[$value->id] = array('id_expediente_tecnico' => $expediente->id,
+                    'monto'                                                => $montoFuente,
+                    'tipo_fuente'                                          => $value->tipo);
+
+                $rel_obra_fuente = Rel_Obra_Fuente::where('id_det_obra', $request->id_obra)->where('id_fuente', $value->id)->first();
+                $rel_obra_fuente->monto = $montoFuente; 
+                $rel_obra_fuente->save();
+            }
+            $expediente->fuentes_monto()->sync($syncArray);
+
+            $expediente->fecha_envio = date('Y-m-d H:i:s');
+            $expediente->id_estatus=2;
+            
+            foreach (\Auth::user()->sectores()->get() as $value) {
+                $sectorUser = $value->id;
+            };
+            $detalle = "La dependencia " . \Auth::user()->name . " ha enviado el Expediente Técnico: " . $expediente->id . " para su revisión y aprobación.";
+            // dd($detalle);
+            dispatch(new CrearNotificacion(null, \Auth::user()->id, $sectorUser, $detalle));
+
+            $expediente->save();
+            $expediente->hoja1->monto = $montoTotal;
+            $expediente->hoja1->save();
+            DB::commit();
+            $expediente['id_expediente_tecnico'] = $expediente->id;
+            return ($expediente);
+        } catch (Exception $e) {
+            DB::rollback();
+            $expediente            = array();
+            $expediente['message'] = $e->getMessage();
+            $expediente['trace']   = $e->getTrace();
+            $expediente['error']   = "Aviso: Ocurrió un error al guardar.";
+            return ($expediente);
+        }
     }
 }

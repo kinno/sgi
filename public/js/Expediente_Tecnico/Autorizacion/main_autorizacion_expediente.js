@@ -14,6 +14,10 @@ $(document).ready(function() {
     $("#imprimir_contrato").on('click', function() {
         imprime_contrato($("#id_expediente_tecnico").val());
     });
+    $("#observaciones").hide();
+    $("#observaciones").on('click', function() {
+        abrirObservaciones();
+    });
     $("#buscar").on('click', function() {
         if ($("#id_obra_search").val() == "") {
             $("#id_obra_search").notify("Se debe introducir la Obra a buscar");
@@ -34,6 +38,17 @@ $(document).ready(function() {
     if ($("#id_obra_search").val() !== "") {
         buscarObra($("#id_obra_search").val(), $("#ejercicio").val());
     }
+    $(".number").autoNumeric();
+    tablaObservaciones = $('#tablaObservaciones').DataTable({
+        "ordering": false,
+        "searching": false,
+        "destroy": false,
+        columns: [{
+            name: 'observaciones',
+        }, {
+            name: 'fecha',
+        }]
+    });
 });
 
 function buscarObra(id_obra, ejercicio) {
@@ -54,23 +69,37 @@ function buscarObra(id_obra, ejercicio) {
             console.log(response);
             if (!response.error) {
                 if (response) {
+                    if (response.relacion.expediente.id_tipo_solicitud == 1) {
+                        if (response.relacion.expediente.id_estatus == 6) {
+                            $("#divBotones").show();
+                        } else {
+                            BootstrapDialog.mensaje("Error", "La Solicitud de Asignación de la Obra No: " + response.id + " no ha sido aceptada por la Dirección General de Inversión.", 3);
+                            return;
+                        }
+                    }
                     $("#id_obra").val(response.id);
                     $("#id_expediente_tecnico").val(response.relacion.id_expediente_tecnico);
                     $("#id_solicitud_presupuesto").val(response.relacion.expediente.tipo_solicitud.nombre);
                     $("#ejercicio").val(response.ejercicio);
-                    $("#monto").val(response.asignado);
+                    $("#monto").val(response.asignado).autoNumeric("update");
                     $("#nombre_obra").val(response.nombre);
                     $("#unidad_ejecutora").val(response.unidad_ejecutora.nombre);
                     $("#sector").val(response.sector.nombre);
                     $("#sector").val(response.sector.nombre);
                     $("#modalidad_ejecucion").val(response.modalidad_ejecucion.nombre);
-                    if (response.relacion.expediente.id_tipo_solicitud == 1) {
-                        $("#divBotones").show();
-                    }
-                    if (response.relacion.expediente.id_tipo_solicitud == 2 && response.relacion.expediente.id_estatus == 1) {
+                    if (response.relacion.expediente.id_tipo_solicitud == 2 && (response.relacion.expediente.id_estatus == 1 || response.relacion.expediente.id_estatus == 5)) {
                         $("#divBotones").hide();
                         $("#listadoContratos").show();
                         initDataContratos(response.relacion.id_expediente_tecnico);
+                        if (response.relacion.expediente.id_estatus == 5) {
+                            $("#observaciones").show();
+                        }
+                    }
+                    if (response.relacion.expediente.observaciones) {
+                        $.each(response.relacion.expediente.observaciones, function(index, item) {
+                            tablaObservaciones.row.add([item.observaciones, item.fecha_observacion]).draw();
+                        })
+                        $("#observaciones").show();
                     }
                 }
             } else {
@@ -102,6 +131,9 @@ function generarAutorizacion(id_obra) {
                 if (response) {
                     BootstrapDialog.mensaje(null, 'Se generó la solicitud de Autorización correctamente, por favor registrar los contratos.', 1);
                     $("#id_expediente_tecnico").val(response.id);
+                    $("#divBotones").hide();
+                    $("#listadoContratos").show();
+                    initDataContratos(response.id);
                 }
             } else {
                 BootstrapDialog.mensaje(null, response.error, 3);
@@ -202,10 +234,10 @@ function enviar_revision() {
             if (verificarMontos()) {
                 $.ajax({
                     data: {
-                        'id_expediente_tecnico': $("#form_anexo_uno #id_expediente_tecnico").val(),
-                        'estatus': 2
+                        'id_expediente_tecnico': $("#id_expediente_tecnico").val(),
+                        'id_obra': $("#id_obra").val()
                     },
-                    url: '/ExpedienteTecnico/Asignacion/enviar_revision',
+                    url: '/ExpedienteTecnico/Autorizacion/enviar_revision',
                     type: 'post',
                     beforeSend: function() {
                         $("#divLoading").show();
@@ -237,14 +269,14 @@ function enviar_revision() {
 function verificarMontos() {
     var datos = tablaContratos.rows().data();
     var sumaContratos = 0;
-    var montoAsignado = parseFloat($("#monto").val().replace(/,/g,""));
+    var montoAsignado = parseFloat($("#monto").val().replace(/,/g, ""));
     for (var i = 0; i < datos.length; i++) {
         sumaContratos += parseFloat(datos[i].monto.replace(/,/g, ""));
     }
     // console.log(sumaContratos+":"+montoAsignado);
-    if(sumaContratos>montoAsignado){
+    if (sumaContratos > montoAsignado) {
         return false;
-    }else{
+    } else {
         return true;
     }
 }
@@ -255,4 +287,8 @@ function imprime_contrato(id_expediente_tecnico) {
     } else {
         $("#id_obra").notify("No se ha ingresado ninguna obra", "warn");
     }
+}
+
+function abrirObservaciones() {
+    $("#modal_observaciones").modal("show");
 }
