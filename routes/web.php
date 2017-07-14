@@ -106,14 +106,14 @@ Route::group(['prefix' => 'ExpedienteTecnico/Asignacion'], function () {
 Route::group(['prefix' => 'ExpedienteTecnico/Autorizacion'], function () {
     Route::get('crear_autorizacion/', 'ExpedienteTecnico\AutorizacionExpedienteController@index')->name('creacionAutorizacion');
     Route::get('crear_autorizacion/{id_obra}', 'ExpedienteTecnico\AutorizacionExpedienteController@index')->name('creacionAutorizacion');
-    Route::get('crear_contrato/{id_obra}/{id_contrato}','ExpedienteTecnico\AutorizacionExpedienteController@crear_contrato')->name('crear_contrato');
+    Route::get('crear_contrato/{id_obra}/{id_contrato}', 'ExpedienteTecnico\AutorizacionExpedienteController@crear_contrato')->name('crear_contrato');
     Route::post('buscar_obra', 'ExpedienteTecnico\AutorizacionExpedienteController@buscar_obra');
     Route::post('generar_autorizacion', 'ExpedienteTecnico\AutorizacionExpedienteController@generar_autorizacion');
     Route::post('buscar_rfc', 'ExpedienteTecnico\AutorizacionExpedienteController@buscar_rfc');
     Route::post('buscar_contrato', 'ExpedienteTecnico\AutorizacionExpedienteController@buscar_contrato');
     Route::post('guardar_contrato_datos_generales', 'ExpedienteTecnico\AutorizacionExpedienteController@guardar_datos_generales');
-    Route::get('get_data_contratos/{id_expediente_tecnico}','ExpedienteTecnico\AutorizacionExpedienteController@get_data_contratos');
-    Route::get('get_data_conceptos_contrato/{id_contrato}','ExpedienteTecnico\AutorizacionExpedienteController@get_data_conceptos_contrato');
+    Route::get('get_data_contratos/{id_expediente_tecnico}', 'ExpedienteTecnico\AutorizacionExpedienteController@get_data_contratos');
+    Route::get('get_data_conceptos_contrato/{id_contrato}', 'ExpedienteTecnico\AutorizacionExpedienteController@get_data_conceptos_contrato');
     Route::post('guardar_conceptos_contrato', 'ExpedienteTecnico\AutorizacionExpedienteController@guardar_conceptos_contrato');
     Route::post('guardar_contrato_garantias', 'ExpedienteTecnico\AutorizacionExpedienteController@guardar_contrato_garantias');
     Route::get('get_data_programa/{id_contrato}', 'ExpedienteTecnico\AutorizacionExpedienteController@get_data_programa');
@@ -138,7 +138,7 @@ Route::group(['prefix' => 'ExpedienteTecnico/'], function () {
 });
 
 // Rutas Oficios
-Route::group(['prefix' => 'Oficios'], function() {
+Route::group(['prefix' => 'Oficios'], function () {
     Route::get('crear_oficios', 'Oficios\OficiosController@index')->name('creacionOficios');
     Route::post('buscar_oficio', 'Oficios\OficiosController@buscar_oficio');
     Route::post('buscar_obra', 'Oficios\OficiosController@buscar_obra');
@@ -156,98 +156,120 @@ Route::group(['prefix' => 'Oficios'], function() {
     Route::post('guarda_firma', 'Oficios\EstatusOficioController@guardar');
 });
 
+//Rutas Autorizaciones de PAgo
+Route::group(['prefix' => 'AutorizacionPago'], function () {
+    Route::get('crear_autorizacion', 'AutorizacionPago\AutorizacionPagoController@index')->name('crearAp');
+    Route::post('buscar_obra', 'AutorizacionPago\AutorizacionPagoController@buscar_obra');
+    Route::post('buscar_folio', 'AutorizacionPago\AutorizacionPagoController@buscar_folio');
+    Route::post('guardar_ap', 'AutorizacionPago\AutorizacionPagoController@guardar_ap');
+    Route::post('buscar_ap_anticipo_contrato', 'AutorizacionPago\AutorizacionPagoController@buscar_ap_anticipo_contrato');
+    Route::post('buscar_monto_fuente', 'AutorizacionPago\AutorizacionPagoController@buscar_monto_fuente');
+
+    Route::get('consulta_autorizaciones', 'AutorizacionPago\ListadoAutorizacionPagoController@index')->name('listadoAp');
+    Route::get('get_datos_listado', 'AutorizacionPago\ListadoAutorizacionPagoController@get_data_listado');
+    Route::post('ver_detalle_ap_listado', 'AutorizacionPago\ListadoAutorizacionPagoController@ver_detalle_ap_listado');
+    Route::post('eliminar_ap', 'AutorizacionPago\ListadoAutorizacionPagoController@eliminar_ap');
+
+     Route::post('buscar_folios_amortizacion', 'AutorizacionPago\AutorizacionPagoController@buscar_folios_amortizacion');
+     Route::post('buscar_monto_amortizacion', 'AutorizacionPago\AutorizacionPagoController@buscar_monto_amortizacion');
+
+});
+
 // Rutas Catalogo - Sector
 Route::group(['prefix' => 'Catalogo/Sector', 'middleware' => 'valida_ruta:Catalogo/Sector'], function () {
     //Route::resource('', 'Catalogo\Sector\SectorController');
-    Route::get('','Catalogo\Sector\SectorController@index')->name('Sector.index');
-	Route::get('create','Catalogo\Sector\SectorController@create')->name('Sector.create');
-	Route::post('','Catalogo\Sector\SectorController@store')->name('Sector.store');
-	Route::get('{id}/edit/{page}','Catalogo\Sector\SectorController@edit')->name('Sector.edit');
-	Route::put('{id}','Catalogo\Sector\SectorController@update')->name('Sector.update');
-	Route::post('{id}/destroy', 'Catalogo\Sector\SectorController@destroy');
-	Route::post('dropdownArea', 'Catalogo\Sector\SectorController@dropdownArea');
+    Route::get('', 'Catalogo\Sector\SectorController@index')->name('Sector.index');
+    Route::get('create', 'Catalogo\Sector\SectorController@create')->name('Sector.create');
+    Route::post('', 'Catalogo\Sector\SectorController@store')->name('Sector.store');
+    Route::get('{id}/edit/{page}', 'Catalogo\Sector\SectorController@edit')->name('Sector.edit');
+    Route::put('{id}', 'Catalogo\Sector\SectorController@update')->name('Sector.update');
+    Route::post('{id}/destroy', 'Catalogo\Sector\SectorController@destroy');
+    Route::post('dropdownArea', 'Catalogo\Sector\SectorController@dropdownArea');
 });
 
 // Rutas Catalogo/Ejecutora
 Route::group(['prefix' => 'Catalogo/Ejecutora', 'middleware' => 'valida_ruta:Catalogo/Ejecutora'], function () {
     //Route::resource('', 'Catalogo\Ejecutora\EjecutoraController');
-    Route::get('','Catalogo\Ejecutora\EjecutoraController@index')->name('Ejecutora.index');
-	Route::get('create','Catalogo\Ejecutora\EjecutoraController@create')->name('Ejecutora.create');
-	Route::post('','Catalogo\Ejecutora\EjecutoraController@store')->name('Ejecutora.store');
-	Route::get('{id}/edit/{page}','Catalogo\Ejecutora\EjecutoraController@edit')->name('Ejecutora.edit');
-	Route::put('{id}','Catalogo\Ejecutora\EjecutoraController@update')->name('Ejecutora.update');
+    Route::get('', 'Catalogo\Ejecutora\EjecutoraController@index')->name('Ejecutora.index');
+    Route::get('create', 'Catalogo\Ejecutora\EjecutoraController@create')->name('Ejecutora.create');
+    Route::post('', 'Catalogo\Ejecutora\EjecutoraController@store')->name('Ejecutora.store');
+    Route::get('{id}/edit/{page}', 'Catalogo\Ejecutora\EjecutoraController@edit')->name('Ejecutora.edit');
+    Route::put('{id}', 'Catalogo\Ejecutora\EjecutoraController@update')->name('Ejecutora.update');
     Route::post('{id}/destroy', 'Catalogo\Ejecutora\EjecutoraController@destroy');
 });
 
 // Rutas Catalogo/Menu
-Route::group(['prefix' => 'Catalogo/Menu', 'middleware' => 'valida_ruta:Catalogo/Menu'], function () {
+Route::group(['prefix' => 'Catalogo/Menu'], function () {
+// Route::group(['prefix' => 'Catalogo/Menu', 'middleware' => 'valida_ruta:Catalogo/Menu'], function () {
     //Route::resource('', 'Catalogo\Menu\MenuController');
-    Route::get('','Catalogo\Menu\MenuController@index')->name('Menu.index');
-	Route::get('create','Catalogo\Menu\MenuController@create')->name('Menu.create');
-	Route::post('','Catalogo\Menu\MenuController@store')->name('Menu.store');
-	Route::get('{id}/edit','Catalogo\Menu\MenuController@edit')->name('Menu.edit');
-	Route::put('{id}','Catalogo\Menu\MenuController@update')->name('Menu.update');
+    Route::get('', 'Catalogo\Menu\MenuController@index')->name('Menu.index');
+    Route::get('create', 'Catalogo\Menu\MenuController@create')->name('Menu.create');
+    Route::post('', 'Catalogo\Menu\MenuController@store')->name('Menu.store');
+    Route::get('{id}/edit', 'Catalogo\Menu\MenuController@edit')->name('Menu.edit');
+    Route::put('{id}', 'Catalogo\Menu\MenuController@update')->name('Menu.update');
     Route::post('{id}/destroy', 'Catalogo\Menu\MenuController@destroy');
 });
 
 // Rutas Administracion/Usuario
 Route::group(['prefix' => 'Administracion/Usuario', 'middleware' => 'valida_ruta:Administracion/Usuario'], function () {
     //Route::resource('Usuario', 'Administracion\Usuario\UsuarioController');
-    Route::get('','Administracion\Usuario\UsuarioController@index')->name('Usuario.index');
-	Route::get('create','Administracion\Usuario\UsuarioController@create')->name('Usuario.create');
-	Route::post('','Administracion\Usuario\UsuarioController@store')->name('Usuario.store');
-	Route::get('{id}/edit','Administracion\Usuario\UsuarioController@edit')->name('Usuario.edit');
-	Route::put('{id}','Administracion\Usuario\UsuarioController@update')->name('Usuario.update');
-	Route::post('{id}/destroy', 'Administracion\Usuario\usuarioController@destroy');
-	Route::post('dropdownSector', 'Administracion\Usuario\UsuarioController@dropdownSector');
-	Route::post('dropdownArea', 'Administracion\Usuario\UsuarioController@dropdownArea');
+    Route::get('', 'Administracion\Usuario\UsuarioController@index')->name('Usuario.index');
+    Route::get('create', 'Administracion\Usuario\UsuarioController@create')->name('Usuario.create');
+    Route::post('', 'Administracion\Usuario\UsuarioController@store')->name('Usuario.store');
+    Route::get('{id}/edit', 'Administracion\Usuario\UsuarioController@edit')->name('Usuario.edit');
+    Route::put('{id}', 'Administracion\Usuario\UsuarioController@update')->name('Usuario.update');
+    Route::post('{id}/destroy', 'Administracion\Usuario\usuarioController@destroy');
+    Route::post('dropdownSector', 'Administracion\Usuario\UsuarioController@dropdownSector');
+    Route::post('dropdownArea', 'Administracion\Usuario\UsuarioController@dropdownArea');
 });
 
 // Rutas Administracion/Modulo
-Route::group(['prefix' => 'Administracion/Modulo', 'middleware' => 'valida_ruta:Administracion/Modulo/permisos'], function () {
-	Route::get('permisos', 'Administracion\Modulo\ModuloController@permisos')->name('Administracion.Modulo.permisos');
-	Route::post('dropdownUsuario', 'Administracion\Modulo\ModuloController@dropdownUsuario');
-	Route::post('guarda_permisos', 'Administracion\Modulo\ModuloController@guarda_permisos');
+Route::group(['prefix' => 'Administracion/Modulo'], function () {
+// Route::group(['prefix' => 'Administracion/Modulo', 'middleware' => 'valida_ruta:Administracion/Modulo/permisos'], function () {
+    Route::get('permisos', 'Administracion\Modulo\ModuloController@permisos')->name('Administracion.Modulo.permisos');
+    Route::post('dropdownUsuario', 'Administracion\Modulo\ModuloController@dropdownUsuario');
+    Route::post('guarda_permisos', 'Administracion\Modulo\ModuloController@guarda_permisos');
 });
 
 // Rutas Administracion/Sector
 Route::group(['prefix' => 'Administracion/Sector', 'middleware' => 'valida_ruta:Administracion/Sector/permisos'], function () {
-	Route::get('permisos', 'Administracion\Sector\SectorController@permisos')->name('Administracion.Sector.permisos');
-	Route::post('dropdownUsuario', 'Administracion\Sector\SectorController@dropdownUsuario');
-	Route::post('guarda_permisos', 'Administracion\Sector\SectorController@guarda_permisos');
+    Route::get('permisos', 'Administracion\Sector\SectorController@permisos')->name('Administracion.Sector.permisos');
+    Route::post('dropdownUsuario', 'Administracion\Sector\SectorController@dropdownUsuario');
+    Route::post('guarda_permisos', 'Administracion\Sector\SectorController@guarda_permisos');
 });
 
 // Rutas Obra
 Route::group(['prefix' => 'Obra', 'middleware' => 'valida_ruta:Obra/crear'], function () {
-	Route::get('crear', 'Obra\ObraController@index')->name('Obra.crear');
-	Route::post('buscar_expediente', 'Obra\ObraController@buscar_expediente');
-	Route::post('buscar_obra', 'Obra\ObraController@buscar_obra');
-	Route::post('guardar', 'Obra\ObraController@guardar');
-	Route::post('update', 'Obra\ObraController@update');
-	Route::post('dropdownEjercicio', 'Obra\ObraController@dropdownEjercicio');
-	Route::post('dropdownSector', 'Obra\ObraController@dropdownSector');
-	Route::post('dropdownPrograma', 'Obra\ObraController@dropdownPrograma');
+    Route::get('crear', 'Obra\ObraController@index')->name('Obra.crear');
+    Route::post('buscar_expediente', 'Obra\ObraController@buscar_expediente');
+    Route::post('buscar_obra', 'Obra\ObraController@buscar_obra');
+    Route::post('guardar', 'Obra\ObraController@guardar');
+    Route::post('update', 'Obra\ObraController@update');
+    Route::post('dropdownEjercicio', 'Obra\ObraController@dropdownEjercicio');
+    Route::post('dropdownSector', 'Obra\ObraController@dropdownSector');
+    Route::post('dropdownPrograma', 'Obra\ObraController@dropdownPrograma');
 });
 
 \Auth::routes();
 
 // Rutas Techos Financieros
 Route::group(['prefix' => 'TechoFinanciero', 'middleware' => 'valida_ruta:TechoFinanciero'], function () {
-    Route::get('','TechoFinanciero\TechoController@index')->name('TechoFinanciero.index');
-	Route::get('create','TechoFinanciero\TechoController@create')->name('TechoFinanciero.create');
-	Route::post('','TechoFinanciero\TechoController@store');
-	Route::get('{id}/agregar','TechoFinanciero\TechoController@agregar')->name('TechoFinanciero.agregar');
-	Route::post('guarda/{id}','TechoFinanciero\TechoController@guarda');
-	Route::get('{id}/edit','TechoFinanciero\TechoController@edit')->name('TechoFinanciero.edit');
-	Route::put('{id}','TechoFinanciero\TechoController@update')->name('TechoFinanciero.update');
-	Route::post('{id}/destroy','TechoFinanciero\TechoController@destroy')->name('TechoFinanciero.destroy');
-	Route::post('dropdownEjercicio', 'TechoFinanciero\TechoController@dropdownEjercicio');
-	Route::post('dropdownSector', 'TechoFinanciero\TechoController@dropdownSector');
-	Route::post('dropdownPrograma', 'TechoFinanciero\TechoController@dropdownPrograma');
-	Route::post('dropdownTipoFuente','TechoFinanciero\TechoController@dropdownTipoFuente');
+    Route::get('', 'TechoFinanciero\TechoController@index')->name('TechoFinanciero.index');
+    Route::get('create', 'TechoFinanciero\TechoController@create')->name('TechoFinanciero.create');
+    Route::post('', 'TechoFinanciero\TechoController@store');
+    Route::get('{id}/agregar', 'TechoFinanciero\TechoController@agregar')->name('TechoFinanciero.agregar');
+    Route::post('guarda/{id}', 'TechoFinanciero\TechoController@guarda');
+    Route::get('{id}/edit', 'TechoFinanciero\TechoController@edit')->name('TechoFinanciero.edit');
+    Route::put('{id}', 'TechoFinanciero\TechoController@update')->name('TechoFinanciero.update');
+    Route::post('{id}/destroy', 'TechoFinanciero\TechoController@destroy')->name('TechoFinanciero.destroy');
+    Route::post('dropdownEjercicio', 'TechoFinanciero\TechoController@dropdownEjercicio');
+    Route::post('dropdownSector', 'TechoFinanciero\TechoController@dropdownSector');
+    Route::post('dropdownPrograma', 'TechoFinanciero\TechoController@dropdownPrograma');
+    Route::post('dropdownTipoFuente', 'TechoFinanciero\TechoController@dropdownTipoFuente');
 });
 
 // Rutas Consultas
+
 Route::group(['prefix' => 'Consulta', 'middleware' => 'valida_ruta:Consulta'], function () {
     Route::get('','Consulta\ConsultaController@index')->name('Consulta.index');
 	Route::post('get_datos_obra', 'Consulta\ConsultaController@getDataObra');
@@ -255,5 +277,3 @@ Route::group(['prefix' => 'Consulta', 'middleware' => 'valida_ruta:Consulta'], f
 	Route::post('get_detalle_oficio', 'Consulta\ConsultaController@getDataDetalleOficios');
 	Route::post('buscar_obra', 'Consulta\ConsultaController@buscar_obra');
 });
-
-

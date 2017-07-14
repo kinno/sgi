@@ -77,7 +77,8 @@ class AutorizacionExpedienteController extends Controller
                 $query->orderBy('created_at', 'desc');
             }))
             ->with('relacion.expediente.fuentes_monto')
-            ->where('ejercicio', '=', $request->ejercicio)->find($request->id_obra);
+            ->where('ejercicio', '=', $request->ejercicio)->find($request->id_obra)
+            ->where('id_unidad_ejecutora',\Auth::user()->id_unidad_ejecutora);
         // dd($obra);
         if ($obra) {
             if ($obra->asignado > 0.00) {
@@ -95,7 +96,7 @@ class AutorizacionExpedienteController extends Controller
             }
         } else {
             $obra          = array();
-            $obra['error'] = "La Obra no existe.";
+            $obra['error'] = "La Obra no existe o no pertenece a la Unidad Ejecutora.";
             return ($obra);
         }
     }

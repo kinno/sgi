@@ -728,7 +728,7 @@ class ExpedienteController extends Controller
     {
         DB::beginTransaction();
         try {
-            $expediente_tecnico             = P_Expediente_Tecnico::find($request->id_expediente_tecnico);
+            $expediente_tecnico             = P_Expediente_Tecnico::with('contrato.empresa')->find($request->id_expediente_tecnico);
             $expediente_tecnico->id_estatus = $request->estatus;
             if ($request->estatus == 2) {
                 $expediente_tecnico->fecha_envio = date('Y-m-d H:i:s');
@@ -748,6 +748,12 @@ class ExpedienteController extends Controller
                 $expediente_tecnico->fecha_evaluacion = date('Y-m-d H:i:s');
                 $detalle                              = "El Expediente Técnico: " . $expediente_tecnico->id . " ha sido aprobado por la Dirección General de Inversión.";
                 dispatch(new CrearNotificacion($expediente_tecnico->id_usuario, \Auth::user()->id, null, $detalle));
+                if($expediente_tecnico->id_tipo_solicitud==2){
+                    foreach ($expediente_tecnico->contrato as $value) {
+                        $value->empresa->bactivo = 1;
+                        $value->empresa->save();
+                    }
+                }
             }
             $expediente_tecnico->save();
             DB::commit();

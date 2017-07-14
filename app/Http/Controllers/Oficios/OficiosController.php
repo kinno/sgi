@@ -75,6 +75,11 @@ class OficiosController extends Controller
             ->first();
 
         if ($oficio) {
+            if ($oficio->id_estatus == 1) {
+                $oficio          = array();
+                $oficio['error'] = "El Oficio ya ha sido firmado, no se puede editar.";
+                return ($oficio);
+            }
             return $oficio;
         } else {
             $oficio          = array();
@@ -135,7 +140,7 @@ class OficiosController extends Controller
     public function get_data_obras($id_oficio)
     {
 
-        $obras = D_Oficio::with('fuentes', 'principal_oficio.tipo_solicitud', 'unidad_ejecutora','tipo_solicitud')
+        $obras = D_Oficio::with('fuentes', 'principal_oficio.tipo_solicitud', 'unidad_ejecutora', 'tipo_solicitud')
             ->where('id_oficio', '=', $id_oficio);
 
         return \Datatables::of($obras)
@@ -212,7 +217,7 @@ class OficiosController extends Controller
             }
 
             $p_oficio->id_solicitud_presupuesto = $request->id_solicitud_presupuesto;
-            $p_oficio->id_recurso = ($request->id_solicitud_presupuesto==5) ? 2:1;
+            $p_oficio->id_recurso               = ($request->id_solicitud_presupuesto == 5) ? 2 : 1;
             $p_oficio->id_usuario               = \Auth::user()->id;
             $p_oficio->id_estatus               = 3;
             $p_oficio->ejercicio                = $request->ejercicio;
@@ -255,12 +260,12 @@ class OficiosController extends Controller
                 $d_oficio = new D_Oficio;
             }
 
-            $d_oficio->id_oficio           = $id_oficio;
-            $d_oficio->id_det_obra         = $value['id_det_obra'];
-            $d_oficio->id_fuente           = $value['id_fuente'];
+            $d_oficio->id_oficio                = $id_oficio;
+            $d_oficio->id_det_obra              = $value['id_det_obra'];
+            $d_oficio->id_fuente                = $value['id_fuente'];
             $d_oficio->id_solicitud_presupuesto = $value['id_solicitud_presupuesto'];
-            $d_oficio->id_unidad_ejecutora = $value['id_unidad_ejecutora'];
-            if ($value['id_solicitud_presupuesto'] == 1 || $value['id_solicitud_presupuesto'] == 9 || $value['id_solicitud_presupuesto']==7) {
+            $d_oficio->id_unidad_ejecutora      = $value['id_unidad_ejecutora'];
+            if ($value['id_solicitud_presupuesto'] == 1 || $value['id_solicitud_presupuesto'] == 9 || $value['id_solicitud_presupuesto'] == 7) {
                 $d_oficio->asignado = $value['monto'];
             } else if ($tipo == 2) {
                 $d_oficio->autorizado = $value['monto'];
@@ -312,10 +317,10 @@ class OficiosController extends Controller
 
         $detalle = Cat_Unidad_Ejecutora::whereIn('id', D_Oficio::select(\DB::raw('distinct(id_unidad_ejecutora)'))
                 ->where('id_oficio', '=', $id_oficio)->get()->toArray())->get();
-        $oficio_actual = P_Oficio::with('tipo_solicitud','sector')->find($id_oficio);
+        $oficio_actual = P_Oficio::with('tipo_solicitud', 'sector')->find($id_oficio);
 
         foreach ($detalle as $value) {
-            $obras = D_Obra::with('detalles_oficio.oficio','detalles_oficio.fuentes','municipio_reporte','tipo_obra')
+            $obras = D_Obra::with('detalles_oficio.oficio', 'detalles_oficio.fuentes', 'municipio_reporte', 'tipo_obra')
                 ->whereIn('id',
                     D_Oficio::
                         select(\DB::raw('distinct(id_det_obra)'))
@@ -328,7 +333,7 @@ class OficiosController extends Controller
             $value->obras = $obras;
         }
 
-        $pdf = \PDF::loadView('PDF/detalle_oficio', compact('detalle','oficio_actual'))->setPaper('A4','landscape');;
+        $pdf = \PDF::loadView('PDF/detalle_oficio', compact('detalle', 'oficio_actual'))->setPaper('A4', 'landscape');
 
         return $pdf->stream('Detalle_Oficio_.pdf');
 
