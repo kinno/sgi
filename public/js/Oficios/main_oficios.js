@@ -207,7 +207,10 @@ function buscarOficio() {
                     $("#imprimir_oficio,#imprimir_detalle_oficio").show();
                 }
             } else {
-                $("#clave").notify(response.error, "error");
+                // $.notify(response.error, "error");
+                BootstrapDialog.mensaje('¡Aviso!',response.error,3,function(){
+                    $("#clave").val('');
+                });
                 $("#id_oficio").val();
                 $("#imprimir_oficio #imprimir_detalle_oficio").hide();
             }
