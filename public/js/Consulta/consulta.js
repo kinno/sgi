@@ -1,6 +1,6 @@
-var tablaObras;
-var template;
-var obra_anterior;
+var tablaObras, tablaOficios;
+var templateObra, templateOficio;
+var obra_anterior = 0;;
 $(document).ready( function() {
 	$.ajaxSetup({
 		headers: {
@@ -19,7 +19,8 @@ $(document).ready( function() {
 		}
 		return ret;
 	});
-	template = Handlebars.compile($("#montos-template").html());
+	templateObra = Handlebars.compile($("#montos-template").html());
+	templateOficio = Handlebars.compile($("#oficios-template").html());
 	tablaObras = $('#obras').DataTable({
 		searching: false,
 		pagingType: "full_numbers",
@@ -39,7 +40,7 @@ $(document).ready( function() {
 		},
 		select: 'single',
 		ordering: false,
-		/*processing: true,*/
+		processing: true,
 		serverSide: true,
 		ajax: {
 			url: '/Consulta/get_datos_obra',
@@ -84,11 +85,9 @@ $(document).ready( function() {
 			if (data.nombre.length >= 70)
 				$("td:eq(4)", row).html("<span title='" + data.nombre + "'>" + data.nombre.substr(0, 70) + " ...</span>");
 		}
-		
 	});
-	LimpiaConsulta();
+	//LimpiaConsulta();
 	Triggers ();
-	
 });
 
 function LimpiaConsulta () {
@@ -111,6 +110,16 @@ function LimpiaConsulta () {
 	if ($('#id_grupo_social_search').children().length > 1)
 		$('#id_grupo_social_search').val('0');
 	$('#obras tbody tr.infor').removeClass('infor');
+	tablaObras.clear().draw();
+	
+	// Oficios
+	$('#obra-3 :input').val('');
+	if ( $.fn.DataTable.isDataTable(tablaOficios) ) {
+		tablaOficios.clear();
+		var oficios_vacio = '<tr><th colspan="8" class="text-center" style="font-weight: unset">No existe información</th></tr>';
+		$('#oficios tbody').empty().html(oficios_vacio);
+	}
+	
 	// Datos
 	$('#datos :input').val('');
 	/*$('#id_expediente_tecnico, #nombre, #justificacion, #caracteristicas, #localidad, .numeroDecimal, .numcta, .numero, .partida').val('');*/
@@ -135,17 +144,20 @@ function Triggers () {
 		LimpiaConsulta();
 	});
 
-	// evento + información
+	// evento + información (listado de obras)
 	$('#obras tbody').on('click', 'td.details-control', function () {
 		var tr = $(this).closest('tr');
 		var row = tablaObras.row( tr );
 		if ( row.child.isShown() ) {
 			row.child.hide();
-			tr.removeClass('shown');
+			tr.removeClass('shown visto');
 		}
 		else {
-			row.child( template(row.data()) ).show();
-			tr.addClass('shown');
+			row.child( templateObra(row.data()) ).show();
+			if (tr.hasClass('infor'))
+				tr.addClass('shown');
+			else
+				tr.addClass('shown visto');
 			$(".numeroDecimal").each(function() {
 				$(this).autoNumeric({
 					aSep: ',',
@@ -156,14 +168,25 @@ function Triggers () {
 		}
 	});
 
-	// evento Información
+	// evento Información (obras)
 	$('body').on('click','#btnInfo', function () {
 		var id = $(this).attr('data-id') * 1;
 		if (obra_anterior != id) {
-			if (obra_anterior != 0)
-				$('#obras tbody tr.infor').removeClass('infor');
-			$(this).closest('tr').addClass('infor');
-			muestraInformacion (id);
+			var tr;
+			if (obra_anterior != 0) {
+				tr = $('#obras tbody tr.infor');
+				var row = tablaObras.row(tr);
+				if (row.child.isShown() )
+					tr.addClass('visto');
+				tr.removeClass('infor');
+			}
+			tr = $(this).closest('tr');
+			if (tr.hasClass('visto'))
+				tr.removeClass('visto');
+			tr.addClass('infor');
+    		console.log( tablaObras.row( $(this).closest('tr') ).data() );
+			muestraOficios(tablaObras.row(tr).data());
+			muestraDatos (id);
 		}
 		obra_anterior = id;
 	});
@@ -187,9 +210,124 @@ function Triggers () {
 				break;
 		}
 	});
+
+	// evento + información (listado de oficios)
+	$('#oficios tbody').on('click', 'td.details-control', function () {
+		var tr = $(this).closest('tr');
+		var row = tablaOficios.row(tr);
+		var tableId = 'det-oficios-' + row.data().id;
+		if ( row.child.isShown() ) {
+			row.child.hide();
+			tr.removeClass('shown visto');
+		}
+		else {
+			row.child( templateOficio(row.data()) ).show();
+			muestraDetalleOficios(tableId, row.data());
+			tr.addClass('shown visto');
+		}
+	});
 }
 
-function muestraInformacion (id) {
+function muestraOficios (data) {
+	$("#id_obra-3").val(data.id_obra);
+	$("#ejercicio-3").val(data.ejercicio);
+	tablaOficios = $('#oficios').DataTable({
+		destroy: true,
+		autoWidth: false,
+		searching: false,
+		pagingType: "full_numbers",
+		paging: false,
+		info: false,
+		language: {
+			emptyTable: "No existen oficios disponibles",
+			infoEmpty: "No existe información",
+			zeroRecords: "No se encontraron registros",
+			infoFiltered:   "(filtrado de _MAX_ registros)"
+		},
+		ordering: false,
+		processing: true,
+		serverSide: true,
+		ajax: {
+			url: '/Consulta/get_oficios_obra',
+			data: {
+				'id': data.id
+			},
+			method: 'POST'
+		},
+		columns: [
+		{
+			className: 'details-control',
+			orderable: false,
+			searchable: false,
+			data: null,
+			defaultContent: ''
+		}, {
+			data: 'clave',
+			name: 'clave',
+		}, {
+			data: 'fecha_oficio',
+			name: 'fecha_oficio',
+		}, {
+			data: 'estado',
+			name: 'estado'
+		}, {
+			data: 'solicitud',
+			name: 'solicitud'
+		}, {
+			data: 'recurso',
+			name: 'recurso'
+		}, {
+			data: 'asignado',
+			name: 'asignado',
+			className: 'numeroDecimal'
+		}, {
+			data: 'autorizado',
+			name: 'autorizado',
+			className: 'numeroDecimal'
+		} ]
+	});
+}
+
+function muestraDetalleOficios (tableId, data) {
+    $('#' + tableId).DataTable({
+		destroy: true,
+		autoWidth: false,
+		searching: false,		
+		paging: false,
+		info: false,
+		ordering: false,
+		processing: true,
+		serverSide: true,
+		ajax: {
+			url: '/Consulta/get_detalle_oficio',
+			data: {
+				'id': data.id
+			},
+			method: 'POST'
+		},
+		columns: [
+		{
+			data: 'unidad_ejecutora.nombre',
+			name: 'ue',
+		}, {
+			data: 'fuentes.nombre',
+			name: 'fuente',
+		}, {
+			data: 'tipo_solicitud.nombre',
+			name: 'solicitud'
+		}, {
+			data: 'asignado',
+			name: 'asignado',
+			className: 'numeroDecimal'
+		}, {
+			data: 'autorizado',
+			name: 'autorizado',
+			className: 'numeroDecimal'
+		} ]
+	});
+   }
+
+function muestraDatos (id) {
 	$.ajax({
 		data: {
 			'id': id
@@ -204,7 +342,7 @@ function muestraInformacion (id) {
 			$("#divLoading").hide();
 		},
 		success: function(data) {
-			console.log(data);
+			//console.log(data);
 			//LimpiaObra ();
 			acuerdos = data.acuerdos;
 			//fuentes = data.fuentes;

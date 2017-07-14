@@ -9,10 +9,11 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
 <script type="text/javascript" src="{{ asset('js/Consulta/consulta.js') }}"></script>
 <script id="montos-template" type="text/x-handlebars-template">
-	<div class="label label-success">Obra: @{{id_obra}}</div>
+	<br />
+	<span class="label label-default">Obra: @{{id_obra}}</span>
 	<br />
 	<table class="table table-bordered table-striped tabla-condensada2" style="margin-bottom: 0 !important">
-		<tr style="text-align: center;">
+		<tr class="text-center">
 			<td style="width: 10%">Asignado</td>
 			<td style="width: 10%">Autorizado</td>
 			<td style="width: 10%">Ejercido</td>
@@ -24,7 +25,7 @@
 			<td style="width: 10%">Pagado</td>
 			<td style="width: 10%">Por pagar</td>
 		</tr>
-		<tr style="text-align: right;">
+		<tr>
 			<td>@{{asignado}}</td>
 			<td>@{{autorizado}}</td>
 			<td>@{{ejercido}}</td>
@@ -37,9 +38,8 @@
 			<td>@{{por_pagar}}</td>
 		</tr>
 	</table>
-	
 	@{{#each fuentes}}
-	<div class="label label-success">Fuente: @{{clave}} - @{{descripcion}}</div>
+	<span class="label label-default">Fuente: @{{clave}} - @{{descripcion}}</span>
 	<table class="table table-bordered table-striped tabla-condensada2" style="margin-bottom: 0 !important">
 		<tr>
 			<td style="width: 10%" class="numeroDecimal">@{{pivot.asignado }}</td>
@@ -55,6 +55,41 @@
 		</tr>
 	</table>
 	@{{/each}}
+	<br />
+</script>
+
+<script id="oficios-template" type="text/x-handlebars-template">
+	<div class="row" style="margin-top: 3px">
+		<label class="col-md-2 label-lectura">Firma:</label>
+		<div class="col-md-2">
+			<input type="text" class="form-lectura" readonly="readonly" value="@{{fecha_firma}}"/>
+		</div>
+		<label class="col-md-2 label-lectura">TAT:</label>
+		<div class="col-md-2">
+			<input type="text" class="form-lectura" readonly="readonly" value="@{{tarjeta_turno}}"/>
+			</textarea>
+		</div>
+	</div>
+	<div class="row">
+		<label class="col-md-2 label-lectura">Titular:</label>
+		<div class="col-md-9">
+			<textarea class="form-lectura" rows="1" readonly="readonly">@{{titular}}
+			</textarea>
+		</div>
+	</div>
+	<span class="label label-default">Detalle del Oficio</span>
+	<table id="det-oficios-@{{id}}" class="table table-bordered table-striped tabla-condensada2">
+		<thead>
+			<tr class="active" style="text-align: center;">
+				<td style="width: 30%">Unidad Ejecutora</td>
+				<td style="width: 20%">Fuente</td>
+				<td style="width: 20%">Tipo</td>
+				<td style="width: 15%">Asignado</td>
+				<td style="width: 15%">Autorizado</td>
+			</tr>
+		</thead>
+	</table>
+	<br />
 </script>
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -92,7 +127,7 @@
 									</div>
 								</div>
 								<div id="div_nombre_search">
-									<label for="nombre_search" class="col-md-3 control-label"></span>Nombre de la Obra:</label>
+									<label for="nombre_search" class="col-md-3 control-label">Nombre de la Obra:</label>
 									<div class="col-md-4">
 										<input type="text" class="form-control" id="nombre_search" name="nombre_search" />
 									</div>
@@ -154,9 +189,9 @@
 				</div>
 				<br />
 
-				<table class="table table-striped tabla-condensada" id="obras">
+				<table class="table table-striped table-bordered tabla-condensada" id="obras">
 					<thead>
-						<tr>
+						<tr class="active">
 							<th style="width: 3%"></th>
 							<th style="width: 7%">Obra</th>
 							<th style="width: 7%">Ejercicio</th>
@@ -174,6 +209,37 @@
 
 			<!--Oficios-->
 			<div id="tabs-3">
+				<div id="obra-3">
+				<div class="row">
+					<label for="id_obra-3" class="col-md-2 label-lectura">No. de Obra:</label>
+					<div class="col-md-2">
+						<input type="text" class="form-lectura numero" id="id_obra-3" readonly="readonly" />
+					</div>
+					<label for="ejercicio-3" class="col-md-1 label-lectura">Ejercicio:</label>
+					<div class="col-md-2">
+						<input type="text" class="form-lectura" id="ejercicio-3" readonly="readonly" />
+					</div>
+				</div>
+				</div>
+				<table class="table table-striped table-bordered tabla-condensada" id="oficios">
+					<thead>
+						<tr class="active">
+							<th style="width: 4%"></th>
+							<th style="width: 10%">Oficio</th>
+							<th style="width: 10%">Fecha</th>
+							<th style="width: 10%">Estado</th>
+							<th style="width: 26%">Tipo</th>
+							<th style="width: 10%">Recurso</th>
+							<th style="width: 15%">Asignado</th>
+							<th style="width: 15%">Autorizado</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th colspan="8" class="text-center" style="font-weight: unset">No existe información</th>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 
 			<!--APs-->
@@ -191,124 +257,115 @@
 			<!--Datos-->
 			<div id="tabs-7">
 				<form class="form-horizontal" role="form" id="datos">
-				<div class="form-group form-group-sm" id="div_id_obra">
-					<label for="id_obra" class="col-md-2 control-label">No. de Obra:</label>
+				<div class="row">
+					<label for="id_obra" class="col-md-2 label-lectura">No. de Obra:</label>
 					<div class="col-md-2">
-						<input type="text" class="form-control numero" id="id_obra" readonly="readonly" />
+						<input type="text" class="form-lectura numero" id="id_obra" readonly="readonly" />
 					</div>
 				</div>
-				<div class="form-group form-group-sm">
-					<div id="div_modalidad_ejecucion">
-						<label for="modalidad_ejecucion" class="col-md-2 control-label">Modalidad de Ejecución:</label>
-						<div class="col-md-2">
-							<input type="text" class="form-control" id="modalidad_ejecucion" readonly="readonly" />
-						</div>
+				<div class="row">
+					<label for="modalidad_ejecucion" class="col-md-2 label-lectura">Modalidad de Ejecución:</label>
+					<div class="col-md-2">
+						<input type="text" class="form-lectura" id="modalidad_ejecucion" readonly="readonly" />
 					</div>
-					<div id="div_ejercicio">
-						<label for="ejercicio" class="col-md-2 control-label">Ejercicio:</label>
-						<div class="col-md-2">
-							<input type="text" class="form-control" id="ejercicio" readonly="readonly" />
-						</div>
+					<label for="ejercicio" class="col-md-2 label-lectura">Ejercicio:</label>
+					<div class="col-md-2">
+						<input type="text" class="form-lectura" id="ejercicio" readonly="readonly" />
 					</div>
 				</div>
-				<div class="form-group form-group-sm">
-					<div id="div_clasificacion_obra">
-						<label for="clasificacion_obra" class="col-md-2 control-label">Clasificación de la Obra:</label>
-						<div class="col-md-2">
-							<input type="text" class="form-control" id="clasificacion_obra" readonly="readonly" />
-						</div>
+				<div class="row">
+					<label for="clasificacion_obra" class="col-md-2 label-lectura">Clasificación de la Obra:</label>
+					<div class="col-md-2">
+						<input type="text" class="form-lectura" id="clasificacion_obra" readonly="readonly" />
 					</div>
-					<div id="div_tipo_obra">
-						<label for="tipo_obra" class="col-md-2 control-label">Tipo de Obra:</label>
-						<div class="col-md-2">
-							<input type="text" class="form-control" id="tipo_obra" readonly="readonly" />
-						</div>
+					<label for="tipo_obra" class="col-md-2 label-lectura">Tipo de Obra:</label>
+					<div class="col-md-2">
+						<input type="text" class="form-lectura" id="tipo_obra" readonly="readonly" />
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_sector">
-					<label for="sector" class="col-md-2 control-label">Sector:</label>
+				<div class="row">
+					<label for="sector" class="col-md-2 label-lectura">Sector:</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" id="sector" readonly="readonly" />
+						<input type="text" class="form-lectura" id="sector" readonly="readonly" />
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_unidad_ejecutora">
-					<label for="unidad_ejecutora" class="col-md-2 control-label">Unidad Ejecutora:</label>
+				<div class="row">
+					<label for="unidad_ejecutora" class="col-md-2 label-lectura">Unidad Ejecutora:</label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" id="unidad_ejecutora" readonly="readonly" />
+						<input type="text" class="form-lectura" id="unidad_ejecutora" readonly="readonly" />
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_nombre">
-					<label for="nombre" class="col-md-2 control-label">Nombre de la Obra:</label>
+				<div class="row">
+					<label for="nombre" class="col-md-2 label-lectura">Nombre de la Obra:</label>
 					<div class="col-md-10">
-						<textarea class="form-control" id="nombre" rows="1" readonly="readonly"></textarea>
+						<textarea class="form-lectura" id="nombre" rows="1" readonly="readonly"></textarea>
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_justificacion">
-					<label for="justificacion" class="col-md-2 control-label">Justificación:</label>
+				<div class="row">
+					<label for="justificacion" class="col-md-2 label-lectura">Justificación:</label>
 					<div class="col-md-10">
-						<textarea class="form-control" id="justificacion" rows="1" readonly="readonly"></textarea>
+						<textarea class="form-lectura" id="justificacion" rows="1" readonly="readonly"></textarea>
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_caracteristicas">
-					<label for="caracteristicas" class="col-md-2 control-label">Características:</label>
+				<div class="row">
+					<label for="caracteristicas" class="col-md-2 label-lectura">Características:</label>
 					<div class="col-md-10">
-						<textarea class="form-control" id="caracteristicas" rows="1" readonly="readonly"></textarea>
+						<textarea class="form-lectura" id="caracteristicas" rows="1" readonly="readonly"></textarea>
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_cobertura">
-					<label for="cobertura" class="col-md-2 control-label">Cobertura: </label>
+				<div class="row" id="div_cobertura">
+					<label for="cobertura" class="col-md-2 label-lectura">Cobertura: </label>
 					<div class="col-md-3">
-						<input type="text" class="form-control" id="cobertura" readonly="readonly" />
+						<input type="text" class="form-lectura" id="cobertura" readonly="readonly" />
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_region"  style="display:none;">
-					<label for="region" class="col-md-2 control-label">Regiones: </label>
+				<div class="row" id="div_region"  style="display:none;">
+					<label for="region" class="col-md-2 label-lectura">Regiones: </label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" id="region" readonly="readonly" />
+						<input type="text" class="form-lectura" id="region" readonly="readonly" />
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_municipio" style="display:none;">
-					<label for="municipio" class="col-md-2 control-label">Municipios: </label>
+				<div class="row" id="div_municipio" style="display:none;">
+					<label for="municipio" class="col-md-2 label-lectura">Municipios: </label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" id="municipio" readonly="readonly" />
+						<input type="text" class="form-lectura" id="municipio" readonly="readonly" />
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_localidad">
-					<label for="localidad" class="col-md-2 control-label">Localidad:</label>
+				<div class="row" id="div_localidad">
+					<label for="localidad" class="col-md-2 label-lectura">Localidad:</label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" id="localidad" readonly="readonly" />
+						<input type="text" class="form-lectura" id="localidad" readonly="readonly" />
 					</div>
 				</div>
 
-
-				<div class="form-group form-group-sm" id="div_programa">
-					<label for="programa" class="col-md-2 control-label">Programa EP:</label>
+				<div class="row">
+					<label for="programa" class="col-md-2 label-lectura">Programa EP:</label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" id="programa" readonly="readonly" />
+						<input type="text" class="form-lectura" id="programa" readonly="readonly" />
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_proyecto_ep">
-					<label for="proyecto_ep" class="col-md-2 control-label">Proyecto EP:</label>
+				<div class="row">
+					<label for="proyecto_ep" class="col-md-2 label-lectura">Proyecto EP:</label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" id="proyecto_ep" readonly="readonly" />
+						<input type="text" class="form-lectura" id="proyecto_ep" readonly="readonly" />
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_acuerdo_est">
-					<label for="acuerdo_est" class="col-md-2 control-label">Acciones de Gobierno Estatal: </label>
+				<div class="row">
+					<label for="acuerdo_est" class="col-md-2 label-lectura">Acciones de Gobierno Estatal: </label>
 					<div class="col-md-10">
-						<textarea class="form-control" rows="1" id="acuerdo_est" readonly="readonly"></textarea>
+						<textarea class="form-lectura" rows="1" id="acuerdo_est" readonly="readonly"></textarea>
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_acuerdo_fed">
-					<label for="acuerdo_fed" class="col-md-2 control-label">Acciones de Gobierno Federal:</label>
+				<div class="row">
+					<label for="acuerdo_fed" class="col-md-2 label-lectura">Acciones de Gobierno Federal:</label>
 					<div class="col-md-10">
-						<textarea class="form-control" rows="1" id="acuerdo_fed" readonly="readonly"></textarea>
+						<textarea class="form-lectura" rows="1" id="acuerdo_fed" readonly="readonly"></textarea>
 					</div>
 				</div>
-				<div class="form-group form-group-sm" id="div_grupo_social">
-					<label for="grupo_social" class="col-md-2 control-label">Grupo Social:</label>
+				<div class="row">
+					<label for="grupo_social" class="col-md-2 label-lectura">Grupo Social:</label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" id="grupo_social" readonly="readonly" />
+						<input type="text" class="form-lectura" id="grupo_social" readonly="readonly" />
 					</div>
 				</div>
 				</form>

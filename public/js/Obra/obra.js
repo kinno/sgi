@@ -50,8 +50,10 @@ function LimpiaObra () {
 		$('#ejercicio_obra, #ejercicio').val('0');
 		$('#programa, #id_proyecto_ep').html(vacio);
 	}
-	else if ($('#programa').children().length > 1)
+	else if ($('#programa').children().length > 1) {
 		$('#programa').val('0');
+		$('#id_proyecto_ep').html(vacio).val('0');
+	}
 	else if ($('#id_proyecto_ep').children().length > 1)
 		$('#id_proyecto_ep').val('0');
 	if ($('#id_modalidad_ejecucion').children().length > 1)
@@ -62,7 +64,7 @@ function LimpiaObra () {
 		$('#id_tipo_obra').val('0');
 	if ($('#id_sector').children().length > 1) {
 		$('#id_sector').val('0');
-		$('#id_unidad_ejecutora').html(vacio);
+		$('#id_unidad_ejecutora').html(vacio).val('0');
 	}
 	else if ($('#id_unidad_ejecutora').children().length > 1)
 		$('#id_unidad_ejecutora').val('0');
