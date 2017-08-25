@@ -1,4 +1,4 @@
-.fecha[readonly]:enabled {
+.fecha[readonly]:enabled, .tabla-seleccionar, table > tbody > tr > td.seleccionar {
 	cursor: pointer !important;
 }
 
@@ -15,7 +15,7 @@
 	padding-right: 4px;
 }
 
-.menu_padre {
+.menu_padre, .header-tabla {
 	/*background-color: #BBBBBB;*/
 	/*background-color: #0A2E3A;*/
 	background-color: #0F403E;
@@ -123,8 +123,9 @@ input {
 .tabla-condensada > thead > tr > td,
 .tabla-condensada > tbody > tr > td,
 .tabla-condensada > tfoot > tr > td {
-  padding: 4px;
-  font-size: 0.85em;
+	padding: 3px;
+	/*font-size: 0.85em;*/
+	font-size: 11px !important;
 }
 
 .tabla-condensada2 > thead > tr > th,
@@ -133,8 +134,9 @@ input {
 .tabla-condensada2 > thead > tr > td,
 .tabla-condensada2 > tbody > tr > td,
 .tabla-condensada2 > tfoot > tr > td {
-  padding: 2px;
-  font-size: 0.8em;
+	padding: 2px;
+  	/*font-size: 0.8em;*/
+  	font-size: 10px !important;
 }
 
 .inactivo2, .infor2 {
@@ -145,7 +147,7 @@ input {
 	background-color: #FF3500 !important;
 }
 
-.visto {
+.visto, .selected {
 	background-color: #00A000 !important;
 }
 
@@ -196,4 +198,22 @@ input {
 	font-size: 10px;
 	margin-bottom: 0;
 	text-align: right;
+}
+
+.error{
+	font-size:0.9em;
+	/* width:400px;*/
+	background: white;
+	color: red;
+	margin-top: -12px;
+	/*padding-bottom: 1px;*/
+	text-align: left;
+}
+
+.error2, .oculto {
+   display: none;
+}
+
+#catalogos {
+	font-size: 12px;
 }

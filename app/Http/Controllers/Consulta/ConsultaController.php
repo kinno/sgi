@@ -9,6 +9,9 @@ use Yajra\Datatables\Datatables;
 use App\D_Obra;
 use App\Cat_Estructura_Programatica;
 use App\D_Oficio;
+use App\P_Autorizacion_Pago;
+use App\P_Pagos;
+use App\Rel_Obra_Fuente;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -135,14 +138,15 @@ class ConsultaController extends Controller
 			->join('cat_solicitud_presupuesto', 'p_oficio.id_solicitud_presupuesto', '=', 'cat_solicitud_presupuesto.id')
 			->join('cat_recurso', 'p_oficio.id_recurso', '=', 'cat_recurso.id')
 			->where('id_det_obra', $request->id)
-			->groupBy('clave')
 			->orderBy('clave', 'DESC');
 		return Datatables::of($oficios)
 			->editColumn('fecha_oficio', function ($oficio) {
-				return Carbon::parse($oficio->fecha_oficio)->format('d-m-Y');
+				if (!is_null($oficio->fecha_oficio))
+					return Carbon::parse($oficio->fecha_oficio)->format('d-m-Y');
 			})
 			->editColumn('fecha_firma', function ($oficio) {
-				return Carbon::parse($oficio->fecha_firma)->format('d-m-Y');
+				if (!is_null($oficio->fecha_firma))
+					return Carbon::parse($oficio->fecha_firma)->format('d-m-Y');
 			})
 			->editColumn('asignado', function ($oficio) {
 				return number_format($oficio->asignado, 2);
@@ -168,19 +172,152 @@ class ConsultaController extends Controller
 			->make(true);
 	}
 
+	public function getDataAps(Request $request)
+	{
+		$aps = P_Autorizacion_Pago::select(['id', 'clave', 'id_tipo_ap', 'id_estatus', 'id_fuente', 'id_contrato', 'id_empresa', 'id_unidad_ejecutora', 'id_sector', 'observaciones', 'monto', 'monto_amortizacion', 'monto_iva_amortizacion', 'folio_amortizacion', 'importe_sin_iva', 'iva', 'icic', 'cmic', 'supervision', 'ispt', 'otro', 'federal_1', 'federal_2', 'federal_5', 'id_relacion_envio', 'id_turno', 'fecha_creacion', 'fecha_entrega', 'fecha_envio', 'fecha_recepcion', 'fecha_validacion', 'numero_estimacion', 'fecha_recepcion_tesoreria', 'fecha_programacion_tesoreria'])
+			->with(['contrato', 'empresa', 'unidad_ejecutora', 'estatus', 'tipo_ap', 'fuente', 'sector', 'pagos'])
+			->where('id_det_obra', $request->id)
+			->orderBy('clave', 'DESC');
+
+		return Datatables::of($aps)
+			->editColumn('fecha_creacion', function ($ap) {
+				if (!is_null($ap->fecha_creacion))
+					return Carbon::parse($ap->fecha_creacion)->format('d-m-Y');
+			})
+			->editColumn('fecha_entrega', function ($ap) {
+				if (!is_null($ap->fecha_entrega))
+					return Carbon::parse($ap->fecha_entrega)->format('d-m-Y');
+			})
+			->editColumn('fecha_envio', function ($ap) {
+				if (!is_null($ap->fecha_envio))
+					return Carbon::parse($ap->fecha_envio)->format('d-m-Y');
+			})
+			->editColumn('fecha_recepcion', function ($ap) {
+				if (!is_null($ap->fecha_recepcion))
+					return Carbon::parse($ap->fecha_recepcion)->format('d-m-Y');
+			})
+			->editColumn('fecha_validacion', function ($ap) {
+				if (!is_null($ap->fecha_validacion))
+					return Carbon::parse($ap->fecha_validacion)->format('d-m-Y');
+			})
+			->editColumn('fecha_recepcion_tesoreria', function ($ap) {
+				if (!is_null($ap->fecha_recepcion_tesoreria))
+					return Carbon::parse($ap->fecha_recepcion_tesoreria)->format('d-m-Y');
+			})
+			->editColumn('fecha_programacion_tesoreria', function ($ap) {
+				if (!is_null($ap->fecha_programacion_tesoreria))
+					return Carbon::parse($ap->fecha_programacion_tesoreria)->format('d-m-Y');
+			})
+			->editColumn('monto', function ($ap) {
+				return number_format($ap->monto, 2);
+			})
+			->editColumn('monto_amortizacion', function ($ap) {
+				return number_format($ap->monto_amortizacion, 2);
+			})
+			->editColumn('monto_iva_amortizacion', function ($ap) {
+				return number_format($ap->monto_iva_amortizacion, 2);
+			})
+			->editColumn('importe_sin_iva', function ($ap) {
+				return number_format($ap->importe_sin_iva, 2);
+			})
+			->editColumn('iva', function ($ap) {
+				return number_format($ap->iva, 2);
+			})
+			->editColumn('icic', function ($ap) {
+				return number_format($ap->icic, 2);
+			})
+			->editColumn('cmic', function ($ap) {
+				return number_format($ap->cmic, 2);
+			})
+			->editColumn('supervision', function ($ap) {
+				return number_format($ap->supervision, 2);
+			})
+			->editColumn('ispt', function ($ap) {
+				return number_format($ap->ispt, 2);
+			})
+			->editColumn('otro', function ($ap) {
+				return number_format($ap->otro, 2);
+			})
+			->editColumn('federal_1', function ($ap) {
+				return number_format($ap->federal_1, 2);
+			})
+			->editColumn('federal_2', function ($ap) {
+				return number_format($ap->federal_2, 2);
+			})
+			->editColumn('federal_5', function ($ap) {
+				return number_format($ap->federal_5, 2);
+			})
+			->addColumn('retenciones', function ($ap) {
+				return number_format($ap->icic + $ap->cmic + $ap->supervision + $ap->ispt + $ap->otro + $ap->federal_1 + $ap->federal_2 + $ap->federal_5, 2);
+			})
+			->addColumn('subtotal', function ($ap) {
+				return number_format($ap->monto - $ap->iva, 2);
+			})
+			->addColumn('neto', function ($ap) {
+				return number_format($ap->monto - $ap->icic - $ap->cmic - $ap->supervision - $ap->ispt - $ap->otro - $ap->federal_1 - $ap->federal_2 - $ap->federal_5, 2);
+			})
+			->addColumn('pagado', function ($ap) {
+				return number_format($ap->pagos->sum('monto'),2);
+			})
+			->make(true);
+	}
+
+	public function getDataPagos(Request $request)
+	{
+		$pagos = P_Pagos::select(['id', 'id_autorizacion_pago', 'serie', 'adefa', 'cheque', 'fecha_pago', 'monto'])
+			->with('autorizacion_pago.fuente')
+			->where('id_det_obra', $request->id)
+			->orderBy('id_autorizacion_pago', 'DESC')
+			->orderBy('serie', 'ASC');
+		return Datatables::of($pagos)
+			->editColumn('adefa', function ($pago) {
+				if ($pago->adefa == 1)
+					return "si";
+				else
+					return "no";
+			})
+			->editColumn('cheque', function ($pago) {
+				if ($pago->cheque == "0")
+					return "SPEI";
+				else
+					return $pago->cheque;
+			})
+			->editColumn('fecha_pago', function ($pago) {
+				if (!is_null($pago->fecha_pago))
+					return Carbon::parse($pago->fecha_pago)->format('d-m-Y');
+			})
+			->editColumn('monto', function ($pago) {
+				return number_format($pago->monto, 2);
+			})
+			->make(true);
+	}
+
 	public function buscar_obra(Request $request)
 	{
 		try {
-			$obra = D_Obra::with(['acuerdos', 'fuentes', 'regiones', 'municipios', 'sector', 'modalidad_ejecucion', 'clasificacion_obra', 'tipo_obra', 'unidad_ejecutora', 'cobertura', 'proyecto', 'grupo_social'])->where('id', $request->id)->first();
-			$obra['programa'] = Cat_Estructura_Programatica::where('ejercicio', $obra->ejercicio)->where('tipo', 'P')->where('clave', 'like', substr($obra->proyecto->clave, 0, 8).'%')->get()->first();
+			$obra = D_Obra::with(['acuerdos', 'regiones', 'municipios', 'sector', 'modalidad_ejecucion', 'clasificacion_obra', 'tipo_obra', 'unidad_ejecutora', 'cobertura', 'proyecto', 'grupo_social'])->where('id', $request->id)->first();
+			$obra['programa'] = Cat_Estructura_Programatica::where('ejercicio', $obra->proyecto->ejercicio)->where('tipo', 'P')->where('clave', 'like', substr($obra->proyecto->clave, 0, 8).'%')->get()->first();
 			return $obra;
 		} 
 		catch (\Exception $e) {
 			$obra            = array();
 			$obra['message'] = $e->getMessage();
 			$obra['trace']   = $e->getTrace();
-			//$obra['error']   = "No existe Obra";
 			return $obra;
 		}
+	}
+
+	public function getDataFuentes(Request $request)
+	{
+		$pagos = Rel_Obra_Fuente::select(['id', 'id_fuente', 'monto', 'partida', 'cuenta'])
+			->with('fuentes')
+			->where('id_det_obra', $request->id)
+			->where('id_unidad_ejecutora', 0)
+			->orderBy('id_fuente', 'DESC');
+		return Datatables::of($pagos)
+			->editColumn('monto', function ($pago) {
+				return number_format($pago->monto, 2);
+			})
+			->make(true);
 	}
 }

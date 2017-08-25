@@ -17,7 +17,8 @@ class P_Autorizacion_Pago extends Model
     }
 
     public function obra(){
-    	return $this->hasOne('App\D_Obra','id','id_obra');
+    	//return $this->hasOne('App\D_Obra','id','id_obra');
+        return $this->belongsTo('App\P_Autorizacion_Pago', 'id_det_obra');
     }
 
     public function unidad_ejecutora()
@@ -35,5 +36,15 @@ class P_Autorizacion_Pago extends Model
 
     public function fuente(){
         return $this->hasOne('App\Cat_Fuente','id','id_fuente');
+    }
+
+    public function sector()
+    {
+        return $this->belongsTo('App\Cat_Sector', 'id_sector');
+    }
+
+    public function pagos()
+    {
+        return $this->hasMany('App\P_Pagos', 'id_autorizacion_pago');
     }
 }

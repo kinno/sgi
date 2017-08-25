@@ -272,8 +272,16 @@ Route::group(['prefix' => 'TechoFinanciero', 'middleware' => 'valida_ruta:TechoF
 
 Route::group(['prefix' => 'Consulta', 'middleware' => 'valida_ruta:Consulta'], function () {
     Route::get('','Consulta\ConsultaController@index')->name('Consulta.index');
-	Route::post('get_datos_obra', 'Consulta\ConsultaController@getDataObra');
 	Route::post('get_oficios_obra', 'Consulta\ConsultaController@getDataOficios');
 	Route::post('get_detalle_oficio', 'Consulta\ConsultaController@getDataDetalleOficios');
+	Route::post('get_aps_obra', 'Consulta\ConsultaController@getDataAps');
+	Route::post('get_pagos_obra', 'Consulta\ConsultaController@getDataPagos');
+	Route::post('get_datos_obra', 'Consulta\ConsultaController@getDataObra');
+	Route::post('get_fuentes_obra', 'Consulta\ConsultaController@getDataFuentes');
 	Route::post('buscar_obra', 'Consulta\ConsultaController@buscar_obra');
+	Route::get('reportes','Consulta\ReporteController@index')->name('Consulta.reportes');
+	Route::post('get_anio', 'Consulta\ReporteController@getAnio');
+	Route::post('get_reportes', 'Consulta\ReporteController@getDataReportes');
+	Route::post('get_catalogo', 'Consulta\ReporteController@getDataCatalogo');
+	Route::get('imprimeReporte', 'Consulta\ReporteController@impresionPdf');
 });

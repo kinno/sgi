@@ -93,4 +93,9 @@ class D_Obra extends Model
 		return $this->belongsTo('App\Cat_Grupo_Social', 'id_grupo_social');
 	}
 
+	public function aps()
+	{
+		return $this->hasMany('App\P_Autorizacion_Pago', 'id_det_obra');
+	}
+
 }
