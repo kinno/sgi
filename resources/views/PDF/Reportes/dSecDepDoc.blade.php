@@ -70,13 +70,8 @@
 			.obra {
 				font-size: 6.5px;
 			}
-			.fuente {
-				font-size: 6px;
-				border-top: 0.5px solid #555555;
-			}
-			.fuente2 {
+			.obra2 {
 				font-size: 5px;
-				border-top: 0.5px solid #555555;
 			}
 			main table, main td {
 				border-collapse: collapse;
@@ -119,7 +114,6 @@
 			.text-justify {
 				text-align: justify;
 			}
-			
 			.page-break {
 				page-break-after: always;
 			}
@@ -167,12 +161,11 @@
 		</table>
 		<table width="100%" class="encabezado">
 			<tr>
-				<td width="16%" class="enc-tabla">
+				<td width="22%" class="enc-tabla">
 					Ejercicio - Sector - U. Ejecutora - Obra
 				</td>
-				<td width="9%" class="enc-tabla text-right">
-					Obras<br>
-					Fuente
+				<td width="3%" class="enc-tabla text-right">
+					Obras
 				</td>
 				<td width="3%" class="enc-tabla text-center">
 					Av. Fin.
@@ -256,24 +249,15 @@
 						$clase = 'grupo';
 						$clase2 = '';
 					}
-					else if ($registro['n_grupo'] == 4) {
+					else {
 						$clase0 = 'obra';
 						$clase = 'obra';
-						$clase2 = '';
-					}
-					else {
-						$clase0 = '';
-						$clase = 'fuente';
-						$clase2 = 'fuente2';
+						$clase2 = 'obra2';
 					}
 				@endphp
 				<tr {!! $registro['clase_row'] !!}>
-					@if ($registro['n_grupo'] == 4)
-						<td colspan="2" width="16%" class="{{$clase0}} text-justify">{!!$registro['grupo']!!}</td>
-					@else
-						<td width="16%" class="{{$clase0}} text-justify">{!!$registro['grupo']!!}</td>
-						<td width="9%" class="{{$clase}} text-right">{{$registro['obras']}}</td>
-					@endif
+					<td width="22%" class="{{$clase0}} text-justify">{!!$registro['grupo']!!}</td>
+					<td width="3%" class="{{$clase}} text-right">{{$registro['obras']}}</td>
 					<td width="3%" class="{{$clase}} text-right">{{$registro['av_fin']}}</td>
 					<td width="5%" class="{{$clase}} text-right">{{$registro['asignado']}}</td>
 					<td width="5%" class="{{$clase}} text-right">{{$registro['autorizado']}}</td>
@@ -293,32 +277,6 @@
 					<td width="4%" class="{{$clase2}} text-right">{!!$registro['afectacion']!!}</td>
 					<td width="4%" class="{{$clase2}} text-right">{!!$registro['pagado1']!!}</td>
 				</tr>
-				@if ($registro['n_grupo'] <= 3)
-					@foreach ($registro['fuentes'] as $fuente)
-						<tr {!! $registro['clase_row'] !!}>
-							<td width="16%"></td>
-							<td width="9%" class="grupo fuente text-right">{{$fuente['nombre']}}</td>
-							<td width="3%" class="grupo fuente text-right">{{$fuente['av_fin']}}</td>
-							<td width="5%" class="grupo fuente text-right">{{$fuente['asignado']}}</td>
-							<td width="5%" class="grupo fuente text-right">{{$fuente['autorizado']}}</td>
-							<td width="5%" class="grupo fuente text-right">{{$fuente['ejercido']}}</td>
-							<td width="5%" class="grupo fuente text-right">{{$fuente['por_ejercer']}}</td>
-							<td width="5%" class="grupo fuente text-right">{{$fuente['comprobado']}}</td>
-							<td width="5%" class="grupo fuente text-right">{{$fuente['por_comprobar']}}</td>
-							<td width="5%" class="grupo fuente text-right">{{$fuente['pagado']}}</td>
-							<td width="5%" class="grupo fuente text-right">{{$fuente['por_pagar']}}</td>
-							<td width="4%"></td>
-							<td width="3%"></td>
-							<td width="4%"></td>
-							<td width="4%"></td>
-							<td width="3%"></td>
-							<td width="3%"></td>
-							<td width="3%"></td>
-							<td width="4%"></td>
-							<td width="4%"></td>
-						</tr>
-					@endforeach
-				@endif
 			@empty
 				<tr class="impar">
 					<td colspan="20" class="grupo text-center"><b>No existe información</b></td>
