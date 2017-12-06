@@ -1,6 +1,26 @@
-var tablaObras;
-var template;
-var obra_anterior;
+var number_format = {
+	separador: ",", // separador para los miles
+	sepDecimal: '.', // separador para los decimales
+	formatear:function (num){
+		num +='';
+		var splitStr = num.split('.');
+		var splitLeft = splitStr[0];
+		var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : this.sepDecimal + '00';
+		var regx = /(\d+)(\d{3})/;
+		while (regx.test(splitLeft)) {
+			splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+		}
+		return this.simbol + splitLeft +splitRight;
+	},
+	new:function(num, simbol) {
+		this.simbol = simbol ||'';
+		return this.formatear(num);
+	}
+};
+var cmontos = ['asignado', 'autorizado', 'ejercido', 'por_ejercer', 'anticipo', 'retenciones', 'comprobado', 'por_comprobar', 'pagado', 'por_pagar'];
+var tablaObras, tablaOficios, tablaAps, tablaPagos;
+var templateObraEje, templateObra, templateOficio, templateAp;
+var obra_anterior = 0;;
 $(document).ready( function() {
 	$.ajaxSetup({
 		headers: {
@@ -11,15 +31,22 @@ $(document).ready( function() {
 	$( "#tabs" ).tabs();
 	Handlebars.registerHelper('each', function(context, options) {
 		var ret = "";
-		for(var i=0, j=context.length; i<j; i++) {			
-			context[i].pivot['por_ejercer'] = context[i].pivot['autorizado'] * 1 - context[i].pivot['ejercido'] * 1;
-			context[i].pivot['por_comprobar'] = context[i].pivot['anticipo'] * 1 - context[i].pivot['comprobado'] * 1;
-			context[i].pivot['por_pagar'] = context[i].pivot['ejercido'] * 1 - context[i].pivot['retenciones'] * 1 - context[i].pivot['pagado'] * 1;
+		for(var i = 0, j = context.length; i < j; i++) {			
+			context[i].pivot['por_ejercer'] = context[i].pivot['autorizado'] * 1.00 - context[i].pivot['ejercido'] * 1.00;
+			context[i].pivot['por_comprobar'] = context[i].pivot['anticipo'] * 1.00 - context[i].pivot['comprobado'] * 1.00;
+			context[i].pivot['por_pagar'] = context[i].pivot['ejercido'] * 1.00 - context[i].pivot['retenciones'] * 1 - context[i].pivot['pagado'] * 1.00;
+			for (var k = 0; k < 10; k++) {
+				context[i].pivot[cmontos[k]] = number_format.new(context[i].pivot[cmontos[k]]);
+			}
 			ret = ret + options.fn(context[i]);
 		}
 		return ret;
 	});
-	template = Handlebars.compile($("#montos-template").html());
+	templateObraEje = Handlebars.compile($("#obra-template").html());
+	templateObra = Handlebars.compile($("#montos-template").html());
+	templateOficio = Handlebars.compile($("#oficios-template").html());
+	templateAp = Handlebars.compile($("#aps-template").html());
+
 	tablaObras = $('#obras').DataTable({
 		searching: false,
 		pagingType: "full_numbers",
@@ -35,11 +62,12 @@ $(document).ready( function() {
 			infoEmpty: "No existe información",
 			lengthMenu: "Mostrar _MENU_ registros",
 			zeroRecords: "No se encontraron registros",
-			infoFiltered:   "(filtrado de _MAX_ registros)"
+			infoFiltered:   "(filtrado de _MAX_ registros)",
+			processing: "Procesando . . ."
 		},
 		select: 'single',
 		ordering: false,
-		/*processing: true,*/
+		processing: true,
 		serverSide: true,
 		ajax: {
 			url: '/Consulta/get_datos_obra',
@@ -65,12 +93,15 @@ $(document).ready( function() {
 		}, {
 			data: 'id_obra',
 			name: 'id_obra',
+			className: 'text-center'
 		}, {
 			data: 'ejercicio',
 			name: 'ejercicio',
+			className: 'text-center'
 		}, {
 			data: 'municipio.nombre',
-			name: 'municipio'
+			name: 'municipio',
+			className: 'text-center'
 		}, {
 			data: 'nombre',
 			name: 'nombre'
@@ -81,18 +112,21 @@ $(document).ready( function() {
 			name: 'action',
 		} ],
 		rowCallback: function(row, data, index) {
-			if (data.nombre.length >= 70)
-				$("td:eq(4)", row).html("<span title='" + data.nombre + "'>" + data.nombre.substr(0, 70) + " ...</span>");
+			if (data.nombre.length >= 80)
+				$("td:eq(4)", row).html("<span title='" + data.nombre + "'>" + data.nombre.substr(0, 80) + " ...</span>");
 		}
-		
 	});
 	LimpiaConsulta();
 	Triggers ();
-	
 });
 
 function LimpiaConsulta () {
 	obra_anterior = 0;
+	LimpiaBusqueda();
+	LimpiaDatos();
+}
+
+function LimpiaBusqueda () {
 	// busqueda personalizada
 	var vacio ='<option value="0">- Selecciona</option>';
 	$('#id_obra_search, #nombre_search').val('');
@@ -111,9 +145,36 @@ function LimpiaConsulta () {
 	if ($('#id_grupo_social_search').children().length > 1)
 		$('#id_grupo_social_search').val('0');
 	$('#obras tbody tr.infor').removeClass('infor');
+}
+
+function LimpiaDatos () {
+	// Oficios
+	$('#obra-3').html('');
+	if ( $.fn.DataTable.isDataTable(tablaOficios) ) {
+		tablaOficios.clear();
+		var oficios_vacio = '<tr><th colspan="8" class="text-center" style="font-weight: unset">No existe información</th></tr>';
+		$('#oficios tbody').empty().html(oficios_vacio);
+	}
+
+	// APs
+	$('#obra-4').html('');
+	if ( $.fn.DataTable.isDataTable(tablaAps) ) {
+		tablaAps.clear();
+		var aps_vacio = '<tr><th colspan="9" class="text-center" style="font-weight: unset">No existe información</th></tr>';
+		$('#aps tbody').empty().html(aps_vacio);
+	}
+
+	// Pagos
+	$('#obra-5').html('');
+	if ( $.fn.DataTable.isDataTable(tablaPagos) ) {
+		tablaPagos.clear();
+		var aps_vacio = '<tr><th colspan="6" class="text-center" style="font-weight: unset">No existe información</th></tr>';
+		$('#pagos tbody').empty().html(aps_vacio);
+	}
+	
 	// Datos
 	$('#datos :input').val('');
-	/*$('#id_expediente_tecnico, #nombre, #justificacion, #caracteristicas, #localidad, .numeroDecimal, .numcta, .numero, .partida').val('');*/
+	$('#por_asignar').hide();
 }
 
 function Triggers () {
@@ -125,6 +186,7 @@ function Triggers () {
 			&& $('#id_grupo_social_search').val() == '0')
 			BootstrapDialog.mensaje (null, 'Seleccione al menos una opción para iniciar la consulta', 2);
 		else {
+			LimpiaDatos();
 			tablaObras.draw();
 			obra_anterior = 0;
 		}
@@ -133,37 +195,47 @@ function Triggers () {
 	// evento Limpiar
 	$('#btnLimpiar').on('click', function() {
 		LimpiaConsulta();
+		tablaObras.draw();
 	});
 
-	// evento + información
+	// evento + información (detalle de obras)
 	$('#obras tbody').on('click', 'td.details-control', function () {
 		var tr = $(this).closest('tr');
 		var row = tablaObras.row( tr );
 		if ( row.child.isShown() ) {
 			row.child.hide();
-			tr.removeClass('shown');
+			tr.removeClass('shown visto');
 		}
 		else {
-			row.child( template(row.data()) ).show();
-			tr.addClass('shown');
-			$(".numeroDecimal").each(function() {
-				$(this).autoNumeric({
-					aSep: ',',
-					mDec: 2,
-					vMin: '0.00'
-				});
-			});
+			row.child( templateObra(row.data()) ).show();
+			if (tr.hasClass('infor'))
+				tr.addClass('shown');
+			else
+				tr.addClass('shown visto');
 		}
 	});
 
-	// evento Información
+	// evento Información (obras)
 	$('body').on('click','#btnInfo', function () {
 		var id = $(this).attr('data-id') * 1;
 		if (obra_anterior != id) {
-			if (obra_anterior != 0)
-				$('#obras tbody tr.infor').removeClass('infor');
-			$(this).closest('tr').addClass('infor');
-			muestraInformacion (id);
+			var tr;
+			if (obra_anterior != 0) {
+				tr = $('#obras tbody tr.infor');
+				var row = tablaObras.row(tr);
+				if (row.child.isShown() )
+					tr.addClass('visto');
+				tr.removeClass('infor');
+			}
+			tr = $(this).closest('tr');
+			if (tr.hasClass('visto'))
+				tr.removeClass('visto');
+			tr.addClass('infor');
+			//console.log( tablaObras.row( $(this).closest('tr') ).data() );
+			muestraOficios(tablaObras.row(tr).data());
+			muestraAps(tablaObras.row(tr).data());
+			muestraPagos(tablaObras.row(tr).data());
+			muestraDatos (id);
 		}
 		obra_anterior = id;
 	});
@@ -187,9 +259,270 @@ function Triggers () {
 				break;
 		}
 	});
+
+	// evento + información (detalle de oficios)
+	$('#oficios tbody').on('click', 'td.details-control', function () {
+		var tr = $(this).closest('tr');
+		var row = tablaOficios.row(tr);
+		var tableId = 'det-oficios-' + row.data().id;
+		if ( row.child.isShown() ) {
+			row.child.hide();
+			tr.removeClass('shown visto');
+		}
+		else {
+			row.child( templateOficio(row.data()) ).show();
+			muestraDetalleOficios(tableId, row.data());
+			tr.addClass('shown visto');
+		}
+	});
+
+	// evento + información (detalle de aps)
+	$('#aps tbody').on('click', 'td.details-control', function () {
+		var tr = $(this).closest('tr');
+		var row = tablaAps.row(tr);
+		if ( row.child.isShown() ) {
+			row.child.hide();
+			tr.removeClass('shown visto');
+		}
+		else {
+			row.child( templateAp(row.data()) ).show();
+			tr.addClass('shown visto');
+		}
+	});
 }
 
-function muestraInformacion (id) {
+function muestraOficios (data) {
+	$('#obra-3').html(templateObraEje(data));
+	tablaOficios = $('#oficios').DataTable({
+		destroy: true,
+		autoWidth: false,
+		searching: false,
+		paging: false,
+		info: false,
+		language: {
+			emptyTable: "No existen oficios disponibles",
+			infoEmpty: "No existe información",
+			zeroRecords: "No se encontraron registros",
+			infoFiltered:   "(filtrado de _MAX_ registros)",
+			processing: "Procesando 1 . . ."
+		},
+		ordering: false,
+		processing: true,
+		serverSide: true,
+		ajax: {
+			url: '/Consulta/get_oficios_obra',
+			data: {
+				'id': data.id
+			},
+			method: 'POST'
+		},
+		columns: [
+		{
+			className: 'details-control',
+			orderable: false,
+			searchable: false,
+			data: null,
+			defaultContent: ''
+		}, {
+			data: 'clave',
+			name: 'clave',
+			className: 'text-center'
+		}, {
+			data: 'fecha_oficio',
+			name: 'fecha_oficio',
+			className: 'text-center'
+		}, {
+			data: 'estado',
+			name: 'estado',
+			className: 'text-center'
+		}, {
+			data: 'solicitud',
+			name: 'solicitud',
+		}, {
+			data: 'recurso',
+			name: 'recurso',
+			className: 'text-center'
+		}, {
+			data: 'asignado',
+			name: 'asignado',
+			className: 'numeroDecimal'
+		}, {
+			data: 'autorizado',
+			name: 'autorizado',
+			className: 'numeroDecimal'
+		} ]
+	});
+}
+
+function muestraDetalleOficios (tableId, data) {
+	$('#' + tableId).DataTable({
+		destroy: true,
+		autoWidth: false,
+		searching: false,		
+		paging: false,
+		info: false,
+		ordering: false,
+		processing: true,
+		serverSide: true,
+		ajax: {
+			url: '/Consulta/get_detalle_oficio',
+			data: {
+				'id': data.id
+			},
+			method: 'POST'
+		},
+		columns: [
+		{
+			data: 'unidad_ejecutora.nombre',
+			name: 'ue',
+		}, {
+			data: 'fuentes.nombre',
+			name: 'fuente',
+		}, {
+			data: 'tipo_solicitud.nombre',
+			name: 'solicitud'
+		}, {
+			data: 'asignado',
+			name: 'asignado',
+			className: 'numeroDecimal'
+		}, {
+			data: 'autorizado',
+			name: 'autorizado',
+			className: 'numeroDecimal'
+		} ]
+	});
+}
+
+function muestraAps (data) {
+	$('#obra-4').html(templateObraEje(data));
+	tablaAps = $('#aps').DataTable({
+		destroy: true,
+		autoWidth: false,
+		searching: false,
+		paging: false,
+		info: false,
+		language: {
+			emptyTable: "No existen APs disponibles",
+			infoEmpty: "No existe información",
+			zeroRecords: "No se encontraron registros",
+			infoFiltered:   "(filtrado de _MAX_ registros)",
+			processing: "Procesando 1 . . ."
+		},
+		ordering: false,
+		processing: true,
+		serverSide: true,
+		ajax: {
+			url: '/Consulta/get_aps_obra',
+			data: {
+				id: data.id,
+			},
+			method: 'POST'
+		},
+		columns: [
+		{
+			className: 'details-control',
+			orderable: false,
+			searchable: false,
+			data: null,
+			defaultContent: ''
+		}, {
+			data: 'clave',
+			name: 'clave',
+			className: 'text-center'
+		}, {
+			data: 'folio_amortizacion',
+			name: 'folio_amortizacion',
+			className: 'text-center'
+		}, {
+			data: 'tipo_ap.nombre',
+			name: 'tipo',
+			className: 'text-center'
+		}, {
+			data: 'estatus.nombre',
+			name: 'estado',
+			className: 'text-center'
+		}, {
+			data: 'fuente.nombre',
+			name: 'fuente'
+		}, {
+			data: 'monto',
+			name: 'monto',
+			className: 'numeroDecimal'
+		}, {
+			data: 'monto_amortizacion',
+			name: 'monto_amortizacion',
+			className: 'numeroDecimal'
+		}, {
+			data: 'monto_iva_amortizacion',
+			name: 'monto_iva_amortizacion',
+			className: 'numeroDecimal'
+		}, {
+			data: 'pagado',
+			name: 'pagado',
+			className: 'numeroDecimal'
+		} ]
+	});
+}
+
+function muestraPagos (data) {
+	$('#obra-5').html(templateObraEje(data));
+	tablaPagos = $('#pagos').DataTable({
+		destroy: true,
+		autoWidth: false,
+		searching: false,
+		paging: false,
+		info: false,
+		language: {
+			emptyTable: "No existen Pagos disponibles",
+			infoEmpty: "No existe información",
+			zeroRecords: "No se encontraron registros",
+			infoFiltered:   "(filtrado de _MAX_ registros)",
+			processing: "Procesando 1 . . ."
+		},
+		ordering: false,
+		processing: true,
+		serverSide: true,
+		ajax: {
+			url: '/Consulta/get_pagos_obra',
+			data: {
+				id: data.id,
+			},
+			method: 'POST'
+		},
+		columns: [
+		{
+			data: 'autorizacion_pago.clave',
+			name: 'clave',
+			className: 'text-center'
+		}, {
+			data: 'autorizacion_pago.fuente.nombre',
+			name: 'fuente'
+		}, {
+			data: 'serie',
+			name: 'serie',
+			className: 'text-center'
+		}, {
+			data: 'adefa',
+			name: 'adefa',
+			className: 'text-center'
+		}, {
+			data: 'cheque',
+			name: 'cheque'
+		}, {
+			data: 'fecha_pago',
+			name: 'fecha_pago',
+			className: 'text-center'
+		}, {
+			data: 'monto',
+			name: 'monto',
+			className: 'numeroDecimal'
+		} ]
+	});
+}
+
+
+
+function muestraDatos (id) {
 	$.ajax({
 		data: {
 			'id': id
@@ -204,7 +537,7 @@ function muestraInformacion (id) {
 			$("#divLoading").hide();
 		},
 		success: function(data) {
-			console.log(data);
+			//console.log(data);
 			//LimpiaObra ();
 			acuerdos = data.acuerdos;
 			//fuentes = data.fuentes;
@@ -260,52 +593,54 @@ function muestraInformacion (id) {
 			$("#acuerdo_est").val(cAcuerdos[0]);
 			$("#acuerdo_fed").val(cAcuerdos[1]);
 			$("#grupo_social").val(data.grupo_social.nombre);
-			/*
-			j = 0;
-			var oficios = false, cuenta_estatal = false, cuenta_federal = false;
-			//if (data.asignado * 1 > 0)
-			oficios = data.has_oficios;
-			for (var i = 0; i < fuentes.length; i++) {
-				if (fuentes[i].pivot.tipo_fuente == 'F') {
-					if (!oficios) cuenta_federal = true;
-					if (i === 0) {
-						$(".monfed:first").val(fuentes[i].pivot.monto).autoNumeric('update');
-						$('select[name="fuente_federal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
-						$(".partida_federal:eq(0) .partida").val(fuentes[i].pivot.partida).autoNumeric('update');
-						$(".cuenta_federal:eq(0) .numcta").val(fuentes[i].pivot.cuenta);
-					}
-					else {
-						addfed($(".monfed:first"), function() {
-							$(".monfed:eq(" + i + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
-							$('select[name="fuente_federal[]"]:eq(' + i + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
-							$(".partida_federal:eq(" + i + ")" + " .partida").val(fuentes[i].pivot.partida).autoNumeric('update');
-							$(".cuenta_federal:eq(" + i + ")" + " .numcta").val(fuentes[i].pivot.cuenta);
-						});
-					}
-				}
-				else {
-					if (!oficios) cuenta_estatal = true;
-					if (j === 0) {
-						$(".monest:first").val(fuentes[i].pivot.monto).autoNumeric('update');
-						$('select[name="fuente_estatal[]"]:eq(0) option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
-						$(".partida_estatal:eq(0) .partida").val(fuentes[i].pivot.partida).autoNumeric('update');
-						$(".cuenta_estatal:eq(0) .numcta").val(fuentes[i].pivot.cuenta);
-					}
-					else {
-						addest($(".monest:first"), function() {
-							$(".monest:eq(" + j + ")").val(fuentes[i].pivot.monto).autoNumeric('update');
-							$('select[name="fuente_estatal[]"]:eq(' + j + ') option[value=' + fuentes[i].id + ']').prop('selected', 'selected');
-							$(".partida_estatal:eq(" + i + ")" + " .partida").val(fuentes[i].pivot.partida).autoNumeric('update');
-							$(".cuenta_estatal:eq(" + i + ")" + " .numcta").val(fuentes[i].pivot.cuenta);
-						});
-					}
-					j++;
-				}
-			}
-			*/
+			//if (data.basignado == 1) {
+				$('#por_asignar').show();
+				$('#fuentes').DataTable({
+					destroy: true,
+					autoWidth: false,
+					searching: false,
+					paging: false,
+					info: false,
+					language: {
+						emptyTable: "No existen Fuentes disponibles",
+						infoEmpty: "No existe información",
+						zeroRecords: "No se encontraron registros",
+						infoFiltered:   "(filtrado de _MAX_ registros)",
+						processing: "Procesando . . .",
+					},
+					ordering: false,
+					processing: true,
+					serverSide: true,
+					ajax: {
+						url: '/Consulta/get_fuentes_obra',
+						data: {
+							id: data.id,
+						},
+						method: 'POST'
+					},
+					columns: [
+					{
+						data: 'monto',
+						name: 'monto',
+						className: 'numeroDecimal'
+					}, {
+						data: 'fuentes.nombre',
+						name: 'fuente'
+					}, {
+						data: 'partida',
+						name: 'partida',
+						className: 'text-center'
+					}, {
+						data: 'cuenta',
+						name: 'cuenta',
+						className: 'text-center'
+					} ]
+				});
+			//}
 		},
 		error: function(response) {
 			console.log("Errores::", response);
 		}
 	});
 }
+

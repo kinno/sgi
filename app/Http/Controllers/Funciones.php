@@ -23,6 +23,7 @@ use App\Cat_Cobertura;
 use App\User;
 use App\Cat_Estatus_Oficio;
 use App\Cat_Tipo_Obra;
+use App\Cat_Tipo_Reporte;
 
 trait Funciones
 {
@@ -258,6 +259,13 @@ trait Funciones
 	{
 		$estados = Cat_Estatus_Oficio::where('id', '<=', 2)->get()->toArray();
 		$opciones = $this->llena_combo($estados, $id_estatus);
+		return $opciones;
+	}
+
+	public function opcionesTipoReporte ($id_reporte = 0)
+	{
+		$tipos = Cat_Tipo_Reporte::get()->toArray();
+		$opciones = $this->llena_combo($tipos, $id_reporte);
 		return $opciones;
 	}
 

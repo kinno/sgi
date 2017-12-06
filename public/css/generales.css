@@ -1,120 +1,120 @@
-.fecha[readonly]:enabled {
-    cursor: pointer !important;
+.fecha[readonly]:enabled, .tabla-seleccionar, table > tbody > tr > td.seleccionar {
+	cursor: pointer !important;
 }
 
 .numero, .numeroEntero, .numeroDecimal {
-    text-align: right !important;
+	text-align: right !important;
 }
 
 .vamiddle {
-    vertical-align: middle !important;
+	vertical-align: middle !important;
 }
 
 .obligatorio {
-    color: #FF0000;
-    padding-right: 4px;
+	color: #FF0000;
+	padding-right: 4px;
 }
 
-.menu_padre {
-    /*background-color: #BBBBBB;*/
-    /*background-color: #0A2E3A;*/
-    background-color: #0F403E;
-    color: #79B837;
+.menu_padre, .header-tabla {
+	/*background-color: #BBBBBB;*/
+	/*background-color: #0A2E3A;*/
+	background-color: #0F403E;
+	color: #79B837;
 }
 
 .menu_padre:hover {
-    background-color: #0A2E3A !important;
-    /*background-color: #555555 !important;
-    color: #DDDDDD;*/
-    /*background-color: #0A2E3A;*/
-    color: #ffffff;
+	background-color: #0A2E3A !important;
+	/*background-color: #555555 !important;
+	color: #DDDDDD;*/
+	/*background-color: #0A2E3A;*/
+	color: #ffffff;
 }
 
 .grupo1 {
-    background-color: #FF5A5A !important;
-    /*font-size: 0.85em;*/
+	background-color: #FF5A5A !important;
+	/*font-size: 0.85em;*/
 }
 
 .grupo2 {
-    background-color: #92D050 !important;
+	background-color: #92D050 !important;
 }
 
 .grupo3 {
-    background-color: #FFFF7A !important;
+	background-color: #FFFF7A !important;
 }
 
 .grupo4 {
-    background-color: #DDD9C3 !important;
+	background-color: #DDD9C3 !important;
 }
 
 .num_verde {
-    color: green;
-    /*text-align:right;*/
+	color: green;
+	/*text-align:right;*/
 }
 
 .num_rojo {
-    color: red;
+	color: red;
 }
 
 input {
-    background-image: url(../images/Fnd_2.png);
-    border: 1px solid #666666;
-    text-align: left;
-    height: 14pt;
-    font-size: 9pt;
-    font-family: Arial, serif;
-    font-weight: normal;
+	background-image: url(../images/Fnd_2.png);
+	border: 1px solid #666666;
+	text-align: left;
+	height: 14pt;
+	font-size: 9pt;
+	font-family: Arial, serif;
+	font-weight: normal;
 }
 
 .notificaciones {
-    width: 500px;
+	width: 500px;
 }
 
 .message-preview {
-    width: 100% !important;
+	width: 100% !important;
 }
 
 .notificaciones::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    background-color: #F5F5F5;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
 }
 
 .notificaciones::-webkit-scrollbar {
-    width: 12px;
-    background-color: #F5F5F5;
+	width: 12px;
+	background-color: #F5F5F5;
 }
 
 .notificaciones::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-    background-color: #555;
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+	background-color: #555;
 }
 
 .no-leido {
-    background-color: #f1fff0 !important;
+	background-color: #f1fff0 !important;
 }
 
 .mnu-inicio {
-    height: 25px;
-    background: #2B2B2B;
-    color: #F7F7F7;
-    padding: 2px 10px;
+	height: 25px;
+	background: #2B2B2B;
+	color: #F7F7F7;
+	padding: 2px 10px;
 }
 
 .separador {
-    border-bottom: 1px #CCC solid;
-    padding: 1px 20px;
+	border-bottom: 1px #CCC solid;
+	padding: 1px 20px;
 }
 
 .side-nav li a:hover, .side-nav li a:focus {
-    outline: none;
-    background-color: #0A2E3A !important;
+	outline: none;
+	background-color: #0A2E3A !important;
 }
 
 .in li a:hover {
-    outline: none;
-    background-color: #6b6b6b !important;
+	outline: none;
+	background-color: #6b6b6b !important;
 }
 
 .tabla-condensada > thead > tr > th,
@@ -123,8 +123,9 @@ input {
 .tabla-condensada > thead > tr > td,
 .tabla-condensada > tbody > tr > td,
 .tabla-condensada > tfoot > tr > td {
-  padding: 4px;
-  font-size: 0.85em;
+	padding: 3px;
+	/*font-size: 0.85em;*/
+	font-size: 11px !important;
 }
 
 .tabla-condensada2 > thead > tr > th,
@@ -133,18 +134,86 @@ input {
 .tabla-condensada2 > thead > tr > td,
 .tabla-condensada2 > tbody > tr > td,
 .tabla-condensada2 > tfoot > tr > td {
-  padding: 2px;
-  font-size: 0.8em;
+	padding: 2px;
+  	/*font-size: 0.8em;*/
+  	font-size: 10px !important;
 }
 
-.inactivo {
-    background-color: #FF5A5A !important;
+.inactivo2, .infor2 {
+	background-color: #FF5A5A !important;
 }
 
-.infor {
-    background-color: #FF5050 !important;
+.inactivo, .infor {
+	background-color: #FF3500 !important;
 }
 
-.shown {
-    background-color: #C8EDAE !important;
+.visto, .selected {
+	background-color: #00A000 !important;
+}
+
+.btn-success2 {
+	/*background-color: #C8EDAE;*/
+	background-color: yellowgreen;
+}
+
+
+.form-lectura[disabled], .form-lectura[readonly] {
+	background-color: #eee;
+	opacity: 1;
+}
+
+.form-lectura:focus {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+.form-lectura {
+	display: block;
+	width: 100%;
+	height: 26px;
+	padding: 3px 8px;
+	font-size: 11px !important;
+	line-height: 1.42857143;
+	color: #555;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+		border-top-color: rgb(204, 204, 204);
+		border-right-color: rgb(204, 204, 204);
+		border-bottom-color: rgb(204, 204, 204);
+		border-left-color: rgb(204, 204, 204);
+	border-radius: 3px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	margin-bottom: 4px;
+}
+
+.label-lectura {
+	padding-top: 6px;
+	font-size: 10px;
+	margin-bottom: 0;
+	text-align: right;
+}
+
+.error{
+	font-size:0.9em;
+	/* width:400px;*/
+	background: white;
+	color: red;
+	margin-top: -12px;
+	/*padding-bottom: 1px;*/
+	text-align: left;
+}
+
+.error2, .oculto {
+   display: none;
+}
+
+#catalogos {
+	font-size: 12px;
 }

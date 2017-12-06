@@ -21,6 +21,8 @@ use App\P_Obra;
 use App\Rel_Estudio_Expediente_Obra;
 use App\P_Expediente_Tecnico;
 use App\P_Techo;
+use App\User;
+use App\Cat_Unidad_Ejecutora;
 use Illuminate\Support\Facades\DB;
 
 class ObraController extends Controller
@@ -204,6 +206,8 @@ class ObraController extends Controller
 		$data = array();
 		try {
 			$d_obra  = new D_Obra($request->only(['id_modalidad_ejecucion', 'ejercicio', 'id_clasificacion_obra', 'id_tipo_obra', 'id_sector', 'id_unidad_ejecutora', 'nombre', 'justificacion', 'caracteristicas', 'id_cobertura', 'localidad', 'id_proyecto_ep', 'id_grupo_social']));
+			$id_usuario = \Auth::user()->id;
+			return $request->all();
 			if ($request->id_cobertura <= 2)
 				$d_obra->id_municipio = $request->id_cobertura;
 			else if (count($request->id_municipio) > 1)
@@ -214,13 +218,13 @@ class ObraController extends Controller
 				$relacion = Rel_Estudio_Expediente_Obra::where('id_expediente_tecnico', $request->id_exp_tec)->first();
 			else {
 				$relacion = new Rel_Estudio_Expediente_Obra();
-				$relacion->id_usuario = \Auth::user()->id;
+				$relacion->id_usuario = $id_usuario;
 			}
 			$p_obra = new P_Obra();
-			DB::transaction(function () use ($p_obra, $d_obra, $relacion, $request) {
+			DB::transaction(function () use ($p_obra, $d_obra, $relacion, $request, $id_usuario) {
 				$p_obra->save();
 				$d_obra->id_obra = $p_obra->id;
-				$d_obra->id_usuario = \Auth::user()->id;
+				$d_obra->id_usuario = $id_usuario;
 				$d_obra->save();
 				$relacion->id_det_obra = $d_obra->id;
 				$relacion->save();

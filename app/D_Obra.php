@@ -9,7 +9,7 @@ class D_Obra extends Model
 	protected $table = "d_obra";
 	protected $fillable = [
 		'id_obra', 'ejercicio', 'nombre', 'justificacion', 'caracteristicas', 'localidad', 'id_sector', 'id_unidad_ejecutora',
-		'id_grupo_social', 'id_modalidad_ejecucion', 'id_proyecto_ep', 'id_clasificacion_obra', 'id_usuario', 'id_cobertura',
+		'id_grupo_social', 'id_modalidad_ejecucion', 'id_proyecto_ep', 'id_clasificacion_obra', 'id_usuario', 'id_cobertura', 'id_tipo_obra',
 		'id_municipio', 'asignado', 'autorizado', 'ejercido', 'anticipo', 'retenciones', 'comprobado', 'pagado'
 	];
 
@@ -91,6 +91,11 @@ class D_Obra extends Model
 	public function grupo_social()
 	{
 		return $this->belongsTo('App\Cat_Grupo_Social', 'id_grupo_social');
+	}
+
+	public function aps()
+	{
+		return $this->hasMany('App\P_Autorizacion_Pago', 'id_det_obra');
 	}
 
 }
