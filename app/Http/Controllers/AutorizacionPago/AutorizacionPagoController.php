@@ -124,6 +124,9 @@ class AutorizacionPagoController extends Controller
                 $ap->id_tipo_ap             = $value['id_tipo_ap'];
                 $ap->id_estatus             = 4;
                 $ap->id_obra                = $value['id_obra'];
+                ///////////////////////////////////////////////////////////////////////////////////
+                $ap->id_det_obra            = $value['id_obra']; //EL CAMBIO SE REALIZA AQUI
+                ///////////////////////////////////////////////////////////////////////////////////
                 $ap->ejercicio              = $value['ejercicio'];
                 $ap->id_fuente              = $value['id_fuente'];
                 $ap->id_contrato            = (isset($value['id_contrato'])) ? $value['id_contrato'] : null;

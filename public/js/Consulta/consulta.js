@@ -592,7 +592,10 @@ function muestraDatos (id) {
 			}
 			$("#acuerdo_est").val(cAcuerdos[0]);
 			$("#acuerdo_fed").val(cAcuerdos[1]);
-			$("#grupo_social").val(data.grupo_social.nombre);
+			if(data.grupo_social){
+				$("#grupo_social").val(data.grupo_social.nombre);
+			}
+			
 			//if (data.basignado == 1) {
 				$('#por_asignar').show();
 				$('#fuentes').DataTable({

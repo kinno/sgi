@@ -17,8 +17,8 @@ class P_Autorizacion_Pago extends Model
     }
 
     public function obra(){
-    	//return $this->hasOne('App\D_Obra','id','id_obra');
-        return $this->belongsTo('App\P_Autorizacion_Pago', 'id_det_obra');
+    	return $this->hasOne('App\D_Obra','id','id_obra');
+        // return $this->belongsTo('App\P_Autorizacion_Pago', 'id_det_obra');
     }
 
     public function unidad_ejecutora()

@@ -63,7 +63,7 @@ class ListadoAutorizacionPagoController extends Controller
             ->where('id_unidad_ejecutora', \Auth::user()->id_unidad_ejecutora)
         // ->where('id_estatus',)
             ->first();
-
+            // return $ap;
         // return view('PDF/autorizacion_pago', compact('ap'));
         $pdf = \PDF::loadView('PDF/autorizacion_pago', compact('ap'))->setPaper('A4', 'landscape');
         
