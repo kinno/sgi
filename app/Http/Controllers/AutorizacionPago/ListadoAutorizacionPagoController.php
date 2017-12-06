@@ -22,7 +22,7 @@ class ListadoAutorizacionPagoController extends Controller
 
     public function get_data_listado()
     {
-        $ap = P_Autorizacion_Pago::with('unidad_ejecutora', 'estatus', 'tipo_ap')->where('id_unidad_ejecutora', \Auth::user()->id_unidad_ejecutora);
+        $ap = P_Autorizacion_Pago::with('unidad_ejecutora', 'estatus', 'tipo_ap')->where('id_unidad_ejecutora', \Auth::user()->id_unidad_ejecutora)->orderBy('id_obra','desc');
 
         return Datatables::of($ap)
             ->make(true);
@@ -54,5 +54,19 @@ class ListadoAutorizacionPagoController extends Controller
             $ap['error']   = "Aviso: Ocurrió un error al guardar.";
             return ($ap);
         }
+    }
+
+    public function imprimir_ap($id_ap)
+    {
+        $ap = P_Autorizacion_Pago::with('tipo_ap', 'unidad_ejecutora', 'contrato.d_contrato', 'empresa', 'obra', 'obra.modalidad_ejecucion','sector', 'fuente')
+            ->where('id', $id_ap)
+            ->where('id_unidad_ejecutora', \Auth::user()->id_unidad_ejecutora)
+        // ->where('id_estatus',)
+            ->first();
+
+        // return view('PDF/autorizacion_pago', compact('ap'));
+        $pdf = \PDF::loadView('PDF/autorizacion_pago', compact('ap'))->setPaper('A4', 'landscape');
+        
+        return $pdf->stream('Ap' . $ap->folio . '.pdf');
     }
 }

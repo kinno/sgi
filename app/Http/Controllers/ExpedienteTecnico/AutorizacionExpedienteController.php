@@ -77,8 +77,10 @@ class AutorizacionExpedienteController extends Controller
                 $query->orderBy('created_at', 'desc');
             }))
             ->with('relacion.expediente.fuentes_monto')
-            ->where('ejercicio', '=', $request->ejercicio)->find($request->id_obra)
-            ->where('id_unidad_ejecutora',\Auth::user()->id_unidad_ejecutora);
+            ->where('ejercicio', '=', $request->ejercicio)
+            ->where('id_obra','=',$request->id_obra)
+            ->where('id_unidad_ejecutora',\Auth::user()->id_unidad_ejecutora)
+            ->first();
         // dd($obra);
         if ($obra) {
             if ($obra->asignado > 0.00) {
@@ -664,7 +666,7 @@ class AutorizacionExpedienteController extends Controller
             ->join('d_oficio', 'p_oficio.id', '=', 'd_oficio.id_oficio')
             ->join('cat_fuente', 'd_oficio.id_fuente', '=', 'cat_fuente.id')
             ->select('p_oficio.clave', 'p_oficio.fecha_oficio', 'cat_fuente.descripcion', 'd_oficio.asignado')
-            ->where('id_solicitud_presupuesto', '=', 1)
+            ->where('p_oficio.id_solicitud_presupuesto', '=', 1)
             ->where('id_det_obra', '=', $relacion->obra->id)
             ->get();
 

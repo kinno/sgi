@@ -169,9 +169,13 @@ Route::group(['prefix' => 'AutorizacionPago'], function () {
     Route::get('get_datos_listado', 'AutorizacionPago\ListadoAutorizacionPagoController@get_data_listado');
     Route::post('ver_detalle_ap_listado', 'AutorizacionPago\ListadoAutorizacionPagoController@ver_detalle_ap_listado');
     Route::post('eliminar_ap', 'AutorizacionPago\ListadoAutorizacionPagoController@eliminar_ap');
+    Route::get('imprimir_ap/{id_ap}', 'AutorizacionPago\ListadoAutorizacionPagoController@imprimir_ap');
 
      Route::post('buscar_folios_amortizacion', 'AutorizacionPago\AutorizacionPagoController@buscar_folios_amortizacion');
      Route::post('buscar_monto_amortizacion', 'AutorizacionPago\AutorizacionPagoController@buscar_monto_amortizacion');
+
+     Route::post('buscar_monto_estimar', 'AutorizacionPago\AutorizacionPagoController@buscar_monto_estimar');
+     Route::post('buscar_monto_por_amortizar', 'AutorizacionPago\AutorizacionPagoController@buscar_monto_por_amortizar');
 
 });
 
@@ -211,8 +215,9 @@ Route::group(['prefix' => 'Catalogo/Menu'], function () {
 });
 
 // Rutas Administracion/Usuario
-Route::group(['prefix' => 'Administracion/Usuario', 'middleware' => 'valida_ruta:Administracion/Usuario'], function () {
-    //Route::resource('Usuario', 'Administracion\Usuario\UsuarioController');
+// Route::group(['prefix' => 'Administracion/Usuario', 'middleware' => 'valida_ruta:Administracion/Usuario'], function () {
+Route::group(['prefix' => 'Administracion/Usuario'], function () {
+    Route::resource('Usuario', 'Administracion\Usuario\UsuarioController');
     Route::get('', 'Administracion\Usuario\UsuarioController@index')->name('Usuario.index');
     Route::get('create', 'Administracion\Usuario\UsuarioController@create')->name('Usuario.create');
     Route::post('', 'Administracion\Usuario\UsuarioController@store')->name('Usuario.store');

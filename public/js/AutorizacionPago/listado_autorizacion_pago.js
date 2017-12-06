@@ -88,24 +88,23 @@ function detalle(elem) {
     console.log(datosFila);
     // return;
     $.ajax({
-        data: {'id':datosFila.id},
+        data: {
+            'id': datosFila.id
+        },
         url: '/AutorizacionPago/ver_detalle_ap_listado',
         type: 'post',
-        beforeSend: function() {
-        },
-        complete: function() {
-        },
+        beforeSend: function() {},
+        complete: function() {},
         success: function(response) {
-           // $("#divDetalle").load('/actualizar_head');
-           $("#divDetalle").empty();
-           $("#divDetalle").append(response);
-           $("#modalDetalle").modal("show");
+            // $("#divDetalle").load('/actualizar_head');
+            $("#divDetalle").empty();
+            $("#divDetalle").append(response);
+            $("#modalDetalle").modal("show");
         },
         error: function(response) {
             console.log("Errores::", response);
         }
     });
-    
 }
 
 function eliminar(elem) {
@@ -143,3 +142,8 @@ function eliminar(elem) {
     });
 }
 
+function imprimir(elem) {
+    var indiceEditar = table.row($(elem).parent().parent()).index();
+    var datosFila = table.row(indiceEditar).data();
+    window.open('/AutorizacionPago/imprimir_ap/' + datosFila.id + '', '_blank');
+}

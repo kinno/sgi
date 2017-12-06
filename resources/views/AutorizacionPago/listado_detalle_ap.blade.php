@@ -5,8 +5,9 @@
 </style>
 @php
 $totalRetenciones = $ap->icic + $ap->cmic + $ap->supervision + $ap->ispt + $ap->otro + $ap->federal_1 + $ap->federal_2 + $ap->federal_5;
-$subTotal = (($ap->monto) - ($ap->monto_amortizacion+$ap->monto_iva_amortizacion));
-$amortizacion =$ap->monto_amortizacion + $ap->monto_iva_amortizacion;
+$subTotal = (($ap->importe_sin_iva) - ($ap->monto_amortizacion));
+// $amortizacion =$ap->monto_amortizacion + $ap->monto_iva_amortizacion;
+$amortizacion =$ap->monto_amortizacion;
 $afectacion = $subTotal + $ap->iva;
 $importNeto = $afectacion-$totalRetenciones;
 @endphp
@@ -162,7 +163,7 @@ $importNeto = $afectacion-$totalRetenciones;
             <div class="form-horizontal">
                 <div class="form-group form-group-sm">
                     <div class="col-sm-2 col-md-offset-1">
-                        <label for="sinivaAp" class="control-label">Importe sin IVA:</label><input type="text" id="sinivaAp" class="form-control input-sm number" readonly="true" value="{{number_format($ap->monto,2)}}" />
+                        <label for="sinivaAp" class="control-label">Importe sin IVA:</label><input type="text" id="sinivaAp" class="form-control input-sm number" readonly="true" value="{{number_format($ap->importe_sin_iva,2)}}" />
                     </div>
                     <div class="col-sm-2">
                         <label for="amortizacionAp" class="control-label">Amortizaci&oacute;n:</label><input type="text" id="amortizacionAp" class="form-control input-sm number" readonly="true" value="{{number_format($amortizacion,2)}}"/>

@@ -139,6 +139,7 @@ function buscarEmpresa() {
             console.log(response);
             if (!response.error) {
                 if (response) {
+                    $("#id_empresa").val(response.id);
                     $("#padron_contratista").val(response.padron_contratista);
                     $("#nombre").val(response.nombre);
                     $("#nombre_representante").val(response.nombre_representante);

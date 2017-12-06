@@ -310,32 +310,42 @@
 
                  {{-- INICIA LAYOUT ESTIMACION --}}
                     <div id="layoutEstimacion" style="display:none;">
+                       
                         <div class="row form-group form-group-sm">
-                            <div class="col-sm-3 col-md-offset-1">
-                                    <label for="foliosAmortizar" class="col-sm-5 control-label">Monto:</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control input-sm number" id="montoEstimacion" value="0.00" />
+                            <div class="col-sm-4 ">
+                                    <label for="" class="col-sm-6 control-label">Disponible:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control input-sm number" id="disponibleFuenteEstimacion" value="0.00" readonly="true" />
                                     </div>
                             </div>
-                            <div class="col-sm-3">
-                                <label for="montoPorAmortizar" class="col-sm-5 control-label">Amortización:</label>
-                                <div class="col-sm-7">
-                                    <input type="text" class="form-control input-sm number" id="montoAmortizacion" value="0.00" readonly="true"/>
-                                </div>
+                            <div class="col-sm-4">
+                                    <label for="foliosAmortizar" class="col-sm-6 control-label">Por Estimar:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control input-sm number" id="montoPorEstimar" value="0.00" readonly="true" />
+                                    </div>
                             </div>
                             <div class="col-sm-4">
+                                    <label for="foliosAmortizar" class="col-sm-6 control-label">Por Amortizar:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control input-sm number" id="montoPorAmortizarEstimacion" value="0.00" readonly="true" />
+                                    </div>
+                            </div>
+                            
+                            
+                        </div>
+                        <div class="row form-group form-group-sm">
+                           <div class="col-sm-6">
+                                <label for="montoPorAmortizar" class="col-sm-5 control-label">Folio que amortiza:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control input-sm " id="folioAmortiza" readonly="true"/>
+                                    <input type="hidden" class="form-control input-sm " id="idFolioAmortiza" readonly="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-offset-1">
                                 <label for="montoPorAmortizar" class="col-sm-6 control-label">I.V.A. Amortización:</label>
                                 <div class="col-sm-5">
                                     <input type="text" class="form-control input-sm number" id="ivaAmortizacion" value="0.00" readonly="true"/>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row form-group form-group-sm">
-                             <div class="col-sm-12">
-                                    <label for="folioAmortiza" class="col-sm-2 col-md-offset-7 control-label">Folio que Amortiza:</label>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control input-sm number" id="folioAmortiza" readonly="true"/>
-                                    </div>
                             </div>
                         </div>
                     </div> 
@@ -352,19 +362,19 @@
                                 <div class="form-horizontal">
                                     <div class="form-group form-group-sm">
                                         <div class="col-sm-2 col-md-offset-1">
-                                            <label for="sinivaAp" class="control-label">Importe sin IVA:</label><input type="text" id="sinivaAp" class="form-control input-sm number" readonly="true" value="0.00" />
+                                            <label for="sinivaAp" class="control-label">Importe sin IVA:</label><input type="text" id="sinivaAp" class="form-control input-sm number" value="0.00" />
                                         </div>
                                         <div class="col-sm-2">
                                             <label for="amortizacionAp" class="control-label">Amortizaci&oacute;n:</label><input type="text" id="amortizacionAp" class="form-control input-sm number" readonly="true" value="0.00"/>
                                         </div>
                                         <div class="col-sm-2">
-                                            <label for="icicAp" class="control-label">I.C.I.C (0.2%):</label><input type="text"  id="icicAp" class="form-control input-sm number" value="0.00"/>
+                                            <label for="icicAp" class="control-label">I.C.I.C (0.2%):</label><input type="text"  id="icicAp" class="form-control input-sm number ret" value="0.00"/>
                                         </div>
                                         <div class="col-sm-2">
-                                            <label for="isptAp" class="control-label">ISPT:</label><input type="text" id="isptAp" class="form-control input-sm number" value="0.00"/>
+                                            <label for="isptAp" class="control-label">ISPT:</label><input type="text" id="isptAp" class="form-control input-sm number ret" value="0.00"/>
                                         </div>
                                         <div class="col-sm-2">
-                                            <label for="isptAp" class="control-label">Federal (0.2%):</label><input type="text" id="federal02Ap" class="form-control input-sm number" value="0.00"/>
+                                            <label for="isptAp" class="control-label">Federal (0.2%):</label><input type="text" id="federal02Ap" class="form-control input-sm number ret" value="0.00"/>
                                         </div>
                                     </div>
                                     <div class="form-group form-group-sm">
@@ -372,41 +382,54 @@
                                             <label for="subtotalAp" class="control-label">Subtotal:</label><input type="text" id="subtotalAp" class="form-control input-sm number" readonly="true" value="0.00"/>
                                         </div>
                                         <div class="col-sm-2">
-                                            <label for="ivaAp" class="control-label">IVA:</label><input type="text" id="ivaAp" class="form-control input-sm number" value="0.00"/>
+                                            <label for="ivaAp" class="control-label">IVA:</label><input type="text" id="ivaAp" class="form-control input-sm number" value="0.00" readonly="true" />
                                         </div>
                                         <div class="col-sm-2">
-                                            <label for="cmicAp" class="control-label">C.M.I.C (0.5%):</label><input type="text" id="cmicAp" class="form-control input-sm number" value="0.00"/>
+                                            <label for="cmicAp" class="control-label">C.M.I.C (0.5%):</label><input type="text" id="cmicAp" class="form-control input-sm number ret" value="0.00"/>
                                         </div>
                                         <div class="col-sm-2">
-                                            <label for="otroAp" class="control-label">Otro:</label><input type="text" id="otroAp" class="form-control input-sm number" value="0.00"/>
+                                            <label for="otroAp" class="control-label">Otro:</label><input type="text" id="otroAp" class="form-control input-sm number ret" value="0.00"/>
                                         </div>
                                         <div class="col-sm-2">
-                                            <label for="isptAp" class="control-label">Federal (0.5%):</label><input type="text" id="federal05Ap" class="form-control input-sm number" value="0.00"/>
+                                            <label for="isptAp" class="control-label">Federal (0.5%):</label><input type="text" id="federal05Ap" class="form-control input-sm number ret" value="0.00"/>
                                         </div>
                                     </div>
                                     <div class="form-group form-group-sm">
                                         <div class="col-sm-2 col-md-offset-1">
+                                            {{-- <label for="afectacionAp" class="control-label">Afect. Presupuestal:</label><input type="text" id="afectacionAp" class="form-control input-sm number" readonly="true" value="0.00"/> --}}
+                                        </div>
+                                        <div class="col-sm-2">
                                             <label for="afectacionAp" class="control-label">Afect. Presupuestal:</label><input type="text" id="afectacionAp" class="form-control input-sm number" readonly="true" value="0.00"/>
+                                            {{-- <label for="netoAp" class="control-label">Importe Neto:</label><input type="text" id="netoAp" class="form-control input-sm number" readonly="true" value="0.00"/> --}}
                                         </div>
                                         <div class="col-sm-2">
-                                            <label for="netoAp" class="control-label">Importe Neto:</label><input type="text" id="netoAp" class="form-control input-sm number" readonly="true" value="0.00"/>
+                                            <label for="supervisionAp" class="control-label">Supervisi&oacute;n (2%):</label><input type="text" id="supervisionAp" class="form-control input-sm number ret" value="0.00"/>
                                         </div>
                                         <div class="col-sm-2">
-                                            <label for="supervisionAp" class="control-label">Supervisi&oacute;n (2%):</label><input type="text" id="supervisionAp" class="form-control input-sm number" value="0.00"/>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <label for="isptAp" class="control-label">Federal (0.1%):</label><input type="text" id="federal01Ap" class="form-control input-sm number" value="0.00"/>
+                                            <label for="isptAp" class="control-label">Federal (0.1%):</label><input type="text" id="federal01Ap" class="form-control input-sm number ret" value="0.00"/>
                                         </div>
                                         <div class="col-sm-2">
                                             <label for="totalAp" class="control-label">Total Retenciones:</label><input type="text" id="totalAp" class="form-control input-sm number" readonly="true" value="0.00"/>
                                         </div>
                                     </div>
                                     <div class="form-group form-group-sm">
+                                       <div class="col-sm-1 col-md-offset-1">
+                                            <div class="checkbox">
+                                                <label>
+                                                  <input type="checkbox" id="finiquito"> Finiquito
+                                                </label>
+                                              </div>
+                                        </div>
+                                        <div class="col-sm-2 col-md-offset-7">
+                                            <label for="netoAp" class="control-label">Importe Neto:</label><input type="text" id="netoAp" class="form-control input-sm number" readonly="true" value="0.00"/>
+                                        </div>
+                                    </div>
+                                    {{-- <div class="form-group form-group-sm">
                                         <div class="col-sm-10 col-md-offset-1">
                                             <label for="afectacionAp" class="control-label">Importe Neto con letra:</label>
                                             <input type="text" id="letranetoAp" class="form-control input-sm number" readonly="true"/>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>

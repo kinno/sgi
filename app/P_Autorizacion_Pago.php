@@ -36,4 +36,8 @@ class P_Autorizacion_Pago extends Model
     public function fuente(){
         return $this->hasOne('App\Cat_Fuente','id','id_fuente');
     }
+
+    public function sector(){
+        return $this->hasOne('App\Cat_Sector','id','id_sector');
+    }
 }

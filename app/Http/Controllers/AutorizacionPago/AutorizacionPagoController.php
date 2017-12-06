@@ -136,6 +136,7 @@ class AutorizacionPagoController extends Controller
                 $ap->monto_iva_amortizacion = (isset($value['monto_iva_amortizacion'])) ? str_replace(",", "", $value['monto_iva_amortizacion']) : null;
                 $ap->id_ap_amortizacion     = (isset($value['id_ap_amortizacion'])) ? $value['id_ap_amortizacion'] : null;
                 $ap->folio_amortizacion     = (isset($value['folio_amortizacion'])) ? $value['folio_amortizacion'] : null;
+                $ap->importe_sin_iva        = (isset($value['importe_sin_iva'])) ? str_replace(",", "", $value['importe_sin_iva']) : 0.00;
                 $ap->iva                    = (isset($value['iva'])) ? str_replace(",", "", $value['iva']) : 0.00;
                 $ap->icic                   = (isset($value['icic'])) ? str_replace(",", "", $value['icic']) : 0.00;
                 $ap->cmic                   = (isset($value['cmic'])) ? str_replace(",", "", $value['cmic']) : 0.00;
@@ -145,6 +146,7 @@ class AutorizacionPagoController extends Controller
                 $ap->federal_1              = (isset($value['federal_1'])) ? str_replace(",", "", $value['federal_1']) : 0.00;
                 $ap->federal_2              = (isset($value['federal_2'])) ? str_replace(",", "", $value['federal_2']) : 0.00;
                 $ap->federal_5              = (isset($value['federal_5'])) ? str_replace(",", "", $value['federal_5']) : 0.00;
+                $ap->numero_estimacion      = (isset($value['numero_estimacion'])) ? $value['numero_estimacion'] : null;
                 $ap->id_usuario             = \Auth::user()->id;
                 $ap->fecha_creacion         = date('Y-m-d H:i:s');
                 $ap->save();
@@ -220,11 +222,27 @@ class AutorizacionPagoController extends Controller
     {
         // dd($request->all());
         $montoTotalCapturado = 0.00;
-        $ap                  = P_Autorizacion_Pago::where('id_obra', $request->id_obra)
-            ->where('id_fuente', $request->id_fuente)
-            ->where('id_tipo_ap', $request->id_tipo_ap)
-            ->where('id', '!=', (isset($request->id_ap) ? $request->id_ap : null))
-            ->get();
+        switch ($request->id_tipo_ap) {
+            case '1':
+                # code...
+                break;
+            case '2': //ANTICIPO
+                $ap = P_Autorizacion_Pago::where('id_obra', $request->id_obra)
+                    ->where('id_fuente', $request->id_fuente)
+                    ->where('id_tipo_ap', $request->id_tipo_ap)
+                    ->where('id', '!=', (isset($request->id_ap) ? $request->id_ap : null))
+                    ->get();
+                break;
+            case '4': // ESTIMACION
+                $ap = P_Autorizacion_Pago::where('id_obra', $request->id_obra)
+                    ->where('id_fuente', $request->id_fuente)
+                    ->whereIn('id_tipo_ap', [$request->id_tipo_ap, 2])
+                    ->where('id', '!=', (isset($request->id_ap) ? $request->id_ap : null))
+                    ->get();
+                break;
+
+        }
+
         foreach ($ap as $value) {
             // dd($value);
             $montoTotalCapturado += $value->monto;
@@ -233,13 +251,66 @@ class AutorizacionPagoController extends Controller
         return $montoTotalCapturado;
     }
 
+    public function buscar_monto_estimar(Request $request)
+    {
+
+        $ap = P_Autorizacion_Pago::where('id_obra', $request->id_obra)
+            ->where('id_fuente', $request->id_fuente)
+            ->where('id_contrato', $request->id_contrato)
+            ->where('id_tipo_ap', 4)
+            ->where('id', '!=', (isset($request->id_ap) ? $request->id_ap : null))
+            ->get();
+        $montoEstimado = 0.00;
+        foreach ($ap as $value) {
+            // dd($value);
+            $montoEstimado += $value->importe_sin_iva;
+        }
+
+        return (isset($montoEstimado) ? $montoEstimado : 0.00);
+    }
+
+    public function buscar_monto_por_amortizar(Request $request)
+    {
+
+        $montoTotalAmortizado = 0.00;
+        $montoPorAmortizar    = 0.00;
+        $montoAnticipo        = 0.00;
+        $ap                   = P_Autorizacion_Pago::where('folio_amortizacion', $request->folio_amortizar)
+            ->where('id', '!=', (isset($request->id_ap) ? $request->id_ap : null))
+            ->where('id_obra', $request->id_obra)
+            ->where('id_fuente', $request->id_fuente)
+            ->get();
+        $ap_anticipo = P_Autorizacion_Pago::where('clave', $request->folio_amortizar)
+            ->where('id_fuente', $request->id_fuente)
+            ->first();
+        foreach ($ap as $value) {
+            $montoTotalAmortizado += ($value->monto_amortizacion + $value->monto_iva_amortizacion);
+        }
+        $montoAnticipo     = $ap_anticipo->monto;
+        $montoPorAmortizar = $montoAnticipo - $montoTotalAmortizado;
+        return array($montoPorAmortizar, $ap_anticipo->id_fuente);
+    }
+
     public function buscar_folios_amortizacion(Request $request)
     {
-        $folios = P_Autorizacion_Pago::where('id_tipo_ap', 2)
-            ->where('id_obra', $request->id_obra)
-            ->where('ejercicio', $request->ejercicio)
-            ->where('id_contrato', $request->id_contrato ? $request->id_contrato : null)
-            ->get();
+        if (isset($request->id_fuente)) {
+            $folios = P_Autorizacion_Pago::where('id_tipo_ap', 2)
+                ->where('id_obra', $request->id_obra)
+                ->where('ejercicio', $request->ejercicio)
+                ->where('id_contrato', $request->id_contrato)
+                ->where('id_fuente', $request->id_fuente)
+                ->get();
+        } else {
+            $folios = P_Autorizacion_Pago::where('id_tipo_ap', 2)
+                ->where('id_obra', $request->id_obra)
+                ->where('ejercicio', $request->ejercicio)
+                ->get();
+        }
+        // $folios = P_Autorizacion_Pago::where('id_tipo_ap', 2)
+        //     ->where('id_obra', $request->id_obra)
+        //     ->where('ejercicio', $request->ejercicio)
+        //     ->where('id_contrato', $request->id_contrato ? $request->id_contrato : null)
+        //     ->get();
 
         return $folios;
     }
@@ -248,8 +319,8 @@ class AutorizacionPagoController extends Controller
     {
         // dd($request->all());
         $montoTotalAmortizado = 0.00;
-        $montoPorAmortizar = 0.00;
-        $montoAnticipo = 0.00;
+        $montoPorAmortizar    = 0.00;
+        $montoAnticipo        = 0.00;
         $ap                   = P_Autorizacion_Pago::where('folio_amortizacion', $request->folio_amortizar)
             ->where('id', '!=', (isset($request->id_ap) ? $request->id_ap : null))
             ->where('id_obra', $request->id_obra)
@@ -257,10 +328,11 @@ class AutorizacionPagoController extends Controller
         $ap_anticipo = P_Autorizacion_Pago::where('clave', $request->folio_amortizar)
             ->first();
         foreach ($ap as $value) {
+            // $montoTotalAmortizado += ($value->monto_amortizacion + $value->monto_iva_amortizacion);
             $montoTotalAmortizado += ($value->monto_amortizacion + $value->monto_iva_amortizacion);
         }
-        $montoAnticipo = $ap_anticipo->monto;
+        $montoAnticipo     = $ap_anticipo->monto;
         $montoPorAmortizar = $montoAnticipo - $montoTotalAmortizado;
-        return array($montoPorAmortizar,$ap_anticipo->id_fuente);
+        return array($montoPorAmortizar, $ap_anticipo->id_fuente);
     }
 }
