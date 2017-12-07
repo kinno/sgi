@@ -132,13 +132,16 @@ class ConsultaController extends Controller
 
 	public function getDataOficios(Request $request)
 	{
-		$oficios = D_Oficio::select(DB::raw('p_oficio.id, p_oficio.clave, fecha_oficio, cat_estatus_oficio.nombre as estado, cat_solicitud_presupuesto.nombre as solicitud, SUM(asignado) as asignado, SUM(autorizado) as autorizado, cat_recurso.nombre as recurso, titular, fecha_firma, tarjeta_turno'))
+		// estado, cat_solicitud_presupuesto.nombre as solicitud, SUM(asignado) as asignado, SUM(autorizado) as 
+		 $oficios = D_Oficio::select(DB::raw('p_oficio.id, p_oficio.clave, fecha_oficio, cat_estatus_oficio.nombre as estado, cat_solicitud_presupuesto.nombre as solicitud, "0" as asignado, "0" as
+			autorizado, cat_recurso.nombre as recurso, titular, fecha_firma, tarjeta_turno'))
+		 	->distinct()
 			->join('p_oficio', 'd_oficio.id_oficio', '=', 'p_oficio.id')
 			->join('cat_estatus_oficio', 'p_oficio.id_estatus', '=', 'cat_estatus_oficio.id')
 			->join('cat_solicitud_presupuesto', 'p_oficio.id_solicitud_presupuesto', '=', 'cat_solicitud_presupuesto.id')
 			->join('cat_recurso', 'p_oficio.id_recurso', '=', 'cat_recurso.id')
-			->where('id_det_obra', $request->id)
-			->orderBy('clave', 'DESC');
+			->orderBy('clave', 'DESC')
+			->where('id_det_obra', $request->id);
 		return Datatables::of($oficios)
 			->editColumn('fecha_oficio', function ($oficio) {
 				if (!is_null($oficio->fecha_oficio))

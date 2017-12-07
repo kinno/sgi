@@ -91,7 +91,7 @@
 	<div class="row">
 		<label class="col-md-2 label-lectura">Titular:</label>
 		<div class="col-md-9">
-			<textarea class="form-lectura" rows="1" readonly="readonly">@{{titular}}
+			<textarea class="form-lectura" rows="3" readonly="readonly">@{{titular}}
 			</textarea>
 		</div>
 	</div>
